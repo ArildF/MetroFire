@@ -122,7 +122,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CampfireClient\CampfireClient.csproj">
+      <Project>{AFE44303-2933-45EC-A795-AF42472F9B23}</Project>
+      <Name>CampfireClient</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\ShellView.xaml">
       <SubType>Designer</SubType>

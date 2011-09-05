@@ -1,17 +1,19 @@
 ﻿using System.Windows;
-using Rogue.MetroFire.UI.Views;
 
 namespace Rogue.MetroFire.UI
 {
 	/// <summary>
 	/// Interaction logic for App.xaml
 	/// </summary>
-	public partial class App : Application
+	public partial class App
 	{
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
-			new ShellView().Show();
+
+			var shellView = new Bootstrapper().Bootstrap();
+
+			shellView.Window.Show();
 		}
 	}
 }

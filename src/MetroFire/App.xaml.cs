@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Windows;
-using MetroFire.Views;
+﻿using System.Windows;
+using Rogue.MetroFire.UI.Views;
 
-namespace MetroFire
+namespace Rogue.MetroFire.UI
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

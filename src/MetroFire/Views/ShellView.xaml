@@ -1,7 +1,9 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:MetroFire_Behaviors="clr-namespace:MetroFire.Behaviors" x:Class="MetroFire.Views.ShellView"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:MetroFire_Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
+        x:Class="Rogue.MetroFire.UI.Views.ShellView"
         Title="ShellView" Height="628" Width="919">
 	<i:Interaction.Behaviors>
 		<MetroFire_Behaviors:BorderlessWindowBehavior/>

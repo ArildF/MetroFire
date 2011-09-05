@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Interactivity;
 using System.Windows.Interop;
 
-namespace MetroFire.Behaviors
+namespace Rogue.MetroFire.UI.Behaviors
 {
     public class BorderlessWindowBehavior : Behavior<Window>
     {

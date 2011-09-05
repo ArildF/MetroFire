@@ -8,7 +8,7 @@
     <ProjectGuid>{D1C32CFA-B57E-4A98-BEEE-6274B94ECD59}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MetroFire</RootNamespace>
+    <RootNamespace>Rogue.MetroFire.UI</RootNamespace>
     <AssemblyName>MetroFire</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>

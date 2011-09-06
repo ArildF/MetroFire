@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using ReactiveUI;
 
 namespace Rogue.MetroFire.UI.Views
@@ -41,6 +42,11 @@ namespace Rogue.MetroFire.UI.Views
 		public Window Window
 		{
 			get { return this; }
+		}
+
+		private void TopOnMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			DragMove();
 		}
 
 	}

@@ -94,14 +94,19 @@
     </Compile>
     <Compile Include="Behaviors\BorderlessWindowBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="messages.cs" />
     <Compile Include="ModuleNames.cs" />
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="ModulesInstaller.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainCampfireView.xaml.cs">
+      <DependentUpon>MainCampfireView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -140,6 +145,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainCampfireView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

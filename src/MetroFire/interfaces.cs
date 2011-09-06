@@ -13,6 +13,10 @@ namespace Rogue.MetroFire.UI
 	public interface IShellViewModel 
 	{}
 
+	public interface ILoginViewModel
+	{
+	}
+
 	public interface IModule
 	{
 		string Caption { get; }

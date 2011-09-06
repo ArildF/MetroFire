@@ -1,9 +1,10 @@
+using Castle.Core;
 using ReactiveUI;
 using System;
 
 namespace Rogue.MetroFire.CampfireClient
 {
-	public class Campfire : ICampfire
+	public class Campfire : ICampfire, IStartable
 	{
 		private readonly IMessageBus _bus;
 		private readonly ICampfireApi _api;
@@ -13,7 +14,6 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus = bus;
 			_api = api;
 
-			Subscribe();
 		}
 
 		private void Subscribe()
@@ -28,6 +28,16 @@ namespace Rogue.MetroFire.CampfireClient
 
 			_bus.SendMessage<LoginSuccessfulMessage>(null);
 
+		}
+
+		public void Start()
+		{
+			Subscribe();
+		}
+
+		public void Stop()
+		{
+			
 		}
 	}
 }

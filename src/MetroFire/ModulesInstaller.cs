@@ -10,6 +10,7 @@ namespace Rogue.MetroFire.UI
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
 			container.Register(Component.For<IMainModule>().Named(ModuleNames.Login).LifestyleTransient().ImplementedBy<LoginView>());
+			container.Register(Component.For<IMainModule>().Named(ModuleNames.MainCampfireView).LifestyleTransient().ImplementedBy<MainCampfireView>());
 		}
 	}
 }

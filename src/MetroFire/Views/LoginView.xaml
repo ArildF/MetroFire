@@ -23,9 +23,9 @@
 			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="SemiBold" Style="{DynamicResource SmallMetroHeading}" d:LayoutOverrides="GridBox" Grid.ColumnSpan="2"><Run Language="nb-no" Text="Provide login info"/></TextBlock>
 			<TextBlock TextWrapping="Wrap" Grid.Row="1" FontWeight="Light" Height="50.22" Width="221.377" Style="{DynamicResource MetroLargeLightHeader}" Margin="4,8.924" VerticalAlignment="Center"><Run Language="nb-no" Text="Account name"/><LineBreak/><Run Language="nb-no"/></TextBlock>
 			<TextBlock TextWrapping="Wrap" Grid.Row="2" FontWeight="Light" Height="50.22" Width="221.377" Style="{DynamicResource MetroLargeLightHeader}" Margin="4,8.924" VerticalAlignment="Center"><Run Language="nb-no" Text="Token"/><LineBreak/><Run Language="nb-no"/></TextBlock>
-			<TextBox TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width"/>
-			<TextBox TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width"/>
-			<Button Content="Login" Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource MetroBigButton}" VerticalAlignment="Center"/>
+			<TextBox TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width" Text="{Binding Account, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+			<TextBox TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width" Text="{Binding Token, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+			<Button Content="Login" Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource MetroBigButton}" VerticalAlignment="Center" Command="{Binding LoginCommand}"/>
 		</Grid>
 	</Grid>
 </UserControl>

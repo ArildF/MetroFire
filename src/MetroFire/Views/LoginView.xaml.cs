@@ -24,6 +24,11 @@ namespace Rogue.MetroFire.UI.Views
 			InitializeComponent();
 		}
 
+		public LoginView(ILoginViewModel viewModel) : this()
+		{
+			DataContext = viewModel;
+		}
+
 		public string Caption
 		{
 			get { return ""; }

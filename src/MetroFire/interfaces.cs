@@ -6,10 +6,26 @@ namespace Rogue.MetroFire.UI
 	{
 		Window Window { get; }
 	}
-
+	
 	public interface IShellWindow : IWindow
 	{}
 
 	public interface IShellViewModel 
 	{}
+
+	public interface IModule
+	{
+		string Caption { get; }
+		DependencyObject Visual { get; }
+	}
+
+	public interface IMainModule : IModule
+	{
+		
+	}
+
+	public interface IModuleResolver
+	{
+		IModule ResolveModule(string name);
+	}
 }

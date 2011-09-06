@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using ReactiveUI;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -7,19 +9,39 @@ namespace Rogue.MetroFire.UI.Views
 	/// </summary>
 	public partial class ShellView : IShellWindow
 	{
-		public ShellView()
+		private readonly IMessageBus _bus;
+		private readonly IModuleResolver _resolver;
+
+		protected ShellView()
 		{
 			InitializeComponent();
+
+			Loaded += OnLoaded;
 		}
 
-		public ShellView(IShellViewModel vm) : this()
+		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
 		{
+			_bus.SendMessage<ApplicationLoadedMessage>(null);
+		}
+
+		public ShellView(IShellViewModel vm, IMessageBus bus, IModuleResolver resolver) : this()
+		{
+			_bus = bus;
+			_resolver = resolver;
 			DataContext = vm;
+
+			_bus.Listen<ActivateMainModuleMessage>().Subscribe(msg => ActivateMainModule(msg.ModuleName));
+		}
+
+		private void ActivateMainModule(string moduleName)
+		{
+			_mainContent.Content = _resolver.ResolveModule(moduleName);
 		}
 
 		public Window Window
 		{
 			get { return this; }
 		}
+
 	}
 }

@@ -27,7 +27,6 @@ namespace Rogue.MetroFire.CampfireClient
 			var account = _api.GetAccountInfo();
 
 			_bus.SendMessage<LoginSuccessfulMessage>(null);
-
 		}
 
 		public void Start()

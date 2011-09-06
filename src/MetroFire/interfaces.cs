@@ -31,5 +31,6 @@ namespace Rogue.MetroFire.UI
 	public interface IModuleResolver
 	{
 		IModule ResolveModule(string name);
+		void ReleaseModule(IModule module);
 	}
 }

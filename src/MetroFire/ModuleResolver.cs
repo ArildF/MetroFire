@@ -15,5 +15,10 @@ namespace Rogue.MetroFire.UI
 		{
 			return _container.Resolve<IMainModule>(name);
 		}
+
+		public void ReleaseModule(IModule module)
+		{
+			_container.Release(module);
+		}
 	}
 }

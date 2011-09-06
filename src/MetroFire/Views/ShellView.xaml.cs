@@ -36,6 +36,12 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void ActivateMainModule(string moduleName)
 		{
+			var currentModule = _mainContent.Content as IMainModule;
+			if (currentModule != null)
+			{
+				_resolver.ReleaseModule(currentModule);
+			}
+
 			_mainContent.Content = _resolver.ResolveModule(moduleName);
 		}
 

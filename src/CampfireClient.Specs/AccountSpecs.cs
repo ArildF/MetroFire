@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Machine.Specifications;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
@@ -16,7 +15,10 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 			var url = lines[0];
 			var token = lines[1];
 
-			return new CampfireApi(url, token);
+			var api = new CampfireApi();
+			api.SetLoginInfo(new LoginInfo(url, token));
+
+			return api;
 		}
 		protected static CampfireApi api;
 	}

@@ -7,15 +7,13 @@ using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.CampfireClient
 {
-	public class CampfireApi
-	{
-		private readonly string _token;
-		private readonly Uri _baseUri;
 
-		public CampfireApi(string url, string token)
+	public class CampfireApi : ICampfireApi
+	{
+		private LoginInfo _loginInfo;
+
+		public CampfireApi()
 		{
-			_baseUri = new Uri(url);
-			_token = token;
 		}
 
 		public Account GetAccountInfo()
@@ -29,11 +27,17 @@ namespace Rogue.MetroFire.CampfireClient
 			return roomArray.Rooms;
 		}
 
+		public void SetLoginInfo(LoginInfo loginInfo)
+		{
+			_loginInfo = loginInfo;
+		}
+
 		private T Get<T>(string relativeUri)
 		{
-			var client = new WebClient {Credentials = new NetworkCredential(_token, "X"), Proxy = null};
+			var client = new WebClient {Credentials = new NetworkCredential(_loginInfo.Token, "X"), Proxy = null};
 
-			var uri = new Uri(_baseUri, relativeUri);
+			var baseUri = new Uri(String.Format("https://{0}.campfirenow.com", _loginInfo.Account));
+			var uri = new Uri(baseUri, relativeUri);
 
 			var xml = client.DownloadString(uri);
 

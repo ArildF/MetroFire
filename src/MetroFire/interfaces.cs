@@ -17,6 +17,10 @@ namespace Rogue.MetroFire.UI
 	{
 	}
 
+	public interface IMainCampfireViewModel
+	{
+	}
+
 	public interface IModule
 	{
 		string Caption { get; }
@@ -27,6 +31,14 @@ namespace Rogue.MetroFire.UI
 	{
 		
 	}
+
+	public interface ICampfireModule : IModule
+	{
+		
+	}
+
+	public interface ILobbyModule : ICampfireModule
+	{}
 
 	public interface IModuleResolver
 	{

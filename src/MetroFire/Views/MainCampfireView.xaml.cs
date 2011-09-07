@@ -7,9 +7,17 @@ namespace Rogue.MetroFire.UI.Views
 	/// </summary>
 	public partial class MainCampfireView : IMainModule
 	{
-		public MainCampfireView()
+		private readonly IModuleResolver _resolver;
+
+		protected MainCampfireView()
 		{
 			InitializeComponent();
+		}
+
+		public MainCampfireView(IMainCampfireViewModel model, IModuleResolver resolver) : this()
+		{
+			DataContext = model;
+			_resolver = resolver;
 		}
 
 		public string Caption

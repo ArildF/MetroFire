@@ -4,8 +4,21 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 mc:Ignorable="d" 
-			 d:DesignHeight="300" d:DesignWidth="300">
+			 d:DesignHeight="514" d:DesignWidth="661">
+	<UserControl.Resources>
+		<ItemsPanelTemplate x:Key="_tabWellItemsPanelTemplate">
+			<StackPanel Orientation="Horizontal"/>
+		</ItemsPanelTemplate>
+		<DataTemplate x:Key="_tabWellButtonTemplate">
+			<Button Content="{Binding Mode=OneWay}" Style="{DynamicResource _tabWellButton}"/>
+		</DataTemplate>
+	</UserControl.Resources>
 	<Grid>
-		<TextBlock>Logged in!</TextBlock>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="46.1"/>
+			<RowDefinition Height="0.912*"/>
+		</Grid.RowDefinitions>
+		<ItemsControl Margin="0" ItemsPanel="{DynamicResource _tabWellItemsPanelTemplate}" 
+					  ItemTemplate="{DynamicResource _tabWellButtonTemplate}" ItemsSource="{Binding Modules}"/>
 	</Grid>
 </UserControl>

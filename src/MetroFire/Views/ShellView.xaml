@@ -16,6 +16,6 @@
 		<Grid MouseDown="TopOnMouseDown">
 	    	<TextBlock TextWrapping="Wrap" Text="metro fire" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="64" FontWeight="Light"/>
 		</Grid>
-	<ContentControl x:Name="_mainContent" Content="" Grid.Row="1"/>
+	<ContentControl x:Name="_mainContent" Content="" Grid.Row="1" Margin="10 0 0 0"/>
     </Grid>
 </Window>

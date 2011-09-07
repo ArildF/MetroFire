@@ -1,4 +1,5 @@
-﻿using Machine.Fakes;
+﻿using Castle.Core;
+using Machine.Fakes;
 using Machine.Specifications;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient.Serialization;
@@ -14,9 +15,11 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 									_api = An<ICampfireApi>();
 									_bus = new MessageBus();
 
-									_api.WhenToldTo(a => a.GetAccountInfo()).Return(new Account());
+									_account = new Account();
+									_api.WhenToldTo(a => a.GetAccountInfo()).Return(_account);
 
 									_campfire = new Campfire(_bus, _api);
+									((IStartable)_campfire).Start();
 
 									_bus.Listen<LoginSuccessfulMessage>().Subscribe(msg => _loginSuccessfulMessageSent = true);
 								};
@@ -28,11 +31,14 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 
 		It should_send_login_successful_message = () => _loginSuccessfulMessageSent.ShouldBeTrue();
 
+		It should_expose_account = () => _campfire.Account.ShouldBeTheSameAs(_account);
 
-		private static Campfire _campfire;
+
+		private static ICampfire _campfire;
 		private static MessageBus _bus;
 		private static ICampfireApi _api;
 		private static readonly LoginInfo _loginInfo = new LoginInfo("", "");
 		private static bool _loginSuccessfulMessageSent;
+		private static Account _account;
 	}
 }

@@ -4,7 +4,7 @@ namespace Rogue.MetroFire.CampfireClient
 {
 	public interface ICampfire
 	{
-		
+		IAccount Account { get; }
 	}
 
 	public interface ICampfireApi

@@ -22,6 +22,10 @@ namespace Rogue.MetroFire.UI
 	{
 	}
 
+	public interface ILobbyModuleViewModel
+	{
+	}
+
 	public interface IModule
 	{
 		string Caption { get; }

@@ -20,5 +20,6 @@
 		</Grid.RowDefinitions>
 		<ItemsControl Margin="0" ItemsPanel="{DynamicResource _tabWellItemsPanelTemplate}" 
 					  ItemTemplate="{DynamicResource _tabWellButtonTemplate}" ItemsSource="{Binding Modules}"/>
+		<ContentControl x:Name="_moduleContainer" Content="" Grid.Row="1"/>
 	</Grid>
 </UserControl>

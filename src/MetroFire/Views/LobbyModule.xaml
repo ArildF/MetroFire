@@ -3,9 +3,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+             mc:Ignorable="d" Width="776" Height="610">
+	<UserControl.Resources>
+		<Style x:Key="MetroWhiteCaption" TargetType="{x:Type TextBlock}">
+			<Setter Property="TextWrapping" Value="NoWrap"/>
+			<Setter Property="TextTrimming" Value="None"/>
+			<Setter Property="FontSize" Value="18pt"/>
+			<Setter Property="Foreground" Value="Black"/>
+			<Setter Property="FontWeight" Value="ExtraLight"/>
+		</Style>
+         
+	</UserControl.Resources>
+    <Grid d:DataContext="{Binding Source={StaticResource SampleLobbyViewModel}}">
+    	<Grid.ColumnDefinitions>
+    		<ColumnDefinition Width="0.617*"/>
+    		<ColumnDefinition Width="0.383*"/>
+    	</Grid.ColumnDefinitions>
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="0.259*"/>
+    		<RowDefinition Height="0.741*"/>
+    	</Grid.RowDefinitions>
+    	<Grid Margin="10" Grid.Column="1">
+    		<Grid.ColumnDefinitions>
+    			<ColumnDefinition/>
+    			<ColumnDefinition/>
+    		</Grid.ColumnDefinitions>
+    		<Grid.RowDefinitions>
+    			<RowDefinition/>
+    			<RowDefinition/>
+    			<RowDefinition/>
+    			<RowDefinition/>
+    		</Grid.RowDefinitions>
+    		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="Account" d:LayoutOverrides="Height" Style="{DynamicResource MetroBlueCaption}"/>
+    		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Style="{DynamicResource MetroBlueCaption}" d:LayoutOverrides="Height" Grid.Row="1"><Run Language="nb-no" Text="Plan"/><LineBreak/><Run Language="nb-no"/></TextBlock>
+    		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Style="{DynamicResource MetroBlueCaption}" d:LayoutOverrides="Height" Grid.Row="2"><Run Language="nb-no" Text="Storage"/><LineBreak/><Run Language="nb-no"/></TextBlock>
+    		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Style="{DynamicResource MetroBlueCaption}" d:LayoutOverrides="Height" Grid.Row="3"><Run Language="nb-no" Text="Subdomain"/><LineBreak/><Run Language="nb-no"/></TextBlock>
+    		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountName}" Style="{DynamicResource MetroWhiteCaption}" d:LayoutOverrides="Height" Grid.Column="1"/>
+    		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountPlan}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" d:LayoutOverrides="Height" Grid.Row="1"/>
+    		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountStorage}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" Grid.Row="2" d:LayoutOverrides="Height"/>
+    		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountSubdomain}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" Grid.Row="3" d:LayoutOverrides="Height"/>
+    	</Grid>
             
     </Grid>
 </UserControl>

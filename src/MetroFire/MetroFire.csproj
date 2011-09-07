@@ -110,6 +110,10 @@
     <Compile Include="ModuleNames.cs" />
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="ModulesInstaller.cs" />
+    <Compile Include="SampleData\SampleLobbyViewModel\SampleLobbyViewModel.xaml.cs">
+      <DependentUpon>SampleLobbyViewModel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainCampfireViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -151,6 +155,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <DesignTimeOnly Include="SampleData\SampleLobbyViewModel\SampleLobbyViewModel.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CampfireClient\CampfireClient.csproj">
@@ -159,6 +164,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <DesignTimeOnly Include="SampleData\SampleLobbyViewModel\SampleLobbyViewModel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </DesignTimeOnly>
     <Page Include="Views\LobbyModule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

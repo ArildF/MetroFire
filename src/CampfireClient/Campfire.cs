@@ -1,6 +1,7 @@
 using Castle.Core;
 using ReactiveUI;
 using System;
+using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.CampfireClient
 {
@@ -9,6 +10,9 @@ namespace Rogue.MetroFire.CampfireClient
 		private readonly IMessageBus _bus;
 		private readonly ICampfireApi _api;
 
+		private Account _account;
+
+
 		public Campfire(IMessageBus bus, ICampfireApi api)
 		{
 			_bus = bus;
@@ -16,15 +20,20 @@ namespace Rogue.MetroFire.CampfireClient
 
 		}
 
+		public IAccount Account
+		{
+			get { return _account; }
+		}
+
 		private void Subscribe()
 		{
-			_bus.Listen<RequestLoginMessage>().Subscribe(StartLogin);
+			_bus.Listen<RequestLoginMessage>().SubscribeThreadPool(StartLogin);
 		}
 
 		private void StartLogin(RequestLoginMessage requestLoginMessage)
 		{
 			_api.SetLoginInfo(requestLoginMessage.LoginInfo);
-			var account = _api.GetAccountInfo();
+			_account = _api.GetAccountInfo();
 
 			_bus.SendMessage<LoginSuccessfulMessage>(null);
 		}

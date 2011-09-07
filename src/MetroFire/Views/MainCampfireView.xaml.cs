@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using ReactiveUI;
+using System.Reactive.Linq;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -7,17 +10,28 @@ namespace Rogue.MetroFire.UI.Views
 	/// </summary>
 	public partial class MainCampfireView : IMainModule
 	{
-		private readonly IModuleResolver _resolver;
+		private readonly IMessageBus _bus;
 
 		protected MainCampfireView()
 		{
 			InitializeComponent();
+
+			Loaded += OnLoaded;
 		}
 
-		public MainCampfireView(IMainCampfireViewModel model, IModuleResolver resolver) : this()
+		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
 		{
+			_bus.SendMessage(new ModuleLoaded(ModuleNames.MainCampfireView));
+		}
+
+		public MainCampfireView(IMainCampfireViewModel model, IMessageBus bus) : this()
+		{
+			_bus = bus;
 			DataContext = model;
-			_resolver = resolver;
+
+			bus.Listen<ActivateModuleMessage>()
+				.Where(msg => msg.ParentModule == ModuleNames.MainCampfireView)
+				.SubscribeUI(msg => _moduleContainer.Content = msg.Module);
 		}
 
 		public string Caption

@@ -3,8 +3,16 @@ using System.Xml.Serialization;
 
 namespace Rogue.MetroFire.CampfireClient.Serialization
 {
+	public interface IAccount
+	{
+		string Name { get; }
+		string Subdomain { get; }
+		string Plan { get; }
+		string Storage { get; }
+	}
+
 	[XmlRoot("account")]
-	public class Account
+	public class Account : IAccount
 	{
 		[XmlElement("id")]
 		public int Id { get; set; }

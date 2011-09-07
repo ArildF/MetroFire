@@ -12,6 +12,11 @@ namespace Rogue.MetroFire.UI.Views
 			InitializeComponent();
 		}
 
+		public LobbyModule(ILobbyModuleViewModel vm) : this()
+		{
+			DataContext = vm;
+		}
+
 		public string Caption
 		{
 			get { return "Lobby"; }
@@ -22,4 +27,5 @@ namespace Rogue.MetroFire.UI.Views
 			get { return this; }
 		}
 	}
+
 }

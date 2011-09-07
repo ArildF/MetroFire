@@ -1,5 +1,8 @@
-﻿namespace Rogue.MetroFire.CampfireClient
+﻿using System;
+
+namespace Rogue.MetroFire.CampfireClient
 {
+	[Serializable]
 	public class LoginInfo
 	{
 		public string Account { get; private set; }

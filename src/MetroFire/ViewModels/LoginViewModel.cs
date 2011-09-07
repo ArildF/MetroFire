@@ -12,7 +12,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _account;
 		private string _token;
 
-		public LoginViewModel(IMessageBus bus)
+		public LoginViewModel(IMessageBus bus, ILoginInfoStorage storage)
 		{
 			_bus = bus;
 
@@ -27,7 +27,16 @@ namespace Rogue.MetroFire.UI.ViewModels
 				LoginCommand.Select(_ => new RequestLoginMessage(new LoginInfo(Account, Token))));
 
 			_bus.RegisterMessageSource(
-				_bus.Listen<LoginSuccessfulMessage>().Select(msg => new ActivateMainModuleMessage(ModuleNames.MainCampfireView)));
+				_bus.Listen<LoginSuccessfulMessage>()
+				.Do(_ => storage.PersistLoginInfo(new LoginInfo(Account, Token)))
+				.Select(msg => new ActivateMainModuleMessage(ModuleNames.MainCampfireView)));
+
+			LoginInfo info = storage.GetStoredLoginInfo();
+			if (info != null)
+			{
+				Token = info.Token;
+				Account = info.Account;
+			}
 		}
 
 

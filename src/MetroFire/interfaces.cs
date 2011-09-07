@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Rogue.MetroFire.CampfireClient;
 
 namespace Rogue.MetroFire.UI
 {
@@ -44,5 +45,11 @@ namespace Rogue.MetroFire.UI
 	{
 		IModule ResolveModule(string name);
 		void ReleaseModule(IModule module);
+	}
+
+	public interface ILoginInfoStorage
+	{
+		LoginInfo GetStoredLoginInfo();
+		void PersistLoginInfo(LoginInfo info);
 	}
 }

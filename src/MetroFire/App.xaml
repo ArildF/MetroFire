@@ -14,7 +14,7 @@
     		</Style>
 
 		<Style x:Key="MetroMediumLightHeader" TargetType="{x:Type TextBlock}">
-			<Setter Property="FontSize" Value="20pt"/>
+			<Setter Property="FontSize" Value="23"/>
 			<Setter Property="FontWeight" Value="Light"/>
 		</Style>
 		<LinearGradientBrush x:Key="TextBoxBorder" EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">

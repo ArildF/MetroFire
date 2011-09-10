@@ -11,15 +11,15 @@
 		</ItemsPanelTemplate>
 		<DataTemplate x:Key="_tabWellButtonTemplate">
 			<Button Content="{Binding Mode=OneWay}" Style="{DynamicResource _tabWellButton}"/>
-		</DataTemplate>
+		</DataTemplate>		
 	</UserControl.Resources>
-	<Grid>
+	<Grid d:DataContext="{Binding Source={StaticResource SampleMainViewModel}}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="46.1"/>
 			<RowDefinition Height="0.912*"/>
 		</Grid.RowDefinitions>
 		<ItemsControl Margin="0" ItemsPanel="{DynamicResource _tabWellItemsPanelTemplate}" 
-					  ItemTemplate="{DynamicResource _tabWellButtonTemplate}" ItemsSource="{Binding Modules}"/>
+					  ItemTemplate="{DynamicResource _tabWellButtonTemplate}" ItemsSource="{Binding CurrentModuleNames}"/>
 		<ContentControl x:Name="_moduleContainer" Content="" Grid.Row="1"/>
 	</Grid>
 </UserControl>

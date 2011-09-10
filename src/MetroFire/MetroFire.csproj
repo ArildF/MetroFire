@@ -110,13 +110,18 @@
     <Compile Include="ModuleNames.cs" />
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="ModulesInstaller.cs" />
+    <Compile Include="RoomModuleCreator.cs" />
     <Compile Include="SampleData\SampleLobbyViewModel\SampleLobbyViewModel.xaml.cs">
       <DependentUpon>SampleLobbyViewModel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleData\SampleMainViewModel\SampleMainViewModel.xaml.cs">
+      <DependentUpon>SampleMainViewModel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainCampfireViewModel.cs" />
     <Compile Include="ViewModels\RoomListViewModel.cs" />
+    <Compile Include="ViewModels\RoomModuleViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\LobbyModule.xaml.cs">
       <DependentUpon>LobbyModule.xaml</DependentUpon>
@@ -126,6 +131,9 @@
     </Compile>
     <Compile Include="Views\MainCampfireView.xaml.cs">
       <DependentUpon>MainCampfireView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RoomModule.xaml.cs">
+      <DependentUpon>RoomModule.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -157,6 +165,7 @@
     </None>
     <AppDesigner Include="Properties\" />
     <DesignTimeOnly Include="SampleData\SampleLobbyViewModel\SampleLobbyViewModel.xsd" />
+    <DesignTimeOnly Include="SampleData\SampleMainViewModel\SampleMainViewModel.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CampfireClient\CampfireClient.csproj">
@@ -169,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignTimeOnly>
+    <Page Include="SampleData\SampleMainViewModel\SampleMainViewModel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\LobbyModule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -178,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainCampfireView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RoomModule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

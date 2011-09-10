@@ -1,25 +1,27 @@
 ﻿<Application
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SampleLobbyViewModel" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.App"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SampleMainViewModel" xmlns:SampleData1="clr-namespace:Expression.Blend.SampleData.SampleLobbyViewModel" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.App"
              >
     <Application.Resources>
          
-    	<SampleData:SampleLobbyViewModel x:Key="SampleLobbyViewModel" d:IsDataSource="True"/>
+    	<SampleData:SampleMainViewModel x:Key="SampleMainViewModel" d:IsDataSource="True"/>
+         
+    	<SampleData1:SampleLobbyViewModel x:Key="SampleLobbyViewModel" d:IsDataSource="True"/>
          
     	<Style x:Key="SmallMetroHeading" TargetType="{x:Type TextBlock}">
     		<Setter Property="FontSize" Value="18pt"/>
-			<Setter Property="FontWeight" Value="SemiBold"/>
+    		<Setter Property="FontWeight" Value="SemiBold"/>
     	</Style>
     	<Style x:Key="MetroLargeLightHeader" TargetType="{x:Type TextBlock}">
     		<Setter Property="FontSize" Value="26pt"/>
-			<Setter Property="FontWeight" Value="Light"/>
-    		</Style>
+    		<Setter Property="FontWeight" Value="Light"/>
+    	</Style>
 
-		<Style x:Key="MetroMediumLightHeader" TargetType="{x:Type TextBlock}">
-			<Setter Property="FontSize" Value="23"/>
-			<Setter Property="FontWeight" Value="Light"/>
-		</Style>
-		<LinearGradientBrush x:Key="TextBoxBorder" EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+    	<Style x:Key="MetroMediumLightHeader" TargetType="{x:Type TextBlock}">
+    		<Setter Property="FontSize" Value="23"/>
+    		<Setter Property="FontWeight" Value="Light"/>
+    	</Style>
+    	<LinearGradientBrush x:Key="TextBoxBorder" EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
     		<GradientStop Color="#ABADB3" Offset="0.05"/>
     		<GradientStop Color="#E2E3EA" Offset="0.07"/>
     		<GradientStop Color="#E3E9EF" Offset="1"/>
@@ -79,15 +81,15 @@
     		<Setter Property="Template">
     			<Setter.Value>
     				<ControlTemplate TargetType="{x:Type Button}">
-    			<Grid>
-    				<Rectangle x:Name="rectangle" Fill="#FFEEEEEE" Stroke="#FFCCCCCC"/>
-					<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-    			</Grid>    				
+    					<Grid>
+    						<Rectangle x:Name="rectangle" Fill="#FFEEEEEE" Stroke="#FFCCCCCC"/>
+    						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+    					</Grid>    				
     					<ControlTemplate.Triggers>
     						<Trigger Property="IsMouseOver" Value="True">
     							<Setter Property="Fill" TargetName="rectangle" Value="#FD646464"/>
-								<Setter Property="Foreground" Value="White"/>
-								<Setter Property="StrokeThickness" TargetName="rectangle" Value="0"/>
+    							<Setter Property="Foreground" Value="White"/>
+    							<Setter Property="StrokeThickness" TargetName="rectangle" Value="0"/>
     						</Trigger>
     						<Trigger Property="IsKeyboardFocused" Value="true">
     							<Setter Property="StrokeThickness" TargetName="rectangle" Value="3"/>
@@ -116,9 +118,9 @@
     		<Setter Property="Template">
     			<Setter.Value>
     				<ControlTemplate TargetType="{x:Type Button}">
-    					<Grid>
+    					<Grid Margin="20 0 20 0">
     						<TextBlock TextWrapping="NoWrap" Text="{Binding}" Style="{DynamicResource MetroMediumLightHeader}" 
-									   VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    							VerticalAlignment="Center" HorizontalAlignment="Center"/>
     					</Grid>
     					<ControlTemplate.Triggers>
     						<Trigger Property="IsKeyboardFocused" Value="true"/>

@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using Rogue.MetroFire.CampfireClient;
+using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.ViewModels;
 
 namespace Rogue.MetroFire.UI
 {
@@ -24,6 +26,16 @@ namespace Rogue.MetroFire.UI
 
 	public interface ILobbyModuleViewModel
 	{
+	}
+
+	public interface IRoomModuleViewModel
+	{
+		string RoomName { get; }
+	}
+
+	public interface IRoomModuleCreator
+	{
+		IModule CreateRoomModule(RoomModuleViewModel room);
 	}
 
 	public interface IModule

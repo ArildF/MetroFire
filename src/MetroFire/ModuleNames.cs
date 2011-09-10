@@ -5,6 +5,7 @@
 		public static readonly string Login = "Login";
 
 		public static string MainCampfireView = "MainCampfireView";
+		public static string RoomModule = "RoomModule";
 
 	}
 }

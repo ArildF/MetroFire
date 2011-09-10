@@ -67,4 +67,25 @@ namespace Rogue.MetroFire.CampfireClient
 			return _rooms.Any(r => r.Name.Equals(caption, StringComparison.InvariantCultureIgnoreCase));
 		}
 	}
+
+	public class UserJoinedRoomMessage
+	{
+		public int Id { get; private set; }
+
+		public UserJoinedRoomMessage(int id)
+		{
+			Id = id;
+		}
+	}
+
+	public class RequestJoinRoomMessage
+	{
+		public int Id { get; private set; }
+
+		public RequestJoinRoomMessage(int id)
+		{
+			Id = id;
+		}
+	}
+
 }

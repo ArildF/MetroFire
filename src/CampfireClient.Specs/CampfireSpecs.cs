@@ -93,4 +93,23 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static RoomPresenceMessage _roomPresenceMessage;
 	}
 
+	public class When_sending_a_room_join_message : CampfireContextBase
+	{
+		Establish context = () =>
+			{
+				_bus.Listen<RoomPresenceMessage>().Subscribe(msg => _roomPresenceMessageSent = true);
+				_bus.Listen<UserJoinedRoomMessage>().Subscribe(msg => _userJoinedRoomMessage = msg);
+			};
+
+		Because of = () => _bus.SendMessage(new RequestJoinRoomMessage(42));
+
+		It should_have_joined_room = () => _api.WasToldTo(a => a.Join(42));
+		It should_have_refreshed_presence = () => _roomPresenceMessageSent.ShouldBeTrue();
+		It should_have_joined_room_42 = () => _userJoinedRoomMessage.Id.ShouldEqual(42);
+
+
+		private static bool _roomPresenceMessageSent;
+		private static UserJoinedRoomMessage _userJoinedRoomMessage;
+	}
+
 }

@@ -51,7 +51,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private IModule ActiveModule
 		{
-			get { return _activeModule; }
 			set
 			{
 				if (_activeModule == value)

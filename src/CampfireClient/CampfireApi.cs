@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Xml;
 using System.Xml.Serialization;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
@@ -12,10 +11,6 @@ namespace Rogue.MetroFire.CampfireClient
 	{
 		private LoginInfo _loginInfo;
 
-		public CampfireApi()
-		{
-		}
-
 		public Account GetAccountInfo()
 		{
 			return Get<Account>("/account.xml");
@@ -25,6 +20,12 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			var roomArray = Get<Room[]>("rooms.xml", "rooms");
 			return roomArray;
+		}
+
+		public void Join(int id)
+		{
+			string relativeUri = String.Format("room/{0}/join.xml", id);
+			Post(relativeUri);
 		}
 
 		public void SetLoginInfo(LoginInfo loginInfo)
@@ -38,12 +39,33 @@ namespace Rogue.MetroFire.CampfireClient
 			return roomArray;
 		}
 
+		private void Post(string relativeUri)
+		{
+			var uri = FormatUri(relativeUri);
+			var request = CreateRequest(uri);
+
+			var response = (HttpWebResponse)request.GetResponse();
+			if (response.StatusCode != HttpStatusCode.OK)
+			{
+				throw new Exception("Unexpected response code: " + response.StatusCode);
+			}
+
+		}
+
+		private HttpWebRequest CreateRequest(Uri uri)
+		{
+			var request = (HttpWebRequest)WebRequest.Create(uri);
+			request.Credentials = CreateCredentials();
+			request.Method = "POST";
+
+			return request;
+		}
+
 		private T Get<T>(string relativeUri, string root = null)
 		{
-			var client = new WebClient {Credentials = new NetworkCredential(_loginInfo.Token, "X"), Proxy = null};
-
-			var baseUri = new Uri(String.Format("https://{0}.campfirenow.com", _loginInfo.Account));
-			var uri = new Uri(baseUri, relativeUri);
+			var client = CreateClient();
+			
+			var uri = FormatUri(relativeUri);
 
 			var xml = client.DownloadString(uri);
 
@@ -52,6 +74,24 @@ namespace Rogue.MetroFire.CampfireClient
 			                 	: new XmlSerializer(typeof (T));
 
 			return (T) serializer.Deserialize(new StringReader(xml));
+		}
+
+		private Uri FormatUri(string relativeUri)
+		{
+			var baseUri = new Uri(String.Format("https://{0}.campfirenow.com", _loginInfo.Account));
+			var uri = new Uri(baseUri, relativeUri);
+			return uri;
+		}
+
+		private WebClient CreateClient()
+		{
+			var client = new WebClient {Credentials = CreateCredentials(), Proxy = null};
+			return client;
+		}
+
+		private NetworkCredential CreateCredentials()
+		{
+			return new NetworkCredential(_loginInfo.Token, "X");
 		}
 	}
 }

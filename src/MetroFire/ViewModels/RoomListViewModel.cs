@@ -3,6 +3,7 @@ using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using System.Reactive.Linq;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
@@ -28,7 +29,13 @@ namespace Rogue.MetroFire.UI.ViewModels
 			if (IsActive)
 			{
 				_bus.SendMessage(new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, _room.Id));
+				return;
 			}
+
+			_bus.Listen<RoomModuleCreatedMessage>().Where(msg => msg.Module.Id == _room.Id).SubscribeOnceUI(
+				msg => _bus.SendMessage(new ActivateModuleMessage(ModuleNames.MainCampfireView, msg.Module))
+				);
+			_bus.SendMessage(new RequestJoinRoomMessage(_room.Id));
 		}
 
 		public ReactiveCommand JoinCommand { get; private set; }

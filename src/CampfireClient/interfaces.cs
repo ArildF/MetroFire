@@ -15,6 +15,7 @@ namespace Rogue.MetroFire.CampfireClient
 		Room[] ListRooms();
 		void SetLoginInfo(LoginInfo loginInfo);
 		Room[] ListPresence();
+		void Join(int id);
 	}
 
 

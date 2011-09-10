@@ -48,5 +48,15 @@
 		}
 	}
 
+	public class RoomModuleCreatedMessage
+	{
+		public IModule Module { get; private set; }
+
+		public RoomModuleCreatedMessage(IModule module)
+		{
+			Module = module;
+		}
+	}
+
 
 }

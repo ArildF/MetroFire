@@ -116,6 +116,7 @@
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainCampfireViewModel.cs" />
+    <Compile Include="ViewModels\RoomListViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\LobbyModule.xaml.cs">
       <DependentUpon>LobbyModule.xaml</DependentUpon>

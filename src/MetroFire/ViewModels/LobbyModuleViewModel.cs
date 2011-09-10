@@ -14,6 +14,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_messageBus = messageBus;
 			_account = campfire.Account;
 
+			Rooms = new ReactiveCollection<RoomListViewModel>();
+
 			_messageBus.Listen<AccountUpdated>()
 				.SubscribeUI(msg =>
 				{
@@ -23,6 +25,22 @@ namespace Rogue.MetroFire.UI.ViewModels
 					this.RaisePropertyChanged(vm => vm.AccountStorage);
 					this.RaisePropertyChanged(vm => vm.AccountSubdomain);
 				});
+
+			_messageBus.Listen<RoomListMessage>()
+				.SubscribeUI(UpdateRooms);
+
+			_messageBus.SendMessage(new RequestRoomListMessage());
+		}
+
+		public ReactiveCollection<RoomListViewModel> Rooms { get; private set; }
+
+		private void UpdateRooms(RoomListMessage obj)
+		{
+			Rooms.Clear();
+			foreach (var room in obj.Rooms)
+			{
+				Rooms.Add(new RoomListViewModel(room));
+			}
 		}
 
 		public string AccountName

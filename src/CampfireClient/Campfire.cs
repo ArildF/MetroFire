@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Castle.Core;
 using ReactiveUI;
 using System;
@@ -11,6 +12,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private readonly ICampfireApi _api;
 
 		private Account _account;
+		private Room[] _rooms;
 
 
 		public Campfire(IMessageBus bus, ICampfireApi api)
@@ -25,9 +27,21 @@ namespace Rogue.MetroFire.CampfireClient
 			get { return _account; }
 		}
 
+		public IEnumerable<Room> Rooms
+		{
+			get { return _rooms; }
+		}
+
 		private void Subscribe()
 		{
 			_bus.Listen<RequestLoginMessage>().SubscribeThreadPool(StartLogin);
+			_bus.Listen<RequestRoomListMessage>().SubscribeThreadPool(ListRooms);
+		}
+
+		private void ListRooms(RequestRoomListMessage obj)
+		{
+			_rooms = _api.ListRooms();
+			_bus.SendMessage(new RoomListMessage(_rooms));
 		}
 
 		private void StartLogin(RequestLoginMessage requestLoginMessage)

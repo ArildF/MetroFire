@@ -44,8 +44,17 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 	}
 
 
+	public interface IRoom
+	{
+		[XmlElement("name")]
+		string Name { get; }
+
+		[XmlElement("topic")]
+		string Topic { get; }
+	}
+
 	[XmlRoot("room")]
-	public class Room
+	public class Room : IRoom
 	{
 		[XmlElement("id")]
 		public int Id { get; set; }

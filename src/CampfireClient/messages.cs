@@ -24,4 +24,18 @@ namespace Rogue.MetroFire.CampfireClient
 			Account = account;
 		}
 	}
+
+	public class RoomListMessage
+	{
+		public Room[] Rooms { get; private set; }
+
+		public RoomListMessage(Room[] rooms)
+		{
+			Rooms = rooms;
+		}
+	}
+
+	public class RequestRoomListMessage
+	{
+	}
 }

@@ -113,6 +113,71 @@ namespace Expression.Blend.SampleData.SampleLobbyViewModel
 				}
 			}
 		}
+
+		private Rooms _Rooms = new Rooms();
+
+		public Rooms Rooms
+		{
+			get
+			{
+				return this._Rooms;
+			}
+		}
+	}
+
+	public class RoomsItem : System.ComponentModel.INotifyPropertyChanged
+	{
+		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			if (this.PropertyChanged != null)
+			{
+				this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+			}
+		}
+
+		private string _Name = string.Empty;
+
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+
+			set
+			{
+				if (this._Name != value)
+				{
+					this._Name = value;
+					this.OnPropertyChanged("Name");
+				}
+			}
+		}
+
+		private string _Topic = string.Empty;
+
+		public string Topic
+		{
+			get
+			{
+				return this._Topic;
+			}
+
+			set
+			{
+				if (this._Topic != value)
+				{
+					this._Topic = value;
+					this.OnPropertyChanged("Topic");
+				}
+			}
+		}
+	}
+
+	public class Rooms : System.Collections.ObjectModel.ObservableCollection<RoomsItem>
+	{ 
 	}
 #endif
 }

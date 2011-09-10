@@ -12,6 +12,96 @@
 			<Setter Property="Foreground" Value="Black"/>
 			<Setter Property="FontWeight" Value="ExtraLight"/>
 		</Style>
+		<ItemsPanelTemplate x:Key="_wrapPanelTemplate">
+			<WrapPanel/>
+		</ItemsPanelTemplate>
+		<DataTemplate x:Key="_roomsStyle">
+			<Border x:Name="border" BorderBrush="Black" BorderThickness="0" Height="150" Width="150" Background="#FF00AADD" Margin="4" RenderTransformOrigin="0.5,0.5">
+				<Border.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform/>
+						<SkewTransform/>
+						<RotateTransform/>
+						<TranslateTransform/>
+					</TransformGroup>
+				</Border.RenderTransform>
+				<Border.LayoutTransform>
+					<TransformGroup>
+						<ScaleTransform/>
+						<SkewTransform/>
+						<RotateTransform/>
+						<TranslateTransform/>
+					</TransformGroup>
+				</Border.LayoutTransform>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="0.261*"/>
+						<RowDefinition Height="0.592*"/>
+					</Grid.RowDefinitions>
+					<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" Style="{DynamicResource TileLargeHeader}" VerticalAlignment="Center"/>
+					<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Topic}" VerticalAlignment="Center" Grid.Row="2" Foreground="White" Style="{DynamicResource MetroBodyText}" Margin="10,0" FontSize="12"/>
+				</Grid>
+			</Border>
+			<DataTemplate.Triggers>
+				<Trigger Property="IsMouseOver" Value="True">
+					<Setter Property="RenderTransform" TargetName="border">
+						<Setter.Value>
+							<TransformGroup>
+								<ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+								<SkewTransform/>
+								<RotateTransform/>
+								<TranslateTransform/>
+							</TransformGroup>
+						</Setter.Value>
+					</Setter>
+				</Trigger>
+			</DataTemplate.Triggers>
+		</DataTemplate>
+		<Style x:Key="TileLargeHeader" TargetType="{x:Type TextBlock}">
+			<Setter Property="TextWrapping" Value="NoWrap"/>
+			<Setter Property="TextTrimming" Value="None"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="FontSize" Value="32"/>
+			<Setter Property="FontWeight" Value="Light"/>
+		</Style>
+		<SolidColorBrush x:Key="ListBorder" Color="#828790"/>
+		<Style x:Key="_listBoxStyle" TargetType="{x:Type ListBox}">
+			<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+			<Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+			<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+			<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+			<Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+			<Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+			<Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type ListBox}">
+						<Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Padding="1" SnapsToDevicePixels="true">
+							<ScrollViewer Focusable="false" Padding="{TemplateBinding Padding}">
+								<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+							</ScrollViewer>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsEnabled" Value="false">
+								<Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+							</Trigger>
+							<Trigger Property="IsGrouping" Value="true">
+								<Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="MetroBodyText" TargetType="{x:Type TextBlock}">
+			<Setter Property="TextWrapping" Value="NoWrap"/>
+			<Setter Property="TextTrimming" Value="None"/>
+			<Setter Property="FontSize" Value="14.667"/>
+			<Setter Property="FontWeight" Value="Light"/>
+		</Style>
          
 	</UserControl.Resources>
     <Grid d:DataContext="{Binding Source={StaticResource SampleLobbyViewModel}}">
@@ -21,7 +111,9 @@
     	</Grid.ColumnDefinitions>
     	<Grid.RowDefinitions>
     		<RowDefinition Height="0.259*"/>
-    		<RowDefinition Height="0.741*"/>
+    		<RowDefinition Height="0.103*"/>
+    		<RowDefinition Height="0.561*"/>
+    		<RowDefinition Height="0.077*"/>
     	</Grid.RowDefinitions>
     	<Grid Margin="10" Grid.Column="1">
     		<Grid.ColumnDefinitions>
@@ -43,6 +135,7 @@
     		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountStorage}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" Grid.Row="2" d:LayoutOverrides="Height"/>
     		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountSubdomain}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" Grid.Row="3" d:LayoutOverrides="Height"/>
     	</Grid>
+    	<ListBox Margin="0" Grid.Row="2" Grid.ColumnSpan="2" Background="{x:Null}" Padding="10,0" ItemsPanel="{DynamicResource _wrapPanelTemplate}" ItemsSource="{Binding Rooms}" ItemTemplate="{DynamicResource _roomsStyle}" Style="{DynamicResource _listBoxStyle}"/>
             
     </Grid>
 </UserControl>

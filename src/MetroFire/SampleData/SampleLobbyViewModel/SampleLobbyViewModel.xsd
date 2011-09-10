@@ -7,9 +7,21 @@
 <xs:schema xmlns:tns="Expression.Blend.SampleData.SampleLobbyViewModel" xmlns:blend="http://schemas.microsoft.com/expression/blend/2008" targetNamespace="Expression.Blend.SampleData.SampleLobbyViewModel" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="SampleLobbyViewModel" type="tns:SampleLobbyViewModel" />
   <xs:complexType name="SampleLobbyViewModel">
+    <xs:sequence>
+      <xs:element name="Rooms" type="tns:Rooms" />
+    </xs:sequence>
     <xs:attribute name="AccountName" type="xs:string" />
     <xs:attribute name="AccountSubdomain" type="xs:string" />
     <xs:attribute name="AccountPlan" type="xs:string" />
     <xs:attribute name="AccountStorage" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="Rooms">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" name="RoomsItem" type="tns:RoomsItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RoomsItem">
+    <xs:attribute name="Name" type="xs:string" />
+    <xs:attribute name="Topic" type="xs:string" />
   </xs:complexType>
 </xs:schema>

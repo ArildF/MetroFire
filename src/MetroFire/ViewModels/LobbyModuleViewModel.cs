@@ -39,8 +39,10 @@ namespace Rogue.MetroFire.UI.ViewModels
 			Rooms.Clear();
 			foreach (var room in obj.Rooms)
 			{
-				Rooms.Add(new RoomListViewModel(room));
+				Rooms.Add(new RoomListViewModel(room, _messageBus));
 			}
+
+			_messageBus.SendMessage(new RequestRoomPresenceMessage());
 		}
 
 		public string AccountName

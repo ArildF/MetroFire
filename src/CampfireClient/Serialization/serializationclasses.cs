@@ -36,24 +36,17 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		public DateTime UpdatedAt { get; set; }
 	}
 
-	[XmlRoot("rooms")]
-	public class RoomArray
-	{
-		[XmlElement("room")]
-		public Room[] Rooms { get; set; }
-	}
-
 
 	public interface IRoom
 	{
-		[XmlElement("name")]
+		int Id { get; }
+
 		string Name { get; }
 
-		[XmlElement("topic")]
 		string Topic { get; }
 	}
 
-	[XmlRoot("room")]
+	[XmlType("room")]
 	public class Room : IRoom
 	{
 		[XmlElement("id")]

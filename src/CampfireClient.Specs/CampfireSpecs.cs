@@ -72,4 +72,25 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static bool _roomListMessageSent;
 	}
 
+	public class When_sending_a_request_room_presence_message_and_rooms_are_returned : CampfireContextBase
+	{
+		Establish context = () =>
+			{
+				_rooms = new Room[] {new Room(){Id = 42}};
+				_api.WhenToldTo(a => a.ListPresence()).Return(_rooms);
+
+				_bus.Listen<RoomPresenceMessage>().Subscribe(msg => _roomPresenceMessage = msg);
+			};
+
+		Because of = () => _bus.SendMessage<RequestRoomPresenceMessage>(null);
+
+		It should_send_room_presence_message = () => _roomPresenceMessage.ShouldNotBeNull();
+		It should_report_present_in_room_42 = () => _roomPresenceMessage.IsPresentIn(42).ShouldBeTrue();
+		It should_not_report_present_in_room_101 = () => _roomPresenceMessage.IsPresentIn(101).ShouldBeFalse();
+		It should_have_requested_presence = () => _api.WasToldTo(a => a.ListPresence());
+
+		private static Room[] _rooms;
+		private static RoomPresenceMessage _roomPresenceMessage;
+	}
+
 }

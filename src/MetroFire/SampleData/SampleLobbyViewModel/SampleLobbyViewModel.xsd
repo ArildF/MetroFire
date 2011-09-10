@@ -23,5 +23,6 @@
   <xs:complexType name="RoomsItem">
     <xs:attribute name="Name" type="xs:string" />
     <xs:attribute name="Topic" type="xs:string" />
+    <xs:attribute name="IsActive" type="xs:boolean" />
   </xs:complexType>
 </xs:schema>

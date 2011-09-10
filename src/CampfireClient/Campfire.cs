@@ -13,6 +13,7 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private Account _account;
 		private Room[] _rooms;
+		private Room[] _presentRooms;
 
 
 		public Campfire(IMessageBus bus, ICampfireApi api)
@@ -36,6 +37,13 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			_bus.Listen<RequestLoginMessage>().SubscribeThreadPool(StartLogin);
 			_bus.Listen<RequestRoomListMessage>().SubscribeThreadPool(ListRooms);
+			_bus.Listen<RequestRoomPresenceMessage>().SubscribeThreadPool(ListRoomPresence);
+		}
+
+		private void ListRoomPresence(RequestRoomPresenceMessage obj)
+		{
+			_presentRooms = _api.ListPresence();
+			_bus.SendMessage(new RoomPresenceMessage(_presentRooms));
 		}
 
 		private void ListRooms(RequestRoomListMessage obj)

@@ -1,4 +1,5 @@
 ﻿using Rogue.MetroFire.CampfireClient.Serialization;
+using System.Linq;
 
 namespace Rogue.MetroFire.CampfireClient
 {
@@ -37,5 +38,22 @@ namespace Rogue.MetroFire.CampfireClient
 
 	public class RequestRoomListMessage
 	{
+	}
+
+	public class RequestRoomPresenceMessage{}
+
+	public class RoomPresenceMessage
+	{
+		private Room[] _rooms;
+
+		public RoomPresenceMessage(Room[] rooms)
+		{
+			_rooms = rooms;
+		}
+
+		public bool IsPresentIn(int id)
+		{
+			return _rooms.Any(r => r.Id == id);
+		}
 	}
 }

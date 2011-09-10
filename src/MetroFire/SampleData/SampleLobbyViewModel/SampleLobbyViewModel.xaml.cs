@@ -174,6 +174,25 @@ namespace Expression.Blend.SampleData.SampleLobbyViewModel
 				}
 			}
 		}
+
+		private bool _IsActive = false;
+
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+
+			set
+			{
+				if (this._IsActive != value)
+				{
+					this._IsActive = value;
+					this.OnPropertyChanged("IsActive");
+				}
+			}
+		}
 	}
 
 	public class Rooms : System.Collections.ObjectModel.ObservableCollection<RoomsItem>

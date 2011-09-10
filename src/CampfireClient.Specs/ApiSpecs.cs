@@ -44,4 +44,16 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static Room[] rooms;
 	}
 
+	[Subject(typeof(Room))]
+	public class When_retrieving_presence_list : ApiContext
+	{
+		Because of = () => rooms = api.ListPresence();
+
+		It should_return_list_of_rooms = () => rooms.ShouldNotBeNull();
+
+		private static Room[] rooms;
+
+
+	}
+
 }

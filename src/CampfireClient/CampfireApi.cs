@@ -23,8 +23,8 @@ namespace Rogue.MetroFire.CampfireClient
 
 		public Room[] ListRooms()
 		{
-			var roomArray = Get<RoomArray>("rooms.xml");
-			return roomArray.Rooms;
+			var roomArray = Get<Room[]>("rooms.xml", "rooms");
+			return roomArray;
 		}
 
 		public void SetLoginInfo(LoginInfo loginInfo)
@@ -32,7 +32,13 @@ namespace Rogue.MetroFire.CampfireClient
 			_loginInfo = loginInfo;
 		}
 
-		private T Get<T>(string relativeUri)
+		public Room[] ListPresence()
+		{
+			var roomArray = Get<Room[]>("presence.xml", "rooms");
+			return roomArray;
+		}
+
+		private T Get<T>(string relativeUri, string root = null)
 		{
 			var client = new WebClient {Credentials = new NetworkCredential(_loginInfo.Token, "X"), Proxy = null};
 
@@ -41,7 +47,11 @@ namespace Rogue.MetroFire.CampfireClient
 
 			var xml = client.DownloadString(uri);
 
-			return (T) new XmlSerializer(typeof (T)).Deserialize(new StringReader(xml));
+			var serializer = root != null
+			                 	? new XmlSerializer(typeof (T), new XmlRootAttribute(root))
+			                 	: new XmlSerializer(typeof (T));
+
+			return (T) serializer.Deserialize(new StringReader(xml));
 		}
 	}
 }

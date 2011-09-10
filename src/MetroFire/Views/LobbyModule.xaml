@@ -16,7 +16,8 @@
 			<WrapPanel/>
 		</ItemsPanelTemplate>
 		<DataTemplate x:Key="_roomsStyle">
-			<Border x:Name="border" BorderBrush="Black" BorderThickness="0" Height="150" Width="150" Background="#FF00AADD" Margin="4" RenderTransformOrigin="0.5,0.5">
+			<Border x:Name="border" BorderBrush="Black" BorderThickness="0" Height="150" Width="150" Background="#FF00AADD" Margin="4" RenderTransformOrigin="0.5,0.5"
+				>
 				<Border.RenderTransform>
 					<TransformGroup>
 						<ScaleTransform/>
@@ -33,13 +34,13 @@
 						<TranslateTransform/>
 					</TransformGroup>
 				</Border.LayoutTransform>
-				<Grid>
+				<Grid TextBlock.Foreground="#FFD8D8D8" x:Name="_grid">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="0.261*"/>
 						<RowDefinition Height="0.592*"/>
 					</Grid.RowDefinitions>
 					<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" Style="{DynamicResource TileLargeHeader}" VerticalAlignment="Center"/>
-					<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Topic}" VerticalAlignment="Center" Grid.Row="2" Foreground="White" Style="{DynamicResource MetroBodyText}" Margin="10,0" FontSize="12"/>
+					<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Topic}" VerticalAlignment="Center" Grid.Row="2" Style="{DynamicResource MetroBodyText}" Margin="10,0" FontSize="12"/>
 				</Grid>
 			</Border>
 			<DataTemplate.Triggers>
@@ -55,12 +56,14 @@
 						</Setter.Value>
 					</Setter>
 				</Trigger>
+				<DataTrigger Binding="{Binding IsActive}" Value="True">
+					<Setter TargetName="_grid" Property="TextBlock.Foreground" Value="White"/>						
+				</DataTrigger>
 			</DataTemplate.Triggers>
 		</DataTemplate>
 		<Style x:Key="TileLargeHeader" TargetType="{x:Type TextBlock}">
 			<Setter Property="TextWrapping" Value="NoWrap"/>
 			<Setter Property="TextTrimming" Value="None"/>
-			<Setter Property="Foreground" Value="White"/>
 			<Setter Property="FontSize" Value="32"/>
 			<Setter Property="FontWeight" Value="Light"/>
 		</Style>

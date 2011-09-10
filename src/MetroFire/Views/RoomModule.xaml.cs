@@ -47,5 +47,10 @@ namespace Rogue.MetroFire.UI.Views
 			get { return _vm.IsActive; }
 			set { _vm.IsActive = value; }
 		}
+
+		public int Id
+		{
+			get { return _vm.Id; }
+		}
 	}
 }

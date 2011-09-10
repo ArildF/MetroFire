@@ -26,6 +26,18 @@
 		}
 	}
 
+	public class ActivateModuleByIdMessage
+	{
+		public string ParentModule { get; private set; }
+		public int Id { get; private set; }
+
+		public ActivateModuleByIdMessage(string parentModule, int id)
+		{
+			ParentModule = parentModule;
+			Id = id;
+		}
+	}
+
 	public class ModuleLoaded
 	{
 		public string ModuleName { get; private set; }

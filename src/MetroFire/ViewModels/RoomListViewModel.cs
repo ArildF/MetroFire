@@ -1,4 +1,6 @@
+using System;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
@@ -7,14 +9,29 @@ namespace Rogue.MetroFire.UI.ViewModels
 	public class RoomListViewModel : ReactiveObject
 	{
 		private readonly Room _room;
+		private readonly IMessageBus _bus;
 		private bool _isActive;
 
 		public RoomListViewModel(Room room, IMessageBus bus)
 		{
 			_room = room;
+			_bus = bus;
 
 			bus.Listen<RoomPresenceMessage>().SubscribeUI(msg => IsActive = msg.IsPresentIn(_room.Id));
+
+			JoinCommand = new ReactiveCommand();
+			JoinCommand.SubscribeUI(HandleJoinCommand);
 		}
+
+		private void HandleJoinCommand(object o)
+		{
+			if (IsActive)
+			{
+				_bus.SendMessage(new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, _room.Id));
+			}
+		}
+
+		public ReactiveCommand JoinCommand { get; private set; }
 
 		public string Name
 		{
@@ -32,4 +49,5 @@ namespace Rogue.MetroFire.UI.ViewModels
 			set { this.RaiseAndSetIfChanged(vm => vm.IsActive, ref _isActive, value); }
 		}
 	}
+
 }

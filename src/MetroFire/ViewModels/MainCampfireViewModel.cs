@@ -36,9 +36,17 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			bus.Listen<RoomPresenceMessage>().SubscribeUI(SyncModuleList);
 
+			_bus.Listen<ActivateModuleByIdMessage>().Where(msg => msg.ParentModule == ModuleNames.MainCampfireView)
+				.SubscribeUI(HandleActivateModuleById);
+
 			ActivateModuleCommand = new ReactiveCommand();
 			ActivateModuleCommand.OfType<ModuleViewModel>().Subscribe(HandleActivateModule);
 
+		}
+
+		private void HandleActivateModuleById(ActivateModuleByIdMessage msg)
+		{
+			ActiveModule = CurrentModules.Select(m => m.Module).Where(m => m.Id == msg.Id).FirstOrDefault();
 		}
 
 		private IModule ActiveModule

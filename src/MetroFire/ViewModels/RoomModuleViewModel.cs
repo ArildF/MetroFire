@@ -23,6 +23,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _isActive; }
 			set { this.RaiseAndSetIfChanged(vm => vm.IsActive, ref _isActive, value); }
 		}
+
+		public int Id
+		{
+			get { return _room.Id; }
+		}
 	}
 
 }

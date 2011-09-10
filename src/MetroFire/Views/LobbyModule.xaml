@@ -15,52 +15,56 @@
 		<ItemsPanelTemplate x:Key="_wrapPanelTemplate">
 			<WrapPanel/>
 		</ItemsPanelTemplate>
+		
+		
+		
 		<DataTemplate x:Key="_roomsStyle">
-			<Border x:Name="border" BorderBrush="Black" BorderThickness="0" Height="150" Width="150" Background="#FF00AADD" Margin="4" RenderTransformOrigin="0.5,0.5"
-				>
-				<Border.RenderTransform>
-					<TransformGroup>
-						<ScaleTransform/>
-						<SkewTransform/>
-						<RotateTransform/>
-						<TranslateTransform/>
-					</TransformGroup>
-				</Border.RenderTransform>
-				<Border.LayoutTransform>
-					<TransformGroup>
-						<ScaleTransform/>
-						<SkewTransform/>
-						<RotateTransform/>
-						<TranslateTransform/>
-					</TransformGroup>
-				</Border.LayoutTransform>
-				<Grid TextBlock.Foreground="#FFD8D8D8" x:Name="_grid">
-					<Grid.RowDefinitions>
-						<RowDefinition Height="0.261*"/>
-						<RowDefinition Height="0.592*"/>
-					</Grid.RowDefinitions>
-					<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" Style="{DynamicResource TileLargeHeader}" VerticalAlignment="Center"/>
-					<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Topic}" VerticalAlignment="Center" Grid.Row="2" Style="{DynamicResource MetroBodyText}" Margin="10,0" FontSize="12"/>
-				</Grid>
-			</Border>
-			<DataTemplate.Triggers>
-				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="RenderTransform" TargetName="border">
-						<Setter.Value>
-							<TransformGroup>
-								<ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
-								<SkewTransform/>
-								<RotateTransform/>
-								<TranslateTransform/>
-							</TransformGroup>
-						</Setter.Value>
-					</Setter>
-				</Trigger>
-				<DataTrigger Binding="{Binding IsActive}" Value="True">
-					<Setter TargetName="_grid" Property="TextBlock.Foreground" Value="White"/>						
-				</DataTrigger>
-			</DataTemplate.Triggers>
+			<Button Command="{Binding JoinCommand}">
+				<Button.Template>
+					<ControlTemplate>
+						<Border x:Name="border" BorderBrush="Black" BorderThickness="0" Height="150" Width="150" Background="#FF00AADD" Margin="0" RenderTransformOrigin="0.5,0.5"
+								>
+							<Border.RenderTransform>
+								<TransformGroup>
+									<ScaleTransform/>
+									<SkewTransform/>
+									<RotateTransform/>
+									<TranslateTransform/>
+								</TransformGroup>
+							</Border.RenderTransform>
+							
+						<Grid TextBlock.Foreground="#FFD8D8D8" x:Name="_grid">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="0.261*"/>
+								<RowDefinition Height="0.592*"/>
+							</Grid.RowDefinitions>
+							<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" Style="{DynamicResource TileLargeHeader}" VerticalAlignment="Center"/>
+							<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Topic}" VerticalAlignment="Center" Grid.Row="2" Style="{DynamicResource MetroBodyText}" Margin="10,0" FontSize="12"/>
+						</Grid>
+						</Border>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="RenderTransform" TargetName="border">
+									<Setter.Value>
+										<TransformGroup>
+											<ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+											<SkewTransform/>
+											<RotateTransform/>
+											<TranslateTransform/>
+										</TransformGroup>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+							<DataTrigger Binding="{Binding IsActive}" Value="True">
+								<Setter TargetName="_grid" Property="TextBlock.Foreground" Value="White"/>						
+							</DataTrigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Button.Template>
+				
+			</Button>
 		</DataTemplate>
+		
 		<Style x:Key="TileLargeHeader" TargetType="{x:Type TextBlock}">
 			<Setter Property="TextWrapping" Value="NoWrap"/>
 			<Setter Property="TextTrimming" Value="None"/>

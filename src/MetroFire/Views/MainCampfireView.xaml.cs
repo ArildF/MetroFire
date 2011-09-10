@@ -60,5 +60,10 @@ namespace Rogue.MetroFire.UI.Views
 			get { return true; }
 			set{}
 		}
+
+		public int Id
+		{
+			get { throw new NotImplementedException(); }
+		}
 	}
 }

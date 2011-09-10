@@ -38,18 +38,18 @@ namespace Expression.Blend.SampleData.SampleMainViewModel
 			}
 		}
 
-		private CurrentModuleNames _CurrentModuleNames = new CurrentModuleNames();
+		private CurrentModules _CurrentModules = new CurrentModules();
 
-		public CurrentModuleNames CurrentModuleNames
+		public CurrentModules CurrentModules
 		{
 			get
 			{
-				return this._CurrentModuleNames;
+				return this._CurrentModules;
 			}
 		}
 	}
 
-	public class CurrentModuleNamesItem : System.ComponentModel.INotifyPropertyChanged
+	public class CurrentModulesItem : System.ComponentModel.INotifyPropertyChanged
 	{
 		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
@@ -61,27 +61,46 @@ namespace Expression.Blend.SampleData.SampleMainViewModel
 			}
 		}
 
-		private string _Value = string.Empty;
+		private string _Caption = string.Empty;
 
-		public string Value
+		public string Caption
 		{
 			get
 			{
-				return this._Value;
+				return this._Caption;
 			}
 
 			set
 			{
-				if (this._Value != value)
+				if (this._Caption != value)
 				{
-					this._Value = value;
-					this.OnPropertyChanged("Value");
+					this._Caption = value;
+					this.OnPropertyChanged("Caption");
+				}
+			}
+		}
+
+		private bool _IsSelected = false;
+
+		public bool IsSelected
+		{
+			get
+			{
+				return this._IsSelected;
+			}
+
+			set
+			{
+				if (this._IsSelected != value)
+				{
+					this._IsSelected = value;
+					this.OnPropertyChanged("IsSelected");
 				}
 			}
 		}
 	}
 
-	public class CurrentModuleNames : System.Collections.ObjectModel.ObservableCollection<CurrentModuleNamesItem>
+	public class CurrentModules : System.Collections.ObjectModel.ObservableCollection<CurrentModulesItem>
 	{ 
 	}
 #endif

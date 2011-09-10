@@ -10,7 +10,9 @@
 			<StackPanel Orientation="Horizontal"/>
 		</ItemsPanelTemplate>
 		<DataTemplate x:Key="_tabWellButtonTemplate">
-			<Button Content="{Binding Mode=OneWay}" Style="{DynamicResource _tabWellButton}"/>
+			<Button Content="{Binding Mode=OneWay}" Style="{DynamicResource _tabWellButton}" 
+					Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=DataContext.ActivateModuleCommand}"
+					CommandParameter="{Binding}"/>
 		</DataTemplate>		
 	</UserControl.Resources>
 	<Grid d:DataContext="{Binding Source={StaticResource SampleMainViewModel}}">
@@ -19,7 +21,7 @@
 			<RowDefinition Height="0.912*"/>
 		</Grid.RowDefinitions>
 		<ItemsControl Margin="0" ItemsPanel="{DynamicResource _tabWellItemsPanelTemplate}" 
-					  ItemTemplate="{DynamicResource _tabWellButtonTemplate}" ItemsSource="{Binding CurrentModuleNames}"/>
+					  ItemTemplate="{DynamicResource _tabWellButtonTemplate}" ItemsSource="{Binding CurrentModules}"/>
 		<ContentControl x:Name="_moduleContainer" Content="" Grid.Row="1"/>
 	</Grid>
 </UserControl>

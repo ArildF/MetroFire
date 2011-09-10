@@ -1,10 +1,12 @@
-﻿using Rogue.MetroFire.CampfireClient.Serialization;
+﻿using ReactiveUI;
+using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class RoomModuleViewModel : IRoomModuleViewModel
+	public class RoomModuleViewModel : ReactiveObject, IRoomModuleViewModel
 	{
 		private readonly IRoom _room;
+		private bool _isActive;
 
 		public RoomModuleViewModel(IRoom room)
 		{
@@ -14,6 +16,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public string RoomName
 		{
 			get { return _room.Name; }
+		}
+
+		public bool IsActive
+		{
+			get { return _isActive; }
+			set { this.RaiseAndSetIfChanged(vm => vm.IsActive, ref _isActive, value); }
 		}
 	}
 

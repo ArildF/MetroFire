@@ -4,9 +4,9 @@
       changes to this file can cause errors.
 -->
 <SampleData:SampleMainViewModel xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SampleMainViewModel">
-	<SampleData:SampleMainViewModel.CurrentModuleNames>
-		<SampleData:CurrentModuleNamesItem Value="Lobby"/>
-		<SampleData:CurrentModuleNamesItem Value="Oslo"/>
-		<SampleData:CurrentModuleNamesItem Value="Common"/>
-	</SampleData:SampleMainViewModel.CurrentModuleNames>
+	<SampleData:SampleMainViewModel.CurrentModules>
+		<SampleData:CurrentModulesItem Caption="Lobby" IsSelected="False"/>
+		<SampleData:CurrentModulesItem Caption="Oslo" IsSelected="True"/>
+		<SampleData:CurrentModulesItem Caption="Common" IsSelected="False"/>
+	</SampleData:SampleMainViewModel.CurrentModules>
 </SampleData:SampleMainViewModel>

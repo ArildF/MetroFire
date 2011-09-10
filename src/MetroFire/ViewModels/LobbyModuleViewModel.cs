@@ -8,6 +8,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 	{
 		private readonly IMessageBus _messageBus;
 		private IAccount _account;
+		private bool _isActive;
 
 		public LobbyModuleViewModel(ICampfire campfire, IMessageBus messageBus)
 		{
@@ -61,6 +62,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public string AccountStorage
 		{
 			get { return _account.Storage; }
+		}
+
+		public bool IsActive
+		{
+			get { return _isActive; }
+			set { this.RaiseAndSetIfChanged(vm => vm.IsActive, ref _isActive, value); }
 		}
 	}
 }

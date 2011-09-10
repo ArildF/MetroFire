@@ -7,6 +7,8 @@ namespace Rogue.MetroFire.UI.Views
 	/// </summary>
 	public partial class LobbyModule : ILobbyModule
 	{
+		private readonly ILobbyModuleViewModel _vm;
+
 		public LobbyModule()
 		{
 			InitializeComponent();
@@ -14,6 +16,7 @@ namespace Rogue.MetroFire.UI.Views
 
 		public LobbyModule(ILobbyModuleViewModel vm) : this()
 		{
+			_vm = vm;
 			DataContext = vm;
 		}
 
@@ -25,6 +28,12 @@ namespace Rogue.MetroFire.UI.Views
 		public DependencyObject Visual
 		{
 			get { return this; }
+		}
+
+		public bool IsActive
+		{
+			get { return _vm.IsActive; }
+			set { _vm.IsActive = value; }
 		}
 	}
 

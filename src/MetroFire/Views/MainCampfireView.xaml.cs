@@ -31,7 +31,18 @@ namespace Rogue.MetroFire.UI.Views
 
 			bus.Listen<ActivateModuleMessage>()
 				.Where(msg => msg.ParentModule == ModuleNames.MainCampfireView)
-				.SubscribeUI(msg => _moduleContainer.Content = msg.Module);
+				.SubscribeUI(ActivateModule);
+		}
+
+		private void ActivateModule(ActivateModuleMessage obj)
+		{
+			var currentModule = _moduleContainer.Content as IModule;
+			if (currentModule != null)
+			{
+				currentModule.IsActive = false;
+			}
+			_moduleContainer.Content = obj.Module;
+			obj.Module.IsActive = true;
 		}
 
 		public string Caption
@@ -44,5 +55,10 @@ namespace Rogue.MetroFire.UI.Views
 			get { return this; }
 		}
 
+		public bool IsActive
+		{
+			get { return true; }
+			set{}
+		}
 	}
 }

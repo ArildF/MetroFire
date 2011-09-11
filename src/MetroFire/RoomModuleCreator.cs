@@ -16,7 +16,7 @@ namespace Rogue.MetroFire.UI
 			_bus = bus;
 		}
 
-		public IModule CreateRoomModule(RoomModuleViewModel vm)
+		public IModule CreateRoomModule(IRoomModuleViewModel vm)
 		{
 			var module = _container.Resolve<IModule>(ModuleNames.RoomModule, new {vm});
 

@@ -17,23 +17,43 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private const string DefaultMessage = "Type your message here or paste/drop files\u00A0";
 		private string _userMessage;
 		private bool _userEditedMessage;
+		private readonly IChatDocument _chatDocument;
 
-		public RoomModuleViewModel(IRoom room, IMessageBus bus)
+		public RoomModuleViewModel(IRoom room, IMessageBus bus, IChatDocument chatDocument)
 		{
 			_room = room;
 			_bus = bus;
+			_chatDocument = chatDocument;
 
 			UserMessage = DefaultMessage;
 
 			PostMessageCommand = new ReactiveCommand(this.ObservableForProperty(vm => vm.UserEditedMessage)
 				.Select(c => c.Value).StartWith(false));
 			PostMessageCommand.Subscribe(HandlePostMessage);
+
+
+			_bus.Listen<MessagesReceivedMessage>().Where(msg => msg.RoomId == room.Id).SubscribeUI(HandleMessagesReceived);
+
+			_bus.SendMessage(new RequestRecentMessagesMessage(room.Id));
+		}
+
+		private void HandleMessagesReceived(MessagesReceivedMessage obj)
+		{
+			foreach (var message in obj.Messages)
+			{
+				_chatDocument.AddMessage(message.Type, message.Body);
+			}
 		}
 
 		private void HandlePostMessage(object o)
 		{
 			_bus.SendMessage(new RequestSpeakInRoomMessage(Id, UserMessage));
 			UserMessage = String.Empty;
+		}
+
+		public IChatDocument ChatDocument
+		{
+			get{return _chatDocument;}
 		}
 
 		public ReactiveCommand PostMessageCommand { get; set; }

@@ -126,4 +126,26 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static UserJoinedRoomMessage _userJoinedRoomMessage;
 	}
 
+	public class When_sending_a_request_recent_messages_message : CampfireContextBase
+	{
+		Establish context = () =>
+			{
+				_msgs = new Message[]{};
+				_api.WhenToldTo(a => a.GetMessages(42)).Return(_msgs);
+
+				_bus.Listen<MessagesReceivedMessage>().Subscribe(msg => _messagesReceivedMessage = msg);
+			};
+
+		Because of = () => _bus.SendMessage(new RequestRecentMessagesMessage(42));
+
+		It should_have_requested_messages = () => _api.WasToldTo(a => a.GetMessages(42));
+
+		It should_have_sent_messages_received_message = () => _messagesReceivedMessage.ShouldNotBeNull();
+
+		private It should_have_sent_the_messages = () => _messagesReceivedMessage.Messages.ShouldBeTheSameAs(_msgs);
+
+		private static MessagesReceivedMessage _messagesReceivedMessage;
+		private static Message[] _msgs;
+	}
+
 }

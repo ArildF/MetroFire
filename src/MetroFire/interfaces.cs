@@ -38,7 +38,7 @@ namespace Rogue.MetroFire.UI
 
 	public interface IRoomModuleCreator
 	{
-		IModule CreateRoomModule(RoomModuleViewModel room);
+		IModule CreateRoomModule(IRoomModuleViewModel room);
 	}
 
 	public interface IModule
@@ -72,5 +72,15 @@ namespace Rogue.MetroFire.UI
 	{
 		LoginInfo GetStoredLoginInfo();
 		void PersistLoginInfo(LoginInfo info);
+	}
+
+	public interface IChatDocument
+	{
+		void AddMessage(string type, string body);
+	}
+
+	public interface IRoomModuleViewModelFactory
+	{
+		IRoomModuleViewModel Create(Room room);
 	}
 }

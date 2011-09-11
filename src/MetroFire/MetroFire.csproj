@@ -128,6 +128,7 @@
     <Compile Include="ViewModels\RoomListViewModel.cs" />
     <Compile Include="ViewModels\RoomModuleViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="Views\ChatDocument.cs" />
     <Compile Include="Views\LobbyModule.xaml.cs">
       <DependentUpon>LobbyModule.xaml</DependentUpon>
     </Compile>

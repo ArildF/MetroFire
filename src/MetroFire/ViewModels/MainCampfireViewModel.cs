@@ -4,6 +4,7 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
+using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
@@ -12,14 +13,16 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private readonly ILobbyModule _lobbyModule;
 		private readonly IMessageBus _bus;
 		private readonly IRoomModuleCreator _creator;
+		private readonly IRoomModuleViewModelFactory _factory;
 		private IModule _activeModule;
 		private ReactiveCollection<ModuleViewModel> _currentModules;
 
-		public MainCampfireViewModel(ILobbyModule lobbyModule, IMessageBus bus, IRoomModuleCreator creator)
+		public MainCampfireViewModel(ILobbyModule lobbyModule, IMessageBus bus, IRoomModuleCreator creator, IRoomModuleViewModelFactory factory)
 		{
 			_lobbyModule = lobbyModule;
 			_bus = bus;
 			_creator = creator;
+			_factory = factory;
 
 			Modules = new ReactiveCollection<IModule>{_lobbyModule};
 
@@ -83,7 +86,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			}
 			foreach (var room in toAdd)
 			{
-				var vm = new RoomModuleViewModel(room, _bus);
+				var vm = _factory.Create(room);
 
 				var newModule = _creator.CreateRoomModule(vm);
 

@@ -54,10 +54,7 @@
 			</TextBox.Triggers>
 		</TextBox>
 		<ListBox ItemsSource="{Binding Users}" ItemTemplate="{DynamicResource _userListBoxItemsTemplate}" Grid.Column="1"/>
-		<FlowDocumentScrollViewer Background="White" BorderThickness="0">
-			<FlowDocument>
-				<Paragraph><Run Text=""/></Paragraph>
-			</FlowDocument>
+		<FlowDocumentScrollViewer Background="White" BorderThickness="0" x:Name="_chatViewer" Document="{Binding ChatDocument}">		
 		</FlowDocumentScrollViewer>
 	</Grid>
 </UserControl>

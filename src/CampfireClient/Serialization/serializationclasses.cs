@@ -68,10 +68,28 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 	[XmlType("message")]
 	public class Message
 	{
+		[XmlElement("id")]
+		public int Id { get; set; }
+
+		[XmlElement("created-at")]
+		public DateTime CreatedAt { get; set; }
+
+		[XmlElement("room-id")]
+		public int RoomId { get; set; }
+
+		public int? UserId
+		{
+			get { return String.IsNullOrEmpty(UserIdString) ? (int?) null : int.Parse(UserIdString); }
+		}
+
+		[XmlElement("user-id")]
+		public string UserIdString { get; set; }
+
 		[XmlElement("type")]
 		public string Type { get; set; }
 
 		[XmlElement("body")]
 		public string Body { get; set; }
+
 	}
 }

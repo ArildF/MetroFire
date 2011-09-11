@@ -39,6 +39,12 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestRoomListMessage>().SubscribeThreadPool(ListRooms);
 			_bus.Listen<RequestRoomPresenceMessage>().SubscribeThreadPool(ListRoomPresence);
 			_bus.Listen<RequestJoinRoomMessage>().SubscribeThreadPool(JoinRoom);
+			_bus.Listen<RequestSpeakInRoomMessage>().SubscribeThreadPool(SpeakInRoom);
+		}
+
+		private void SpeakInRoom(RequestSpeakInRoomMessage obj)
+		{
+			_api.Speak(obj.Id, obj.Message);
 		}
 
 		private void JoinRoom(RequestJoinRoomMessage requestJoinRoomMessage)

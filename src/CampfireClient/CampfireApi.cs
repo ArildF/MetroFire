@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Xml.Serialization;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
@@ -28,6 +29,14 @@ namespace Rogue.MetroFire.CampfireClient
 			Post(relativeUri);
 		}
 
+		public void Speak(int id, string text)
+		{
+			string relativeUri = String.Format("room/{0}/speak.xml", id);
+			var msg = new Message {Type = "TextMessage", Body = text};
+
+			Post(relativeUri, msg, HttpStatusCode.Created);
+		}
+
 		public void SetLoginInfo(LoginInfo loginInfo)
 		{
 			_loginInfo = loginInfo;
@@ -39,13 +48,23 @@ namespace Rogue.MetroFire.CampfireClient
 			return roomArray;
 		}
 
-		private void Post(string relativeUri)
+		private void Post(string relativeUri, object data = null, HttpStatusCode expectedCode = HttpStatusCode.OK)
 		{
 			var uri = FormatUri(relativeUri);
 			var request = CreateRequest(uri);
 
+			if (data != null)
+			{
+				var serializer = new XmlSerializer(data.GetType());
+				using (var stream = request.GetRequestStream())
+				{
+					serializer.Serialize(stream, data);
+					
+				}
+			}
+
 			var response = (HttpWebResponse)request.GetResponse();
-			if (response.StatusCode != HttpStatusCode.OK)
+			if (response.StatusCode != expectedCode)
 			{
 				throw new Exception("Unexpected response code: " + response.StatusCode);
 			}
@@ -57,6 +76,8 @@ namespace Rogue.MetroFire.CampfireClient
 			var request = (HttpWebRequest)WebRequest.Create(uri);
 			request.Credentials = CreateCredentials();
 			request.Method = "POST";
+
+			request.ContentType = "application/xml";
 
 			return request;
 		}
@@ -85,7 +106,7 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private WebClient CreateClient()
 		{
-			var client = new WebClient {Credentials = CreateCredentials(), Proxy = null};
+			var client = new WebClient {Credentials = CreateCredentials()};
 			return client;
 		}
 
@@ -94,4 +115,6 @@ namespace Rogue.MetroFire.CampfireClient
 			return new NetworkCredential(_loginInfo.Token, "X");
 		}
 	}
+
+
 }

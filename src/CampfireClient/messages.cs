@@ -88,4 +88,18 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
+	public class RequestSpeakInRoomMessage
+	{
+		public int Id { get; private set; }
+
+		public string Message { get; private set; }
+
+		public RequestSpeakInRoomMessage(int id, string message)
+		{
+			Id = id;
+			Message = message;
+		}
+	}
+
+
 }

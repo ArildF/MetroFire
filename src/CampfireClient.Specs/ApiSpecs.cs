@@ -52,8 +52,6 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		It should_return_list_of_rooms = () => rooms.ShouldNotBeNull();
 
 		private static Room[] rooms;
-
-
 	}
 
 }

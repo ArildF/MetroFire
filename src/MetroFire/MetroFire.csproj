@@ -101,6 +101,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behaviors\BindableFocusBehavior.cs" />
     <Compile Include="Behaviors\BorderlessWindowBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Extensions.cs" />
@@ -116,6 +117,9 @@
     </Compile>
     <Compile Include="SampleData\SampleMainViewModel\SampleMainViewModel.xaml.cs">
       <DependentUpon>SampleMainViewModel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml.cs">
+      <DependentUpon>SampleRoomViewModel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -167,6 +171,7 @@
     <AppDesigner Include="Properties\" />
     <DesignTimeOnly Include="SampleData\SampleLobbyViewModel\SampleLobbyViewModel.xsd" />
     <DesignTimeOnly Include="SampleData\SampleMainViewModel\SampleMainViewModel.xsd" />
+    <DesignTimeOnly Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CampfireClient\CampfireClient.csproj">
@@ -180,6 +185,10 @@
       <SubType>Designer</SubType>
     </DesignTimeOnly>
     <Page Include="SampleData\SampleMainViewModel\SampleMainViewModel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -83,7 +83,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			}
 			foreach (var room in toAdd)
 			{
-				var vm = new RoomModuleViewModel(room);
+				var vm = new RoomModuleViewModel(room, _bus);
 
 				var newModule = _creator.CreateRoomModule(vm);
 

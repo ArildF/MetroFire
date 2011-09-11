@@ -64,4 +64,14 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		[XmlElement("updated-at")]
 		public DateTime UpdatedAt { get; set; }
 	}
+
+	[XmlType("message")]
+	public class Message
+	{
+		[XmlElement("type")]
+		public string Type { get; set; }
+
+		[XmlElement("body")]
+		public string Body { get; set; }
+	}
 }

@@ -112,4 +112,18 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static UserJoinedRoomMessage _userJoinedRoomMessage;
 	}
 
+	public class When_sending_a_room_speak_message : CampfireContextBase
+	{
+		Establish context = () =>
+		{
+		};
+
+		Because of = () => _bus.SendMessage(new RequestSpeakInRoomMessage(42, "Hello world"));
+
+		It should_have_spoken_in_room_42 = () => _api.WasToldTo(a => a.Speak(42, "Hello world"));
+
+		private static bool _roomPresenceMessageSent;
+		private static UserJoinedRoomMessage _userJoinedRoomMessage;
+	}
+
 }

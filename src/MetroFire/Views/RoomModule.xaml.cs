@@ -21,12 +21,16 @@ namespace Rogue.MetroFire.UI.Views
 	{
 		private readonly IRoomModuleViewModel _vm;
 
+			
+
 		public RoomModule()
 		{
 			InitializeComponent();
+
+			
 		}
 
-		public RoomModule(IRoomModuleViewModel vm)
+		public RoomModule(IRoomModuleViewModel vm) : this()
 		{
 			_vm = vm;
 			DataContext = vm;

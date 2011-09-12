@@ -54,6 +54,12 @@ namespace Rogue.MetroFire.CampfireClient
 			Post(relativeUri);
 		}
 
+		public Room GetRoom(int roomId)
+		{
+			var relativeUri = String.Format("room/{0}.xml", roomId);
+			return Get<Room>(relativeUri);
+		}
+
 		public Message[] GetMessages(int id)
 		{
 			var uri = String.Format("room/{0}/recent.xml", id);

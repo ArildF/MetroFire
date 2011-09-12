@@ -148,4 +148,24 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static Message[] _msgs;
 	}
 
+	public class When_sending_a_request_extended_room_information_message : CampfireContextBase
+	{
+		private Establish context = () =>
+			{
+				_room = new Room {Users = new User[] {}};
+				_api.WhenToldTo(a => a.GetRoom(42)).Return(_room);
+
+				_bus.Listen<RoomInfoReceivedMessage>().Subscribe(msg => _roomInfoReceivedMessage = msg);
+			};
+
+		Because of = () => _bus.SendMessage(new RequestRoomInfoMessage(42));
+
+		It should_have_called_the_api = () => _api.WasToldTo(a => a.GetRoom(42));
+		It should_have_sent_room_info_received_message = () => _roomInfoReceivedMessage.ShouldNotBeNull();
+		It should_have_sent_the_room_with_the_room_info_received_message = () => _roomInfoReceivedMessage.Room.ShouldBeTheSameAs(_room);
+
+		private static Room _room;
+		private static RoomInfoReceivedMessage _roomInfoReceivedMessage;
+	}
+
 }

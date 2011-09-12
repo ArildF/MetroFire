@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using System.Reactive.Linq;
+using System.Linq;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
 	public class RoomModuleViewModel : ReactiveObject, IRoomModuleViewModel
 	{
-		private readonly IRoom _room;
+		private IRoom _room;
 		private readonly IMessageBus _bus;
 		private bool _isActive;
 		private bool _userEditingMessage;
@@ -25,6 +27,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_bus = bus;
 			_chatDocument = chatDocument;
 
+			Users = new ReactiveCollection<UserViewModel>();
+
 			UserMessage = DefaultMessage;
 
 			PostMessageCommand = new ReactiveCommand(this.ObservableForProperty(vm => vm.UserEditedMessage)
@@ -33,8 +37,30 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 
 			_bus.Listen<MessagesReceivedMessage>().Where(msg => msg.RoomId == room.Id).SubscribeUI(HandleMessagesReceived);
+			_bus.Listen<RoomInfoReceivedMessage>().Where(msg => msg.Room.Id == _room.Id).SubscribeUI(HandleRoomInfoReceived);
 
 			_bus.SendMessage(new RequestRecentMessagesMessage(room.Id));
+			_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
+		}
+
+		public ReactiveCollection<UserViewModel> Users { get; private set; }
+
+		private void HandleRoomInfoReceived(RoomInfoReceivedMessage obj)
+		{
+			_room = obj.Room;
+			if (_room.Users != null)
+			{
+				PopulateUsers(_room.Users);
+			}
+		}
+
+		private void PopulateUsers(IEnumerable<User> users)
+		{
+			Users.Clear();
+			foreach (var vm in users.Select(u => new UserViewModel(u)))
+			{
+				Users.Add(vm);
+			}
 		}
 
 		private void HandleMessagesReceived(MessagesReceivedMessage obj)
@@ -107,5 +133,4 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _room.Id; }
 		}
 	}
-
 }

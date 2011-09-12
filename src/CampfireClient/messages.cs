@@ -124,5 +124,24 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
+	public class RequestRoomInfoMessage
+	{
+		public int Id { get; private set; }
+
+		public RequestRoomInfoMessage(int id)
+		{
+			Id = id;
+		}
+	}
+
+	public class RoomInfoReceivedMessage
+	{
+		public Room Room { get; private set; }
+
+		public RoomInfoReceivedMessage(Room room)
+		{
+			Room = room;
+		}
+	}
 
 }

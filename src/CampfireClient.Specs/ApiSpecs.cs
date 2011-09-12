@@ -151,4 +151,22 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static Guid _guid;
 	}
 
+	public class When_requesting_extended_room_information : ApiContext
+	{
+		Establish context = () =>
+			{
+				_idToRequest = FindJoinedRoom();
+			};
+
+		Because of = () => _room = api.GetRoom(_idToRequest);
+
+		It should_contain_user_information = () => _room.Users.ShouldNotBeNull();
+		It should_contain_at_least_one_user = () => _room.Users.Length.ShouldBeGreaterThan(0);
+		It should_contain_metro_fire = () => _room.Users.ShouldContain(user => user.Name == "Metro Fire");
+		It should_have_user_ids = () => _room.Users.ShouldEachConformTo(user => user.Id > 0);
+
+		private static int _idToRequest;
+		private static Room _room;
+
+	}
 }

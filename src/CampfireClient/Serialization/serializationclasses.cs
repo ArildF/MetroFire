@@ -44,6 +44,7 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		string Name { get; }
 
 		string Topic { get; }
+		User[] Users { get; }
 	}
 
 	[XmlType("room")]
@@ -63,6 +64,31 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 
 		[XmlElement("updated-at")]
 		public DateTime UpdatedAt { get; set; }
+
+		[XmlArray("users")]
+		public User[] Users { get; set; }
+	}
+
+	[XmlType("user")]
+	public class User
+	{
+		[XmlElement("id")]
+		public int Id { get; set; }
+
+		[XmlElement("name")]
+		public string Name { get; set; }
+
+		[XmlElement("created-at")]
+		public DateTime CreatedAt { get; set; }
+
+		[XmlElement("type")]
+		public string Type { get; set; }
+
+		[XmlElement("avatar-url")]
+		public string AvatarUrl { get; set; }
+
+		[XmlElement("admin")]
+		public bool Admin { get; set; }
 	}
 
 	[XmlType("message")]

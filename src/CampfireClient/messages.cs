@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using System.Linq;
 
@@ -141,6 +142,32 @@ namespace Rogue.MetroFire.CampfireClient
 		public RoomInfoReceivedMessage(Room room)
 		{
 			Room = room;
+		}
+	}
+
+	public class RequestUserInfoMessage
+	{
+		public IEnumerable<int> UserIds { get; private set; }
+
+		public RequestUserInfoMessage(IEnumerable<int> ids)
+		{
+			UserIds = ids;
+		}
+
+		public RequestUserInfoMessage(params int[] ids)
+		{
+			UserIds = ids;
+		}
+	}
+
+
+	public class UserInfoReceivedMessage
+	{
+		public User User { get; private set; }
+
+		public UserInfoReceivedMessage(User user)
+		{
+			User = user;
 		}
 	}
 

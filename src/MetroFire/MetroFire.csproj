@@ -106,6 +106,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
+    <Compile Include="Infrastructure\UserCache.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="messages.cs" />
     <Compile Include="ModuleNames.cs" />

@@ -13,6 +13,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 	{
 		private IRoom _room;
 		private readonly IMessageBus _bus;
+		private readonly IUserCache _userCache;
 		private bool _isActive;
 		private bool _userEditingMessage;
 
@@ -20,11 +21,13 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _userMessage;
 		private bool _userEditedMessage;
 		private readonly IChatDocument _chatDocument;
+		private readonly List<RoomMessage> _messages;
 
-		public RoomModuleViewModel(IRoom room, IMessageBus bus, IChatDocument chatDocument)
+		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument)
 		{
 			_room = room;
 			_bus = bus;
+			_userCache = userCache;
 			_chatDocument = chatDocument;
 
 			Users = new ReactiveCollection<UserViewModel>();
@@ -35,12 +38,30 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.Select(c => c.Value).StartWith(false));
 			PostMessageCommand.Subscribe(HandlePostMessage);
 
+			_messages = new List<RoomMessage>();
+
 
 			_bus.Listen<MessagesReceivedMessage>().Where(msg => msg.RoomId == room.Id).SubscribeUI(HandleMessagesReceived);
 			_bus.Listen<RoomInfoReceivedMessage>().Where(msg => msg.Room.Id == _room.Id).SubscribeUI(HandleRoomInfoReceived);
+			_bus.Listen<UsersUpdatedMessage>().SubscribeUI(HandleUsersUpdated);
 
 			_bus.SendMessage(new RequestRecentMessagesMessage(room.Id));
 			_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
+		}
+
+		private void HandleUsersUpdated(UsersUpdatedMessage obj)
+		{
+			foreach (var msg in _messages.Where(m => m.TextObject != null))
+			{
+				foreach (var user in obj.UsersToUpdate)
+				{
+					if (msg.UserId == user.Id)
+					{
+						msg.User = user;
+						_chatDocument.UpdateMessage(msg.TextObject, user, msg.Message.Type, msg.Message.Body);
+					}
+				}
+			}
 		}
 
 		public ReactiveCollection<UserViewModel> Users { get; private set; }
@@ -67,7 +88,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			foreach (var message in obj.Messages)
 			{
-				_chatDocument.AddMessage(message.Type, message.Body);
+				var existingUser = Users.Select(u => u.User).FirstOrDefault(u => u.Id == message.UserId);
+				User user = message.UserId != null ? _userCache.GetUser(message.UserId.GetValueOrDefault(), existingUser) : null;
+				var textObject = _chatDocument.AddMessage(user, message.Type, message.Body);
+
+				_messages.Add(new RoomMessage(message, user, textObject));
 			}
 		}
 
@@ -131,6 +156,21 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public int Id
 		{
 			get { return _room.Id; }
+		}
+
+		private class RoomMessage
+		{
+			public RoomMessage(Message message, User user, object textObject)
+			{
+				User = user;
+				TextObject = textObject;
+				Message = message;
+			}
+
+			public Message Message { get; private set; }
+			public int? UserId { get { return Message.UserId; } }
+			public User User { get; set; }
+			public object TextObject { get; private set; }
 		}
 	}
 }

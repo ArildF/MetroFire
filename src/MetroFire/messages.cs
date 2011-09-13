@@ -1,4 +1,7 @@
-﻿namespace Rogue.MetroFire.UI
+﻿using System.Collections.Generic;
+using Rogue.MetroFire.CampfireClient.Serialization;
+
+namespace Rogue.MetroFire.UI
 {
 	public class ApplicationLoadedMessage
 	{}
@@ -55,6 +58,16 @@
 		public RoomModuleCreatedMessage(IModule module)
 		{
 			Module = module;
+		}
+	}
+
+	public class UsersUpdatedMessage
+	{
+		public IEnumerable<User> UsersToUpdate { get; private set; }
+
+		public UsersUpdatedMessage(IEnumerable<User> usersToUpdate)
+		{
+			UsersToUpdate = usersToUpdate;
 		}
 	}
 

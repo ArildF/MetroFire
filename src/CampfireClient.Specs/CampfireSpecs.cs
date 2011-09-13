@@ -1,4 +1,5 @@
-﻿using Castle.Core;
+﻿using System.Collections.Generic;
+using Castle.Core;
 using Machine.Fakes;
 using Machine.Specifications;
 using ReactiveUI;
@@ -166,6 +167,30 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 
 		private static Room _room;
 		private static RoomInfoReceivedMessage _roomInfoReceivedMessage;
+	}
+
+	public class When_sending_a_user_information_message : CampfireContextBase
+	{
+		private Establish context = () =>
+		{
+			_user1 = new User();
+			_user2 = new User();
+			_api.WhenToldTo(a => a.GetUser(42)).Return(_user1);
+			_api.WhenToldTo(a => a.GetUser(36)).Return(_user2);
+
+			_bus.Listen<UserInfoReceivedMessage>().Subscribe(msg => _userInfoReceivedMessages.Add(msg));
+		};
+
+		Because of = () => _bus.SendMessage(new RequestUserInfoMessage(42, 36));
+
+		It should_have_called_the_api_once = () => _api.WasToldTo(a => a.GetUser(42));
+		It should_have_called_the_api_twice  = () => _api.WasToldTo(a => a.GetUser(36));
+		It should_have_sent_user_info_received_message_twice = () => _userInfoReceivedMessages.Count.ShouldEqual(2);
+
+		private static Room _room;
+		private static readonly List<UserInfoReceivedMessage> _userInfoReceivedMessages = new List<UserInfoReceivedMessage>();
+		private static User _user1;
+		private static User _user2;
 	}
 
 }

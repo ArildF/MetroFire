@@ -15,5 +15,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			get { return _user.Name; }
 		}
+
+		public User User
+		{
+			get {
+				return _user;
+			}
+		}
 	}
 }

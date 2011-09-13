@@ -44,6 +44,16 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestRecentMessagesMessage>().SubscribeThreadPool(GetRecentMessages);
 
 			_bus.Listen<RequestRoomInfoMessage>().SubscribeThreadPool(GetRoomInfo);
+			_bus.Listen<RequestUserInfoMessage>().SubscribeThreadPool(GetUserInfo);
+		}
+
+		private void GetUserInfo(RequestUserInfoMessage obj)
+		{
+			foreach (var userId in obj.UserIds)
+			{
+				var user = _api.GetUser(userId);
+				_bus.SendMessage(new UserInfoReceivedMessage(user));
+			}
 		}
 
 		private void GetRoomInfo(RequestRoomInfoMessage requestRoomInfoMessage)

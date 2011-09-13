@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.ViewModels;
@@ -76,7 +77,14 @@ namespace Rogue.MetroFire.UI
 
 	public interface IChatDocument
 	{
-		void AddMessage(string type, string body);
+		object AddMessage(User user, string type, string body);
+		void UpdateMessage(object textObject, User user, string type, string body);
+	}
+
+	public interface IUserCache
+	{
+		User GetUser(int id, User existingUser);
+		bool UserUpdated(User oldUser, User newUser);
 	}
 
 	public interface IRoomModuleViewModelFactory

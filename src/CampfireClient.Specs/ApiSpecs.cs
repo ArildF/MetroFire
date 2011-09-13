@@ -169,4 +169,23 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static Room _room;
 
 	}
+
+	public class When_requesting_user_information : ApiContext
+	{
+		Establish context = () =>
+		{
+			var roomId = FindJoinedRoom();
+			var messages = api.GetMessages(roomId);
+			_userId = messages.Select(msg => msg.UserId).First(userId => userId != null);
+		};
+
+		Because of = () => _user = api.GetUser((int)_userId);
+
+		It should_contain_user_information = () => _user.ShouldNotBeNull();
+		It should_contain_user_name = () => _user.Name.ShouldNotBeNull();
+
+		private static int _idToRequest;
+		private static User _user;
+		private static int? _userId;
+	}
 }

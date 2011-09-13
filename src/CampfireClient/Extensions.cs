@@ -9,7 +9,14 @@ namespace Rogue.MetroFire.CampfireClient
 	{
 		public static void SubscribeThreadPool<T>(this IObservable<T> bus, Action<T> listener)
 		{
-			bus.ObserveOn(Scheduler.Immediate).Subscribe(listener);
+			if (RxApp.DeferredScheduler == Scheduler.Immediate)
+			{
+				bus.ObserveOn(Scheduler.Immediate).Subscribe(listener);
+			}
+			else
+			{
+				bus.ObserveOn(Scheduler.ThreadPool).Subscribe(listener);
+			}
 		}
 	}
 }

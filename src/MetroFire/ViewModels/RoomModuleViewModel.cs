@@ -22,6 +22,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _userEditedMessage;
 		private readonly IChatDocument _chatDocument;
 		private readonly List<RoomMessage> _messages;
+		private int? _sinceMessageId;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument)
 		{
@@ -47,6 +48,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			_bus.SendMessage(new RequestRecentMessagesMessage(room.Id));
 			_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
+
+			_bus.RegisterMessageSource(
+				Observable.Interval(TimeSpan.FromSeconds(5))
+					.Where(_ => _sinceMessageId != null)
+					.Select(_ => new RequestRecentMessagesMessage(_room.Id, _sinceMessageId))
+				);
 		}
 
 		private void HandleUsersUpdated(UsersUpdatedMessage obj)
@@ -86,13 +93,14 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private void HandleMessagesReceived(MessagesReceivedMessage obj)
 		{
-			foreach (var message in obj.Messages)
+			foreach (var message in obj.Messages.Where(msg => obj.SinceMessageId == null || msg.Id > _sinceMessageId))
 			{
 				var existingUser = Users.Select(u => u.User).FirstOrDefault(u => u.Id == message.UserId);
 				User user = message.UserId != null ? _userCache.GetUser(message.UserId.GetValueOrDefault(), existingUser) : null;
 				var textObject = _chatDocument.AddMessage(user, message.Type, message.Body);
 
 				_messages.Add(new RoomMessage(message, user, textObject));
+				_sinceMessageId = message.Id;
 			}
 		}
 

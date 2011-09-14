@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using Rogue.MetroFire.CampfireClient.Serialization;
-
+ 
 namespace Rogue.MetroFire.CampfireClient
 {
 
@@ -138,6 +146,70 @@ namespace Rogue.MetroFire.CampfireClient
 		private NetworkCredential CreateCredentials()
 		{
 			return new NetworkCredential(_loginInfo.Token, "X");
+		}
+
+		public IDisposable Stream(int id, Action<Message> action)
+		{
+			return RunStream(id).ToObservable()
+				.SubscribeOn(Scheduler.ThreadPool)
+				.ObserveOn(Scheduler.ThreadPool).Subscribe(action);
+		}
+
+		private IEnumerable<Message> RunStream(int id)
+		{
+			while(true)
+			{
+				var uri = String.Format("https://streaming.campfirenow.com/room/{0}/live.xml", id);
+				var request = CreateRequest(new Uri(uri));
+				request.Method = "GET";
+				//request.Proxy = new WebProxy("127.0.0.1:8888");
+
+				request.Timeout = -1;
+
+				string credentials = String.Format("{0}:{1}", _loginInfo.Token, "X");
+				byte[] bytes = Encoding.ASCII.GetBytes(credentials);
+				string base64 = Convert.ToBase64String(bytes);
+				string authorization = String.Concat("basic ", base64);
+				request.Headers.Add("Authorization", authorization);
+
+				var serializer = new XmlSerializer(typeof (Message));
+				//var serializer = new DataContractJsonSerializer(typeof (Message));
+
+				var response = request.GetResponse();
+				byte[] buf = new byte[4096];
+				using (var stream = response.GetResponseStream())
+				{
+					//int read = stream.Read(buf, 0, 4096);
+					//string str = Encoding.UTF8.GetString(buf, 0, read);
+
+					//str = "<messages>" + str + "</messages>";
+
+					//var reader = new StreamReader(stream);
+					//var str = reader.ReadLine();
+					//var message = (Message)serializer.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(str)));
+					//yield return message;
+
+					JsonReader reader = new BsonReader(stream) ;
+					reader.CloseInput = false;
+
+					Debug.WriteLine("Waiting for messeage");
+
+					var deserializer = new JsonSerializer();
+					var message = deserializer.Deserialize<Message>(reader);
+
+					//var message = (Message) serializer.Deserialize(stream);
+					Debug.WriteLine("Got messeage " + message.Body);
+					yield return message;
+
+					//int read = str.Length;
+
+					//Debug.WriteLine(string.Format("Received {0} bytes: {1}", read, str));
+
+					//var messages = (Message) serializer.ReadObject()
+
+				}
+			}
+
 		}
 	}
 

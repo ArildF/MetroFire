@@ -17,7 +17,7 @@ namespace Rogue.MetroFire.CampfireClient
 		Room[] ListPresence();
 		void Join(int id);
 		void Speak(int id, string text);
-		Message[] GetMessages(int id);
+		Message[] GetMessages(int id, int? sinceId = null);
 		Room GetRoom(int id);
 		User GetUser(int id);
 	}

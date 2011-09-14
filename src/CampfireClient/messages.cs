@@ -105,10 +105,12 @@ namespace Rogue.MetroFire.CampfireClient
 	public class RequestRecentMessagesMessage
 	{
 		public int RoomId { get; private set; }
+		public int? SinceMessageId { get; private set; }
 
-		public RequestRecentMessagesMessage(int roomId)
+		public RequestRecentMessagesMessage(int roomId, int? sinceMessageId = null)
 		{
 			RoomId = roomId;
+			SinceMessageId = sinceMessageId;
 		}
 	}
 
@@ -118,10 +120,13 @@ namespace Rogue.MetroFire.CampfireClient
 		public int RoomId { get; private set; }
 		public Message[] Messages { get; private set; }
 
-		public MessagesReceivedMessage(int roomId, Message[] messages)
+		public int? SinceMessageId { get; private set; }
+
+		public MessagesReceivedMessage(int roomId, Message[] messages, int? sinceMessageId)
 		{
 			RoomId = roomId;
 			Messages = messages;
+			SinceMessageId = sinceMessageId;
 		}
 	}
 

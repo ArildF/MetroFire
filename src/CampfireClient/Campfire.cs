@@ -64,9 +64,9 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private void GetRecentMessages(RequestRecentMessagesMessage obj)
 		{
-			var messages = _api.GetMessages(obj.RoomId);
+			var messages = _api.GetMessages(obj.RoomId, obj.SinceMessageId);
 
-			_bus.SendMessage(new MessagesReceivedMessage(obj.RoomId, messages));
+			_bus.SendMessage(new MessagesReceivedMessage(obj.RoomId, messages, obj.SinceMessageId));
 		}
 
 		private void SpeakInRoom(RequestSpeakInRoomMessage obj)

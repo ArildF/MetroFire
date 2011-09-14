@@ -132,18 +132,20 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		Establish context = () =>
 			{
 				_msgs = new Message[]{};
-				_api.WhenToldTo(a => a.GetMessages(42)).Return(_msgs);
+				_api.WhenToldTo(a => a.GetMessages(42, 12345)).Return(_msgs);
 
 				_bus.Listen<MessagesReceivedMessage>().Subscribe(msg => _messagesReceivedMessage = msg);
 			};
 
-		Because of = () => _bus.SendMessage(new RequestRecentMessagesMessage(42));
+		Because of = () => _bus.SendMessage(new RequestRecentMessagesMessage(42, 12345));
 
-		It should_have_requested_messages = () => _api.WasToldTo(a => a.GetMessages(42));
+		It should_have_requested_messages = () => _api.WasToldTo(a => a.GetMessages(42, 12345));
 
 		It should_have_sent_messages_received_message = () => _messagesReceivedMessage.ShouldNotBeNull();
 
-		private It should_have_sent_the_messages = () => _messagesReceivedMessage.Messages.ShouldBeTheSameAs(_msgs);
+		It should_have_sent_the_messages = () => _messagesReceivedMessage.Messages.ShouldBeTheSameAs(_msgs);
+
+		It should_have_sent_the_since_id = () => _messagesReceivedMessage.SinceMessageId.ShouldEqual(12345);
 
 		private static MessagesReceivedMessage _messagesReceivedMessage;
 		private static Message[] _msgs;

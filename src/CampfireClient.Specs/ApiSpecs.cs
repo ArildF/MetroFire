@@ -134,6 +134,25 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static int _idToGetMessagesFrom;
 	}
 
+	public class When_retrieving_messages_with_a_since_id : ApiContext
+	{
+		Establish context = () =>
+			{
+				_idToGetMessagesFrom = FindJoinedRoom();
+				var messages = api.GetMessages(_idToGetMessagesFrom);
+				_sinceId = messages.Reverse().Skip(4).First().Id;
+			};
+
+		Because of = () => _messages = api.GetMessages(_idToGetMessagesFrom, _sinceId);
+
+		It should_only_contain_four_messages = () => _messages.Count().ShouldEqual(4);
+
+		private static int _idToGetMessagesFrom;
+		private static int _sinceId;
+		private static Message[] _messages;
+	}
+
+
 	public class When_posting_speak_message : ApiContext
 	{
 		private Establish context = () =>

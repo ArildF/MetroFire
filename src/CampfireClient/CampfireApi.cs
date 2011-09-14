@@ -66,9 +66,14 @@ namespace Rogue.MetroFire.CampfireClient
 			return Get<User>(relativeUri);
 		}
 
-		public Message[] GetMessages(int id)
+		public Message[] GetMessages(int id, int? sinceId = null)
 		{
 			var uri = String.Format("room/{0}/recent.xml", id);
+
+			if (sinceId != null)
+			{
+				uri += "?since_message_id=" + sinceId;
+			}
 
 			return Get<Message[]>(uri, "messages");
 		}

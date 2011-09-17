@@ -30,6 +30,10 @@
 		
 	</UserControl.Resources>
 	
+	<UserControl.InputBindings>
+		<KeyBinding Key="Enter" Command="{Binding PostMessageCommand}"/>
+	</UserControl.InputBindings>
+	
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="0.909*"/>

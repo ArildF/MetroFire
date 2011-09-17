@@ -26,15 +26,15 @@ namespace Rogue.MetroFire.CampfireClient
 		public void Join(int id)
 		{
 			string relativeUri = String.Format("room/{0}/join.xml", id);
-			Post(relativeUri);
+			Post<NoResponse>(relativeUri);
 		}
 
-		public void Speak(int id, string text)
+		public Message Speak(int id, string text)
 		{
 			string relativeUri = String.Format("room/{0}/speak.xml", id);
 			var msg = new Message {Type = "TextMessage", Body = text};
 
-			Post(relativeUri, msg, HttpStatusCode.Created);
+			return Post<Message>(relativeUri, msg, HttpStatusCode.Created);
 		}
 
 		public void SetLoginInfo(LoginInfo loginInfo)
@@ -51,7 +51,7 @@ namespace Rogue.MetroFire.CampfireClient
 		public void Leave(int id)
 		{
 			var relativeUri = String.Format("room/{0}/leave.xml", id);
-			Post(relativeUri);
+			Post<NoResponse>(relativeUri);
 		}
 
 		public Room GetRoom(int roomId)
@@ -78,7 +78,9 @@ namespace Rogue.MetroFire.CampfireClient
 			return Get<Message[]>(uri, "messages");
 		}
 
-		private void Post(string relativeUri, object data = null, HttpStatusCode expectedCode = HttpStatusCode.OK)
+		private T Post<T>(string relativeUri, object data = null, HttpStatusCode expectedCode = HttpStatusCode.OK,
+			string returnedRoot = null)
+			where T: class
 		{
 			var uri = FormatUri(relativeUri);
 			var request = CreateRequest(uri);
@@ -99,6 +101,16 @@ namespace Rogue.MetroFire.CampfireClient
 				throw new Exception("Unexpected response code: " + response.StatusCode);
 			}
 
+			var responseStream = response.GetResponseStream();
+			if (typeof(T) == typeof(NoResponse) || responseStream == null)
+			{
+				return null;
+			}
+
+			var deserializer = returnedRoot != null
+			                 	? new XmlSerializer(typeof (T), new XmlRootAttribute(returnedRoot))
+			                 	: new XmlSerializer(typeof (T));
+			return (T) deserializer.Deserialize(responseStream);
 		}
 
 		private HttpWebRequest CreateRequest(Uri uri)
@@ -144,6 +156,8 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			return new NetworkCredential(_loginInfo.Token, "X");
 		}
+
+		private class NoResponse{}
 	}
 
 

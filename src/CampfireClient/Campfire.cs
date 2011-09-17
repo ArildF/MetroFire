@@ -71,7 +71,8 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private void SpeakInRoom(RequestSpeakInRoomMessage obj)
 		{
-			_api.Speak(obj.Id, obj.Message);
+			var msg = _api.Speak(obj.Id, obj.Message);
+			_bus.SendMessage(new MessagesReceivedMessage(obj.Id, new[]{msg}, null));
 		}
 
 		private void JoinRoom(RequestJoinRoomMessage requestJoinRoomMessage)

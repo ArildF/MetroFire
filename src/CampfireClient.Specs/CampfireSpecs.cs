@@ -116,15 +116,23 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 	public class When_sending_a_room_speak_message : CampfireContextBase
 	{
 		Establish context = () =>
-		{
-		};
+			{
+				_msg = new Message();
+				_api.WhenToldTo(a => a.Speak(42, "Hello world")).Return(_msg);
+
+				_bus.Listen<MessagesReceivedMessage>().Subscribe(msg => _messagesReceivedMessage = msg);
+			};
 
 		Because of = () => _bus.SendMessage(new RequestSpeakInRoomMessage(42, "Hello world"));
 
 		It should_have_spoken_in_room_42 = () => _api.WasToldTo(a => a.Speak(42, "Hello world"));
 
-		private static bool _roomPresenceMessageSent;
-		private static UserJoinedRoomMessage _userJoinedRoomMessage;
+		It should_send_a_messages_received_message = () => _messagesReceivedMessage.ShouldNotBeNull();
+
+		It should_contain_the_sent_message = () => _messagesReceivedMessage.Messages[0].ShouldBeTheSameAs(_msg);
+
+		private static MessagesReceivedMessage _messagesReceivedMessage;
+		private static Message _msg;
 	}
 
 	public class When_sending_a_request_recent_messages_message : CampfireContextBase

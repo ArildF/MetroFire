@@ -161,13 +161,16 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 				_guid = Guid.NewGuid();
 			};
 
-		Because of = () => api.Speak(_idToPostTo, "Automated test message " + _guid.ToString());
+		Because of = () => _msg = api.Speak(_idToPostTo, "Automated test message " + _guid.ToString());
 
 		It should_be_posted_in_the_room =
 			() => api.GetMessages(_idToPostTo).Last().Body.ShouldEqual("Automated test message " + _guid.ToString());
 
+		It should_have_returned_the_posted_message = () => _msg.Body.ShouldEqual("Automated test message " + _guid.ToString());
+
 		private static int _idToPostTo;
 		private static Guid _guid;
+		private static Message _msg;
 	}
 
 	public class When_requesting_extended_room_information : ApiContext

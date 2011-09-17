@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Windows.Documents;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
@@ -16,6 +17,8 @@ namespace Rogue.MetroFire.UI.Views
 
 			FormatUserMessage(user, body, paragraph);
 			Blocks.Add(paragraph);
+
+			Observable.Interval(TimeSpan.FromSeconds(1)).SubscribeOnceUI(_ => paragraph.BringIntoView());
 
 			return paragraph;
 		}

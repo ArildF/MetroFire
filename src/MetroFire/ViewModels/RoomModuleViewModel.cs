@@ -50,7 +50,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
 
 			_bus.RegisterMessageSource(
-				Observable.Interval(TimeSpan.FromSeconds(5))
+				Observable.Interval(TimeSpan.FromSeconds(20))
 					.Where(_ => _sinceMessageId != null)
 					.Select(_ => new RequestRecentMessagesMessage(_room.Id, _sinceMessageId))
 				);

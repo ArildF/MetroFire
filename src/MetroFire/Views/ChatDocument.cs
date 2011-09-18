@@ -37,7 +37,6 @@ namespace Rogue.MetroFire.UI.Views
 			handler(message, user, paragraph);
 
 			Blocks.Add(paragraph);
-			Observable.Interval(TimeSpan.FromSeconds(1)).SubscribeOnceUI(_ => paragraph.BringIntoView());
 
 			return paragraph;
 		}

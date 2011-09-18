@@ -103,11 +103,13 @@
     </Compile>
     <Compile Include="Behaviors\BindableFocusBehavior.cs" />
     <Compile Include="Behaviors\BorderlessWindowBehavior.cs" />
+    <Compile Include="Behaviors\StayScrolledToEndBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Infrastructure\CampfireLog.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\UserCache.cs" />
+    <Compile Include="Infrastructure\WpfExtensions.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="messages.cs" />
     <Compile Include="ModuleNames.cs" />

@@ -186,4 +186,24 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
+	public enum LogMessageType
+	{
+		Info,
+		Warning,
+		Debug,
+		Error
+	}
+
+	public class LogMessage
+	{
+		public LogMessageType LogMessageType { get; private set; }
+		public string Text { get; private set; }
+
+		public LogMessage(LogMessageType logMessageType, string text, params object[] args)
+		{
+			LogMessageType = logMessageType;
+			Text = String.Format(text, args);
+		}
+	}
+
 }

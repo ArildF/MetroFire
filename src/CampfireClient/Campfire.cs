@@ -131,6 +131,8 @@ namespace Rogue.MetroFire.CampfireClient
 				catch (TimeoutException ex)
 				{
 					lastException = ex;
+					_bus.SendMessage(new LogMessage(LogMessageType.Warning, "Call to Campfire API timed out. This is attempt #{0}", 
+						i + 1));
 					Thread.Sleep(TimeSpan.FromSeconds(10 * (i + 1)));
 				}
 				catch (WebException ex)

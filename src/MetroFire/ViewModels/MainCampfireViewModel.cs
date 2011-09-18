@@ -4,7 +4,6 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
-using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
@@ -16,15 +15,18 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private readonly IRoomModuleViewModelFactory _factory;
 		private IModule _activeModule;
 		private ReactiveCollection<ModuleViewModel> _currentModules;
+		private readonly IModule _logModule;
 
-		public MainCampfireViewModel(ILobbyModule lobbyModule, IMessageBus bus, IRoomModuleCreator creator, IRoomModuleViewModelFactory factory)
+		public MainCampfireViewModel(ILobbyModule lobbyModule, ILogModule logModule, IMessageBus bus, 
+			IRoomModuleCreator creator, IRoomModuleViewModelFactory factory)
 		{
 			_lobbyModule = lobbyModule;
+			_logModule = logModule;
 			_bus = bus;
 			_creator = creator;
 			_factory = factory;
 
-			Modules = new ReactiveCollection<IModule>{_lobbyModule};
+			Modules = new ReactiveCollection<IModule>{_lobbyModule, _logModule};
 
 			
 			_bus.Listen<ActivateModuleMessage>().Where(msg => msg.ParentModule == ModuleNames.MainCampfireView)
@@ -76,7 +78,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private void SyncModuleList(RoomPresenceMessage roomPresenceMessage)
 		{
-			var toRemove = Modules.Where(module => module != _lobbyModule && !roomPresenceMessage.IsPresentIn(module.Caption)).ToList();
+			var toRemove = Modules.Where(module => module != _lobbyModule && module != _logModule
+				&& !roomPresenceMessage.IsPresentIn(module.Caption)).ToList();
 			var toAdd = roomPresenceMessage.Rooms.Where(room =>
 				!Modules.Any(m => m.Caption.Equals(room.Name, StringComparison.InvariantCultureIgnoreCase))).ToList();
 
@@ -90,7 +93,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 				var newModule = _creator.CreateRoomModule(vm);
 
-				Modules.Add(newModule);
+				int index = Modules.IndexOf(_logModule);
+				Modules.Insert(index, newModule);
 			}
 		}
 
@@ -103,4 +107,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private ReactiveCollection<IModule> Modules { get;  set; }
 	}
+
+	
 }

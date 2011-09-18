@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reactive;
 using System.Windows;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
@@ -62,6 +64,21 @@ namespace Rogue.MetroFire.UI
 
 	public interface ILobbyModule : ICampfireModule
 	{}
+
+	public interface ILogModule : ICampfireModule
+	{
+	}
+
+	public interface ILogViewModel
+	{
+		bool IsActive { get; set; }
+	}
+
+	public interface ICampfireLog
+	{
+		string Text { get; }
+		IObservable<Unit> Updated { get; }
+	}
 
 	public interface IModuleResolver
 	{

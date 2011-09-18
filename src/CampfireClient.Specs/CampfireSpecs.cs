@@ -214,6 +214,7 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 						throw new TimeoutException();
 					});
 				_bus.Listen<ExceptionMessage>().Subscribe(msg => _exceptionMessage = msg);
+				_bus.Listen<LogMessage>().Subscribe(msg => _logMessages.Add(msg));
 			};
 
 		Because of = () => _bus.SendMessage(new RequestUserInfoMessage(42));
@@ -222,8 +223,15 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 
 		It should_send_an_error_message = () => _exceptionMessage.ShouldNotBeNull();
 
+
+		It should_have_sent_three_log_messages = () => _logMessages.Count.ShouldEqual(3);
+
+		It should_have_sent_three_warning_messages =
+			() => _logMessages.ShouldEachConformTo(msg => msg.LogMessageType == LogMessageType.Warning);
+
 		private static int _callCount;
 		private static ExceptionMessage _exceptionMessage;
+		private static readonly List<LogMessage> _logMessages = new List<LogMessage>();
 	}
 
 }

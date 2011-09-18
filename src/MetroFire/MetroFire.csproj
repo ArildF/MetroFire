@@ -105,6 +105,7 @@
     <Compile Include="Behaviors\BorderlessWindowBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Infrastructure\CampfireLog.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\UserCache.cs" />
     <Compile Include="interfaces.cs" />
@@ -124,6 +125,7 @@
     </Compile>
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\MainCampfireViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
     <Compile Include="ViewModels\RoomListViewModel.cs" />
@@ -136,6 +138,9 @@
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogModule.xaml.cs">
+      <DependentUpon>LogModule.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainCampfireView.xaml.cs">
       <DependentUpon>MainCampfireView.xaml</DependentUpon>
@@ -200,6 +205,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LogModule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

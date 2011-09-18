@@ -45,8 +45,7 @@
 			<ColumnDefinition Width="0.167*"/>
 		</Grid.ColumnDefinitions>
 		<Button Content="Post" Grid.Column="1" Style="{DynamicResource MetroBigButton}" 
-				Command="{Binding PostMessageCommand}"
-				Height="49.049" Margin="0" VerticalAlignment="Top" Grid.Row="1" Padding="0"/>
+				Command="{Binding PostMessageCommand}" Margin="0" Grid.Row="1" Padding="0"/>
 		<TextBox x:Name="_textBox" TextWrapping="Wrap" Margin="0" d:LayoutOverrides="GridBox" Grid.Row="2" Padding="0" 
 				 SelectionOpacity="3.4" Text="{Binding UserMessage, UpdateSourceTrigger=PropertyChanged}" 
 				 Style="{DynamicResource _userMessageTextBoxStyle}">

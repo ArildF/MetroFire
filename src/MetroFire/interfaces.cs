@@ -77,8 +77,8 @@ namespace Rogue.MetroFire.UI
 
 	public interface IChatDocument
 	{
-		object AddMessage(User user, string type, string body);
-		void UpdateMessage(object textObject, User user, string type, string body);
+		object AddMessage(Message message, User user);
+		void UpdateMessage(object textObject, Message message, User user);
 	}
 
 	public interface IUserCache

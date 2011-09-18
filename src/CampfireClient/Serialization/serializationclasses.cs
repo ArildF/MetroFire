@@ -11,6 +11,19 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		string Storage { get; }
 	}
 
+	public enum MessageType
+	{
+		Unknown = 0,
+		TextMessage = 1,
+		TimestampMessage,
+		KickMessage,
+		EnterMessage,
+		LeaveMessage,
+		PasteMessage,
+		AdvertisementMessage
+
+	}
+
 	[XmlRoot("account")]
 	public class Account : IAccount
 	{
@@ -94,6 +107,8 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 	[XmlType("message")]
 	public class Message
 	{
+		private string _messageTypeString;
+
 		[XmlElement("id")]
 		public int Id { get; set; }
 
@@ -112,7 +127,21 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		public string UserIdString { get; set; }
 
 		[XmlElement("type")]
-		public string Type { get; set; }
+		public string MessageTypeString
+		{
+			get { return _messageTypeString; }
+			set
+			{
+				_messageTypeString = value;
+				MessageType type;
+				if (Enum.TryParse<MessageType>(value, out type))
+				{
+					Type = type;
+				}
+			}
+		}
+
+		public MessageType Type { get; set; }
 
 		[XmlElement("body")]
 		public string Body { get; set; }

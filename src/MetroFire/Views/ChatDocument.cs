@@ -1,45 +1,117 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
+using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.UI.Views
 {
 	public class ChatDocument : FlowDocument, IChatDocument
 	{
-		public object AddMessage(User user, string type, string body)
+		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
+			
+
+		public ChatDocument()
 		{
-			if (type != "TextMessage")
+			_handlers = new Dictionary<MessageType, Action<Message, User, Paragraph>>
+				{
+					{MessageType.TextMessage, FormatUserMessage},
+					{MessageType.TimestampMessage, FormatTimestampMessage},
+					{MessageType.LeaveMessage, FormatLeaveMessage},
+					{MessageType.KickMessage, FormatKickMessage},
+					{MessageType.PasteMessage, FormatPasteMessage},
+					{MessageType.EnterMessage, FormatEnterMessage}
+				};
+		}
+
+		public object AddMessage(Message message, User user)
+		{
+			Action<Message, User, Paragraph> handler;
+			if (!_handlers.TryGetValue(message.Type, out handler))
 			{
 				return null;
 			}
 			var paragraph = new Paragraph();
+			handler(message, user, paragraph);
 
-			FormatUserMessage(user, body, paragraph);
 			Blocks.Add(paragraph);
-
 			Observable.Interval(TimeSpan.FromSeconds(1)).SubscribeOnceUI(_ => paragraph.BringIntoView());
 
 			return paragraph;
 		}
 
-		private void FormatUserMessage(User user, string body, Paragraph paragraph)
+		private void FormatEnterMessage(Message message, User user, Paragraph paragraph)
 		{
-			var name = user != null ? user.Name : "<unknown>";
-
-			paragraph.Inlines.Add(name + ": ");
-			paragraph.Inlines.Add(body);
+			var name = FormatUserName(user);
+			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} entered the room", name)));
 		}
 
-		public void UpdateMessage(object textObject, User user, string type, string body)
+		private void FormatPasteMessage(Message message, User user, Paragraph paragraph)
+		{
+			var name = FormatUserName(user);
+			paragraph.Inlines.Add(name + ": " + Environment.NewLine);
+
+			var run = new Run(message.Body) {FontFamily = new FontFamily("Consolas"), Background = Brushes.LightGray};
+			paragraph.Inlines.Add(run);
+
+			paragraph.BorderThickness = new Thickness(0.5);
+			paragraph.BorderBrush = Brushes.Black;
+		}
+
+		private void FormatLeaveMessage(Message message, User user, Paragraph paragraph)
+		{
+			var name = FormatUserName(user);
+			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} left the room", name)));
+		}
+
+		private void FormatKickMessage(Message message, User user, Paragraph paragraph)
+		{
+			var name = FormatUserName(user);
+			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} was kicked from the room", name)));
+		}
+
+		private void FormatUserMessage(Message message, User user, Paragraph paragraph)
+		{
+			var name = FormatUserName(user);
+
+			paragraph.Inlines.Add(name + ": ");
+			paragraph.Inlines.Add(message.Body);
+		}
+
+		private static string FormatUserName(User user)
+		{
+			var name = user != null ? user.Name : "<unknown>";
+			return name;
+		}
+
+		private void FormatTimestampMessage(Message message, User user, Paragraph paragraph)
+		{
+			var run = CreateMetaRun(message.CreatedAt.ToString());
+			paragraph.Inlines.Add(run);
+		}
+
+		private static Run CreateMetaRun(string message)
+		{
+			return new Run(message) {FontStyle = FontStyles.Italic, Foreground = Brushes.Gray};
+		}
+
+		public void UpdateMessage(object textObject, Message message, User user)
 		{
 			var paragraph = textObject as Paragraph;
 			if (paragraph == null)
 			{
 				throw new InvalidOperationException("Invalid object passed in");
 			}
+
+			Action<Message, User, Paragraph> handler;
+			if (!_handlers.TryGetValue(message.Type, out handler))
+			{
+				return;
+			}
 			paragraph.Inlines.Clear(); 
-			FormatUserMessage(user, body, paragraph);
+			handler(message, user, paragraph);
 		}
 	}
 }

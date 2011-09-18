@@ -65,7 +65,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 					if (msg.UserId == user.Id)
 					{
 						msg.User = user;
-						_chatDocument.UpdateMessage(msg.TextObject, user, msg.Message.Type, msg.Message.Body);
+						_chatDocument.UpdateMessage(msg.TextObject, msg.Message, user);
 					}
 				}
 			}
@@ -97,7 +97,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			{
 				var existingUser = Users.Select(u => u.User).FirstOrDefault(u => u.Id == message.UserId);
 				User user = message.UserId != null ? _userCache.GetUser(message.UserId.GetValueOrDefault(), existingUser) : null;
-				var textObject = _chatDocument.AddMessage(user, message.Type, message.Body);
+				var textObject = _chatDocument.AddMessage(message, user);
 
 				_messages.Add(new RoomMessage(message, user, textObject));
 				_sinceMessageId = message.Id;

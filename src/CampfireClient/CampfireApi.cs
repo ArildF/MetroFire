@@ -51,7 +51,7 @@ namespace Rogue.MetroFire.CampfireClient
 		public Message Speak(int id, string text)
 		{
 			string relativeUri = String.Format("room/{0}/speak.xml", id);
-			var msg = new Message {Type = "TextMessage", Body = text};
+			var msg = new Message {Type = MessageType.TextMessage, Body = text};
 
 			return Post<Message>(relativeUri, msg, HttpStatusCode.Created);
 		}

@@ -168,6 +168,8 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 
 		It should_have_returned_the_posted_message = () => _msg.Body.ShouldEqual("Automated test message " + _guid.ToString());
 
+		It should_have_a_text_message_as_the_posted_message = () => _msg.Type.ShouldEqual(MessageType.TextMessage);
+
 		private static int _idToPostTo;
 		private static Guid _guid;
 		private static Message _msg;

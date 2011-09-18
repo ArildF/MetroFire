@@ -21,11 +21,12 @@
 					<SolidColorBrush Color="{DynamicResource FadedOutTextBoxTextColor}"/>
 				</Setter.Value>				
 			</Setter>
+			<Setter Property="AcceptsReturn" Value="True"/>
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding UserEditedMessage}" Value="true">
 					<Setter Property="TextBox.Foreground"  Value="Black"/>
 				</DataTrigger>
-			</Style.Triggers>			
+			</Style.Triggers>
 		</Style>
 		
 	</UserControl.Resources>

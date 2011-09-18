@@ -12,6 +12,7 @@ namespace Rogue.MetroFire.CampfireClient
 	{
 		private LoginInfo _loginInfo;
 		private readonly IDictionary<SerializerEntry, XmlSerializer> _xmlSerializers = new Dictionary<SerializerEntry, XmlSerializer>();
+		private static int _defaultTimeout;
 
 		public CampfireApi()
 		{
@@ -26,6 +27,8 @@ namespace Rogue.MetroFire.CampfireClient
 
 			_xmlSerializers[new SerializerEntry("rooms", typeof(Room[]))] = 
 				new XmlSerializer(typeof(Room[]), new XmlRootAttribute("rooms"));
+
+			_defaultTimeout = (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
 		}
 
 		public Account GetAccountInfo()
@@ -137,6 +140,8 @@ namespace Rogue.MetroFire.CampfireClient
 			var request = (HttpWebRequest)WebRequest.Create(uri);
 			request.Credentials = CreateCredentials();
 			request.Method = "POST";
+			request.Proxy = null;
+			request.Timeout = _defaultTimeout;
 
 			request.ContentType = "application/xml";
 
@@ -165,7 +170,7 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private WebClient CreateClient()
 		{
-			var client = new WebClient {Credentials = CreateCredentials()};
+			var client = new WebClientWithTimeout {Credentials = CreateCredentials(), Proxy = null, Timeout = _defaultTimeout};
 			return client;
 		}
 

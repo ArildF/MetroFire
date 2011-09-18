@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Xml.Serialization;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
@@ -11,6 +11,22 @@ namespace Rogue.MetroFire.CampfireClient
 	public class CampfireApi : ICampfireApi
 	{
 		private LoginInfo _loginInfo;
+		private readonly IDictionary<SerializerEntry, XmlSerializer> _xmlSerializers = new Dictionary<SerializerEntry, XmlSerializer>();
+
+		public CampfireApi()
+		{
+			var serializers = XmlSerializer.FromTypes(new[] {typeof (Room), typeof (User), typeof (Account), typeof(Message)});
+			_xmlSerializers[new SerializerEntry(typeof (Room))] = serializers[0];
+			_xmlSerializers[new SerializerEntry(typeof (User))] = serializers[1];
+			_xmlSerializers[new SerializerEntry(typeof (Account))] = serializers[2];
+			_xmlSerializers[new SerializerEntry(typeof (Message))] = serializers[3];
+
+			_xmlSerializers[new SerializerEntry("messages", typeof(Message[]))] = 
+				new XmlSerializer(typeof(Message[]), new XmlRootAttribute("messages"));
+
+			_xmlSerializers[new SerializerEntry("rooms", typeof(Room[]))] = 
+				new XmlSerializer(typeof(Room[]), new XmlRootAttribute("rooms"));
+		}
 
 		public Account GetAccountInfo()
 		{
@@ -107,10 +123,13 @@ namespace Rogue.MetroFire.CampfireClient
 				return null;
 			}
 
-			var deserializer = returnedRoot != null
-			                 	? new XmlSerializer(typeof (T), new XmlRootAttribute(returnedRoot))
-			                 	: new XmlSerializer(typeof (T));
+			var deserializer = GetSerializer<T>(returnedRoot);
 			return (T) deserializer.Deserialize(responseStream);
+		}
+
+		private XmlSerializer GetSerializer<T>(string root)
+		{
+			return _xmlSerializers[new SerializerEntry(root, typeof (T))];
 		}
 
 		private HttpWebRequest CreateRequest(Uri uri)
@@ -132,9 +151,7 @@ namespace Rogue.MetroFire.CampfireClient
 
 			var xml = client.DownloadString(uri);
 
-			var serializer = root != null
-			                 	? new XmlSerializer(typeof (T), new XmlRootAttribute(root))
-			                 	: new XmlSerializer(typeof (T));
+			var serializer = GetSerializer<T>(root);
 
 			return (T) serializer.Deserialize(new StringReader(xml));
 		}
@@ -158,6 +175,47 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 
 		private class NoResponse{}
+
+		private class SerializerEntry
+		{
+			private readonly string _rootElement;
+			private readonly Type _type;
+
+			public SerializerEntry(string rootElement, Type type)
+			{
+				_rootElement = rootElement;
+				_type = type;
+			}
+
+			public SerializerEntry(Type type)
+			{
+				_type = type;
+			}
+
+
+			private bool Equals(SerializerEntry other)
+			{
+				if (ReferenceEquals(null, other)) return false;
+				if (ReferenceEquals(this, other)) return true;
+				return Equals(other._rootElement, _rootElement) && Equals(other._type, _type);
+			}
+
+			public override bool Equals(object obj)
+			{
+				if (ReferenceEquals(null, obj)) return false;
+				if (ReferenceEquals(this, obj)) return true;
+				if (obj.GetType() != typeof (SerializerEntry)) return false;
+				return Equals((SerializerEntry) obj);
+			}
+
+			public override int GetHashCode()
+			{
+				unchecked
+				{
+					return ((_rootElement != null ? _rootElement.GetHashCode() : 0)*397) ^ (_type != null ? _type.GetHashCode() : 0);
+				}
+			}
+		}
 	}
 
 

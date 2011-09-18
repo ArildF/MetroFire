@@ -33,7 +33,7 @@ namespace Rogue.MetroFire.UI.Views
 			{
 				return null;
 			}
-			var paragraph = new Paragraph();
+			var paragraph = new Paragraph(){Margin = new Thickness(0)};
 			handler(message, user, paragraph);
 
 			Blocks.Add(paragraph);

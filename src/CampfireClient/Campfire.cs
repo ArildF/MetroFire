@@ -125,6 +125,8 @@ namespace Rogue.MetroFire.CampfireClient
 				{
 					var result = call();
 					continuation(result);
+
+					return;
 				}
 				catch (TimeoutException ex)
 				{

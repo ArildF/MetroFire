@@ -176,4 +176,14 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
+	public class ExceptionMessage
+	{
+		public Exception Exception { get; set; }
+
+		public ExceptionMessage(Exception exception)
+		{
+			Exception = exception;
+		}
+	}
+
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reactive;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.CampfireClient
@@ -15,7 +16,7 @@ namespace Rogue.MetroFire.CampfireClient
 		Room[] ListRooms();
 		void SetLoginInfo(LoginInfo loginInfo);
 		Room[] ListPresence();
-		void Join(int id);
+		Unit Join(int id);
 		Message Speak(int id, string text);
 		Message[] GetMessages(int id, int? sinceId = null);
 		Room GetRoom(int id);

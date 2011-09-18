@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reactive;
 using System.Xml.Serialization;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
@@ -42,10 +43,12 @@ namespace Rogue.MetroFire.CampfireClient
 			return roomArray;
 		}
 
-		public void Join(int id)
+		public Unit Join(int id)
 		{
 			string relativeUri = String.Format("room/{0}/join.xml", id);
 			Post<NoResponse>(relativeUri);
+
+			return Unit.Default;
 		}
 
 		public Message Speak(int id, string text)
@@ -101,6 +104,22 @@ namespace Rogue.MetroFire.CampfireClient
 			string returnedRoot = null)
 			where T: class
 		{
+			try
+			{
+				return DoPost<T>(relativeUri, data, expectedCode, returnedRoot);
+			}
+			catch (WebException wex)
+			{
+				if (wex.Status == WebExceptionStatus.Timeout)
+				{
+					throw new TimeoutException("Campfire API call timed out", wex);
+				}
+				throw;
+			}
+		}
+
+		private T DoPost<T>(string relativeUri, object data, HttpStatusCode expectedCode, string returnedRoot) where T : class
+		{
 			var uri = FormatUri(relativeUri);
 			var request = CreateRequest(uri);
 
@@ -110,18 +129,17 @@ namespace Rogue.MetroFire.CampfireClient
 				using (var stream = request.GetRequestStream())
 				{
 					serializer.Serialize(stream, data);
-					
 				}
 			}
 
-			var response = (HttpWebResponse)request.GetResponse();
+			var response = (HttpWebResponse) request.GetResponse();
 			if (response.StatusCode != expectedCode)
 			{
 				throw new Exception("Unexpected response code: " + response.StatusCode);
 			}
 
 			var responseStream = response.GetResponseStream();
-			if (typeof(T) == typeof(NoResponse) || responseStream == null)
+			if (typeof (T) == typeof (NoResponse) || responseStream == null)
 			{
 				return null;
 			}
@@ -150,8 +168,24 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private T Get<T>(string relativeUri, string root = null)
 		{
+			try
+			{
+				return DoGet<T>(relativeUri, root);
+			}
+			catch (WebException wex)
+			{
+				if (wex.Status == WebExceptionStatus.Timeout)
+				{
+					throw new TimeoutException("Campfire API call has timed out", wex);
+				}
+				throw;
+			}
+		}
+
+		private T DoGet<T>(string relativeUri, string root)
+		{
 			var client = CreateClient();
-			
+
 			var uri = FormatUri(relativeUri);
 
 			var xml = client.DownloadString(uri);

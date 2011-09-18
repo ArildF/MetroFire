@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Net;
+using System.Threading;
 using Castle.Core;
 using ReactiveUI;
 using System;
@@ -51,56 +53,91 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			foreach (var userId in obj.UserIds)
 			{
-				var user = _api.GetUser(userId);
-				_bus.SendMessage(new UserInfoReceivedMessage(user));
+				int id = userId;
+				CallApi(() =>_api.GetUser(id), 
+					user => _bus.SendMessage(new UserInfoReceivedMessage(user)));
 			}
 		}
 
 		private void GetRoomInfo(RequestRoomInfoMessage requestRoomInfoMessage)
 		{
-			var room = _api.GetRoom(requestRoomInfoMessage.Id);
-			_bus.SendMessage(new RoomInfoReceivedMessage(room));
+			CallApi(() => _api.GetRoom(requestRoomInfoMessage.Id),
+				room => _bus.SendMessage(new RoomInfoReceivedMessage(room)));
 		}
 
 		private void GetRecentMessages(RequestRecentMessagesMessage obj)
 		{
-			var messages = _api.GetMessages(obj.RoomId, obj.SinceMessageId);
-
-			_bus.SendMessage(new MessagesReceivedMessage(obj.RoomId, messages, obj.SinceMessageId));
+			CallApi(() => _api.GetMessages(obj.RoomId, obj.SinceMessageId),
+				messages => _bus.SendMessage(new MessagesReceivedMessage(obj.RoomId, messages, obj.SinceMessageId)));
 		}
 
 		private void SpeakInRoom(RequestSpeakInRoomMessage obj)
 		{
-			var msg = _api.Speak(obj.Id, obj.Message);
-			_bus.SendMessage(new MessagesReceivedMessage(obj.Id, new[]{msg}, null));
+			CallApi(() => _api.Speak(obj.Id, obj.Message),
+				msg => _bus.SendMessage(new MessagesReceivedMessage(obj.Id, new[] { msg }, null)));
 		}
 
 		private void JoinRoom(RequestJoinRoomMessage requestJoinRoomMessage)
 		{
-			_api.Join(requestJoinRoomMessage.Id);
-			ListRoomPresence(null);
+			CallApi(() => _api.Join(requestJoinRoomMessage.Id), _ =>
+				{
+					ListRoomPresence(null);
 
-			_bus.SendMessage(new UserJoinedRoomMessage(requestJoinRoomMessage.Id));
+					_bus.SendMessage(new UserJoinedRoomMessage(requestJoinRoomMessage.Id));
+				});
 		}
 
 		private void ListRoomPresence(RequestRoomPresenceMessage obj)
 		{
-			_presentRooms = _api.ListPresence();
-			_bus.SendMessage(new RoomPresenceMessage(_presentRooms));
+			CallApi(() => _api.ListPresence(),
+					presentRooms =>
+					{
+						_presentRooms = presentRooms;
+						_bus.SendMessage(new RoomPresenceMessage(_presentRooms));
+					});
 		}
 
 		private void ListRooms(RequestRoomListMessage obj)
 		{
-			_rooms = _api.ListRooms();
-			_bus.SendMessage(new RoomListMessage(_rooms));
+			CallApi(() => _api.ListRooms(), rooms =>
+				{
+					_rooms = rooms;
+					_bus.SendMessage(new RoomListMessage(rooms));
+				});
 		}
 
 		private void StartLogin(RequestLoginMessage requestLoginMessage)
 		{
 			_api.SetLoginInfo(requestLoginMessage.LoginInfo);
-			_account = _api.GetAccountInfo();
+			CallApi(() => _api.GetAccountInfo(), account =>
+				{
+					_account = account;
+					_bus.SendMessage<LoginSuccessfulMessage>(null);
+				});
+		}
 
-			_bus.SendMessage<LoginSuccessfulMessage>(null);
+		private void CallApi<T>(Func<T> call, Action<T> continuation)
+		{
+			Exception lastException = null;
+			for (int i = 0; i < 3; i++)
+			{
+				try
+				{
+					var result = call();
+					continuation(result);
+				}
+				catch (TimeoutException ex)
+				{
+					lastException = ex;
+					Thread.Sleep(TimeSpan.FromSeconds(10 * (i + 1)));
+				}
+				catch (WebException ex)
+				{
+					lastException = ex;
+					break;
+				}
+			}
+			_bus.SendMessage(new ExceptionMessage(lastException));
 		}
 
 		public void Start()

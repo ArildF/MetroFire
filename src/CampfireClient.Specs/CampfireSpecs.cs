@@ -203,4 +203,27 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static User _user2;
 	}
 
+
+	public class When_api_times_out : CampfireContextBase
+	{
+		Establish context = () =>
+			{
+				_api.WhenToldTo(a => a.GetUser(42)).Return<int>(id =>
+					{
+						_callCount++;
+						throw new TimeoutException();
+					});
+				_bus.Listen<ExceptionMessage>().Subscribe(msg => _exceptionMessage = msg);
+			};
+
+		Because of = () => _bus.SendMessage(new RequestUserInfoMessage(42));
+
+		It should_retry_three_times = () => _callCount.ShouldEqual(3);
+
+		It should_send_an_error_message = () => _exceptionMessage.ShouldNotBeNull();
+
+		private static int _callCount;
+		private static ExceptionMessage _exceptionMessage;
+	}
+
 }

@@ -37,11 +37,11 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="0.909*"/>
-			<RowDefinition Height="0.091*"/>
+			<RowDefinition Height="58.1"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="0.833*"/>
-			<ColumnDefinition Width="0.167*"/>
+			<ColumnDefinition Width="120.2"/>
 		</Grid.ColumnDefinitions>
 		<Button Content="Post" Grid.Column="1" Style="{DynamicResource MetroBigButton}" 
 				Command="{Binding PostMessageCommand}" Margin="0" Grid.Row="1" Padding="0"/>
@@ -57,10 +57,7 @@
 			</TextBox.Triggers>
 		</TextBox>
 		<ListBox ItemsSource="{Binding Users}" ItemTemplate="{DynamicResource _userListBoxItemsTemplate}" Grid.Column="1"/>
-		<FlowDocumentScrollViewer Background="White" BorderThickness="0" x:Name="_chatViewer" Document="{Binding ChatDocument}">
-			<i:Interaction.Behaviors>
-				<Behaviors:StayScrolledToEndBehavior/>
-			</i:Interaction.Behaviors>
+		<FlowDocumentScrollViewer Background="White" BorderThickness="0" x:Name="_chatViewer" Document="{Binding ChatDocument}">		
 		</FlowDocumentScrollViewer>
 	</Grid>
 </UserControl>

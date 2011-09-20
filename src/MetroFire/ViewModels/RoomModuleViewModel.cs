@@ -93,7 +93,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private void HandleMessagesReceived(MessagesReceivedMessage obj)
 		{
-			foreach (var message in obj.Messages.Where(msg => obj.SinceMessageId == null || msg.Id > _sinceMessageId))
+			var messages = obj.Messages.Where(msg => obj.SinceMessageId == null || msg.Id > _sinceMessageId).ToList();
+			foreach (var message in messages)
 			{
 				var existingUser = Users.Select(u => u.User).FirstOrDefault(u => u.Id == message.UserId);
 				User user = message.UserId != null ? _userCache.GetUser(message.UserId.GetValueOrDefault(), existingUser) : null;
@@ -101,6 +102,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 				_messages.Add(new RoomMessage(message, user, textObject));
 				_sinceMessageId = message.Id;
+			}
+
+			if (obj.Messages.Any(msg => msg.Type.In(MessageType.EnterMessage, MessageType.KickMessage, MessageType.LeaveMessage)))
+			{
+				_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
 			}
 		}
 

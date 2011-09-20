@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Concurrency;
 using ReactiveUI;
 using System.Reactive.Linq;
@@ -17,6 +19,11 @@ namespace Rogue.MetroFire.CampfireClient
 			{
 				bus.ObserveOn(Scheduler.ThreadPool).Subscribe(listener);
 			}
+		}
+
+		public static bool In<T>(this T self, params T[] comparands)
+		{
+			return comparands.Contains(self);
 		}
 	}
 }

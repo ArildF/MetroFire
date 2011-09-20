@@ -4,17 +4,17 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:MetroFire_Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
         x:Class="Rogue.MetroFire.UI.Views.ShellView"
-        Title="{Binding Title}" Height="628" Width="919">
+        Title="ShellView" Height="628" Width="919">
 	<i:Interaction.Behaviors>
 		<MetroFire_Behaviors:BorderlessWindowBehavior/>
 	</i:Interaction.Behaviors>
     <Grid>
     	<Grid.RowDefinitions>
-    		<RowDefinition Height="0.114*"/>
+    		<RowDefinition Height="Auto"/>
     		<RowDefinition Height="0.886*"/>
     	</Grid.RowDefinitions>
 		<Grid MouseDown="TopOnMouseDown">
-	    	<TextBlock TextWrapping="Wrap" Text="metro fire" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="64" FontWeight="Light"/>
+	    	<TextBlock TextWrapping="Wrap" Text="metro fire" FontSize="40" FontWeight="Thin" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-6,0,0"/>
 		</Grid>
 	<ContentControl x:Name="_mainContent" Content="" Grid.Row="1" Margin="10 0 0 0"/>
     </Grid>

@@ -38,6 +38,16 @@ namespace Expression.Blend.SampleData.SampleLobbyViewModel
 			}
 		}
 
+		private Rooms _Rooms = new Rooms();
+
+		public Rooms Rooms
+		{
+			get
+			{
+				return this._Rooms;
+			}
+		}
+
 		private string _AccountName = string.Empty;
 
 		public string AccountName
@@ -113,16 +123,10 @@ namespace Expression.Blend.SampleData.SampleLobbyViewModel
 				}
 			}
 		}
+	}
 
-		private Rooms _Rooms = new Rooms();
-
-		public Rooms Rooms
-		{
-			get
-			{
-				return this._Rooms;
-			}
-		}
+	public class Rooms : System.Collections.ObjectModel.ObservableCollection<RoomsItem>
+	{ 
 	}
 
 	public class RoomsItem : System.ComponentModel.INotifyPropertyChanged
@@ -193,10 +197,25 @@ namespace Expression.Blend.SampleData.SampleLobbyViewModel
 				}
 			}
 		}
-	}
 
-	public class Rooms : System.Collections.ObjectModel.ObservableCollection<RoomsItem>
-	{ 
+		private string _Notifications = string.Empty;
+
+		public string Notifications
+		{
+			get
+			{
+				return this._Notifications;
+			}
+
+			set
+			{
+				if (this._Notifications != value)
+				{
+					this._Notifications = value;
+					this.OnPropertyChanged("Notifications");
+				}
+			}
+		}
 	}
 #endif
 }

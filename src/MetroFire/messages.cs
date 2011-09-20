@@ -72,4 +72,35 @@ namespace Rogue.MetroFire.UI
 	}
 
 
+	public class RoomActivatedMessage
+	{
+		public int RoomId { get; private set; }
+
+		public RoomActivatedMessage(int roomId)
+		{
+			RoomId = roomId;
+		}
+	}
+
+	public class RoomDeactivatedMessage
+	{
+		public int RoomId { get; private set; }
+
+		public RoomDeactivatedMessage(int roomId)
+		{
+			RoomId = roomId;
+		}
+	}
+
+	public class RoomActivityMessage
+	{
+		public int RoomId { get; private set; }
+		public int Count { get; private set; }
+
+		public RoomActivityMessage(int roomId, int count)
+		{
+			RoomId = roomId;
+			Count = count;
+		}
+	}
 }

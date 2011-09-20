@@ -108,6 +108,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 			{
 				_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
 			}
+
+			var count = obj.Messages.Count(msg => msg.Type.In(MessageType.PasteMessage, MessageType.TextMessage));
+			if (count > 0)
+			{
+				_bus.SendMessage(new RoomActivityMessage(_room.Id, count));
+			}
 		}
 
 		private void HandlePostMessage(object o)
@@ -131,7 +137,22 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public bool IsActive
 		{
 			get { return _isActive; }
-			set { this.RaiseAndSetIfChanged(vm => vm.IsActive, ref _isActive, value); }
+			set
+			{
+				if (value == _isActive)
+				{
+					return;
+				}
+				this.RaiseAndSetIfChanged(vm => vm.IsActive, ref _isActive, value);
+				if (_isActive)
+				{
+					_bus.SendMessage(new RoomActivatedMessage(_room.Id));
+				}
+				else
+				{
+					_bus.SendMessage(new RoomDeactivatedMessage(_room.Id));
+				}
+			}
 		}
 
 		public string UserMessage

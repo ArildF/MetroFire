@@ -17,6 +17,7 @@
 		<ItemsPanelTemplate x:Key="_wrapPanelTemplate">
 			<WrapPanel/>
 		</ItemsPanelTemplate>
+		<Color x:Key="MetroYellow">Yellow</Color>
 		
 		
 		
@@ -56,8 +57,11 @@
 				</Button.RenderTransform>
 				<Button.Template>
 					<ControlTemplate>
-						<Border x:Name="border" BorderBrush="Black" BorderThickness="0" Height="150" Width="150" Background="#FF00AADD" Margin="0" RenderTransformOrigin="0.5,0.5"
+						<Border x:Name="border" BorderBrush="Black" BorderThickness="0" Height="150" Width="150" Margin="0" RenderTransformOrigin="0.5,0.5"
 								>
+							<Border.Background>
+								<SolidColorBrush Color="{DynamicResource MetroBlue}"/>
+							</Border.Background>
 							<Border.RenderTransform>
 								<TransformGroup>
 									<ScaleTransform/>
@@ -68,12 +72,23 @@
 							</Border.RenderTransform>
 							
 						<Grid TextBlock.Foreground="#FFD8D8D8" x:Name="_grid">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="0.787*"/>
+								<ColumnDefinition Width="0.213*"/>
+							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
-								<RowDefinition Height="0.261*"/>
-								<RowDefinition Height="0.592*"/>
+								<RowDefinition Height="0.306*"/>
+								<RowDefinition Height="0*"/>
+								<RowDefinition Height="0.542*"/>
+								<RowDefinition Height="0.152*"/>
 							</Grid.RowDefinitions>
-							<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" Style="{DynamicResource TileLargeHeader}" VerticalAlignment="Center"/>
-							<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Topic}" VerticalAlignment="Center" Grid.Row="2" Style="{DynamicResource MetroBodyText}" Margin="10,0" FontSize="12"/>
+							<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" Style="{DynamicResource TileLargeHeader}" VerticalAlignment="Center" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+							<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Topic}" VerticalAlignment="Center" Grid.Row="2" Style="{DynamicResource MetroBodyText}" Margin="10,0" FontSize="12" Grid.ColumnSpan="4"/>
+							<TextBlock HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="{Binding Notifications}" d:LayoutOverrides="Height" Grid.Column="1" Grid.Row="11" FontSize="14.667">
+								<TextBlock.Foreground>
+									<SolidColorBrush Color="{DynamicResource MetroYellow}"/>
+								</TextBlock.Foreground>
+							</TextBlock>
 						</Grid>
 						</Border>
 						<ControlTemplate.Triggers>

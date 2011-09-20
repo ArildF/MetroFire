@@ -108,6 +108,7 @@
     		<Setter Property="FontSize" Value="24"/>
     		<Setter Property="FontWeight" Value="ExtraLight"/>
     	</Style>
+    	<Color x:Key="MetroBlue">#FF00AADD</Color>
     	<Style x:Key="_tabWellButton" TargetType="{x:Type Button}">
     		<Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
     		<Setter Property="Background" Value="{StaticResource ButtonNormalBackground}"/>
@@ -120,9 +121,22 @@
     		<Setter Property="Template">
     			<Setter.Value>
     				<ControlTemplate TargetType="{x:Type Button}">
-    					<Grid Margin="20 0 20 0">
-    						<TextBlock TextWrapping="NoWrap" Text="{Binding Caption}" Style="{DynamicResource MetroMediumLightHeader}" 
-    							VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="_textBlock"/>
+    					<Grid Margin="0">
+    						<Grid.ColumnDefinitions>
+    							<ColumnDefinition Width="0.828*"/>
+    							<ColumnDefinition Width="12.2"/>
+    						</Grid.ColumnDefinitions>
+    						<Grid.RowDefinitions>
+    							<RowDefinition Height="0.39*"/>
+    							<RowDefinition Height="0.61*"/>
+    						</Grid.RowDefinitions>
+    						<TextBlock TextWrapping="NoWrap" Style="{DynamicResource MetroMediumLightHeader}" 
+    							VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="_textBlock" Grid.RowSpan="2" Grid.ColumnSpan="1" Margin="0" Text="{Binding Caption}"/>
+    						<TextBlock Margin="-2,0,0,-3" TextWrapping="Wrap" Text="{Binding Notifications}" d:LayoutOverrides="Width, Height" Grid.Column="2" FontSize="12" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+    							<TextBlock.Foreground>
+    								<SolidColorBrush Color="{DynamicResource MetroBlue}"/>
+    							</TextBlock.Foreground>
+    						</TextBlock>
     					</Grid>
     					<ControlTemplate.Triggers>
     						<Trigger Property="IsKeyboardFocused" Value="true"/>

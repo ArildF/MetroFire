@@ -56,5 +56,10 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			get { return _vm.Id; }
 		}
+
+		public string Notifications
+		{
+			get { return _vm.Notifications; }
+		}
 	}
 }

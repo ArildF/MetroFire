@@ -37,6 +37,7 @@ namespace Rogue.MetroFire.UI
 		string RoomName { get; }
 		bool IsActive { get; set; }
 		int Id { get; }
+		string Notifications { get; }
 	}
 
 	public interface IRoomModuleCreator
@@ -50,6 +51,7 @@ namespace Rogue.MetroFire.UI
 		DependencyObject Visual { get; }
 		bool IsActive { get; set; }
 		int Id { get; }
+		string Notifications { get; }
 	}
 
 	public interface IMainModule : IModule

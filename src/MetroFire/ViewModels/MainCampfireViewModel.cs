@@ -32,7 +32,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_bus.Listen<ActivateModuleMessage>().Where(msg => msg.ParentModule == ModuleNames.MainCampfireView)
 				.SubscribeUI(msg =>
 					{
-						CurrentModules = Modules.CreateDerivedCollection(module => new ModuleViewModel(module));
+						CurrentModules = Modules.CreateDerivedCollection(module => new ModuleViewModel(module, bus));
 					});
 			
 			bus.RegisterMessageSource(bus.Listen<ModuleLoaded>().Where(msg => msg.ModuleName == ModuleNames.MainCampfireView)

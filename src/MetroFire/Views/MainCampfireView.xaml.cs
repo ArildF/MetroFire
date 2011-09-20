@@ -65,5 +65,10 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			get { throw new NotImplementedException(); }
 		}
+
+		public string Notifications
+		{
+			get { throw new NotImplementedException(); }
+		}
 	}
 }

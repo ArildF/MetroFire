@@ -49,6 +49,10 @@ namespace Expression.Blend.SampleData.SampleMainViewModel
 		}
 	}
 
+	public class CurrentModules : System.Collections.ObjectModel.ObservableCollection<CurrentModulesItem>
+	{ 
+	}
+
 	public class CurrentModulesItem : System.ComponentModel.INotifyPropertyChanged
 	{
 		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -98,10 +102,25 @@ namespace Expression.Blend.SampleData.SampleMainViewModel
 				}
 			}
 		}
-	}
 
-	public class CurrentModules : System.Collections.ObjectModel.ObservableCollection<CurrentModulesItem>
-	{ 
+		private string _Notifications = string.Empty;
+
+		public string Notifications
+		{
+			get
+			{
+				return this._Notifications;
+			}
+
+			set
+			{
+				if (this._Notifications != value)
+				{
+					this._Notifications = value;
+					this.OnPropertyChanged("Notifications");
+				}
+			}
+		}
 	}
 #endif
 }

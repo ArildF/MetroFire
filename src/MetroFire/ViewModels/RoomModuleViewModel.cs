@@ -23,6 +23,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private readonly IChatDocument _chatDocument;
 		private readonly List<RoomMessage> _messages;
 		private int? _sinceMessageId;
+		private int _notificationCount;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument)
 		{
@@ -114,12 +115,30 @@ namespace Rogue.MetroFire.UI.ViewModels
 			{
 				_bus.SendMessage(new RoomActivityMessage(_room.Id, count));
 			}
+			if (!IsActive)
+			{
+				NotificationCount += count;
+			}
 		}
 
 		private void HandlePostMessage(object o)
 		{
 			_bus.SendMessage(new RequestSpeakInRoomMessage(Id, UserMessage));
 			UserMessage = String.Empty;
+		}
+
+		private int NotificationCount
+		{
+			get { return _notificationCount; }
+			set
+			{
+				if (_notificationCount == value)
+				{
+					return;
+				}
+				_notificationCount = value;
+				this.RaisePropertyChanged(vm => vm.Notifications);
+			}
 		}
 
 		public IChatDocument ChatDocument
@@ -146,6 +165,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 				this.RaiseAndSetIfChanged(vm => vm.IsActive, ref _isActive, value);
 				if (_isActive)
 				{
+					NotificationCount = 0;
 					_bus.SendMessage(new RoomActivatedMessage(_room.Id));
 				}
 				else
@@ -191,6 +211,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public int Id
 		{
 			get { return _room.Id; }
+		}
+
+		public string Notifications
+		{
+			get { return _notificationCount > 0 ? _notificationCount.ToString() : ""; }
 		}
 
 		private class RoomMessage

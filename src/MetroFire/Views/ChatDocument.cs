@@ -87,7 +87,7 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void FormatTimestampMessage(Message message, User user, Paragraph paragraph)
 		{
-			var run = CreateMetaRun(message.CreatedAt.ToString());
+			var run = CreateMetaRun(message.CreatedAt.ToLocalTime().ToString());
 			paragraph.Inlines.Add(run);
 		}
 

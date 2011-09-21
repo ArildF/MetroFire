@@ -1,15 +1,44 @@
-﻿<UserControl x:Class="Rogue.MetroFire.UI.Views.LoginView"
+﻿<UserControl
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:Rogue_MetroFire_UI="clr-namespace:Rogue.MetroFire.UI" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects" x:Class="Rogue.MetroFire.UI.Views.LoginView" 
 			 mc:Ignorable="d" 
 			 d:DesignHeight="458" d:DesignWidth="565">
 	<UserControl.Resources>
 		<Style x:Key="MetroHeader2" TargetType="{x:Type TextBlock}"/>
 	</UserControl.Resources>
-	<Grid>
-		<Grid HorizontalAlignment="Center" Height="286" VerticalAlignment="Center" Width="487">
+	<Grid x:Name="_root">
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="VisualStateGroup">
+				<VisualStateGroup.Transitions>
+					<VisualTransition GeneratedDuration="0:0:0.3">
+						<ei:ExtendedVisualStateManager.TransitionEffect>
+							<ee:RadialBlurTransitionEffect/>
+						</ei:ExtendedVisualStateManager.TransitionEffect>
+					</VisualTransition>
+				</VisualStateGroup.Transitions>
+				<VisualState x:Name="LoggingInState">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="grid">
+							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}"/>
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="progressIndicator">
+							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBlock">
+							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+				<VisualState x:Name="NormalState"/>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+		<VisualStateManager.CustomVisualStateManager>
+			<ei:ExtendedVisualStateManager/>
+		</VisualStateManager.CustomVisualStateManager>
+		<Grid x:Name="grid" HorizontalAlignment="Center" Height="286" VerticalAlignment="Center" Width="487">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="0.471*"/>
 				<ColumnDefinition Width="0.529*"/>
@@ -27,5 +56,7 @@
 			<TextBox TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width" Text="{Binding Token, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 			<Button Content="Login" Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource MetroBigButton}" VerticalAlignment="Center" Command="{Binding LoginCommand}"/>
 		</Grid>
+		<Rogue_MetroFire_UI:ProgressIndicator x:Name="progressIndicator" Visibility="Hidden"/>
+		<TextBlock x:Name="textBlock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Logging in" VerticalAlignment="Center" FontSize="34.667" FontWeight="Light" Visibility="Hidden"/>
 	</Grid>
 </UserControl>

@@ -53,6 +53,9 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.0.0.2001\lib\net40-client\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Drawing" />
+    <Reference Include="Microsoft.Expression.Effects" />
+    <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Reactive.Testing">
       <HintPath>..\packages\Rx_Experimental-Testing.1.1.10621\lib\Net4-Full\Microsoft.Reactive.Testing.dll</HintPath>
     </Reference>
@@ -147,6 +150,9 @@
     <Compile Include="Views\MainCampfireView.xaml.cs">
       <DependentUpon>MainCampfireView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ProgressIndicator.xaml.cs">
+      <DependentUpon>ProgressIndicator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RoomModule.xaml.cs">
       <DependentUpon>RoomModule.xaml</DependentUpon>
     </Compile>
@@ -217,6 +223,10 @@
     <Page Include="Views\MainCampfireView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProgressIndicator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\RoomModule.xaml">
       <SubType>Designer</SubType>

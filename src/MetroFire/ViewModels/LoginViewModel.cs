@@ -11,6 +11,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private readonly IMessageBus _bus;
 		private string _account;
 		private string _token;
+		private bool _isLoggingIn;
 
 		public LoginViewModel(IMessageBus bus, ILoginInfoStorage storage)
 		{
@@ -24,11 +25,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 					));
 
 			_bus.RegisterMessageSource(
-				LoginCommand.Select(_ => new RequestLoginMessage(new LoginInfo(Account, Token))));
+				LoginCommand.Select(_ => new RequestLoginMessage(new LoginInfo(Account, Token))).Do(_ => IsLoggingIn = true));
 
 			_bus.RegisterMessageSource(
 				_bus.Listen<LoginSuccessfulMessage>()
 				.Do(_ => storage.PersistLoginInfo(new LoginInfo(Account, Token)))
+				.Do(_ => IsLoggingIn = false)
 				.Select(msg => new ActivateMainModuleMessage(ModuleNames.MainCampfireView)));
 
 			LoginInfo info = storage.GetStoredLoginInfo();
@@ -52,6 +54,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			get { return _token; }
 			set { this.RaiseAndSetIfChanged(vm => vm.Token, ref _token, value); }
+		}
+
+		public bool IsLoggingIn
+		{
+			get { return _isLoggingIn; }
+			set { this.RaiseAndSetIfChanged(vm => vm.IsLoggingIn, ref _isLoggingIn, value); }
 		}
 
 	}

@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Width="776" Height="610"
-			 d:Background="White"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="478.463" Width="Auto"
 			 >
 	<UserControl.Resources>
 		<Style x:Key="MetroWhiteCaption" TargetType="{x:Type TextBlock}">
@@ -167,8 +166,8 @@
 	</UserControl.Resources>
     <Grid d:DataContext="{Binding Source={StaticResource SampleLobbyViewModel}}">
     	<Grid.ColumnDefinitions>
-    		<ColumnDefinition Width="0.617*"/>
-    		<ColumnDefinition Width="0.383*"/>
+    		<ColumnDefinition Width="0.684*"/>
+    		<ColumnDefinition Width="Auto"/>
     	</Grid.ColumnDefinitions>
     	<Grid.RowDefinitions>
     		<RowDefinition Height="0.259*"/>
@@ -178,7 +177,7 @@
     	</Grid.RowDefinitions>
     	<Grid Margin="10" Grid.Column="1">
     		<Grid.ColumnDefinitions>
-    			<ColumnDefinition/>
+    			<ColumnDefinition Width="135.443"/>
     			<ColumnDefinition/>
     		</Grid.ColumnDefinitions>
     		<Grid.RowDefinitions>

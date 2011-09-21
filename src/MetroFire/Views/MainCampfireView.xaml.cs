@@ -42,6 +42,7 @@ namespace Rogue.MetroFire.UI.Views
 				currentModule.IsActive = false;
 			}
 			_moduleContainer.Content = obj.Module;
+
 			obj.Module.IsActive = true;
 		}
 

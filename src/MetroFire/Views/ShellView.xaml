@@ -5,9 +5,9 @@
         xmlns:MetroFire_Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
         x:Class="Rogue.MetroFire.UI.Views.ShellView"
         Title="{Binding Title}" Height="628" Width="919">
-	<i:Interaction.Behaviors>
+	<!--<i:Interaction.Behaviors>
 		<MetroFire_Behaviors:BorderlessWindowBehavior/>
-	</i:Interaction.Behaviors>
+	</i:Interaction.Behaviors>-->
     <Grid>
     	<Grid.RowDefinitions>
     		<RowDefinition Height="Auto"/>
@@ -16,6 +16,6 @@
 		<Grid MouseDown="TopOnMouseDown">
 	    	<TextBlock TextWrapping="Wrap" Text="metro fire" FontSize="40" FontWeight="Thin" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-6,0,0"/>
 		</Grid>
-	<ContentControl x:Name="_mainContent" Content="" Grid.Row="1" Margin="10 0 0 0"/>
+	<ContentControl x:Name="_mainContent" Content="" Grid.Row="1" Margin="10 0 0 0" Background="LimeGreen"/>
     </Grid>
 </Window>

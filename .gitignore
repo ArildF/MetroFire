@@ -27,4 +27,6 @@ ProxiesBin
 *.sdf
 *.opensdf
 *.obj
+*~
+*.swp
 

@@ -4,7 +4,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:MetroFire_Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
         x:Class="Rogue.MetroFire.UI.Views.ShellView"
-        Title="ShellView" Height="628" Width="919">
+        Title="{Binding Title}" Height="628" Width="919">
 	<i:Interaction.Behaviors>
 		<MetroFire_Behaviors:BorderlessWindowBehavior/>
 	</i:Interaction.Behaviors>

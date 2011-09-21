@@ -19,9 +19,10 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			Func<IObservedChange<LoginViewModel, string>, bool> isValid = c => !String.IsNullOrEmpty(c.Value);
 			LoginCommand = new ReactiveCommand(
-				Observable.Merge(
+				Observable.CombineLatest(
 					this.ObservableForProperty(vm => vm.Account).Select(isValid),
-					this.ObservableForProperty(vm => vm.Token).Select(isValid)
+					this.ObservableForProperty(vm => vm.Token).Select(isValid),
+					(b1, b2) => b1 && b2
 					));
 
 			_bus.RegisterMessageSource(

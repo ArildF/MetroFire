@@ -7,10 +7,12 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
+using Newtonsoft.Json.Linq;
 using Rogue.MetroFire.CampfireClient.Serialization;
  
 namespace Rogue.MetroFire.CampfireClient
@@ -148,18 +150,30 @@ namespace Rogue.MetroFire.CampfireClient
 			return new NetworkCredential(_loginInfo.Token, "X");
 		}
 
-		public IDisposable Stream(int id, Action<Message> action)
+		public IDisposable Stream(int id, Action<Message> action, Action<Exception> onError = null)
+		{
+			return CreateStreamingObservable(id).Subscribe(action, e =>
+				{
+					if (onError != null)
+					{
+						onError(e);
+					}
+				});
+		}
+
+		private IObservable<Message> CreateStreamingObservable(int id)
 		{
 			return RunStream(id).ToObservable()
 				.SubscribeOn(Scheduler.ThreadPool)
-				.ObserveOn(Scheduler.ThreadPool).Subscribe(action);
+				.ObserveOn(Scheduler.ThreadPool);
 		}
 
 		private IEnumerable<Message> RunStream(int id)
 		{
+			int secondsToWaitForRetry = 2;
 			while(true)
 			{
-				var uri = String.Format("https://streaming.campfirenow.com/room/{0}/live.xml", id);
+				var uri = String.Format("https://streaming.campfirenow.com/room/{0}/live.json", id);
 				var request = CreateRequest(new Uri(uri));
 				request.Method = "GET";
 				//request.Proxy = new WebProxy("127.0.0.1:8888");
@@ -172,41 +186,37 @@ namespace Rogue.MetroFire.CampfireClient
 				string authorization = String.Concat("basic ", base64);
 				request.Headers.Add("Authorization", authorization);
 
-				var serializer = new XmlSerializer(typeof (Message));
-				//var serializer = new DataContractJsonSerializer(typeof (Message));
-
-				var response = request.GetResponse();
-				byte[] buf = new byte[4096];
+				WebResponse response = null;
+				try
+				{
+					response = request.GetResponse();
+				}
+				catch (WebException e)
+				{
+					if (e.Status == WebExceptionStatus.Timeout)
+					{
+						Thread.Sleep(TimeSpan.FromSeconds(secondsToWaitForRetry));
+						secondsToWaitForRetry *= 2;
+						continue;
+					}
+					throw;
+				}
+				secondsToWaitForRetry = 2;
 				using (var stream = response.GetResponseStream())
 				{
-					//int read = stream.Read(buf, 0, 4096);
-					//string str = Encoding.UTF8.GetString(buf, 0, read);
+					var streamReader = new StreamReader(stream);
+					var str = streamReader.ReadLine();
+					if (str == null || str.Trim() == String.Empty)
+					{
+						continue;
+					}
 
-					//str = "<messages>" + str + "</messages>";
+					JsonReader reader = new JsonTextReader(new StringReader(str));
 
-					//var reader = new StreamReader(stream);
-					//var str = reader.ReadLine();
-					//var message = (Message)serializer.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(str)));
-					//yield return message;
+					var serializer = new JsonSerializer();
+					var message = serializer.Deserialize<Message>(reader);
 
-					JsonReader reader = new BsonReader(stream) ;
-					reader.CloseInput = false;
-
-					Debug.WriteLine("Waiting for messeage");
-
-					var deserializer = new JsonSerializer();
-					var message = deserializer.Deserialize<Message>(reader);
-
-					//var message = (Message) serializer.Deserialize(stream);
-					Debug.WriteLine("Got messeage " + message.Body);
 					yield return message;
-
-					//int read = str.Length;
-
-					//Debug.WriteLine(string.Format("Received {0} bytes: {1}", read, str));
-
-					//var messages = (Message) serializer.ReadObject()
-
 				}
 			}
 

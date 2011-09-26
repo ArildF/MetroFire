@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Rogue.MetroFire.CampfireClient.Serialization
 {
@@ -112,9 +115,11 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		[XmlElement("id")]
 		public int Id { get; set; }
 
+		[JsonProperty("created_at")]
 		[XmlElement("created-at")]
 		public DateTime CreatedAt { get; set; }
 
+		[JsonProperty("room_id")]
 		[XmlElement("room-id")]
 		public int RoomId { get; set; }
 
@@ -123,6 +128,7 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 			get { return String.IsNullOrEmpty(UserIdString) ? (int?) null : int.Parse(UserIdString); }
 		}
 
+		[JsonProperty("user_id")]
 		[XmlElement("user-id")]
 		public string UserIdString { get; set; }
 
@@ -144,7 +150,21 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		public MessageType Type { get; set; }
 
 		[XmlElement("body")]
+		[JsonIgnore]
 		public string Body { get; set; }
+
+
+		[JsonProperty("body")]
+		public string JsonBody
+		{
+			set
+			{
+				var adjusted = Regex.Replace(value ?? String.Empty, 
+					@"[^\r]\n", match => match.Value.Replace("\n", Environment.NewLine));
+				Body = adjusted;
+			}
+		}
+
 
 	}
 }

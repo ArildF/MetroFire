@@ -9,15 +9,15 @@ namespace Rogue.MetroFire.CampfireClient
 {
 	public static class Extensions
 	{
-		public static void SubscribeThreadPool<T>(this IObservable<T> bus, Action<T> listener)
+		public static IDisposable SubscribeThreadPool<T>(this IObservable<T> bus, Action<T> listener)
 		{
 			if (RxApp.DeferredScheduler == Scheduler.Immediate)
 			{
-				bus.ObserveOn(Scheduler.Immediate).Subscribe(listener);
+				return bus.ObserveOn(Scheduler.Immediate).Subscribe(listener);
 			}
 			else
 			{
-				bus.ObserveOn(Scheduler.ThreadPool).Subscribe(listener);
+				return bus.ObserveOn(Scheduler.ThreadPool).Subscribe(listener);
 			}
 		}
 

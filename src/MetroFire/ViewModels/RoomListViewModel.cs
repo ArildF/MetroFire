@@ -1,3 +1,4 @@
+using System;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
@@ -14,6 +15,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _isCurrentRoom;
 		private int _roomActivityCount;
 		private string _notifications;
+		private bool _isJoiningRoom;
 
 		public RoomListViewModel(Room room, IMessageBus bus)
 		{
@@ -23,6 +25,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			bus.Listen<RoomPresenceMessage>().SubscribeUI(msg => IsActive = msg.IsPresentIn(_room.Id));
 
 			_bus.Listen<RoomActivatedMessage>().Where(msg => msg.RoomId == _room.Id)
+				.Do(_ => IsJoiningRoom = false)
 				.SubscribeUI(_ => IsCurrentRoom = true);
 
 			_bus.Listen<RoomDeactivatedMessage>().Where(msg => msg.RoomId == _room.Id)
@@ -32,7 +35,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.SubscribeUI(msg => RoomActivityCount += msg.Count);
 
 			JoinCommand = new ReactiveCommand();
-			JoinCommand.SubscribeUI(HandleJoinCommand);
+			JoinCommand.Do(_ => IsJoiningRoom = true).SubscribeUI(HandleJoinCommand);
 		}
 
 		private void HandleJoinCommand(object o)
@@ -83,6 +86,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			get { return _notifications; }
 			private set { this.RaiseAndSetIfChanged(vm => vm.Notifications, ref _notifications, value); }
+		}
+
+		public bool IsJoiningRoom
+		{
+			get { return _isJoiningRoom; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.IsJoiningRoom, ref _isJoiningRoom, value); }
 		}
 
 		private int RoomActivityCount

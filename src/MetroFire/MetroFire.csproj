@@ -138,6 +138,9 @@
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\ChatDocument.cs" />
+    <Compile Include="Views\LobbyButton.xaml.cs">
+      <DependentUpon>LobbyButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LobbyModule.xaml.cs">
       <DependentUpon>LobbyModule.xaml</DependentUpon>
     </Compile>
@@ -205,6 +208,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LobbyButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

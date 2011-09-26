@@ -1,0 +1,148 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:local="clr-namespace:Rogue.MetroFire.UI"
+	mc:Ignorable="d"
+	x:Class="Rogue.MetroFire.UI.Views.LobbyButton"
+	x:Name="UserControl"
+	d:DesignWidth="150" d:DesignHeight="150">
+	<UserControl.Resources>
+		
+		<Style x:Key="TileLargeHeader" TargetType="{x:Type TextBlock}">
+			<Setter Property="TextWrapping" Value="NoWrap"/>
+			<Setter Property="TextTrimming" Value="None"/>
+			<Setter Property="FontSize" Value="32"/>
+			<Setter Property="FontWeight" Value="Light"/>
+		</Style>
+		<Style x:Key="MetroBodyText" TargetType="{x:Type TextBlock}">
+			<Setter Property="TextWrapping" Value="NoWrap"/>
+			<Setter Property="TextTrimming" Value="None"/>
+			<Setter Property="FontSize" Value="14.667"/>
+			<Setter Property="FontWeight" Value="Light"/>
+		</Style>
+         
+		<Color x:Key="MetroYellow">Yellow</Color>
+		
+		
+		
+		
+	</UserControl.Resources>
+	<d:DataContext>
+		<Binding Path="Rooms[0]" Source="{StaticResource SampleLobbyViewModel}"/>
+	</d:DataContext>
+
+	<Grid d:LayoutOverrides="Width, Height" x:Name="LayoutRoot">
+		<Button Command="{Binding JoinCommand}">
+			<Button.Resources>
+				
+			</Button.Resources>
+			<Button.Template>
+				<ControlTemplate>
+					<ControlTemplate.Resources>
+						<Storyboard x:Key="RoomButtonLoaded">
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(SkewTransform.AngleX)" Storyboard.TargetName="_border">
+								<EasingDoubleKeyFrame KeyTime="0" Value="-11"/>
+								<EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(SkewTransform.AngleY)" Storyboard.TargetName="_border">
+								<EasingDoubleKeyFrame KeyTime="0" Value="-8"/>
+								<EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="0"/>
+							</DoubleAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="_border">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.65"/>
+								<EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="_border">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.65"/>
+								<EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+							<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="_border">
+								<EasingDoubleKeyFrame KeyTime="0" Value="0.275"/>
+								<EasingDoubleKeyFrame KeyTime="0:0:0.15" Value="1"/>
+							</DoubleAnimationUsingKeyFrames>
+						</Storyboard>
+					</ControlTemplate.Resources>
+					<Border x:Name="_border" BorderBrush="Black" BorderThickness="0" Height="150" Width="150" Margin="0" 
+						RenderTransformOrigin="0.5,0.5">
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="MyGroup">
+								<VisualState x:Name="NormalState"/>
+								<VisualState x:Name="JoiningRoomState">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="grid">
+											<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}"/>
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="progressIndicator">
+											<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+										</ObjectAnimationUsingKeyFrames>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBlock">
+											<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+						<Border.Background>
+							<SolidColorBrush Color="{DynamicResource MetroBlue}"/>
+						</Border.Background>
+						<Border.RenderTransform>
+							<TransformGroup>
+								<ScaleTransform/>
+								<SkewTransform/>
+								<RotateTransform/>
+								<TranslateTransform/>
+							</TransformGroup>
+						</Border.RenderTransform>
+						
+						<Grid  TextBlock.Foreground="#FFD8D8D8" x:Name="_grid">
+							<Grid x:Name="grid">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="0.787*"/>
+									<ColumnDefinition Width="0.213*"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="0.306*"/>
+									<RowDefinition Height="0*"/>
+									<RowDefinition Height="0.542*"/>
+									<RowDefinition Height="0.152*"/>
+								</Grid.RowDefinitions>
+								<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" Style="{DynamicResource TileLargeHeader}" VerticalAlignment="Center" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+								<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Topic}" VerticalAlignment="Center" Grid.Row="2" Style="{DynamicResource MetroBodyText}" Margin="10,0" FontSize="12" Grid.ColumnSpan="4"/>
+								<TextBlock HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="{Binding Notifications}" d:LayoutOverrides="Height" Grid.Column="1" Grid.Row="11" FontSize="14.667">
+									<TextBlock.Foreground>
+										<SolidColorBrush Color="{DynamicResource MetroYellow}"/>
+									</TextBlock.Foreground>
+								</TextBlock>
+							</Grid>
+							<local:ProgressIndicator x:Name="progressIndicator" Margin="0" d:LayoutOverrides="Width, Height" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden"/>
+							<TextBlock x:Name="textBlock" Style="{DynamicResource MetroBodyText}" Text="Joining room" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden"/>
+						</Grid>	
+						
+					</Border>
+					<ControlTemplate.Triggers>
+						<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+							<BeginStoryboard Storyboard="{StaticResource RoomButtonLoaded}"/>
+						</EventTrigger>
+								<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="RenderTransform" TargetName="_border">
+									<Setter.Value>
+										<TransformGroup>
+											<ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+											<SkewTransform/>
+											<RotateTransform/>
+											<TranslateTransform/>
+										</TransformGroup>
+									</Setter.Value>
+								</Setter>
+							</Trigger>
+							<DataTrigger Binding="{Binding IsActive}" Value="True">
+								<Setter TargetName="_grid" Property="TextBlock.Foreground" Value="White"/>						
+							</DataTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Button.Template>
+		</Button>
+	</Grid>
+</UserControl>

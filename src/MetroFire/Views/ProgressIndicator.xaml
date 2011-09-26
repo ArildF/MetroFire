@@ -10,18 +10,14 @@
 	d:DesignWidth="119" d:DesignHeight="119">
 
 	<UserControl.Resources>
-		<Storyboard x:Key="Rotate" RepeatBehavior="Forever">
+		<Storyboard x:Key="Rotate" RepeatBehavior="Forever" Name="Rotate">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="lineArrow">
 				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="180"/>
 				<EasingDoubleKeyFrame KeyTime="0:0:2" Value="359"/>
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
 	</UserControl.Resources>
-	<UserControl.Triggers>
-		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
-			<BeginStoryboard Storyboard="{StaticResource Rotate}"/>
-		</EventTrigger>
-	</UserControl.Triggers>
+	
 
 	<Grid x:Name="LayoutRoot">
 		<Grid x:Name="grid" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" Height="119">

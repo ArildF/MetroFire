@@ -30,6 +30,32 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			}
 			return null;
 		}
+
+		public static FrameworkElement FindVisualChild<T>(this DependencyObject element, string name) where T : FrameworkElement
+		{
+			if (element == null)
+			{
+				return null;
+			}
+
+			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+			{
+				DependencyObject child = VisualTreeHelper.GetChild(element, i);
+				FrameworkElement elt = child as T;
+				if (elt != null && elt.Name == name)
+				{
+					return elt;
+				}
+				elt = FindVisualChild<T>(child, name);
+				if (elt != null)
+				{
+					return elt;
+				}
+			}
+			return null;
+		}
+
+		
 	}
 
 

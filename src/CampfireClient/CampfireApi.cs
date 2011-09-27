@@ -280,63 +280,79 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private IObservable<Message> CreateStreamingObservable(int id)
 		{
-			return RunStream(id).ToObservable()
-				.SubscribeOn(Scheduler.ThreadPool)
-				.ObserveOn(Scheduler.ThreadPool);
+			return Observable.Create<Message>(o =>
+			{
+				Observable.Start(() =>
+				{
+					try
+					{
+						RunStream(id, o);
+					}
+					catch (Exception ex)
+					{
+						o.OnError(ex);
+					}
+				});
+				return () => { };
+			}).Catch<Message, WebException>(ex => Observable.Return(Unit.Default)
+					.Delay(TimeSpan.FromSeconds(2)).SelectMany(_ => CreateStreamingObservable(id)));
+
 		}
 
-		private IEnumerable<Message> RunStream(int id)
+		private void RunStream(int id, IObserver<Message> observer)
 		{
-			int secondsToWaitForRetry = 2;
-			while(true)
+			var uri = String.Format("http://streaming.campfirenow.com/room/{0}/live.json", id);
+			var request = CreateRequest(new Uri(uri));
+			request.Method = "GET";
+
+			request.Timeout = -1;
+
+			string credentials = String.Format("{0}:{1}", _loginInfo.Token, "X");
+			byte[] bytes = Encoding.ASCII.GetBytes(credentials);
+			string base64 = Convert.ToBase64String(bytes);
+			string authorization = String.Concat("basic ", base64);
+			request.Headers.Add("Authorization", authorization);
+
+			var dt = DateTime.Now;
+
+			Debug.WriteLine("Got response");
+
+			using (WebResponse response = request.GetResponse())
 			{
-				var uri = String.Format("https://streaming.campfirenow.com/room/{0}/live.json", id);
-				var request = CreateRequest(new Uri(uri));
-				request.Method = "GET";
-				//request.Proxy = new WebProxy("127.0.0.1:8888");
-
-				request.Timeout = -1;
-
-				string credentials = String.Format("{0}:{1}", _loginInfo.Token, "X");
-				byte[] bytes = Encoding.ASCII.GetBytes(credentials);
-				string base64 = Convert.ToBase64String(bytes);
-				string authorization = String.Concat("basic ", base64);
-				request.Headers.Add("Authorization", authorization);
-
-				WebResponse response = null;
 				try
 				{
-					response = request.GetResponse();
-				}
-				catch (WebException e)
-				{
-					if (e.Status == WebExceptionStatus.Timeout)
-					{
-						Thread.Sleep(TimeSpan.FromSeconds(secondsToWaitForRetry));
-						secondsToWaitForRetry *= 2;
-						continue;
-					}
-					throw;
-				}
-				secondsToWaitForRetry = 2;
-				using (var stream = response.GetResponseStream())
-				{
+					var stream = response.GetResponseStream();
 					var streamReader = new StreamReader(stream);
-					var str = streamReader.ReadLine();
-					if (str == null || str.Trim() == String.Empty)
+					while (true)
 					{
-						continue;
+						if ((DateTime.Now - dt).TotalSeconds > 15)
+						{
+							Debug.WriteLine("Before exception");
+							throw new WebException("Bah", WebExceptionStatus.Timeout);
+						}
+						Debug.WriteLine("After exception");
+
+						string line = streamReader.ReadLine();
+
+						Debug.WriteLine("Received line: " + line);
+						if (line == null || line.Trim() == String.Empty)
+						{
+							continue;
+						}
+
+						JsonReader reader = new JsonTextReader(new StringReader(line));
+
+						var serializer = new JsonSerializer();
+						var message = serializer.Deserialize<Message>(reader);
+
+						observer.OnNext(message);
 					}
-
-					JsonReader reader = new JsonTextReader(new StringReader(str));
-
-					var serializer = new JsonSerializer();
-					var message = serializer.Deserialize<Message>(reader);
-
-					yield return message;
+				}
+				finally
+				{
+					request.Abort();
 				}
 			}
-
 		}
 	}
 

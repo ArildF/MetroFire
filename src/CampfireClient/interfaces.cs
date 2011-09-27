@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reactive;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
@@ -21,6 +22,7 @@ namespace Rogue.MetroFire.CampfireClient
 		Message[] GetMessages(int id, int? sinceId = null);
 		Room GetRoom(int id);
 		User GetUser(int id);
+		IDisposable Stream(int id, Action<Message> action, Action<Exception> onError = null);
 	}
 
 

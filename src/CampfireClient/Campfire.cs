@@ -17,6 +17,9 @@ namespace Rogue.MetroFire.CampfireClient
 		private Room[] _rooms;
 		private Room[] _presentRooms;
 
+		private IDictionary<int, IDisposable> _currentStreamingRooms = new Dictionary<int, IDisposable>();
+		
+
 
 		public Campfire(IMessageBus bus, ICampfireApi api)
 		{
@@ -47,6 +50,29 @@ namespace Rogue.MetroFire.CampfireClient
 
 			_bus.Listen<RequestRoomInfoMessage>().SubscribeThreadPool(GetRoomInfo);
 			_bus.Listen<RequestUserInfoMessage>().SubscribeThreadPool(GetUserInfo);
+
+			_bus.Listen<RequestStartStreamingMessage>().SubscribeThreadPool(StartStreaming);
+		}
+
+		private void StartStreaming(RequestStartStreamingMessage obj)
+		{
+			lock (_currentStreamingRooms)
+			{
+				IDisposable d = _api.Stream(obj.RoomId,
+							msg => _bus.SendMessage(new MessagesReceivedMessage(obj.RoomId, new[] { msg }, null)),
+							ex =>
+							{
+								lock (_currentStreamingRooms)
+								{
+									if (_currentStreamingRooms.ContainsKey(obj.RoomId))
+									{
+										_currentStreamingRooms.Remove(obj.RoomId);
+									}
+								}
+								_bus.SendMessage(new ExceptionMessage(ex));
+							});
+				_currentStreamingRooms[obj.RoomId] = d;
+			}
 		}
 
 		private void GetUserInfo(RequestUserInfoMessage obj)

@@ -25,6 +25,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private int? _sinceMessageId;
 		private int _notificationCount;
 
+		private bool _streamingStarted = false;
+
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument)
 		{
 			_room = room;
@@ -49,12 +51,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			_bus.SendMessage(new RequestRecentMessagesMessage(room.Id));
 			_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
-
-			_bus.RegisterMessageSource(
-				Observable.Interval(TimeSpan.FromSeconds(20))
-					.Where(_ => _sinceMessageId != null)
-					.Select(_ => new RequestRecentMessagesMessage(_room.Id, _sinceMessageId))
-				);
 		}
 
 		private void HandleUsersUpdated(UsersUpdatedMessage obj)
@@ -94,6 +90,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private void HandleMessagesReceived(MessagesReceivedMessage obj)
 		{
+
 			var messages = obj.Messages.Where(msg => obj.SinceMessageId == null || msg.Id > _sinceMessageId).ToList();
 			foreach (var message in messages)
 			{
@@ -118,6 +115,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			if (!IsActive)
 			{
 				NotificationCount += count;
+			}
+			if (!_streamingStarted)
+			{
+				_bus.SendMessage(new RequestStartStreamingMessage(_room.Id));
+				_streamingStarted = true;
 			}
 		}
 

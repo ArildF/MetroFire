@@ -165,6 +165,16 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
+	public class RequestStartStreamingMessage
+	{
+		public int RoomId { get; private set; }
+
+		public RequestStartStreamingMessage(int roomId)
+		{
+			RoomId = roomId;
+		}
+	}
+
 
 	public class UserInfoReceivedMessage
 	{

@@ -4,17 +4,10 @@ using System.IO;
 using System.Net;
 using System.Reactive;
 using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Threading;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
-using Newtonsoft.Json.Linq;
 using Rogue.MetroFire.CampfireClient.Serialization;
  
 namespace Rogue.MetroFire.CampfireClient
@@ -313,8 +306,6 @@ namespace Rogue.MetroFire.CampfireClient
 			string authorization = String.Concat("basic ", base64);
 			request.Headers.Add("Authorization", authorization);
 
-			var dt = DateTime.Now;
-
 			Debug.WriteLine("Got response");
 
 			using (WebResponse response = request.GetResponse())
@@ -325,13 +316,6 @@ namespace Rogue.MetroFire.CampfireClient
 					var streamReader = new StreamReader(stream);
 					while (true)
 					{
-						if ((DateTime.Now - dt).TotalSeconds > 15)
-						{
-							Debug.WriteLine("Before exception");
-							throw new WebException("Bah", WebExceptionStatus.Timeout);
-						}
-						Debug.WriteLine("After exception");
-
 						string line = streamReader.ReadLine();
 
 						Debug.WriteLine("Received line: " + line);

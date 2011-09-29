@@ -216,4 +216,14 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
+	public class RequestKeepAliveMessage
+	{
+		public int RoomId { get; private set; }
+
+		public RequestKeepAliveMessage(int roomId)
+		{
+			RoomId = roomId;
+		}
+	}
+
 }

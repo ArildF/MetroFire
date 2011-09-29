@@ -51,6 +51,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			_bus.SendMessage(new RequestRecentMessagesMessage(room.Id));
 			_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
+
+			_bus.RegisterMessageSource(Observable.Interval(TimeSpan.FromMinutes(5)).Select(
+				_ => new RequestKeepAliveMessage(_room.Id)));
 		}
 
 		private void HandleUsersUpdated(UsersUpdatedMessage obj)
@@ -91,7 +94,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private void HandleMessagesReceived(MessagesReceivedMessage obj)
 		{
 
-			var messages = obj.Messages.Where(msg => obj.SinceMessageId == null || msg.Id > _sinceMessageId).ToList();
+			var messages = obj.Messages.Where(msg => _sinceMessageId == null || msg.Id > _sinceMessageId).ToList();
 			foreach (var message in messages)
 			{
 				var existingUser = Users.Select(u => u.User).FirstOrDefault(u => u.Id == message.UserId);

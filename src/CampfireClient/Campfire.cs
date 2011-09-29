@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Threading;
 using Castle.Core;
@@ -52,6 +53,13 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestUserInfoMessage>().SubscribeThreadPool(GetUserInfo);
 
 			_bus.Listen<RequestStartStreamingMessage>().SubscribeThreadPool(StartStreaming);
+			_bus.Listen<RequestKeepAliveMessage>().SubscribeThreadPool(KeepAlive);
+		}
+
+		private void KeepAlive(RequestKeepAliveMessage requestKeepAliveMessage)
+		{
+			Debug.WriteLine("Sending keepalive for room " + requestKeepAliveMessage.RoomId);
+			CallApi(() => _api.Join(requestKeepAliveMessage.RoomId), _ => {});
 		}
 
 		private void StartStreaming(RequestStartStreamingMessage obj)

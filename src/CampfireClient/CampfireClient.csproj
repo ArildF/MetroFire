@@ -84,6 +84,7 @@
     <Compile Include="messages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\serializationclasses.cs" />
+    <Compile Include="StreamingDisconnectedException.cs" />
     <Compile Include="WebClientWithTimeout.cs">
       <SubType>Component</SubType>
     </Compile>

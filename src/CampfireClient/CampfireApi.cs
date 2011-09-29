@@ -287,7 +287,7 @@ namespace Rogue.MetroFire.CampfireClient
 					}
 				});
 				return () => { };
-			}).Catch<Message, WebException>(ex => Observable.Return(Unit.Default)
+			}).Catch<Message, StreamingDisconnectedException>(ex => Observable.Return(Unit.Default)
 					.Delay(TimeSpan.FromSeconds(2)).SelectMany(_ => CreateStreamingObservable(id)));
 
 		}
@@ -318,8 +318,12 @@ namespace Rogue.MetroFire.CampfireClient
 					{
 						string line = streamReader.ReadLine();
 
-						Debug.WriteLine("Received line: " + line);
-						if (line == null || line.Trim() == String.Empty)
+						Debug.WriteLine("Received line: " + (line ?? "<null>"));
+						if (line == null)
+						{
+							throw new StreamingDisconnectedException();
+						}
+						if (line.Trim() == String.Empty)
 						{
 							continue;
 						}

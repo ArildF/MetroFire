@@ -23,6 +23,7 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		EnterMessage,
 		LeaveMessage,
 		PasteMessage,
+		UploadMessage,
 		AdvertisementMessage
 
 	}
@@ -105,6 +106,34 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 
 		[XmlElement("admin")]
 		public bool Admin { get; set; }
+	}
+
+	[XmlType("upload")]
+	public class Upload
+	{
+		[XmlElement("byte-size")]
+		public int ByteSize { get; set; }
+
+		[XmlElement("content-type")]
+		public string ContentType { get; set; }
+
+		[XmlElement("name")]
+		public string Name { get; set; }
+
+		[XmlElement("created-at")]
+		public DateTime CreatedAt { get; set; }
+
+		[XmlElement("id")]
+		public int Id { get; set; }
+
+		[XmlElement("room-id")]
+		public int RoomId { get; set; }
+
+		[XmlElement("user-id")]
+		public int UserId { get; set; }
+
+		[XmlElement("full-url")]
+		public string FullUrl { get; set; }
 	}
 
 	[XmlType("message")]

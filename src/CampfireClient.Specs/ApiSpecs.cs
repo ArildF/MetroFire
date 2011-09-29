@@ -212,4 +212,51 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static User _user;
 		private static int? _userId;
 	}
+
+	//public class When_uploading_file : ApiContext
+	//{
+	//    Establish context = () =>
+	//        {
+	//            var roomId = FindJoinedRoom();
+	//            var messages = api.
+	//        }
+	//}
+
+	public class When_retrieving_upload : ApiContext
+	{
+		Establish context = () =>
+			{
+				_uploadMessageId = EnsureUpload();
+			};
+
+
+
+		private static int EnsureUpload()
+		{
+			_roomId = FindJoinedRoom();
+
+			var messages = api.GetMessages(_roomId);
+			return messages.Where(msg => msg.Type == MessageType.UploadMessage).Select(msg => msg.Id).First();
+		}
+
+		Because of = () => _upload = api.GetUpload(_roomId, _uploadMessageId);
+
+		It should_exist = () => _upload.ShouldNotBeNull();
+
+		It should_have_a_full_url = () => _upload.FullUrl.ShouldNotBeNull();
+
+		It should_have_time_stamp = () => _upload.CreatedAt.ShouldNotEqual(DateTime.MinValue);
+
+		It should_have_room_id = () => _upload.RoomId.ShouldNotEqual(0);
+
+		It should_have_user_id = () => _upload.UserId.ShouldNotEqual(0);
+
+		It should_have_content_type = () => _upload.ContentType.ShouldNotBeNull();
+
+		It should_have_name = () => _upload.Name.ShouldNotBeNull();
+		private static int _uploadMessageId;
+		private static Upload _upload;
+		private static int _roomId;
+	}
+
 }

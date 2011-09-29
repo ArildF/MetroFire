@@ -22,8 +22,15 @@ namespace Rogue.MetroFire.UI.Views
 					{MessageType.LeaveMessage, FormatLeaveMessage},
 					{MessageType.KickMessage, FormatKickMessage},
 					{MessageType.PasteMessage, FormatPasteMessage},
-					{MessageType.EnterMessage, FormatEnterMessage}
+					{MessageType.EnterMessage, FormatEnterMessage},
+					{MessageType.UploadMessage, FormatUploadMessage}
+
 				};
+		}
+
+		private void FormatUploadMessage(Message msg, User user, Paragraph paragraph)
+		{
+			//paragraph.Inlines.Add();
 		}
 
 		public object AddMessage(Message message, User user)

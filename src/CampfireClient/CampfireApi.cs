@@ -21,11 +21,12 @@ namespace Rogue.MetroFire.CampfireClient
 
 		public CampfireApi()
 		{
-			var serializers = XmlSerializer.FromTypes(new[] {typeof (Room), typeof (User), typeof (Account), typeof(Message)});
+			var serializers = XmlSerializer.FromTypes(new[] {typeof (Room), typeof (User), typeof (Account), typeof(Message), typeof(Upload)});
 			_xmlSerializers[new SerializerEntry(typeof (Room))] = serializers[0];
 			_xmlSerializers[new SerializerEntry(typeof (User))] = serializers[1];
 			_xmlSerializers[new SerializerEntry(typeof (Account))] = serializers[2];
 			_xmlSerializers[new SerializerEntry(typeof (Message))] = serializers[3];
+			_xmlSerializers[new SerializerEntry(typeof (Upload))] = serializers[4];
 
 			_xmlSerializers[new SerializerEntry("messages", typeof(Message[]))] = 
 				new XmlSerializer(typeof(Message[]), new XmlRootAttribute("messages"));
@@ -90,6 +91,12 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			var relativeUri = String.Format("users/{0}.xml", userId);
 			return Get<User>(relativeUri);
+		}
+
+		public Upload GetUpload(int roomId, int uploadMessageId)
+		{
+			var relativeUri = String.Format("room/{0}/messages/{1}/upload.xml", roomId, uploadMessageId);
+			return Get<Upload>(relativeUri);
 		}
 
 		public Message[] GetMessages(int id, int? sinceId = null)

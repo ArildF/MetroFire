@@ -179,6 +179,27 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static RoomInfoReceivedMessage _roomInfoReceivedMessage;
 	}
 
+	public class When_sending_a_request_upload_message : CampfireContextBase
+	{
+		Establish context = () =>
+			{
+				_upload = new Upload();
+
+				_api.WhenToldTo(a => a.GetUpload(42, 96)).Return(_upload);
+
+				_bus.Listen<UploadReceivedMessage>().Subscribe(msg => _uploadReceivedMessage = msg);
+			};
+
+		Because of = () => _bus.SendMessage(new RequestUploadMessage(42, 96));
+
+		It should_send_upload_received_message = () => _uploadReceivedMessage.ShouldNotBeNull();
+		It should_send_the_upload = () => _uploadReceivedMessage.Upload.ShouldBeTheSameAs(_upload);
+
+		private static Upload _upload;
+		private static UploadReceivedMessage _uploadReceivedMessage;
+	}
+
+
 	public class When_sending_a_user_information_message : CampfireContextBase
 	{
 		private Establish context = () =>

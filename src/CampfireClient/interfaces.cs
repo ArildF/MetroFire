@@ -23,6 +23,7 @@ namespace Rogue.MetroFire.CampfireClient
 		Room GetRoom(int id);
 		User GetUser(int id);
 		IDisposable Stream(int id, Action<Message> action, Action<Exception> onError = null);
+		Upload GetUpload(int roomId, int uploadMessageId);
 	}
 
 

@@ -54,6 +54,14 @@ namespace Rogue.MetroFire.CampfireClient
 
 			_bus.Listen<RequestStartStreamingMessage>().SubscribeThreadPool(StartStreaming);
 			_bus.Listen<RequestKeepAliveMessage>().SubscribeThreadPool(KeepAlive);
+			_bus.Listen<RequestUploadMessage>().SubscribeThreadPool(RequestUpload);
+		}
+
+		private void RequestUpload(RequestUploadMessage obj)
+		{
+			CallApi(() => _api.GetUpload(obj.RoomId, obj.MessageId),
+					upload => _bus.SendMessage(new UploadReceivedMessage(upload)));
+			
 		}
 
 		private void KeepAlive(RequestKeepAliveMessage requestKeepAliveMessage)

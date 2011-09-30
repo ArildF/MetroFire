@@ -69,7 +69,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private void RequestUpload(RequestUploadMessage obj)
 		{
 			CallApi(() => _api.GetUpload(obj.RoomId, obj.MessageId),
-					upload => _bus.SendMessage(new UploadReceivedMessage(upload)));
+					upload => _bus.SendMessage(new UploadReceivedMessage(upload, obj.Correlation)));
 			
 		}
 

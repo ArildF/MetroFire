@@ -231,6 +231,8 @@ namespace Rogue.MetroFire.CampfireClient
 		public int RoomId { get; set; }
 		public int MessageId { get; set; }
 
+		public readonly Guid Correlation = Guid.NewGuid();
+
 		public RequestUploadMessage(int roomId, int messageId)
 		{
 			RoomId = roomId;
@@ -240,12 +242,13 @@ namespace Rogue.MetroFire.CampfireClient
 
 	public class UploadReceivedMessage
 	{
-
 		public Upload Upload { get; private set; }
+		public Guid Correlation { get; set; }
 
-		public UploadReceivedMessage(Upload upload)
+		public UploadReceivedMessage(Upload upload, Guid correlation)
 		{
 			Upload = upload;
+			Correlation = correlation;
 		}
 	}
 

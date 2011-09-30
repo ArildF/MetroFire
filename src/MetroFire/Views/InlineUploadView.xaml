@@ -8,7 +8,7 @@
 	<UserControl.Resources>
 		<DataTemplate DataType="{x:Type ViewModels:InlineImageViewModel}">
 			<StackPanel>
-				<TextBlock>
+				<TextBlock ToolTip="{Binding FullUrl}">
 					<Hyperlink NavigateUri="{Binding FullUrl}">
 						<Run Text="{Binding Name, Mode=OneWay}"/>
 					</Hyperlink>
@@ -16,6 +16,23 @@
 				<Image Source="{Binding Path=File, IsAsync=True}" MaxHeight="200"/>
 			</StackPanel>
 		</DataTemplate>
+		
+		<DataTemplate DataType="{x:Type ViewModels:FileViewModel}">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<Border BorderBrush="{x:Null}" BorderThickness="0" Background="{DynamicResource documentopen}" Width="50" Height="50"/>
+				<TextBlock Grid.Row="1" ToolTip="{Binding FullUrl}">
+					<Hyperlink NavigateUri="{Binding FullUrl}">
+						<Run Text="{Binding Name, Mode=OneWay}"/>
+					</Hyperlink>
+				</TextBlock>
+			</Grid>
+			
+		</DataTemplate>
+
 	</UserControl.Resources>
 	<ContentControl Content="{Binding Data}"/>
 </UserControl>

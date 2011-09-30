@@ -15,9 +15,10 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			_bus = bus;
 
-			_bus.Listen<UploadReceivedMessage>().Where(msg => msg.Upload.RoomId == message.RoomId)
+			var requestUploadMessage = new RequestUploadMessage(message.RoomId, message.Id);
+			_bus.Listen<UploadReceivedMessage>().Where(msg => msg.Correlation == requestUploadMessage.Correlation)
 				.SubscribeUI(UploadReceived);
-			_bus.SendMessage(new RequestUploadMessage(message.RoomId, message.Id));
+			_bus.SendMessage(requestUploadMessage);
 		}
 
 		public object Data
@@ -28,32 +29,30 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private void UploadReceived(UploadReceivedMessage uploadReceivedMessage)
 		{
-			Data = new InlineImageViewModel(uploadReceivedMessage.Upload, _bus);
+			var upload = uploadReceivedMessage.Upload;
+			if (upload.ContentType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
+			{
+				Data = new InlineImageViewModel(uploadReceivedMessage.Upload, _bus);
+			}
+			else
+			{
+				Data = new FileViewModel(upload);
+			}
 		}
 	}
 
-	public class InlineImageViewModel : ReactiveObject
+	public class FileViewModel : ReactiveObject
 	{
 		private readonly Upload _upload;
-		private string _file;
-		private bool _isEnabled;
 
-		public InlineImageViewModel(Upload upload, IMessageBus bus)
+		public FileViewModel(Upload upload)
 		{
 			_upload = upload;
-
-			bus.Listen<FileDownloadedMessage>().Where(msg => msg.Url == _upload.FullUrl)
-				.SubscribeUI(msg => File = msg.File);
-			bus.SendMessage(new RequestDownloadFileMessage(_upload.FullUrl));
 		}
 
-		public string File
+		protected Upload Upload
 		{
-			get { return _file; }
-			private set
-			{
-				this.RaiseAndSetIfChanged(vm => vm.File, ref _file, value);
-			}
+			get { return _upload; }
 		}
 
 		public string FullUrl
@@ -65,8 +64,26 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			get { return _upload.Name; }
 		}
+	}
 
-		
+	public class InlineImageViewModel : FileViewModel
+	{
+		private string _file;
 
+		public InlineImageViewModel(Upload upload, IMessageBus bus) : base(upload)
+		{
+			bus.Listen<FileDownloadedMessage>().Where(msg => msg.Url == Upload.FullUrl)
+				.SubscribeUI(msg => File = msg.File);
+			bus.SendMessage(new RequestDownloadFileMessage(Upload.FullUrl));
+		}
+
+		public string File
+		{
+			get { return _file; }
+			private set
+			{
+				this.RaiseAndSetIfChanged(vm => vm.File, ref _file, value);
+			}
+		}
 	}
 }

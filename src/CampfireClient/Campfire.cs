@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Threading;
 using Castle.Core;
@@ -55,6 +56,14 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestStartStreamingMessage>().SubscribeThreadPool(StartStreaming);
 			_bus.Listen<RequestKeepAliveMessage>().SubscribeThreadPool(KeepAlive);
 			_bus.Listen<RequestUploadMessage>().SubscribeThreadPool(RequestUpload);
+			_bus.Listen<RequestDownloadFileMessage>().SubscribeThreadPool(RequestDownloadFile);
+		}
+
+		private void RequestDownloadFile(RequestDownloadFileMessage obj)
+		{
+			var tempPath = Path.GetTempFileName();
+			CallApi(() => _api.DownloadFile(obj.Url, tempPath), 
+				_ => _bus.SendMessage(new FileDownloadedMessage(obj.Url, tempPath)));
 		}
 
 		private void RequestUpload(RequestUploadMessage obj)

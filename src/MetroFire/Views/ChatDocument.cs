@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive.Linq;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.UI.Views
 {
 	public class ChatDocument : FlowDocument, IChatDocument
 	{
+		private readonly IInlineUploadViewFactory _factory;
+		private readonly IWebBrowser _browser;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
 			
 
-		public ChatDocument()
+		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser)
 		{
+			_factory = factory;
+			_browser = browser;
 			_handlers = new Dictionary<MessageType, Action<Message, User, Paragraph>>
 				{
 					{MessageType.TextMessage, FormatUserMessage},
@@ -26,11 +31,28 @@ namespace Rogue.MetroFire.UI.Views
 					{MessageType.UploadMessage, FormatUploadMessage}
 
 				};
+
+
+			AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(NavigateToLink));
+		}
+
+		private void NavigateToLink(object sender, RequestNavigateEventArgs requestNavigateEventArgs)
+		{
+			_browser.NavigateTo(requestNavigateEventArgs.Uri);
 		}
 
 		private void FormatUploadMessage(Message msg, User user, Paragraph paragraph)
 		{
-			//paragraph.Inlines.Add();
+			var vm = _factory.Create(msg);
+			var view = _factory.Create(vm);
+
+			RenderUserString(user, paragraph);
+
+			paragraph.Inlines.Add(new LineBreak());
+			
+			paragraph.Inlines.Add(new LineBreak());
+
+			paragraph.Inlines.Add(view.Element);
 		}
 
 		public object AddMessage(Message message, User user)
@@ -80,10 +102,15 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void FormatUserMessage(Message message, User user, Paragraph paragraph)
 		{
+			RenderUserString(user, paragraph);
+			paragraph.Inlines.Add(message.Body);
+		}
+
+		private static void RenderUserString(User user, Paragraph paragraph)
+		{
 			var name = FormatUserName(user);
 
 			paragraph.Inlines.Add(name + ": ");
-			paragraph.Inlines.Add(message.Body);
 		}
 
 		private static string FormatUserName(User user)
@@ -120,4 +147,5 @@ namespace Rogue.MetroFire.UI.Views
 			handler(message, user, paragraph);
 		}
 	}
+
 }

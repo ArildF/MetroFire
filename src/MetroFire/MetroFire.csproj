@@ -76,12 +76,14 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive">
       <HintPath>..\packages\Rx_Experimental-Main.1.1.10621\lib\Net4\System.Reactive.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\packages\Rx_Experimental-Xaml.1.1.10621\lib\Net4\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -112,6 +114,7 @@
     <Compile Include="Infrastructure\CampfireLog.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\UserCache.cs" />
+    <Compile Include="Infrastructure\WebBrowser.cs" />
     <Compile Include="Infrastructure\WpfExtensions.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="messages.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml.cs">
       <DependentUpon>SampleRoomViewModel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\InlineUploadViewModel.cs" />
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\LogViewModel.cs" />
@@ -138,6 +142,9 @@
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\ChatDocument.cs" />
+    <Compile Include="Views\InlineUploadView.xaml.cs">
+      <DependentUpon>InlineUploadView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LobbyButton.xaml.cs">
       <DependentUpon>LobbyButton.xaml</DependentUpon>
     </Compile>
@@ -211,6 +218,10 @@
     <Page Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\InlineUploadView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LobbyButton.xaml">
       <Generator>MSBuild:Compile</Generator>

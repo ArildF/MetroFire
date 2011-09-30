@@ -249,4 +249,26 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
+	public class RequestDownloadFileMessage
+	{
+		public string Url { get; private set; }
+
+		public RequestDownloadFileMessage(string url)
+		{
+			Url = url;
+		}
+	}
+
+	public class FileDownloadedMessage
+	{
+		public string Url { get; private set; }
+		public string File { get; private set; }
+
+		public FileDownloadedMessage(string url, string file)
+		{
+			Url = url;
+			File = file;
+		}
+	}
+
 }

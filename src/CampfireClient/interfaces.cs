@@ -24,6 +24,7 @@ namespace Rogue.MetroFire.CampfireClient
 		User GetUser(int id);
 		IDisposable Stream(int id, Action<Message> action, Action<Exception> onError = null);
 		Upload GetUpload(int roomId, int uploadMessageId);
+		Unit DownloadFile(string uri, string destination);
 	}
 
 

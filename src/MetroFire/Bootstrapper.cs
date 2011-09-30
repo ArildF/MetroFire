@@ -29,6 +29,7 @@ namespace Rogue.MetroFire.UI
 			_container.Install(FromAssembly.Containing<RequestLoginMessage>());
 
 
+			_container.Register(Component.For<IInlineUploadView>().LifestyleTransient().ImplementedBy<InlineUploadView>());
 			_container.Register(
 				AllTypes.FromThisAssembly().Where(t => t.Namespace == typeof (RoomModuleViewModel).Namespace).
 					WithServiceAllInterfaces().LifestyleTransient());
@@ -36,6 +37,7 @@ namespace Rogue.MetroFire.UI
 			_container.Register(Component.For<IChatDocument>().ImplementedBy<ChatDocument>().LifestyleTransient());
 			_container.Register(Component.For<IMessageBus>().ImplementedBy<MessageBus>());
 			_container.Register(Component.For<IRoomModuleViewModelFactory>().AsFactory());
+			_container.Register(Component.For<IInlineUploadViewFactory>().AsFactory());
 			_container.Register(AllTypes.FromThisAssembly().Pick().WithServiceAllInterfaces());
 
 			_container.Register(Component.For<IWindsorContainer>().Instance(_container));

@@ -71,6 +71,10 @@ namespace Rogue.MetroFire.UI
 	{
 	}
 
+	public interface IInlineUploadViewModel
+	{
+	}
+
 	public interface ILogViewModel
 	{
 		bool IsActive { get; set; }
@@ -109,5 +113,22 @@ namespace Rogue.MetroFire.UI
 	public interface IRoomModuleViewModelFactory
 	{
 		IRoomModuleViewModel Create(Room room);
+	}
+
+	public interface IInlineUploadView
+	{
+		UIElement Element { get; }
+
+	}
+
+	public interface IInlineUploadViewFactory
+	{
+		IInlineUploadViewModel Create(Message message);
+		IInlineUploadView Create(IInlineUploadViewModel vm);
+	}
+
+	public interface IWebBrowser
+	{
+		void NavigateTo(Uri uri);
 	}
 }

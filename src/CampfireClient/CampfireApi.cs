@@ -18,6 +18,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private LoginInfo _loginInfo;
 		private readonly IDictionary<SerializerEntry, XmlSerializer> _xmlSerializers = new Dictionary<SerializerEntry, XmlSerializer>();
 		private static int _defaultTimeout;
+		private string _cookie;
 
 		public CampfireApi()
 		{
@@ -99,6 +100,14 @@ namespace Rogue.MetroFire.CampfireClient
 			return Get<Upload>(relativeUri);
 		}
 
+		public Unit DownloadFile(string uri, string destination)
+		{
+			var client = CreateClient();
+			client.DownloadFile(uri, destination);
+
+			return Unit.Default;
+		}
+
 		public Message[] GetMessages(int id, int? sinceId = null)
 		{
 			var uri = String.Format("room/{0}/recent.xml", id);
@@ -133,6 +142,11 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			var uri = FormatUri(relativeUri);
 			var request = CreateRequest(uri);
+
+			//if (_cookie != null)
+			//{
+			//    request.Headers.Add("Cookie", _cookie);
+			//}
 
 			if (data != null)
 			{
@@ -174,6 +188,11 @@ namespace Rogue.MetroFire.CampfireClient
 
 			request.ContentType = "application/xml";
 
+			if (_cookie != null)
+			{
+				request.Headers.Add("Cookie", _cookie);
+			}
+
 			return request;
 		}
 
@@ -201,6 +220,8 @@ namespace Rogue.MetroFire.CampfireClient
 
 			var xml = client.DownloadString(uri);
 
+			_cookie = client.ResponseHeaders["set-cookie"];
+
 			var serializer = GetSerializer<T>(root);
 
 			return (T) serializer.Deserialize(new StringReader(xml));
@@ -216,6 +237,10 @@ namespace Rogue.MetroFire.CampfireClient
 		private WebClient CreateClient()
 		{
 			var client = new WebClientWithTimeout {Credentials = CreateCredentials(), Proxy = null, Timeout = _defaultTimeout};
+			if (_cookie != null)
+			{
+				client.Headers.Add("Cookie", _cookie);
+			}
 			return client;
 		}
 

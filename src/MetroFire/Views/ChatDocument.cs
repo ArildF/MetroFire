@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
@@ -14,6 +16,9 @@ namespace Rogue.MetroFire.UI.Views
 		private readonly IInlineUploadViewFactory _factory;
 		private readonly IWebBrowser _browser;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
+
+		private static readonly Regex UrlDetector = new
+			Regex(@"((?:http|https|ftp)\://(?:[a-zA-Z0-9\.\-]+(?:\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?(?:(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(?:[a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(?:\:[0-9]+)?(?:/[^/][a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$#\=~_\-@]*)*)");
 			
 
 		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser)
@@ -103,7 +108,34 @@ namespace Rogue.MetroFire.UI.Views
 		private void FormatUserMessage(Message message, User user, Paragraph paragraph)
 		{
 			RenderUserString(user, paragraph);
-			paragraph.Inlines.Add(message.Body);
+
+			var inline = RenderUserMessage(message.Body);
+			paragraph.Inlines.Add(inline);
+		}
+
+		private Inline RenderUserMessage(string body)
+		{
+			string[] results = UrlDetector.Split(body);
+			if (results.Length == 1)
+			{
+				return new Run(body);
+			}
+
+			var span = new Span();
+			foreach (var result in results)
+			{
+				if (UrlDetector.IsMatch(result))
+				{
+					var hyperlink = new Hyperlink(new Run(result)){NavigateUri = new Uri(result)};
+					ToolTipService.SetToolTip(hyperlink, result);
+					span.Inlines.Add(hyperlink);
+				}
+				else
+				{
+					span.Inlines.Add(result);
+				}
+			}
+			return span;
 		}
 
 		private static void RenderUserString(User user, Paragraph paragraph)

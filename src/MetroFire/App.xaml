@@ -245,6 +245,7 @@
 		</ControlTemplate>
 
 
+		<!--http://xamalot.com/asset/41847408-4a60-4da3-95dd-c1db9b4e70a5-->
 		<SolidColorBrush x:Key="Brush1" Color="#1D729FCF" ></SolidColorBrush>
 		<SolidColorBrush x:Key="Brush2" Color="#94FFFFFF" ></SolidColorBrush>
 		<Pen x:Key="Pen1" Brush="#1D000000" Thickness="1.000" StartLineCap="Round" EndLineCap="Round" DashCap="Round" LineJoin="Round" MiterLimit="4" ></Pen>

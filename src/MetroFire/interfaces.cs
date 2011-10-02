@@ -131,4 +131,9 @@ namespace Rogue.MetroFire.UI
 	{
 		void NavigateTo(Uri uri);
 	}
+
+	public interface IImageView
+	{
+		bool? ShowDialog();
+	}
 }

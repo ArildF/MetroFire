@@ -13,7 +13,13 @@
 						<Run Text="{Binding Name, Mode=OneWay}"/>
 					</Hyperlink>
 				</TextBlock>
-				<Image Source="{Binding Path=File, IsAsync=True}" MaxHeight="200"/>
+				<Button Command="{Binding ShowFullSizeImageCommand}" Cursor="Hand">
+					<Button.Template>
+						<ControlTemplate>
+							<Image Source="{Binding Path=File, IsAsync=True}" MaxHeight="200"/>
+						</ControlTemplate>
+					</Button.Template>
+				</Button>
 			</StackPanel>
 		</DataTemplate>
 		

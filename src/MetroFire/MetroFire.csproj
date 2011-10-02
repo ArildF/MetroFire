@@ -142,6 +142,9 @@
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\ChatDocument.cs" />
+    <Compile Include="Views\ImageView.xaml.cs">
+      <DependentUpon>ImageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\InlineUploadView.xaml.cs">
       <DependentUpon>InlineUploadView.xaml</DependentUpon>
     </Compile>
@@ -218,6 +221,10 @@
     <Page Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ImageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InlineUploadView.xaml">
       <SubType>Designer</SubType>

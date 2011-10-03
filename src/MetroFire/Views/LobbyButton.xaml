@@ -117,7 +117,10 @@
 								</TextBlock>
 							</Grid>
 							<local:ProgressIndicator x:Name="progressIndicator" Margin="0" d:LayoutOverrides="Width, Height" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden"/>
-							<TextBlock x:Name="textBlock" Style="{DynamicResource MetroBodyText}" Text="Joining room" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden"/>
+							<TextBlock x:Name="textBlock" Style="{DynamicResource MetroBodyText}" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
+								<Run >Joining</Run><Run Text=" "/><Run Text="{Binding Name, Mode=OneWay}"/>
+							</TextBlock>
+							
 						</Grid>	
 						
 					</Border>

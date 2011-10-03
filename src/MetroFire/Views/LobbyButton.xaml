@@ -97,7 +97,7 @@
 						</Border.RenderTransform>
 						
 						<Grid  TextBlock.Foreground="#FFD8D8D8" x:Name="_grid">
-							<Grid x:Name="grid">
+							<Grid x:Name="grid" SnapsToDevicePixels="True">
 								<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="0.787*"/>
 									<ColumnDefinition Width="0.213*"/>
@@ -108,13 +108,15 @@
 									<RowDefinition Height="0.542*"/>
 									<RowDefinition Height="0.152*"/>
 								</Grid.RowDefinitions>
-								<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" Style="{DynamicResource TileLargeHeader}" VerticalAlignment="Center" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
 								<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Topic}" VerticalAlignment="Center" Grid.Row="2" Style="{DynamicResource MetroBodyText}" Margin="10,0" FontSize="12" Grid.ColumnSpan="4"/>
 								<TextBlock HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="{Binding Notifications}" d:LayoutOverrides="Height" Grid.Column="1" Grid.Row="11" FontSize="14.667">
 									<TextBlock.Foreground>
 										<SolidColorBrush Color="{DynamicResource MetroYellow}"/>
 									</TextBlock.Foreground>
 								</TextBlock>
+								<Viewbox Height="Auto" Width="Auto" Margin="2,0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+									<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Style="{DynamicResource TileLargeHeader}" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Name}"></TextBlock>
+								</Viewbox>
 							</Grid>
 							<local:ProgressIndicator x:Name="progressIndicator" Margin="0" d:LayoutOverrides="Width, Height" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden"/>
 							<TextBlock x:Name="textBlock" Style="{DynamicResource MetroBodyText}" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">

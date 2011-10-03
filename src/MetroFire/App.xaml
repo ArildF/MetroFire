@@ -9,8 +9,23 @@
     	<SampleData:SampleMainViewModel x:Key="SampleMainViewModel" d:IsDataSource="True"/>
          
     	<SampleData1:SampleLobbyViewModel x:Key="SampleLobbyViewModel" d:IsDataSource="True"/>
-         
-    	<Style x:Key="SmallMetroHeading" TargetType="{x:Type TextBlock}">
+
+		<Style x:Key="TileLargeHeader" TargetType="{x:Type TextBlock}">
+			<Setter Property="TextWrapping" Value="NoWrap"/>
+			<Setter Property="TextTrimming" Value="None"/>
+			<Setter Property="FontSize" Value="32"/>
+			<Setter Property="FontWeight" Value="Light"/>
+		</Style>
+		<Style x:Key="MetroBodyText" TargetType="{x:Type TextBlock}">
+			<Setter Property="TextWrapping" Value="NoWrap"/>
+			<Setter Property="TextTrimming" Value="None"/>
+			<Setter Property="FontSize" Value="14.667"/>
+			<Setter Property="FontWeight" Value="Light"/>
+		</Style>
+
+		<Color x:Key="MetroYellow">Yellow</Color>
+
+		<Style x:Key="SmallMetroHeading" TargetType="{x:Type TextBlock}">
     		<Setter Property="FontSize" Value="18pt"/>
     		<Setter Property="FontWeight" Value="SemiBold"/>
     	</Style>

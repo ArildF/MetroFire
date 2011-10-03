@@ -158,6 +158,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _room.Name; }
 		}
 
+		public string Topic
+		{
+			get { return _room.Topic; }
+		}
+
 		public bool IsActive
 		{
 			get { return _isActive; }

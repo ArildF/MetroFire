@@ -104,6 +104,48 @@ namespace Expression.Blend.SampleData.SampleRoomViewModel
 				}
 			}
 		}
+
+		private string _RoomName = string.Empty;
+
+		public string RoomName
+		{
+			get
+			{
+				return this._RoomName;
+			}
+
+			set
+			{
+				if (this._RoomName != value)
+				{
+					this._RoomName = value;
+					this.OnPropertyChanged("RoomName");
+				}
+			}
+		}
+
+		private string _Topic = string.Empty;
+
+		public string Topic
+		{
+			get
+			{
+				return this._Topic;
+			}
+
+			set
+			{
+				if (this._Topic != value)
+				{
+					this._Topic = value;
+					this.OnPropertyChanged("Topic");
+				}
+			}
+		}
+	}
+
+	public class Users : System.Collections.ObjectModel.ObservableCollection<UsersItem>
+	{ 
 	}
 
 	public class UsersItem : System.ComponentModel.INotifyPropertyChanged
@@ -155,10 +197,6 @@ namespace Expression.Blend.SampleData.SampleRoomViewModel
 				}
 			}
 		}
-	}
-
-	public class Users : System.Collections.ObjectModel.ObservableCollection<UsersItem>
-	{ 
 	}
 #endif
 }

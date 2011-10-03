@@ -4,7 +4,7 @@
       changes to this file can cause errors.
 -->
 <SampleData:SampleRoomViewModel xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SampleRoomViewModel" 
-	UserMessage="Type your message here or paste/drop files" UserEditingMessage="True" UserEditedMessage="Class aliquam">
+	UserMessage="Type your message here or paste/drop files" UserEditingMessage="True" UserEditedMessage="Class aliquam" RoomName="Cras duis aliquam" Topic="Class maecenas curae">
 	<SampleData:SampleRoomViewModel.Users>
 		<SampleData:UsersItem Name="Arild" IsAdmin="True"/>
 		<SampleData:UsersItem Name="User 1" IsAdmin="False"/>

@@ -5,7 +5,7 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors" mc:Ignorable="d" 
-			 d:DesignHeight="539" d:DesignWidth="700" d:DataContext="{Binding Source={StaticResource SampleRoomViewModel}}" Padding="5">
+			 d:DesignHeight="539" d:DesignWidth="700" d:DataContext="{Binding Source={StaticResource SampleRoomViewModel}}" Padding="5" Background="White">
 	<UserControl.Resources>
 		
 		<DataTemplate x:Key="_userListBoxItemsTemplate">
@@ -40,8 +40,8 @@
 			<RowDefinition Height="58.1"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="0.833*"/>
-			<ColumnDefinition Width="120.2"/>
+			<ColumnDefinition/>
+			<ColumnDefinition Width="149"/>
 		</Grid.ColumnDefinitions>
 		<Button Content="Post" Grid.Column="1" Style="{DynamicResource MetroBigButton}" 
 				Command="{Binding PostMessageCommand}" Margin="0" Grid.Row="1" Padding="0"/>
@@ -56,11 +56,21 @@
 				
 			</TextBox.Triggers>
 		</TextBox>
-		<ListBox ItemsSource="{Binding Users}" ItemTemplate="{DynamicResource _userListBoxItemsTemplate}" Grid.Column="1"/>
 		<FlowDocumentScrollViewer Background="White" BorderThickness="0" x:Name="_chatViewer" Document="{Binding ChatDocument}">
 			<i:Interaction.Behaviors>
 				<Behaviors:StayScrolledToEndBehavior/>
 			</i:Interaction.Behaviors>
 		</FlowDocumentScrollViewer>
+		<Grid Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="0.367*"/>
+				<RowDefinition Height="0.633*"/>
+			</Grid.RowDefinitions>
+			<ListBox ItemsSource="{Binding Users}" ItemTemplate="{DynamicResource _userListBoxItemsTemplate}" Margin="5,0,0,0" BorderBrush="Black" BorderThickness="0,0,0,1"/>
+			<StackPanel Margin="5,0,0,0" Grid.Row="1">
+				<TextBlock TextWrapping="WrapWithOverflow" Style="{DynamicResource MetroBlueCaption}" Text="{Binding RoomName}"/>
+				<TextBlock TextWrapping="Wrap" Text="{Binding Topic}" HorizontalAlignment="Left" Style="{DynamicResource MetroBodyText}"/>
+			</StackPanel>
+		</Grid>
 	</Grid>
 </UserControl>

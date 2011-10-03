@@ -37,6 +37,7 @@ namespace Rogue.MetroFire.UI.Views
 
 				};
 
+			FontSize = 14;
 
 			AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(NavigateToLink));
 		}

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Windows;
 using ReactiveUI;
 
 namespace Rogue.MetroFire.UI
@@ -21,6 +23,22 @@ namespace Rogue.MetroFire.UI
 						if (disposable != null) disposable.Dispose();
 					}
 				);
+		}
+
+		public static IObservable<Unit> GetDeactivated(this Application application)
+		{
+			return Observable.FromEventPattern((EventHandler<EventArgs> ev) => new EventHandler(ev), 
+				ev => Application.Current.Deactivated += ev, 
+				ev => Application.Current.Deactivated -= ev)
+				.Select(_ => Unit.Default);
+		}
+
+		public static IObservable<Unit> GetActivated(this Application application)
+		{
+			return Observable.FromEventPattern((EventHandler<EventArgs> ev) => new EventHandler(ev),
+				ev => Application.Current.Activated += ev,
+				ev => Application.Current.Activated -= ev)
+				.Select(_ => Unit.Default);
 		}
 	}
 }

@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using ReactiveUI;
+using System.Reactive.Linq;
 
 namespace Rogue.MetroFire.UI
 {
@@ -11,7 +13,13 @@ namespace Rogue.MetroFire.UI
 		{
 			base.OnStartup(e);
 
-			var shellView = new Bootstrapper().Bootstrap();
+			var bootstrapper = new Bootstrapper();
+			var shellView = bootstrapper.Bootstrap();
+
+			var bus = bootstrapper.Resolve<IMessageBus>();
+
+			bus.RegisterMessageSource(this.GetActivated().Select(_ => new ApplicationActivatedMessage()));
+			bus.RegisterMessageSource(this.GetDeactivated().Select(_ => new ApplicationDeactivatedMessage()));
 
 			shellView.Window.Show();
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ReactiveUI;
@@ -32,6 +33,9 @@ namespace Rogue.MetroFire.UI.Views
 			DataContext = vm;
 
 			_bus.Listen<ActivateMainModuleMessage>().Subscribe(msg => ActivateMainModule(msg.ModuleName));
+
+
+			
 		}
 
 		private void ActivateMainModule(string moduleName)
@@ -53,6 +57,17 @@ namespace Rogue.MetroFire.UI.Views
 		private void TopOnMouseDown(object sender, MouseButtonEventArgs e)
 		{
 			DragMove();
+		}
+
+
+		protected override void OnGotFocus(RoutedEventArgs e)
+		{
+			base.OnGotFocus(e);
+		}
+
+		protected override void OnLostFocus(RoutedEventArgs e)
+		{
+			base.OnLostFocus(e);
 		}
 
 	}

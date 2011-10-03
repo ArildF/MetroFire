@@ -103,4 +103,7 @@ namespace Rogue.MetroFire.UI
 			Count = count;
 		}
 	}
+
+	public class ApplicationActivatedMessage{}
+	public class ApplicationDeactivatedMessage {}
 }

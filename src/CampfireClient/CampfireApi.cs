@@ -35,7 +35,7 @@ namespace Rogue.MetroFire.CampfireClient
 			_xmlSerializers[new SerializerEntry("rooms", typeof(Room[]))] = 
 				new XmlSerializer(typeof(Room[]), new XmlRootAttribute("rooms"));
 
-			_defaultTimeout = (int)TimeSpan.FromSeconds(15).TotalMilliseconds;
+			_defaultTimeout = (int)TimeSpan.FromSeconds(60).TotalMilliseconds;
 		}
 
 		public Account GetAccountInfo()

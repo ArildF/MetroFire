@@ -171,33 +171,37 @@ namespace Rogue.MetroFire.CampfireClient
 
 
 
-		private void CallApi<T>(Func<T> call, Action<T> continuation)
+		private void CallApi<T>(Func<T> call, Action<T> continuation, int attempt = 1)
 		{
 			// the lock is to serialize API calls
-			lock (_apiLock)
+			lock(_apiLock)
 			{
-				Exception lastException = null;
-				for (int i = 0; i < 3; i++)
+				Exception lastException;
+				try
 				{
-					try
-					{
-						var result = call();
-						continuation(result);
+					var result = call();
+					continuation(result);
 
+					return;
+				}
+				catch (TimeoutException ex)
+				{
+					lastException = ex;
+					_bus.SendMessage(new LogMessage(LogMessageType.Warning, "Call to Campfire API timed out. This is attempt #{0}",
+						                            attempt));
+					if (attempt < 10)
+					{
+						Thread.Sleep(TimeSpan.FromSeconds(2));
+						CallApi(call, continuation, attempt + 1);
 						return;
 					}
-					catch (TimeoutException ex)
-					{
-						lastException = ex;
-						_bus.SendMessage(new LogMessage(LogMessageType.Warning, "Call to Campfire API timed out. This is attempt #{0}",
-						                                i + 1));
-						Thread.Sleep(TimeSpan.FromSeconds(10*(i + 1)));
-					}
-					catch (WebException ex)
-					{
-						lastException = ex;
-						break;
-					}
+
+					_bus.SendMessage(LogMessageType.Error, "Call to Campfire API timed out for the last time. Giving up. Exception follows:");
+
+				}
+				catch (WebException ex)
+				{
+					lastException = ex;
 				}
 				_bus.SendMessage(new ExceptionMessage(lastException));
 			}

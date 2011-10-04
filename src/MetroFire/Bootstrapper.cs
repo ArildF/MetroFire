@@ -58,5 +58,10 @@ namespace Rogue.MetroFire.UI
 
 			return _container.Resolve<IShellWindow>();
 		}
+
+		public T Resolve<T>()
+		{
+			return _container.Resolve<T>();
+		}
 	}
 }

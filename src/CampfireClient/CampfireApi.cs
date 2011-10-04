@@ -185,6 +185,7 @@ namespace Rogue.MetroFire.CampfireClient
 			request.Method = "POST";
 			request.Proxy = null;
 			request.Timeout = _defaultTimeout;
+			request.KeepAlive = false;
 
 			request.ContentType = "application/xml";
 
@@ -338,19 +339,23 @@ namespace Rogue.MetroFire.CampfireClient
 			string authorization = String.Concat("basic ", base64);
 			request.Headers.Add("Authorization", authorization);
 
-			Debug.WriteLine("Got response");
+			Debug.WriteLine(String.Format("Streaming room id {0}. Received response", id));
 
 			using (WebResponse response = request.GetResponse())
 			{
 				try
 				{
 					var stream = response.GetResponseStream();
+					if (stream == null)
+					{
+						throw new StreamingDisconnectedException();
+					}
 					var streamReader = new StreamReader(stream);
 					while (true)
 					{
 						string line = streamReader.ReadLine();
 
-						Debug.WriteLine("Received line: " + (line ?? "<null>"));
+						Debug.WriteLine(String.Format("Streaming room id {0}. Received line: {1}", id, (line ?? "<null>")));
 						if (line == null)
 						{
 							throw new StreamingDisconnectedException();

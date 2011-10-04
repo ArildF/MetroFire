@@ -19,7 +19,9 @@ namespace Rogue.MetroFire.CampfireClient
 		private Room[] _rooms;
 		private Room[] _presentRooms;
 
-		private IDictionary<int, IDisposable> _currentStreamingRooms = new Dictionary<int, IDisposable>();
+		private Semaphore _apiSemaphore = new Semaphore(4, 4);
+
+		private readonly IDictionary<int, IDisposable> _currentStreamingRooms = new Dictionary<int, IDisposable>();
 		
 
 
@@ -167,43 +169,46 @@ namespace Rogue.MetroFire.CampfireClient
 				});
 		}
 
-		private readonly object _apiLock = new object();
-
-
-
-		private void CallApi<T>(Func<T> call, Action<T> continuation, int attempt = 1)
+		private void CallApi<T>(Func<T> call, Action<T> continuation)
 		{
-			// the lock is to serialize API calls
-			lock(_apiLock)
+			for (int i = 0; i < 10; i++)
 			{
-				Exception lastException;
+				_apiSemaphore.WaitOne();
 				try
 				{
-					var result = call();
-					continuation(result);
-
-					return;
-				}
-				catch (TimeoutException ex)
-				{
-					lastException = ex;
-					_bus.SendMessage(new LogMessage(LogMessageType.Warning, "Call to Campfire API timed out. This is attempt #{0}",
-						                            attempt));
-					if (attempt < 10)
+					Exception lastException;
+					try
 					{
-						Thread.Sleep(TimeSpan.FromSeconds(2));
-						CallApi(call, continuation, attempt + 1);
+						var result = call();
+						continuation(result);
+
 						return;
 					}
+					catch (TimeoutException ex)
+					{
+						lastException = ex;
+						_bus.SendMessage(new LogMessage(LogMessageType.Warning, "Call to Campfire API timed out. This is attempt #{0}",
+						                                i));
+						Thread.Sleep(TimeSpan.FromSeconds(2));
 
-					_bus.SendMessage(LogMessageType.Error, "Call to Campfire API timed out for the last time. Giving up. Exception follows:");
+						if (i == 9)
+						{
+							_bus.SendMessage(LogMessageType.Error,
+											 "Call to Campfire API timed out for the last time. Giving up. Exception follows:");
+						}
 
+					}
+					catch (WebException ex)
+					{
+						lastException = ex;
+					}
+					_bus.SendMessage(new ExceptionMessage(lastException));
 				}
-				catch (WebException ex)
+				finally
 				{
-					lastException = ex;
+					_apiSemaphore.Release();
 				}
-				_bus.SendMessage(new ExceptionMessage(lastException));
+
 			}
 		}
 

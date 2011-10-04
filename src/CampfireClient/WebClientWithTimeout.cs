@@ -19,6 +19,7 @@ namespace Rogue.MetroFire.CampfireClient
 			if (httpWebRequest != null)
 			{
 				httpWebRequest.Timeout = Timeout;
+				httpWebRequest.KeepAlive = false;
 			}
 
 			return request;

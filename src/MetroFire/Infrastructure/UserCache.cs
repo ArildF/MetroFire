@@ -12,7 +12,8 @@ namespace Rogue.MetroFire.UI.Infrastructure
 	public class UserCache : IStartable, IUserCache
 	{
 		private readonly IMessageBus _bus;
-		private HashSet<User> _users = new HashSet<User>(UserComparer.Instance);
+		private readonly HashSet<User> _users = new HashSet<User>(UserComparer.Instance);
+		private readonly HashSet<int> _pendingUserInformationRequests = new HashSet<int>();
 
 		public UserCache(IMessageBus bus)
 		{
@@ -27,7 +28,14 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 		private void UpdateFromUserInfoReceived(UserInfoReceivedMessage obj)
 		{
-			Update(obj.User);
+			lock (_pendingUserInformationRequests)
+			{
+				Update(obj.User);
+				if (_pendingUserInformationRequests.Contains(obj.User.Id))
+				{
+					_pendingUserInformationRequests.Remove(obj.User.Id);
+				}
+			}
 		}
 
 		private void UpdateFromRoomInfoReceived(RoomInfoReceivedMessage roomInfoReceivedMessage)
@@ -92,7 +100,16 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			{
 				if (existingUser == null)
 				{
-					_bus.SendMessage(new RequestUserInfoMessage(id));
+					lock (_pendingUserInformationRequests)
+					{
+						if (!_pendingUserInformationRequests.Contains(id))
+						{
+							_pendingUserInformationRequests.Add(id);
+
+							_bus.SendMessage(new RequestUserInfoMessage(id));
+						}
+						
+					}
 				}
 				else
 				{

@@ -178,6 +178,8 @@
 		
 		<Style TargetType="{x:Type ScrollBar}">
 			<Setter Property="Template" Value="{DynamicResource ScrollBarControlTemplate}"/>
+			<Setter Property="MinWidth" Value="10"/>
+			<Setter Property="Width" Value="10"/>
 			
 		</Style>
 		<ControlTemplate x:Key="ScrollBarControlTemplate" TargetType="{x:Type ScrollBar}">

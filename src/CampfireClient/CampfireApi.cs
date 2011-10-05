@@ -157,20 +157,22 @@ namespace Rogue.MetroFire.CampfireClient
 				}
 			}
 
-			var response = (HttpWebResponse) request.GetResponse();
-			if (response.StatusCode != expectedCode)
+			using (var response = (HttpWebResponse)request.GetResponse())
 			{
-				throw new Exception("Unexpected response code: " + response.StatusCode);
-			}
+				if (response.StatusCode != expectedCode)
+				{
+					throw new Exception("Unexpected response code: " + response.StatusCode);
+				}
 
-			var responseStream = response.GetResponseStream();
-			if (typeof (T) == typeof (NoResponse) || responseStream == null)
-			{
-				return null;
-			}
+				var responseStream = response.GetResponseStream();
+				if (typeof (T) == typeof (NoResponse) || responseStream == null)
+				{
+					return null;
+				}
 
-			var deserializer = GetSerializer<T>(returnedRoot);
-			return (T) deserializer.Deserialize(responseStream);
+				var deserializer = GetSerializer<T>(returnedRoot);
+				return (T) deserializer.Deserialize(responseStream);
+			}
 		}
 
 		private XmlSerializer GetSerializer<T>(string root)
@@ -215,17 +217,18 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private T DoGet<T>(string relativeUri, string root)
 		{
-			var client = CreateClient();
+			using (var client = CreateClient())
+			{
+				var uri = FormatUri(relativeUri);
 
-			var uri = FormatUri(relativeUri);
+				var xml = client.DownloadString(uri);
 
-			var xml = client.DownloadString(uri);
+				_cookie = client.ResponseHeaders["set-cookie"];
 
-			_cookie = client.ResponseHeaders["set-cookie"];
+				var serializer = GetSerializer<T>(root);
 
-			var serializer = GetSerializer<T>(root);
-
-			return (T) serializer.Deserialize(new StringReader(xml));
+				return (T) serializer.Deserialize(new StringReader(xml));
+			}
 		}
 
 		private Uri FormatUri(string relativeUri)

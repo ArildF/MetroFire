@@ -40,8 +40,8 @@
 			<RowDefinition Height="58.1"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition/>
-			<ColumnDefinition Width="149"/>
+			<ColumnDefinition Width="0.722*"/>
+			<ColumnDefinition Width="0.278*"/>
 		</Grid.ColumnDefinitions>
 		<Button Content="Post" Grid.Column="1" Style="{DynamicResource MetroBigButton}" 
 				Command="{Binding PostMessageCommand}" Margin="0" Grid.Row="1" Padding="0"/>
@@ -72,5 +72,6 @@
 				<TextBlock TextWrapping="Wrap" Text="{Binding Topic}" HorizontalAlignment="Left" Style="{DynamicResource MetroBodyText}"/>
 			</StackPanel>
 		</Grid>
+		<GridSplitter HorizontalAlignment="Left" Width="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,1,0,-1" d:LayoutOverrides="GridBox"/>
 	</Grid>
 </UserControl>

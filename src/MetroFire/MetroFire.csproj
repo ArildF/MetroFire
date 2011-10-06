@@ -132,6 +132,9 @@
     <Compile Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml.cs">
       <DependentUpon>SampleRoomViewModel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SampleData\SampleSettingsDataSource\SampleSettingsDataSource.xaml.cs">
+      <DependentUpon>SampleSettingsDataSource.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\InlineUploadViewModel.cs" />
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -140,6 +143,10 @@
     <Compile Include="ViewModels\ModuleViewModel.cs" />
     <Compile Include="ViewModels\RoomListViewModel.cs" />
     <Compile Include="ViewModels\RoomModuleViewModel.cs" />
+    <Compile Include="ViewModels\Settings\GeneralSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\ISettingsSubPage.cs" />
+    <Compile Include="ViewModels\Settings\NetworkSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\ChatDocument.cs" />
@@ -169,6 +176,12 @@
     </Compile>
     <Compile Include="Views\RoomModule.xaml.cs">
       <DependentUpon>RoomModule.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsButtonNavigationContent.xaml.cs">
+      <DependentUpon>SettingsButtonNavigationContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsModule.xaml.cs">
+      <DependentUpon>SettingsModule.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -203,6 +216,7 @@
     <DesignTimeOnly Include="SampleData\SampleLobbyViewModel\SampleLobbyViewModel.xsd" />
     <DesignTimeOnly Include="SampleData\SampleMainViewModel\SampleMainViewModel.xsd" />
     <DesignTimeOnly Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xsd" />
+    <DesignTimeOnly Include="SampleData\SampleSettingsDataSource\SampleSettingsDataSource.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CampfireClient\CampfireClient.csproj">
@@ -224,6 +238,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SampleData\SampleSettingsDataSource\SampleSettingsDataSource.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -260,6 +278,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\RoomModule.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsButtonNavigationContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsModule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

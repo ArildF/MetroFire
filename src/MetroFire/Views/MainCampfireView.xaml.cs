@@ -11,6 +11,7 @@ namespace Rogue.MetroFire.UI.Views
 	public partial class MainCampfireView : IMainModule
 	{
 		private readonly IMessageBus _bus;
+		private readonly INavigationContent _content;
 
 		protected MainCampfireView()
 		{
@@ -24,9 +25,10 @@ namespace Rogue.MetroFire.UI.Views
 			_bus.SendMessage(new ModuleLoaded(ModuleNames.MainCampfireView));
 		}
 
-		public MainCampfireView(IMainCampfireViewModel model, IMessageBus bus) : this()
+		public MainCampfireView(IMainCampfireViewModel model, IMessageBus bus, INavigationContent content) : this()
 		{
 			_bus = bus;
+			_content = content;
 			DataContext = model;
 
 			bus.Listen<ActivateModuleMessage>()
@@ -70,6 +72,11 @@ namespace Rogue.MetroFire.UI.Views
 		public string Notifications
 		{
 			get { throw new NotImplementedException(); }
+		}
+
+		public DependencyObject NavigationContent
+		{
+			get { return _content.Visual; }
 		}
 	}
 }

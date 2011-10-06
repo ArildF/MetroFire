@@ -46,7 +46,9 @@ namespace Rogue.MetroFire.UI.Views
 				_resolver.ReleaseModule(currentModule);
 			}
 
-			_mainContent.Content = _resolver.ResolveModule(moduleName);
+			var newModule = (IMainModule)_resolver.ResolveModule(moduleName);
+			_mainContent.Content = newModule.Visual;
+			_navigationContent.Content = newModule.NavigationContent;
 		}
 
 		public Window Window

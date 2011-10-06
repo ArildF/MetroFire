@@ -10,6 +10,7 @@ namespace Rogue.MetroFire.UI.Views
 	/// </summary>
 	public partial class LoginView : IMainModule
 	{
+		private readonly INavigationContent _content;
 		public static readonly DependencyProperty IsLoggingInProperty;
 
 
@@ -41,7 +42,7 @@ namespace Rogue.MetroFire.UI.Views
 			Debug.WriteLine("RetVal: " + retval);
 		}
 
-		public LoginView()
+		private LoginView()
 		{
 			InitializeComponent();
 
@@ -54,8 +55,9 @@ namespace Rogue.MetroFire.UI.Views
 			Debug.WriteLine("RetVal: " + retval);
 		}
 
-		public LoginView(ILoginViewModel viewModel) : this()
+		public LoginView(ILoginViewModel viewModel, INavigationContent content) : this()
 		{
+			_content = content;
 			DataContext = viewModel;
 
 			var binding = new Binding("IsLoggingIn") {Mode = BindingMode.OneWay, Source = viewModel};
@@ -87,6 +89,11 @@ namespace Rogue.MetroFire.UI.Views
 		public string Notifications
 		{
 			get { return ""; }
+		}
+
+		public DependencyObject NavigationContent
+		{
+			get { return _content.Visual; }
 		}
 	}
 }

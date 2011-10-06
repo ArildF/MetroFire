@@ -6,6 +6,7 @@
 
 		public static string MainCampfireView = "MainCampfireView";
 		public static string RoomModule = "RoomModule";
+		public static string SettingsModule = "SettingsModule";
 
 	}
 }

@@ -2,6 +2,7 @@
 using System.Windows;
 using ReactiveUI;
 using System;
+using ReactiveUI.Xaml;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
@@ -23,7 +24,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.TakeUntil(activated.Do(_ => UnreadCount = 0))
 				.Repeat() 
 				.Subscribe(_ => UnreadCount++);
+
+			
 		}
+
+		public ReactiveCommand SettingsCommand { get; private set; }
 
 		protected int UnreadCount
 		{

@@ -54,9 +54,14 @@ namespace Rogue.MetroFire.UI
 		string Notifications { get; }
 	}
 
+	public interface INavigationContent
+	{
+		DependencyObject Visual { get; }
+	}
+
 	public interface IMainModule : IModule
 	{
-		
+		DependencyObject NavigationContent { get; }
 	}
 
 	public interface ICampfireModule : IModule
@@ -78,6 +83,12 @@ namespace Rogue.MetroFire.UI
 	public interface ILogViewModel
 	{
 		bool IsActive { get; set; }
+	}
+
+	
+	public interface ISettingsViewModel
+	{
+		
 	}
 
 	public interface ICampfireLog

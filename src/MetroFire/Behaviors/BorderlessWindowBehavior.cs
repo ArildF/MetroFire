@@ -217,6 +217,8 @@ namespace Rogue.MetroFire.UI.Behaviors
 
 		private HwndSource m_hwndSource;
 		private IntPtr m_hwnd;
+		private WindowStyle _originalWindowStyle;
+		private ResizeMode _originalResizeMode;
 
 		protected override void OnAttached()
 		{
@@ -225,6 +227,8 @@ namespace Rogue.MetroFire.UI.Behaviors
 			else
 				AssociatedObject.SourceInitialized += AssociatedObject_SourceInitialized;
 
+			_originalWindowStyle = AssociatedObject.WindowStyle;
+			_originalResizeMode = AssociatedObject.ResizeMode;
 			AssociatedObject.WindowStyle = WindowStyle.None;
 			AssociatedObject.ResizeMode = ResizeMode.CanResizeWithGrip;
 			base.OnAttached();
@@ -233,6 +237,9 @@ namespace Rogue.MetroFire.UI.Behaviors
 		protected override void OnDetaching()
 		{
 			RemoveHwndHook();
+			AssociatedObject.WindowStyle = _originalWindowStyle;
+			AssociatedObject.ResizeMode = _originalResizeMode;
+
 			base.OnDetaching();
 		}
 

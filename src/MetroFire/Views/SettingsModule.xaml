@@ -186,6 +186,10 @@
 		</DataTemplate>
 		
 		<DataTemplate DataType="{x:Type Settings:GeneralSettingsViewModel}">
+			<StackPanel Background="White">
+				<TextBlock TextWrapping="Wrap" Style="{DynamicResource SmallMetroHeading}"><Run Language="nb-no" Text="Appearance"/><LineBreak/><Run Language="nb-no"/></TextBlock>
+				<CheckBox Content="Use standard Windows chrome" IsChecked="{Binding UseStandardWindowsChrome}"/>
+			</StackPanel>
 			
 		</DataTemplate>
 		

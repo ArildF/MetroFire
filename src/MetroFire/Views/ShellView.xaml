@@ -12,7 +12,6 @@
 		
 	</Window.Resources>
 	<i:Interaction.Behaviors>
-		<MetroFire_Behaviors:BorderlessWindowBehavior/>
 	</i:Interaction.Behaviors>
     <Grid>
     	<Grid.RowDefinitions>

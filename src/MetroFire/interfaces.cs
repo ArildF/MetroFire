@@ -152,5 +152,6 @@ namespace Rogue.MetroFire.UI
 	public interface ISettings
 	{
 		INetworkSettings Network { get; }
+		GeneralSettings General { get; }
 	}
 }

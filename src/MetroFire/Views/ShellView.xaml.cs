@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interactivity;
 using ReactiveUI;
+using Rogue.MetroFire.UI.Behaviors;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -14,6 +17,7 @@ namespace Rogue.MetroFire.UI.Views
 	{
 		private readonly IMessageBus _bus;
 		private readonly IModuleResolver _resolver;
+		private readonly ISettings _settings;
 		private readonly Stack<IMainModule> _navigationStack = new Stack<IMainModule>();
 
 		protected ShellView()
@@ -25,13 +29,20 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
 		{
+			var behaviors = Interaction.GetBehaviors(this);
+			if (!_settings.General.UseStandardWindowsChrome)
+			{
+				behaviors.Add(new BorderlessWindowBehavior());
+			}
+
 			_bus.SendMessage<ApplicationLoadedMessage>(null);
 		}
 
-		public ShellView(IShellViewModel vm, IMessageBus bus, IModuleResolver resolver) : this()
+		public ShellView(IShellViewModel vm, IMessageBus bus, IModuleResolver resolver, ISettings settings) : this()
 		{
 			_bus = bus;
 			_resolver = resolver;
+			_settings = settings;
 			DataContext = vm;
 
 			_bus.Listen<ActivateMainModuleMessage>().Subscribe(msg => ActivateMainModule(msg.ModuleName));
@@ -39,8 +50,21 @@ namespace Rogue.MetroFire.UI.Views
 			_bus.Listen<NavigateBackMainModuleMessage>().Where(_ => _navigationStack.Count > 0).Subscribe(
 				_ => NavigateBack());
 
+			_bus.Listen<SettingsChangedMessage>().Subscribe(OnSettingsChanged);
 
+		}
 
+		private void OnSettingsChanged(SettingsChangedMessage settingsChangedMessage)
+		{
+			var behaviors = Interaction.GetBehaviors(this);
+			if (_settings.General.UseStandardWindowsChrome && behaviors.OfType<BorderlessWindowBehavior>().Any())
+			{
+				behaviors.Remove(behaviors.OfType<BorderlessWindowBehavior>().First());
+			}
+			else if (!_settings.General.UseStandardWindowsChrome && !behaviors.OfType<BorderlessWindowBehavior>().Any())
+			{
+				behaviors.Add(new BorderlessWindowBehavior());
+			}
 		}
 
 		private void NavigateBack()

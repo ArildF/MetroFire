@@ -24,5 +24,10 @@ namespace Rogue.MetroFire.UI.Settings
 		{
 			get { return _settings.Network; }
 		}
+
+		public GeneralSettings General
+		{
+			get { return _settings.General; }
+		}
 	}
 }

@@ -454,7 +454,7 @@
     				</Setter.Value>
     			</Setter>
     		</Style>
-    		<Style x:Key="MetroCheckBox" TargetType="{x:Type CheckBox}">
+    		<Style TargetType="{x:Type CheckBox}">
     			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
     			<Setter Property="Background" Value="{StaticResource CheckBoxFillNormal}"/>
     			<Setter Property="BorderBrush" Value="{StaticResource CheckBoxStroke}"/>
@@ -465,18 +465,39 @@
     					<ControlTemplate TargetType="{x:Type CheckBox}">
     						<BulletDecorator Background="Transparent" SnapsToDevicePixels="true">
     							<BulletDecorator.Bullet>
-    								<Microsoft_Windows_Themes:BulletChrome BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" IsChecked="{TemplateBinding IsChecked}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}"/>
+    								<Border Width="12" Height="12" BorderThickness="0.5" BorderBrush="Black" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="1" Margin="0,1,0,0">
+    									<Path x:Name="path" Data="M2.9392003,8.8550936 C5.4213333,6.125 8.088,4.125 9.917867,2.5217603 L8.963,0.75 C8.3585608,2.5419137 4.0408524,5.5627471 3.2546667,6.2916667 C2.5468688,5.9071682 1.8943389,3.6351055 1.5,3.1375 L1.6689274E-09,3.8875 C1.0255,3.8541667 0.92133333,6.4375 2.9392003,8.8550936 z" Fill="#FF000004" Margin="0.787,1.02,0.295,0.918" Stretch="None" Stroke="Black" StrokeThickness="0"/>
+    								</Border>			
     							</BulletDecorator.Bullet>
-    							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+    							<VisualStateManager.VisualStateGroups>
+    								<VisualStateGroup x:Name="CheckStates">
+    									<VisualState x:Name="Checked"/>
+    									<VisualState x:Name="Unchecked">
+    										<Storyboard>
+    											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="path">
+    												<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Hidden}"/>
+    											</ObjectAnimationUsingKeyFrames>
+    										</Storyboard>
+    									</VisualState>
+    									<VisualState x:Name="Indeterminate">
+    										<Storyboard>
+    											<ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Storyboard.TargetName="path">
+    												<EasingColorKeyFrame KeyTime="0" Value="#48000000"/>
+    											</ColorAnimationUsingKeyFrames>
+    										</Storyboard>
+    									</VisualState>
+    								</VisualStateGroup>
+    							</VisualStateManager.VisualStateGroups>
+    							<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"  RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="4,0,0,0"/>
     						</BulletDecorator>
     						<ControlTemplate.Triggers>
-    							<Trigger Property="HasContent" Value="true">
+    							<!--<Trigger Property="HasContent" Value="true">
     								<Setter Property="FocusVisualStyle" Value="{StaticResource CheckRadioFocusVisual}"/>
     								<Setter Property="Padding" Value="4,0,0,0"/>
     							</Trigger>
     							<Trigger Property="IsEnabled" Value="false">
     								<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-    							</Trigger>
+    							</Trigger>-->
     						</ControlTemplate.Triggers>
     					</ControlTemplate>
     				</Setter.Value>

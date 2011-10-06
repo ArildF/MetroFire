@@ -121,4 +121,6 @@ namespace Rogue.MetroFire.UI
 	{
 	}
 
+	public class SettingsChangedMessage{}
+
 }

@@ -180,7 +180,7 @@
 		<DataTemplate DataType="{x:Type Settings:NetworkSettingsViewModel}">
 			<StackPanel Background="White">
 				<TextBlock TextWrapping="Wrap" Style="{DynamicResource SmallMetroHeading}" VerticalAlignment="Center" Text="Connections" HorizontalAlignment="Left" Margin="0,0,0,6"/>
-				<CheckBox Content="Use proxy" Style="{DynamicResource MetroCheckBox}"/>
+				<CheckBox Content="Use proxy" Style="{DynamicResource MetroCheckBox}" IsChecked="{Binding UseProxy}"/>
 			</StackPanel>
 			
 		</DataTemplate>
@@ -199,14 +199,16 @@
     <Grid Margin="18,0,0,0">
     	<Grid.RowDefinitions>
     		<RowDefinition Height="0.103*"/>
-    		<RowDefinition Height="0.897*"/>
+    		<RowDefinition Height="0.804*"/>
+    		<RowDefinition Height="0.093*"/>
     	</Grid.RowDefinitions>
     	<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBlueCaption}" Text="settings"/>
     	<TabControl Grid.Row="1" Style="{DynamicResource _settingsTabControlStyle}" TabStripPlacement="Left" 
 					FocusVisualStyle="{x:Null}"
-					ItemContainerStyle="{DynamicResource TabItemStyle1}" ItemsSource="{Binding SettingsViewModels}" DisplayMemberPath="Title" ContentTemplate="{DynamicResource _tabControlTemplate}">
-    		
-    	</TabControl>
+					ItemContainerStyle="{DynamicResource TabItemStyle1}" ItemsSource="{Binding SettingsViewModels}" DisplayMemberPath="Title" ContentTemplate="{DynamicResource _tabControlTemplate}"/>
+    	<Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
+				Command="{Binding SaveCommand}"
+				Width="75" Grid.Row="2" Style="{DynamicResource MetroBigButton}"/>
             
     </Grid>
 </UserControl>

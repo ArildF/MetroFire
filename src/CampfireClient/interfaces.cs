@@ -27,5 +27,15 @@ namespace Rogue.MetroFire.CampfireClient
 		Unit DownloadFile(string uri, string destination);
 	}
 
+	public interface ISettings
+	{
+		INetworkSettings Network { get; }
+	}
+
+	public interface INetworkSettings
+	{
+		bool UseProxy { get; }
+	}
+
 
 }

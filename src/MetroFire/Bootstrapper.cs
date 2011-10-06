@@ -7,6 +7,7 @@ using Castle.Windsor.Installer;
 using ReactiveUI;
 using System;
 using Rogue.MetroFire.CampfireClient;
+using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 using Rogue.MetroFire.UI.Views;
 using Castle.Facilities.TypedFactory;
@@ -39,11 +40,15 @@ namespace Rogue.MetroFire.UI
 				AllTypes.FromThisAssembly().Where(t => t.Namespace == typeof (RoomModuleViewModel).Namespace).
 					WithServiceAllInterfaces().LifestyleTransient());
 
+			_container.Register(Component.For<ISettingsLoader>().ImplementedBy<SettingsPersistence>().Forward<ISettingsSaver>().LifestyleTransient());
+
 			_container.Register(Component.For<IChatDocument>().ImplementedBy<ChatDocument>().LifestyleTransient());
 			_container.Register(Component.For<IMessageBus>().ImplementedBy<MessageBus>());
 			_container.Register(Component.For<IRoomModuleViewModelFactory>().AsFactory());
 			_container.Register(Component.For<IInlineUploadViewFactory>().AsFactory());
 			_container.Register(Component.For<IImageView>().LifestyleTransient().ImplementedBy<ImageView>());
+			_container.Register(Component.For<ISettings>().ImplementedBy<CurrentSettings>().Forward<CampfireClient.ISettings>()
+				.LifestyleSingleton());
 
 			_container.Register(AllTypes.FromThisAssembly().Pick().WithServiceAllInterfaces());
 

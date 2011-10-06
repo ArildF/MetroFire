@@ -10,7 +10,7 @@ namespace Rogue.MetroFire.UI.Views
 	{
 		private readonly FrameworkElement _navigationContent;
 
-		public SettingsModule()
+		private SettingsModule()
 		{
 			InitializeComponent();
 		}

@@ -15,13 +15,15 @@ namespace Rogue.MetroFire.CampfireClient
 
 	public class CampfireApi : ICampfireApi
 	{
+		private readonly ISettings _settings;
 		private LoginInfo _loginInfo;
 		private readonly IDictionary<SerializerEntry, XmlSerializer> _xmlSerializers = new Dictionary<SerializerEntry, XmlSerializer>();
 		private static int _defaultTimeout;
 		private string _cookie;
 
-		public CampfireApi()
+		public CampfireApi(ISettings settings)
 		{
+			_settings = settings;
 			var serializers = XmlSerializer.FromTypes(new[] {typeof (Room), typeof (User), typeof (Account), typeof(Message), typeof(Upload)});
 			_xmlSerializers[new SerializerEntry(typeof (Room))] = serializers[0];
 			_xmlSerializers[new SerializerEntry(typeof (User))] = serializers[1];
@@ -185,7 +187,10 @@ namespace Rogue.MetroFire.CampfireClient
 			var request = (HttpWebRequest)WebRequest.Create(uri);
 			request.Credentials = CreateCredentials();
 			request.Method = "POST";
-			request.Proxy = null;
+			if (!_settings.Network.UseProxy)
+			{
+				request.Proxy = null;
+			}
 			request.Timeout = _defaultTimeout;
 			request.KeepAlive = false;
 
@@ -240,7 +245,11 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private WebClient CreateClient()
 		{
-			var client = new WebClientWithTimeout {Credentials = CreateCredentials(), Proxy = null, Timeout = _defaultTimeout};
+			var client = new WebClientWithTimeout {Credentials = CreateCredentials(), Timeout = _defaultTimeout};
+			if (!_settings.Network.UseProxy)
+			{
+				client.Proxy = null;
+			}
 			if (_cookie != null)
 			{
 				client.Headers.Add("Cookie", _cookie);

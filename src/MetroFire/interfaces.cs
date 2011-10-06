@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Windows;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 
 namespace Rogue.MetroFire.UI
@@ -146,5 +147,10 @@ namespace Rogue.MetroFire.UI
 	public interface IImageView
 	{
 		bool? ShowDialog();
+	}
+
+	public interface ISettings
+	{
+		INetworkSettings Network { get; }
 	}
 }

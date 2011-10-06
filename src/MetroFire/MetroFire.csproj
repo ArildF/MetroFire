@@ -135,6 +135,11 @@
     <Compile Include="SampleData\SampleSettingsDataSource\SampleSettingsDataSource.xaml.cs">
       <DependentUpon>SampleSettingsDataSource.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\CurrentSettings.cs" />
+    <Compile Include="Settings\GeneralSettings.cs" />
+    <Compile Include="Settings\MetroFireSettings.cs" />
+    <Compile Include="Settings\NetworkSettings.cs" />
+    <Compile Include="Settings\SettingsPersistence.cs" />
     <Compile Include="ViewModels\InlineUploadViewModel.cs" />
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

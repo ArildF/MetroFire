@@ -106,4 +106,19 @@ namespace Rogue.MetroFire.UI
 
 	public class ApplicationActivatedMessage{}
 	public class ApplicationDeactivatedMessage {}
+
+	public class NavigateMainModuleMessage
+	{
+		public string ModuleName { get; private set; }
+
+		public NavigateMainModuleMessage(string moduleName)
+		{
+			ModuleName = moduleName;
+		}
+	}
+
+	public class NavigateBackMainModuleMessage
+	{
+	}
+
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -13,6 +14,7 @@ namespace Rogue.MetroFire.UI.Views
 	{
 		private readonly IMessageBus _bus;
 		private readonly IModuleResolver _resolver;
+		private readonly Stack<IMainModule> _navigationStack = new Stack<IMainModule>();
 
 		protected ShellView()
 		{
@@ -33,20 +35,51 @@ namespace Rogue.MetroFire.UI.Views
 			DataContext = vm;
 
 			_bus.Listen<ActivateMainModuleMessage>().Subscribe(msg => ActivateMainModule(msg.ModuleName));
+			_bus.Listen<NavigateMainModuleMessage>().Subscribe(msg => NavigateMainModule(msg.ModuleName));
+			_bus.Listen<NavigateBackMainModuleMessage>().Where(_ => _navigationStack.Count > 0).Subscribe(
+				_ => NavigateBack());
 
 
-			
+
+		}
+
+		private void NavigateBack()
+		{
+			ReleaseCurrentMainModule();
+			var previousModule = _navigationStack.Pop();
+			ActivateNewModule(previousModule);
+		}
+
+		private void NavigateMainModule(string moduleName)
+		{
+			var currentModule = _mainContent.Content as IMainModule;
+			if (currentModule != null)
+			{
+				_navigationStack.Push(currentModule);
+			}
+
+			var newModule = (IMainModule)_resolver.ResolveModule(moduleName);
+			ActivateNewModule(newModule);
 		}
 
 		private void ActivateMainModule(string moduleName)
+		{
+			ReleaseCurrentMainModule();
+			var newModule = (IMainModule)_resolver.ResolveModule(moduleName);
+			ActivateNewModule(newModule);
+		}
+
+		private void ReleaseCurrentMainModule()
 		{
 			var currentModule = _mainContent.Content as IMainModule;
 			if (currentModule != null)
 			{
 				_resolver.ReleaseModule(currentModule);
 			}
+		}
 
-			var newModule = (IMainModule)_resolver.ResolveModule(moduleName);
+		private void ActivateNewModule(IMainModule newModule)
+		{
 			_mainContent.Content = newModule.Visual;
 			_navigationContent.Content = newModule.NavigationContent;
 		}

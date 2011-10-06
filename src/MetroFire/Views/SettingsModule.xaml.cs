@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -7,6 +8,8 @@ namespace Rogue.MetroFire.UI.Views
 	/// </summary>
 	public partial class SettingsModule : IMainModule
 	{
+		private readonly FrameworkElement _navigationContent;
+
 		public SettingsModule()
 		{
 			InitializeComponent();
@@ -15,6 +18,9 @@ namespace Rogue.MetroFire.UI.Views
 		public SettingsModule(ISettingsViewModel vm) : this()
 		{
 			DataContext = vm;
+
+			_navigationContent = (FrameworkElement)FindResource("BackButton");
+			_navigationContent.DataContext = vm;
 		}
 
 		public string Caption
@@ -45,7 +51,7 @@ namespace Rogue.MetroFire.UI.Views
 
 		public DependencyObject NavigationContent
 		{
-			get { return null; }
+			get { return _navigationContent; }
 		}
 	}
 }

@@ -188,6 +188,9 @@
 		<DataTemplate DataType="{x:Type Settings:GeneralSettingsViewModel}">
 			
 		</DataTemplate>
+		
+		
+		<Button Style="{StaticResource NavigationButton}" Content="BACK" x:Key="BackButton" Command="{Binding BackCommand}"/>
 
 	</UserControl.Resources>
 	<UserControl.DataContext>

@@ -7,6 +7,7 @@
              xmlns:Settings="clr-namespace:Rogue.MetroFire.UI.ViewModels.Settings"
              x:Class="Rogue.MetroFire.UI.Views.SettingsModule" 
              mc:Ignorable="d" 
+		 d:DataContext="{StaticResource SampleSettingsDataSource}"
              d:DesignHeight="503" d:DesignWidth="752" Background="White">
 	<UserControl.Resources>
 		<SolidColorBrush x:Key="TabControlNormalBorderBrush" Color="#8C8E94"/>
@@ -187,7 +188,7 @@
 		
 		<DataTemplate DataType="{x:Type Settings:GeneralSettingsViewModel}">
 			<StackPanel Background="White">
-				<TextBlock TextWrapping="Wrap" Style="{DynamicResource SmallMetroHeading}"><Run Language="nb-no" Text="Appearance"/><LineBreak/><Run Language="nb-no"/></TextBlock>
+				<TextBlock TextWrapping="Wrap" Style="{DynamicResource SmallMetroHeading}" Text="Appearance" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 				<CheckBox Content="Use standard Windows chrome" IsChecked="{Binding UseStandardWindowsChrome}"/>
 			</StackPanel>
 			
@@ -197,9 +198,6 @@
 		<Button Style="{StaticResource NavigationButton}" Content="BACK" x:Key="BackButton" Command="{Binding BackCommand}"/>
 
 	</UserControl.Resources>
-	<UserControl.DataContext>
-		<Binding Source="{StaticResource SampleSettingsDataSource}"/>
-	</UserControl.DataContext>
     <Grid Margin="18,0,0,0">
     	<Grid.RowDefinitions>
     		<RowDefinition Height="0.103*"/>

@@ -25,7 +25,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			set { this.RaiseAndSetIfChanged(vm => vm.UseStandardWindowsChrome, ref _useStandardWindowsChrome, value); }
 		}
 
-		public void Save()
+		public void Commit()
 		{
 			_settings.UseStandardWindowsChrome = UseStandardWindowsChrome;
 

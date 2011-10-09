@@ -16,19 +16,22 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 			var settings = loader.Load();
 
-			SettingsViewModels = new ISettingsSubPage[] {new GeneralSettingsViewModel(settings.General), 
-				new NetworkSettingsViewModel(settings.Network)};
+			SettingsViewModels = new ISettingsSubPage[] {
+				new GeneralSettingsViewModel(settings.General), 
+				new NetworkSettingsViewModel(settings.Network),
+				new NotificationSettingsViewModel(settings.Notification)
+			};
 
 			SaveCommand = new ReactiveCommand();
 			bus.RegisterMessageSource(
-				SaveCommand.Do(_ => SaveViewModels()).Do(_ => saver.Save(settings)).Select(_ => new NavigateBackMainModuleMessage()));
+				SaveCommand.Do(_ => CommitViewModels()).Do(_ => saver.Save(settings)).Select(_ => new NavigateBackMainModuleMessage()));
 		}
 
-		private void SaveViewModels()
+		private void CommitViewModels()
 		{
 			foreach (var settingsViewModel in SettingsViewModels)
 			{
-				settingsViewModel.Save();
+				settingsViewModel.Commit();
 			}
 		}
 
@@ -40,5 +43,4 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 		public ReactiveCommand SaveCommand { get; private set; }
 	}
-
 }

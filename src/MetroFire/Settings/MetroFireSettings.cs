@@ -4,5 +4,6 @@
 	{
 		public GeneralSettings General { get; set; }
 		public NetworkSettings Network { get; set; }
+		public NotificationSettings Notification { get; set; }
 	}
 }

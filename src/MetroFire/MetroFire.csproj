@@ -111,6 +111,7 @@
     <Compile Include="Behaviors\StayScrolledToEndBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Infrastructure\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CampfireLog.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\LogMessageDebugListener.cs" />
@@ -129,17 +130,24 @@
     <Compile Include="SampleData\SampleMainViewModel\SampleMainViewModel.xaml.cs">
       <DependentUpon>SampleMainViewModel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SampleData\SampleNotificationSettingsViewModel\SampleNotificationSettingsViewModel.xaml.cs">
+      <DependentUpon>SampleNotificationSettingsViewModel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml.cs">
       <DependentUpon>SampleRoomViewModel.xaml</DependentUpon>
     </Compile>
     <Compile Include="SampleData\SampleSettingsDataSource\SampleSettingsDataSource.xaml.cs">
       <DependentUpon>SampleSettingsDataSource.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\ActionCondition.cs" />
+    <Compile Include="Settings\ActionType.cs" />
     <Compile Include="Settings\CurrentSettings.cs" />
     <Compile Include="Settings\GeneralSettings.cs" />
     <Compile Include="Settings\MetroFireSettings.cs" />
     <Compile Include="Settings\NetworkSettings.cs" />
+    <Compile Include="Settings\NotificationSettings.cs" />
     <Compile Include="Settings\SettingsPersistence.cs" />
+    <Compile Include="Settings\TriggerType.cs" />
     <Compile Include="ViewModels\InlineUploadViewModel.cs" />
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -148,10 +156,16 @@
     <Compile Include="ViewModels\ModuleViewModel.cs" />
     <Compile Include="ViewModels\RoomListViewModel.cs" />
     <Compile Include="ViewModels\RoomModuleViewModel.cs" />
+    <Compile Include="ViewModels\Settings\ActionViewModel.cs" />
+    <Compile Include="ViewModels\Settings\ComboViewModel.cs" />
     <Compile Include="ViewModels\Settings\GeneralSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\ISettingsSubPage.cs" />
     <Compile Include="ViewModels\Settings\NetworkSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\NotificationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\NotificationViewModel.cs" />
+    <Compile Include="ViewModels\Settings\PlaySoundViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\TriggerViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\ChatDocument.cs" />
@@ -222,6 +236,7 @@
     <DesignTimeOnly Include="SampleData\SampleMainViewModel\SampleMainViewModel.xsd" />
     <DesignTimeOnly Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xsd" />
     <DesignTimeOnly Include="SampleData\SampleSettingsDataSource\SampleSettingsDataSource.xsd" />
+    <DesignTimeOnly Include="SampleData\SampleNotificationSettingsViewModel\SampleNotificationSettingsViewModel.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CampfireClient\CampfireClient.csproj">
@@ -242,6 +257,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <DesignTimeOnly Include="SampleData\SampleNotificationSettingsViewModel\SampleNotificationSettingsViewModel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </DesignTimeOnly>
     <Page Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -275,6 +294,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainCampfireView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NotificationViews.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

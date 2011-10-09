@@ -1,0 +1,144 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:Settings="clr-namespace:Rogue.MetroFire.UI.ViewModels.Settings" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure" mc:Ignorable="d">
+
+	<Infrastructure:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+	
+	<DataTemplate x:Key="_notificationsItemTemplate">
+		<StackPanel Height="Auto" Width="Auto" Background="White" Margin="0,0,0,10">
+			<TextBlock TextWrapping="Wrap" Style="{DynamicResource MetroBodyText}"><Run Text="Triggers:"/></TextBlock>
+			<ListBox Height="Auto" Margin="10,0,0,0" ItemsSource="{Binding Triggers}" ItemTemplate="{DynamicResource _triggerItemTemplate}"
+				Style="{DynamicResource _plainListBoxStyle}"/>
+			<Button Content="Add trigger" Width="Auto" Style="{DynamicResource MetroBigButton}" Margin="12,0,0,0" Command="{Binding AddNewTriggerCommand}"/>
+			<TextBlock TextWrapping="Wrap" Style="{DynamicResource MetroBodyText}" Text="Actions:"/>
+			<ListBox Height="Auto" Margin="10,0,0,0" ItemsSource="{Binding Actions}" Style="{DynamicResource _plainListBoxStyle}" ItemTemplate="{DynamicResource _actionItemTemplate}"/>
+			<Button Content="Add action" Width="Auto" Style="{DynamicResource MetroBigButton}" Margin="12,0,0,0" Command="{Binding AddNewActionCommand}"/>
+		</StackPanel>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type Settings:PlaySoundViewModel}">
+		<Grid d:DesignWidth="275.183" d:DesignHeight="25.92">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.302*"/>
+				<ColumnDefinition Width="0.548*"/>
+				<ColumnDefinition Width="0.15*"/>
+			</Grid.ColumnDefinitions>
+			<Label Content="Sound file" d:LayoutOverrides="Height, GridBox" Grid.ColumnSpan="1" HorizontalAlignment="Left"/>
+			<TextBox TextWrapping="Wrap" Text="{Binding Path=SoundFile}" d:LayoutOverrides="Width, GridBox" Grid.Column="1" Grid.ColumnSpan="1" Height="Auto"/>
+			<Button Content="..." d:LayoutOverrides="Height" Grid.Column="2" Style="{DynamicResource MetroBigButton}" Margin="2" FontSize="13.333"/>
+		</Grid>
+		
+	</DataTemplate>
+
+		<DataTemplate x:Key="_actionItemTemplate">
+		<Grid d:DesignWidth="422" d:DesignHeight="93.96">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.656*"/>
+				<ColumnDefinition Width="0.163*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<ComboBox d:LayoutOverrides="Height" DisplayMemberPath="Text" ItemsSource="{Binding ActionTypes}" SelectedItem="{Binding SelectedActionType}" Grid.ColumnSpan="3"/>
+			<ComboBox HorizontalAlignment="Stretch" Margin="0" Width="Auto" d:LayoutOverrides="Height, GridBox" Grid.Row="2"
+					  DisplayMemberPath="Text"
+					  ItemsSource="{Binding ActionConditions}" SelectedItem="{Binding SelectedActionCondition}"/>
+			
+			<ContentControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="{Binding SubViewModel}" 
+							HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<TextBox Height="Auto" TextWrapping="Wrap"  Width="Auto" Margin="19,0,20,0" Grid.RowSpan="1" 
+					 Text="{Binding Interval}"
+					 Visibility="{Binding ShowInterval, Converter={StaticResource BoolToVisibilityConverter}}"
+					 Grid.Row="2" Grid.Column="1"/>
+			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+					   Visibility="{Binding ShowInterval, Converter={StaticResource BoolToVisibilityConverter}}"
+					   Grid.Row="3" Grid.Column="2" Margin="13,0,12,0"><Run Language="nb-no" Text="{Binding IntervalText}"/></TextBlock>
+		</Grid>
+	</DataTemplate>
+	
+	<DataTemplate DataType="{x:Type Settings:NotificationSettingsViewModel}">
+		<StackPanel Height="Auto" Width="Auto" Background="White" d:DataContext="{Binding Source={StaticResource SampleNotificationSettingsViewModel}}" MaxWidth="463" HorizontalAlignment="Stretch">
+			<TextBlock TextWrapping="Wrap" Text="Notifications" Width="Auto" Style="{DynamicResource SmallMetroHeading}"/>
+			<ListBox Height="Auto" ItemsSource="{Binding Notifications}" ItemTemplate="{DynamicResource _notificationsItemTemplate}"
+				 Style="{DynamicResource _plainListBoxStyle}"/>
+			<Button Content="Add notification" Width="Auto" Style="{DynamicResource MetroBigButton}" Command="{Binding AddNotificationCommand}"/>
+		
+		</StackPanel>
+		
+	</DataTemplate>
+	<DataTemplate x:Key="_triggerItemTemplate">
+	
+		<Grid VerticalAlignment="Stretch" d:DesignWidth="504.733" d:DesignHeight="112.88" Background="White">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="2*"/>
+				<ColumnDefinition Width="5*"/>
+			</Grid.ColumnDefinitions>
+			<TextBlock TextWrapping="Wrap" d:LayoutOverrides="Width" Grid.ColumnSpan="2" VerticalAlignment="Center"><Run Text="When"/></TextBlock>
+			<ComboBox Width="Auto" d:LayoutOverrides="Height, GridBox" Grid.ColumnSpan="1" Grid.Column="1" 
+					  HorizontalAlignment="Stretch" ItemsSource="{Binding TriggerTypes}" 
+					  SelectedItem="{Binding SelectedTriggerType}"
+					  DisplayMemberPath="Text" Margin="0,0,0,6" HorizontalContentAlignment="Stretch"/>
+			<CheckBox x:Name="checkBox" Content="Matching" Margin="6,0,-0.001,0" d:LayoutOverrides="Width" Grid.Row="1" 
+					  IsChecked="{Binding DoMatchText}"
+					  VerticalAlignment="Center"/>
+			<TextBox TextWrapping="Wrap" d:LayoutOverrides="Width" Grid.Row="1" 
+					 Text="{Binding MatchText}"
+					 Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox}" VerticalAlignment="Top" Margin="0,0,0,6"/>
+			<CheckBox x:Name="checkBox1" Content="In room matching" Margin="6,0,5.999,0" d:LayoutOverrides="Width" 
+					  IsChecked="{Binding DoMatchRoom}"
+					  Grid.Row="2" VerticalAlignment="Center"/>
+			<TextBox HorizontalAlignment="Stretch" TextWrapping="Wrap" d:LayoutOverrides="Height, GridBox" 
+					 Text="{Binding MatchRoom}"
+					 Grid.Row="2" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch"/>
+			<Button x:Name="button" Content="X" d:LayoutOverrides="Height" Grid.Column="2" Visibility="Hidden" 
+					Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.DeleteTriggerCommand}"
+					CommandParameter="{Binding}"
+					HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="3"/>
+			<CheckBox x:Name="checkBox1_Copy" Content="User matching" Margin="6,0,5.998,0" 
+				IsChecked="{Binding DoMatchUser}"
+				Grid.Row="4" VerticalAlignment="Center" d:LayoutOverrides="Width"/>
+			<TextBox HorizontalAlignment="Stretch" TextWrapping="Wrap" 
+				Text="{Binding MatchUser}"
+				Grid.Row="3" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1_Copy}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch" d:LayoutOverrides="Height, GridBox"/>
+		</Grid>
+		<DataTemplate.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="Visibility" TargetName="button" Value="Visible"/>
+			</Trigger>
+		</DataTemplate.Triggers>
+	</DataTemplate>
+	
+	
+	 <Style x:Key="_plainListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+	  	<Setter Property="Background" Value="Transparent"/>
+	  	<Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+	  	<Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+	  	<Setter Property="Padding" Value="2,0,0,0"/>
+	  	<Setter Property="Template">
+	  		<Setter.Value>
+	  			<ControlTemplate TargetType="{x:Type ListBoxItem}">
+	  				<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+				</ControlTemplate>
+	  		</Setter.Value>
+	  	</Setter>
+		
+		
+	  </Style>
+	  
+	  <Style x:Key="_plainListBoxStyle" TargetType="{x:Type ListBox}">
+	  		<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="ItemContainerStyle" Value="{DynamicResource _plainListBoxItemStyle}"/>
+			<Setter Property="HorizontalContentAlignment" Value="Stretch"/>	
+		
+	  </Style>
+</ResourceDictionary>

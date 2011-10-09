@@ -24,8 +24,12 @@ namespace Rogue.MetroFire.UI.Settings
 			var path = EstablishConfigPath();
 			if (!File.Exists(path))
 			{
-				DoSave(new MetroFireSettings(){General = new GeneralSettings(), Network = new NetworkSettings()});
-			}
+				DoSave(new MetroFireSettings
+					{
+						General = new GeneralSettings(), 
+						Network = new NetworkSettings(), 
+						Notification = new NotificationSettings{Notifications = new NotificationEntry[]{}}});
+					}
 			lock (_fileLock)
 			{
 				using (var stream = File.OpenRead(path))

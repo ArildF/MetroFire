@@ -24,7 +24,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			get { return "Network"; }
 		}
 
-		public void Save()
+		public void Commit()
 		{
 			_settings.UseProxy = UseProxy;
 		}

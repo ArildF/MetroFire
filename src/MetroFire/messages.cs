@@ -123,4 +123,27 @@ namespace Rogue.MetroFire.UI
 
 	public class SettingsChangedMessage{}
 
+	public class NotificationMessage
+	{
+		public IRoom Room { get; private set; }
+		public User User { get; private set; }
+		public Message Message { get; private set; }
+
+		public NotificationMessage(IRoom room, User user, Message message)
+		{
+			Room = room;
+			User = user;
+			Message = message;
+		}
+	}
+
+	public class RoomBackLogLoadedMessage
+	{
+		public int RoomId { get; private set; }
+
+		public RoomBackLogLoadedMessage(int roomId)
+		{
+			RoomId = roomId;
+		}
+	}
 }

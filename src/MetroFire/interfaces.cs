@@ -120,6 +120,17 @@ namespace Rogue.MetroFire.UI
 	{
 		User GetUser(int id, User existingUser);
 		bool UserUpdated(User oldUser, User newUser);
+		User GetUser(int userId);
+	}
+
+	public interface INotificationAction
+	{
+		void Execute(NotificationMessage notificationMessage);
+	}
+
+	public interface INotification
+	{
+		void Process(NotificationMessage notificationMessage);
 	}
 
 	public interface IRoomModuleViewModelFactory
@@ -153,5 +164,11 @@ namespace Rogue.MetroFire.UI
 	{
 		INetworkSettings Network { get; }
 		GeneralSettings General { get; }
+		NotificationSettings Notification { get; }
+	}
+
+	public interface ITaskBar
+	{
+		void Flash();
 	}
 }

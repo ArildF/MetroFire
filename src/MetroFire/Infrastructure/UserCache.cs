@@ -125,6 +125,11 @@ namespace Rogue.MetroFire.UI.Infrastructure
 		{
 			return UserHasChanged(newUser, user);
 		}
+
+		public User GetUser(int userId)
+		{
+			return _users.FirstOrDefault(u => u.Id == userId);
+		}
 	}
 
 	

@@ -93,7 +93,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private void HandleMessagesReceived(MessagesReceivedMessage obj)
 		{
-
+			bool isInitialLoad = _sinceMessageId == null;
 			var messages = obj.Messages.Where(msg => _sinceMessageId == null || msg.Id > _sinceMessageId).ToList();
 			foreach (var message in messages)
 			{
@@ -123,6 +123,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			{
 				_bus.SendMessage(new RequestStartStreamingMessage(_room.Id));
 				_streamingStarted = true;
+			}
+
+			if (isInitialLoad)
+			{
+				_bus.SendMessage(new RoomBackLogLoadedMessage(_room.Id));
 			}
 		}
 
@@ -243,4 +248,5 @@ namespace Rogue.MetroFire.UI.ViewModels
 			public object TextObject { get; private set; }
 		}
 	}
+
 }

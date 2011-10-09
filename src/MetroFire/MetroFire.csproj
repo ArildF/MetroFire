@@ -123,6 +123,14 @@
     <Compile Include="ModuleNames.cs" />
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="ModulesInstaller.cs" />
+    <Compile Include="Notifications\FlashTaskBarAction.cs" />
+    <Compile Include="Notifications\Notification.cs" />
+    <Compile Include="Notifications\NotificationListener.cs" />
+    <Compile Include="Notifications\NotificationTransformer.cs" />
+    <Compile Include="Notifications\PlaySoundAction.cs" />
+    <Compile Include="Notifications\ShowToastAction.cs" />
+    <Compile Include="Notifications\TaskBar.cs" />
+    <Compile Include="Notifications\Trigger.cs" />
     <Compile Include="RoomModuleCreator.cs" />
     <Compile Include="SampleData\SampleLobbyViewModel\SampleLobbyViewModel.xaml.cs">
       <DependentUpon>SampleLobbyViewModel.xaml</DependentUpon>
@@ -322,6 +330,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

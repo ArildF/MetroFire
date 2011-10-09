@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Castle.Facilities.Startable;
+using Castle.MicroKernel;
 using Castle.MicroKernel.ModelBuilder.Inspectors;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
@@ -7,6 +8,7 @@ using Castle.Windsor.Installer;
 using ReactiveUI;
 using System;
 using Rogue.MetroFire.CampfireClient;
+using Rogue.MetroFire.UI.Notifications;
 using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 using Rogue.MetroFire.UI.Views;
@@ -31,6 +33,8 @@ namespace Rogue.MetroFire.UI
 			_container.AddFacility<StartableFacility>();
 			_container.AddFacility<TypedFactoryFacility>();
 
+			_container.Register(Component.For<Func<NotificationAction, INotificationAction>>().Instance(Create));
+
 			_container.Install(FromAssembly.This());
 			_container.Install(FromAssembly.Containing<RequestLoginMessage>());
 
@@ -46,9 +50,15 @@ namespace Rogue.MetroFire.UI
 			_container.Register(Component.For<IMessageBus>().ImplementedBy<MessageBus>());
 			_container.Register(Component.For<IRoomModuleViewModelFactory>().AsFactory());
 			_container.Register(Component.For<IInlineUploadViewFactory>().AsFactory());
+			_container.Register(Component.For<INotification>().ImplementedBy<Notification>());
+			_container.Register(Component.For<FlashTaskBarAction>().ImplementedBy<FlashTaskBarAction>());
+			_container.Register(Component.For<ShowToastAction>().ImplementedBy<ShowToastAction>());
+			_container.Register(Component.For<PlaySoundAction>().ImplementedBy<PlaySoundAction>());
+			_container.Register(Component.For<ITaskBar>().ImplementedBy<TaskBar>());
 			_container.Register(Component.For<IImageView>().LifestyleTransient().ImplementedBy<ImageView>());
 			_container.Register(Component.For<ISettings>().ImplementedBy<CurrentSettings>().Forward<CampfireClient.ISettings>()
 				.LifestyleSingleton());
+
 
 			_container.Register(AllTypes.FromThisAssembly().Pick().WithServiceAllInterfaces());
 
@@ -62,6 +72,21 @@ namespace Rogue.MetroFire.UI
 				msg => messageBus.SendMessage(new ActivateMainModuleMessage(ModuleNames.Login)));
 
 			return _container.Resolve<IShellWindow>();
+		}
+
+		private INotificationAction Create(NotificationAction notificationAction)
+		{
+			switch (notificationAction.ActionType)
+			{
+					case ActionType.FlashTaskbar:
+					return _container.Resolve<FlashTaskBarAction>(new {data = notificationAction});
+					case ActionType.PlaySound:
+					return _container.Resolve<PlaySoundAction>(new {data = notificationAction});
+					case ActionType.ShowToast:
+					return _container.Resolve<ShowToastAction>(new {data = notificationAction});
+					default:
+					return null;
+			}
 		}
 
 		public T Resolve<T>()

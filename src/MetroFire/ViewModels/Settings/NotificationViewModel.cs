@@ -36,7 +36,12 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 			DeleteTriggerCommand = new ReactiveCommand();
 			DeleteTriggerCommand.Cast<TriggerViewModel>().Subscribe(trigger => Triggers.Remove(trigger));
+
+			DeleteActionCommand = new ReactiveCommand();
+			DeleteActionCommand.Cast<ActionViewModel>().Subscribe(action => Actions.Remove(action));
 		}
+
+		public ReactiveCommand DeleteActionCommand { get; private set; }
 
 		public ReactiveCommand AddNewActionCommand { get; private set; }
 

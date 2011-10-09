@@ -50,11 +50,11 @@ namespace Rogue.MetroFire.UI
 			_container.Register(Component.For<IMessageBus>().ImplementedBy<MessageBus>());
 			_container.Register(Component.For<IRoomModuleViewModelFactory>().AsFactory());
 			_container.Register(Component.For<IInlineUploadViewFactory>().AsFactory());
-			_container.Register(Component.For<INotification>().ImplementedBy<Notification>());
-			_container.Register(Component.For<FlashTaskBarAction>().ImplementedBy<FlashTaskBarAction>());
-			_container.Register(Component.For<ShowToastAction>().ImplementedBy<ShowToastAction>());
-			_container.Register(Component.For<PlaySoundAction>().ImplementedBy<PlaySoundAction>());
-			_container.Register(Component.For<ITaskBar>().ImplementedBy<TaskBar>());
+			_container.Register(Component.For<INotification>().ImplementedBy<Notification>().LifestyleTransient());
+			_container.Register(Component.For<FlashTaskBarAction>().ImplementedBy<FlashTaskBarAction>().LifestyleTransient());
+			_container.Register(Component.For<ShowToastAction>().ImplementedBy<ShowToastAction>().LifestyleTransient());
+			_container.Register(Component.For<PlaySoundAction>().ImplementedBy<PlaySoundAction>().LifestyleTransient());
+			_container.Register(Component.For<ITaskBar>().ImplementedBy<TaskBar>().LifestyleSingleton());
 			_container.Register(Component.For<IImageView>().LifestyleTransient().ImplementedBy<ImageView>());
 			_container.Register(Component.For<ISettings>().ImplementedBy<CurrentSettings>().Forward<CampfireClient.ISettings>()
 				.LifestyleSingleton());

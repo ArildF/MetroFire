@@ -13,6 +13,8 @@ namespace Rogue.MetroFire.UI.Views
 		private readonly IMessageBus _bus;
 		private readonly INavigationContent _content;
 
+		private bool _isLoaded;
+
 		protected MainCampfireView()
 		{
 			InitializeComponent();
@@ -22,7 +24,11 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
 		{
-			_bus.SendMessage(new ModuleLoaded(ModuleNames.MainCampfireView));
+			if (!_isLoaded)
+			{
+				_isLoaded = true;
+				_bus.SendMessage(new ModuleLoaded(ModuleNames.MainCampfireView));
+			}
 		}
 
 		public MainCampfireView(IMainCampfireViewModel model, IMessageBus bus, INavigationContent content) : this()

@@ -108,20 +108,20 @@
 					  VerticalAlignment="Center"/>
 			<TextBox TextWrapping="Wrap" d:LayoutOverrides="Width" Grid.Row="1" 
 					 Text="{Binding MatchText}"
-					 Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox}" VerticalAlignment="Top" Margin="0,0,0,6"/>
+					 Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox}" VerticalAlignment="Top" Margin="0,0,0,6" ToolTip="Enter a regular expression to match room text"/>
 			<CheckBox x:Name="checkBox1" Content="In room matching" Margin="6,0,5.999,0" d:LayoutOverrides="Width" 
 					  IsChecked="{Binding DoMatchRoom}"
 					  Grid.Row="2" VerticalAlignment="Center"/>
 			<TextBox HorizontalAlignment="Stretch" TextWrapping="Wrap" d:LayoutOverrides="Height, GridBox" 
 					 Text="{Binding MatchRoom}"
-					 Grid.Row="2" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch"/>
+					 Grid.Row="2" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch" ToolTip="Enter a regular expression to match the room title"/>
 			
 			<CheckBox x:Name="checkBox1_Copy" Content="User matching" Margin="6,0,5.998,0" 
 				IsChecked="{Binding DoMatchUser}"
 				Grid.Row="3" VerticalAlignment="Center" d:LayoutOverrides="Width"/>
 			<TextBox HorizontalAlignment="Stretch" TextWrapping="Wrap" 
 				Text="{Binding MatchUser}"
-				Grid.Row="3" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1_Copy}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch" d:LayoutOverrides="Height, GridBox"/>
+				Grid.Row="3" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1_Copy}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch" d:LayoutOverrides="Height, GridBox" ToolTip="Enter a regular expression to match the user name"/>
 			<Button x:Name="button" Content="X" d:LayoutOverrides="Height" Grid.Column="2" Visibility="Hidden" 
 					Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.DeleteTriggerCommand}"
 					CommandParameter="{Binding}"

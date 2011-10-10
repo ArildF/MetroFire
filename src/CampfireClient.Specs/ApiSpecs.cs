@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using Machine.Fakes;
 using Machine.Specifications;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.CampfireClient.Specs
 {
-	public class ApiContext
+	public class ApiContext : WithSubject<CampfireApi>
 	{
 		private Establish context =
 			() => api = CreateApi();
@@ -17,7 +18,7 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 			var url = lines[0];
 			var token = lines[1];
 
-			var api = new CampfireApi();
+			var api = Subject;
 			api.SetLoginInfo(new LoginInfo(url, token));
 
 			return api;

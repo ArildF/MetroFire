@@ -6,6 +6,7 @@
         xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
         x:Class="Rogue.MetroFire.UI.Views.ShellView"
 		TextOptions.TextFormattingMode="Display"
+		Icon="..\Assets\Main.ico"
         Title="{Binding Title}" Height="628" Width="919">
 	<Window.Resources>
 		

@@ -76,6 +76,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonVersion.cs">
+      <Link>CommonVersion.cs</Link>
+    </Compile>
     <Compile Include="Campfire.cs" />
     <Compile Include="CampfireApi.cs" />
     <Compile Include="CampfireApiLoggingInterceptor.cs" />

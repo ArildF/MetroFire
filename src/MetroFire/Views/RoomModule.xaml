@@ -5,6 +5,7 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors" mc:Ignorable="d" 
+			 xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
 			 d:DesignHeight="539" d:DesignWidth="700" d:DataContext="{Binding Source={StaticResource SampleRoomViewModel}}" Padding="5" Background="White">
 	<UserControl.Resources>
 		
@@ -30,9 +31,11 @@
 		
 	</UserControl.Resources>
 	
-	<UserControl.InputBindings>
-		<KeyBinding Key="Enter" Command="{Binding PostMessageCommand}"/>
-	</UserControl.InputBindings>
+	<Infrastructure:InputBehavior.CustomKeyBindings>
+		<Infrastructure:CustomKeyBindingsCollection>
+			<Infrastructure:CustomKeyBinding Key="Enter" Command="{Binding PostMessageCommand}" Modifier=""/>
+		</Infrastructure:CustomKeyBindingsCollection>
+	</Infrastructure:InputBehavior.CustomKeyBindings>
 	
 	<Grid>
 		<Grid.RowDefinitions>
@@ -47,7 +50,9 @@
 				Command="{Binding PostMessageCommand}" Margin="0" Grid.Row="1" Padding="0"/>
 		<TextBox x:Name="_textBox" TextWrapping="Wrap" Margin="0" d:LayoutOverrides="GridBox" Grid.Row="2" Padding="0" 
 				 SelectionOpacity="3.4" Text="{Binding UserMessage, UpdateSourceTrigger=PropertyChanged}" 
-				 Style="{DynamicResource _userMessageTextBoxStyle}">
+				 Style="{DynamicResource _userMessageTextBoxStyle}"
+				 AcceptsReturn="True"
+				 >
 			
 			<i:Interaction.Behaviors>
 				<Behaviors:BindableFocusBehavior BindableIsFocused="{Binding UserEditingMessage, Mode=OneWayToSource}"/>

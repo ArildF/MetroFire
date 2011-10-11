@@ -141,6 +141,9 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Infrastructure\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CampfireLog.cs" />
+    <Compile Include="Infrastructure\CustomKeyBinding.cs" />
+    <Compile Include="Infrastructure\CustomKeyBindingsCollection.cs" />
+    <Compile Include="Infrastructure\InputBehavior.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\LogMessageDebugListener.cs" />
     <Compile Include="Infrastructure\UserCache.cs" />

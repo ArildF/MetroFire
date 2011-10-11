@@ -51,7 +51,7 @@
 		<TextBox x:Name="_textBox" TextWrapping="Wrap" Margin="0" d:LayoutOverrides="GridBox" Grid.Row="2" Padding="0" 
 				 SelectionOpacity="3.4" Text="{Binding UserMessage, UpdateSourceTrigger=PropertyChanged}" 
 				 Style="{DynamicResource _userMessageTextBoxStyle}"
-				 AcceptsReturn="True"
+				 AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
 				 >
 			
 			<i:Interaction.Behaviors>

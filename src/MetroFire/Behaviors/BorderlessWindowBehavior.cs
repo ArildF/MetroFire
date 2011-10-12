@@ -263,6 +263,7 @@ namespace Rogue.MetroFire.UI.Behaviors
 
 		private IntPtr HwndHook(IntPtr hWnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
+			IntPtr retVal = IntPtr.Zero;
 			switch (message)
 			{
 				case WM_NCCALCSIZE:
@@ -283,7 +284,7 @@ namespace Rogue.MetroFire.UI.Behaviors
 					{
 						/* As per http://msdn.microsoft.com/en-us/library/ms632633(VS.85).aspx , "-1" lParam
 						 * "does not repaint the nonclient area to reflect the state change." */
-						DefWindowProc(hWnd, message, wParam, new IntPtr(-1));
+						retVal = DefWindowProc(hWnd, message, wParam, new IntPtr(-1));
 						handled = true;
 					}
 					break;
@@ -295,7 +296,7 @@ namespace Rogue.MetroFire.UI.Behaviors
 					break;
 			}
 
-			return IntPtr.Zero;
+			return retVal;
 		}
 	}
 }

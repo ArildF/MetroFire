@@ -11,6 +11,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 		public GeneralSettingsViewModel(GeneralSettings settings)
 		{
 			_settings = settings;
+			UseStandardWindowsChrome = _settings.UseStandardWindowsChrome;
 		}
 
 		public string Title

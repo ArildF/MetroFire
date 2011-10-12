@@ -11,6 +11,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 		public NetworkSettingsViewModel(NetworkSettings settings)
 		{
 			_settings = settings;
+			UseProxy = _settings.UseProxy;
 		}
 
 		public bool UseProxy

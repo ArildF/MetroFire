@@ -194,6 +194,23 @@
 			
 		</DataTemplate>
 		
+		<DataTemplate DataType="{x:Type Settings:AboutViewModel}">
+			<Grid d:DesignWidth="517" d:DesignHeight="371">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="0.272*"/>
+					<RowDefinition Height="0.108*"/>
+					<RowDefinition Height="0.62*"/>
+				</Grid.RowDefinitions>
+				<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Stretch" Style="{DynamicResource MetroLargeLightHeader}" TextAlignment="Center" FontSize="64"><Run Language="nb-no" Text="metro fire"/></TextBlock>
+				<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="Copyright © Arild Fines 2011" VerticalAlignment="Stretch" RenderTransformOrigin="0.634,8.333" Grid.Row="2" Style="{DynamicResource MetroBodyText}" TextAlignment="Center"/>
+				<TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap"
+					VerticalAlignment="Stretch" Grid.Row="1" Style="{DynamicResource MetroLargeLightHeader}" TextAlignment="Center">
+					<Run Text="Version "/><Run Text="{Binding AppVersion, Mode=OneWay}"/>
+				</TextBlock>
+			</Grid>
+			
+		</DataTemplate>
+		
 		
 		<Button Style="{StaticResource NavigationButton}" Content="BACK" x:Key="BackButton" Command="{Binding BackCommand}"/>
 

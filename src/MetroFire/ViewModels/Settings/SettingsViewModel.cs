@@ -19,7 +19,9 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			SettingsViewModels = new ISettingsSubPage[] {
 				new GeneralSettingsViewModel(settings.General), 
 				new NetworkSettingsViewModel(settings.Network),
-				new NotificationSettingsViewModel(settings.Notification)
+				new NotificationSettingsViewModel(settings.Notification),
+				new AboutViewModel(),
+
 			};
 
 			SaveCommand = new ReactiveCommand();

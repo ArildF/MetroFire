@@ -38,6 +38,7 @@ namespace Rogue.MetroFire.UI.Views
 				};
 
 			FontSize = 14;
+			FontFamily = new FontFamily("Segoe UI");
 
 			AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(NavigateToLink));
 		}

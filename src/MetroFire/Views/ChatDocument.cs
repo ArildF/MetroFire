@@ -90,9 +90,10 @@ namespace Rogue.MetroFire.UI.Views
 			var run = new Run(message.Body) {FontFamily = new FontFamily("Consolas")};
 			paragraph.Inlines.Add(run);
 
-			paragraph.BorderThickness = new Thickness(0.5);
+			paragraph.BorderThickness = new Thickness(0, 0.5, 0, 0.5);
 			paragraph.BorderBrush = Brushes.Black;
 			paragraph.Margin = new Thickness(0, 6, 0, 6);
+			paragraph.Padding = new Thickness(0, 10, 0, 10);
 		}
 
 		private void FormatLeaveMessage(Message message, User user, Paragraph paragraph)

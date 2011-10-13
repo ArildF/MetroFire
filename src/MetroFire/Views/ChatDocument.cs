@@ -54,9 +54,6 @@ namespace Rogue.MetroFire.UI.Views
 			var view = _factory.Create(vm);
 
 			RenderUserString(user, paragraph);
-
-			paragraph.Inlines.Add(new LineBreak());
-			
 			paragraph.Inlines.Add(new LineBreak());
 
 			paragraph.Inlines.Add(view.Element);
@@ -93,8 +90,9 @@ namespace Rogue.MetroFire.UI.Views
 
 			paragraph.BorderThickness = new Thickness(0, 0.5, 0, 0.5);
 			paragraph.BorderBrush = Brushes.Black;
-			paragraph.Margin = new Thickness(0, 6, 0, 6);
-			paragraph.Padding = new Thickness(0, 10, 0, 10);
+			paragraph.Margin = new Thickness(0, 1, 0, 6);
+			paragraph.Padding = new Thickness(0, 1, 0, 6);
+			paragraph.Background = Brushes.LightGoldenrodYellow;
 		}
 
 		private void FormatLeaveMessage(Message message, User user, Paragraph paragraph)
@@ -115,6 +113,9 @@ namespace Rogue.MetroFire.UI.Views
 
 			var inline = RenderUserMessage(message.Body);
 			paragraph.Inlines.Add(inline);
+
+			paragraph.BorderThickness = new Thickness(0, 0, 0, 0.2);
+			paragraph.BorderBrush = Brushes.LightGray;
 		}
 
 		private Inline RenderUserMessage(string body)
@@ -140,13 +141,15 @@ namespace Rogue.MetroFire.UI.Views
 				}
 			}
 			return span;
+
 		}
 
 		private static void RenderUserString(User user, Paragraph paragraph)
 		{
 			var name = FormatUserName(user);
 
-			paragraph.Inlines.Add(name + ": ");
+			var item = new Run("<" + name + "> ");
+			paragraph.Inlines.Add(item);
 		}
 
 		private static string FormatUserName(User user)

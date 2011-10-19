@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Rogue.MetroFire.CampfireClient.Infrastructure;
 using Rogue.MetroFire.CampfireClient.Serialization;
  
 namespace Rogue.MetroFire.CampfireClient
@@ -38,6 +39,11 @@ namespace Rogue.MetroFire.CampfireClient
 				new XmlSerializer(typeof(Room[]), new XmlRootAttribute("rooms"));
 
 			_defaultTimeout = (int)TimeSpan.FromSeconds(60).TotalMilliseconds;
+		}
+
+		internal string Cookie
+		{
+			get { return _cookie; }
 		}
 
 		public Account GetAccountInfo()
@@ -108,6 +114,34 @@ namespace Rogue.MetroFire.CampfireClient
 			client.DownloadFile(uri, destination);
 
 			return Unit.Default;
+		}
+
+		public Upload UploadFile(int roomId, Stream stream, string filename, string contentType)
+		{
+			string relativeUri = String.Format("room/{0}/uploads.xml", roomId);
+			var uri = FormatUri(relativeUri);
+			var request = CreateRequest(uri);
+			var builder = new MultipartFormDataBuilder();
+			request.ContentType = "multipart/form-data; boundary=" + builder.Boundary;
+
+			using(var requestStream = request.GetRequestStream())
+			{
+				builder.SetRequestStream(requestStream);
+				builder.WriteStream(stream, "upload", filename, contentType);
+				requestStream.Flush();
+			}
+
+			var response = (HttpWebResponse)request.GetResponse();
+			if (response.StatusCode != HttpStatusCode.Created)
+			{
+					throw new Exception("Unexpected response code: " + response.StatusCode);
+			}
+			using (var responseStream = response.GetResponseStream())
+			{
+				var deserializer = GetSerializer<Upload>(null);
+				Debug.Assert(responseStream != null, "responseStream != null");
+				return (Upload) deserializer.Deserialize(responseStream);
+			}
 		}
 
 		public Message[] GetMessages(int id, int? sinceId = null)
@@ -196,9 +230,9 @@ namespace Rogue.MetroFire.CampfireClient
 
 			request.ContentType = "application/xml";
 
-			if (_cookie != null)
+			if (Cookie != null)
 			{
-				request.Headers.Add("Cookie", _cookie);
+				request.Headers.Add("Cookie", Cookie);
 			}
 
 			return request;
@@ -250,9 +284,9 @@ namespace Rogue.MetroFire.CampfireClient
 			{
 				client.Proxy = null;
 			}
-			if (_cookie != null)
+			if (Cookie != null)
 			{
-				client.Headers.Add("Cookie", _cookie);
+				client.Headers.Add("Cookie", Cookie);
 			}
 			return client;
 		}

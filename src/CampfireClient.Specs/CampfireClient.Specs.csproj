@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="ApiSpecs.cs" />
     <Compile Include="CampfireSpecs.cs" />
+    <Compile Include="Infrastructure\MultipartFormDataBuilderSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamingApiSpecs.cs" />
   </ItemGroup>

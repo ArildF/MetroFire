@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using Machine.Fakes;
 using Machine.Specifications;
 using Rogue.MetroFire.CampfireClient.Serialization;
@@ -18,11 +19,35 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 			var url = lines[0];
 			var token = lines[1];
 
-			var api = Subject;
+			var api = new CampfireApi(new Settings());
 			api.SetLoginInfo(new LoginInfo(url, token));
 
 			return api;
 		}
+
+		private class Settings : ISettings
+		{
+			private NetworkSettings _network;
+
+			public Settings()
+			{
+				_network = new NetworkSettings();
+			}
+
+			private class NetworkSettings : INetworkSettings
+			{
+				public bool UseProxy
+				{
+					get { return false; }
+				}
+			}
+
+			public INetworkSettings Network
+			{
+				get { return _network; }
+			}
+		}
+
 		protected static CampfireApi api;
 
 		protected static int FindJoinedRoom()
@@ -258,6 +283,48 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static int _uploadMessageId;
 		private static Upload _upload;
 		private static int _roomId;
+	}
+
+	public class When_uploading_file : ApiContext
+	{
+		private Establish context = () =>
+			{
+				_roomId = FindJoinedRoom();
+				var file = Path.GetTempFileName();
+				File.WriteAllText(file, "Hello world");
+				_stream = File.OpenRead(file);
+			};
+
+		Because of = () => _upload = api.UploadFile(_roomId, _stream, "HelloWorld.txt", "text/plain");
+
+		It should_return_an_upload = () => _upload.ShouldNotBeNull();
+
+		It should_have_an_upload_named_helloworld = () => _upload.Name.ShouldEqual("HelloWorld.txt");
+
+		It should_be_in_the_room = () => GetUploadForLastUploadMessage(_roomId).Name.ShouldEqual("HelloWorld.txt");
+
+		It should_be_text_plain = () => GetUploadForLastUploadMessage(_roomId).ContentType.ShouldEqual("text/plain");
+
+		It should_contain_hello_world = () => GetContentsForLastUploadMessage(_roomId).ShouldEqual("Hello world");
+
+		private static string GetContentsForLastUploadMessage(int roomId)
+		{
+			var upload = GetUploadForLastUploadMessage(roomId);
+			var webClient = new WebClient();
+			webClient.Headers.Add("Cookie", api.Cookie);
+
+			return webClient.DownloadString(upload.FullUrl);
+		}
+
+		private static Upload GetUploadForLastUploadMessage(int roomId)
+		{
+			var message = api.GetMessages(_roomId).Last(msg => msg.Type == MessageType.UploadMessage);
+			return api.GetUpload(roomId, message.Id);
+		}
+
+		private static int _roomId;
+		private static FileStream _stream;
+		private static Upload _upload;
 	}
 
 }

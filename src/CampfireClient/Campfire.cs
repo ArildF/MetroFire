@@ -59,6 +59,14 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestKeepAliveMessage>().SubscribeThreadPool(KeepAlive);
 			_bus.Listen<RequestUploadMessage>().SubscribeThreadPool(RequestUpload);
 			_bus.Listen<RequestDownloadFileMessage>().SubscribeThreadPool(RequestDownloadFile);
+			_bus.Listen<RequestUploadFileMessage>().SubscribeThreadPool(RequestUploadFile);
+		}
+
+		private void RequestUploadFile(RequestUploadFileMessage obj)
+		{
+			CallApi(() => _api.UploadFile(obj.RoomId, File.OpenRead(obj.Path), Path.GetFileName(obj.Path), obj.ContentType),
+				upload => _bus.SendMessage(new FileUploadedMessage(obj.Path, upload))
+				);
 		}
 
 		private void RequestDownloadFile(RequestDownloadFileMessage obj)
@@ -220,6 +228,18 @@ namespace Rogue.MetroFire.CampfireClient
 		public void Stop()
 		{
 			
+		}
+	}
+
+	public class FileUploadedMessage
+	{
+		public string Path { get; private set; }
+		public Upload Upload { get; private set; }
+
+		public FileUploadedMessage(string path, Upload upload)
+		{
+			Path = path;
+			Upload = upload;
 		}
 	}
 }

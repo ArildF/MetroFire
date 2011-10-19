@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.Settings;
@@ -160,6 +161,20 @@ namespace Rogue.MetroFire.UI
 		bool? ShowDialog();
 	}
 
+	public interface IPasteView
+	{
+		bool? ShowDialog();
+	}
+
+	public interface IPasteViewFactory
+	{
+		IPasteView Create(IRoom room, BitmapSource bitmapSource);
+	}
+
+	public interface IPasteViewModel
+	{
+	}
+
 	public interface ISettings
 	{
 		INetworkSettings Network { get; }
@@ -170,5 +185,17 @@ namespace Rogue.MetroFire.UI
 	public interface ITaskBar
 	{
 		void Flash();
+	}
+
+
+	public interface IClipboard
+	{
+		string GetText();
+		BitmapSource GetImage();
+	}
+
+	public interface IImageEncoder
+	{
+		string EncodeToTempPng(BitmapSource bitmapSource);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media.Imaging;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
@@ -21,18 +22,21 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _userMessage;
 		private bool _userEditedMessage;
 		private readonly IChatDocument _chatDocument;
+		private readonly IClipboard _clipboard;
 		private readonly List<RoomMessage> _messages;
 		private int? _sinceMessageId;
 		private int _notificationCount;
 
 		private bool _streamingStarted = false;
 
-		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument)
+		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
+			IClipboard clipboard)
 		{
 			_room = room;
 			_bus = bus;
 			_userCache = userCache;
 			_chatDocument = chatDocument;
+			_clipboard = clipboard;
 
 			Users = new ReactiveCollection<UserViewModel>();
 
@@ -54,7 +58,15 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			_bus.RegisterMessageSource(Observable.Interval(TimeSpan.FromMinutes(5)).Select(
 				_ => new RequestKeepAliveMessage(_room.Id)));
+
+			PasteCommand = new ReactiveCommand();
+
+			_bus.RegisterMessageSource(PasteCommand.Select(pc => _clipboard.GetImage())
+			                           	.Where(image => image != null).Select(image => new PasteImageMessage(room, image)));
 		}
+
+
+		public ReactiveCommand PasteCommand { get; private set; }
 
 		private void HandleUsersUpdated(UsersUpdatedMessage obj)
 		{

@@ -759,6 +759,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Assets/preferences-system.Brush.xaml"/>
 				<ResourceDictionary Source="Views/NotificationViews.xaml"/>
+				<ResourceDictionary Source="Simple Styles.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 
     	</ResourceDictionary>

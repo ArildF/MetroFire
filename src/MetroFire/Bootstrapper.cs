@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using System.Windows;
+using System.Windows.Media.Imaging;
 using Castle.Facilities.Startable;
-using Castle.MicroKernel;
 using Castle.MicroKernel.ModelBuilder.Inspectors;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
@@ -8,6 +9,7 @@ using Castle.Windsor.Installer;
 using ReactiveUI;
 using System;
 using Rogue.MetroFire.CampfireClient;
+using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.Notifications;
 using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
@@ -58,7 +60,8 @@ namespace Rogue.MetroFire.UI
 			_container.Register(Component.For<IImageView>().LifestyleTransient().ImplementedBy<ImageView>());
 			_container.Register(Component.For<ISettings>().ImplementedBy<CurrentSettings>().Forward<CampfireClient.ISettings>()
 				.LifestyleSingleton());
-
+			_container.Register(Component.For<IPasteViewFactory>().ImplementedBy<PasteViewFactory>());
+			_container.Register(Component.For<IPasteView>().ImplementedBy<PasteView>().LifestyleTransient());
 
 			_container.Register(AllTypes.FromThisAssembly().Pick().WithServiceAllInterfaces());
 
@@ -73,6 +76,28 @@ namespace Rogue.MetroFire.UI
 
 			return _container.Resolve<IShellWindow>();
 		}
+
+		public class PasteViewFactory : IPasteViewFactory
+		{
+			private readonly IWindsorContainer _container;
+
+			public PasteViewFactory(IWindsorContainer container)
+			{
+				_container = container;
+			}
+
+			public IPasteView Create(IRoom room, BitmapSource bitmapSource)
+			{
+				var vm = _container.Resolve<IPasteViewModel>(new {room, bitmapSource});
+				var view = _container.Resolve<IPasteView>(new {vm});
+
+				var shell = (Window)_container.Resolve<IShellWindow>();
+				((Window) view).Owner = shell;
+
+				return view;
+			}
+		}
+
 
 		private INotificationAction Create(NotificationAction notificationAction)
 		{

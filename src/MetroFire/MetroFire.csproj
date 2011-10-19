@@ -136,16 +136,20 @@
     </Compile>
     <Compile Include="Behaviors\BindableFocusBehavior.cs" />
     <Compile Include="Behaviors\BorderlessWindowBehavior.cs" />
+    <Compile Include="Behaviors\CustomPasteBehavior.cs" />
     <Compile Include="Behaviors\StayScrolledToEndBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Infrastructure\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CampfireLog.cs" />
+    <Compile Include="Infrastructure\Clipboard.cs" />
     <Compile Include="Infrastructure\CustomKeyBinding.cs" />
     <Compile Include="Infrastructure\CustomKeyBindingsCollection.cs" />
+    <Compile Include="Infrastructure\IImageEncoder.cs" />
     <Compile Include="Infrastructure\InputBehavior.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\LogMessageDebugListener.cs" />
+    <Compile Include="Infrastructure\PasteHandler.cs" />
     <Compile Include="Infrastructure\UserCache.cs" />
     <Compile Include="Infrastructure\WebBrowser.cs" />
     <Compile Include="Infrastructure\WpfExtensions.cs" />
@@ -193,6 +197,7 @@
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\MainCampfireViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
+    <Compile Include="ViewModels\PasteViewModel.cs" />
     <Compile Include="ViewModels\RoomListViewModel.cs" />
     <Compile Include="ViewModels\RoomModuleViewModel.cs" />
     <Compile Include="ViewModels\Settings\AboutViewModel.cs" />
@@ -229,6 +234,9 @@
     </Compile>
     <Compile Include="Views\MainCampfireView.xaml.cs">
       <DependentUpon>MainCampfireView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PasteView.xaml.cs">
+      <DependentUpon>PasteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProgressIndicator.xaml.cs">
       <DependentUpon>ProgressIndicator.xaml</DependentUpon>
@@ -310,6 +318,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Simple Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -339,6 +351,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NotificationViews.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PasteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

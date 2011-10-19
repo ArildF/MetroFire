@@ -274,4 +274,17 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
+	public class RequestUploadFileMessage
+	{
+		public string Path { get; private set; }
+		public string ContentType { get; private set; }
+		public int RoomId { get; private set; }
+
+		public RequestUploadFileMessage(int roomId, string path, string contentType)
+		{
+			RoomId = roomId;
+			Path = path;
+			ContentType = contentType;
+		}
+	}
 }

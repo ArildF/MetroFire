@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reactive;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
@@ -25,6 +26,7 @@ namespace Rogue.MetroFire.CampfireClient
 		IDisposable Stream(int id, Action<Message> action, Action<Exception> onError = null);
 		Upload GetUpload(int roomId, int uploadMessageId);
 		Unit DownloadFile(string uri, string destination);
+		Upload UploadFile(int roomId, Stream stream, string filename, string contentType);
 	}
 
 	public interface ISettings

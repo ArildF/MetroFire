@@ -56,6 +56,7 @@
 			
 			<i:Interaction.Behaviors>
 				<Behaviors:BindableFocusBehavior BindableIsFocused="{Binding UserEditingMessage, Mode=OneWayToSource}"/>
+				<Behaviors:CustomPasteBehavior Command="{Binding PasteCommand}"/>
 			</i:Interaction.Behaviors>
 			<TextBox.Triggers>
 				

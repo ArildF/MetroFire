@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Media.Imaging;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.UI
@@ -146,4 +147,17 @@ namespace Rogue.MetroFire.UI
 			RoomId = roomId;
 		}
 	}
+
+	public class PasteImageMessage
+	{
+		public IRoom Room { get; private set; }
+		public BitmapSource Image { get; private set; }
+
+		public PasteImageMessage(IRoom room, BitmapSource image)
+		{
+			Room = room;
+			Image = image;
+		}
+	}
+
 }

@@ -240,12 +240,12 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 
 		Because of = () => _bus.SendMessage(new RequestUserInfoMessage(42));
 
-		It should_retry_three_times = () => _callCount.ShouldEqual(3);
+		It should_retry_ten_times = () => _callCount.ShouldEqual(10);
 
 		It should_send_an_error_message = () => _exceptionMessage.ShouldNotBeNull();
 
 
-		It should_have_sent_three_log_messages = () => _logMessages.Count.ShouldEqual(3);
+		It should_have_sent_ten_log_messages = () => _logMessages.Count.ShouldEqual(10);
 
 		It should_have_sent_three_warning_messages =
 			() => _logMessages.ShouldEachConformTo(msg => msg.LogMessageType == LogMessageType.Warning);

@@ -116,18 +116,24 @@ namespace Rogue.MetroFire.CampfireClient
 			return Unit.Default;
 		}
 
-		public Upload UploadFile(int roomId, Stream stream, string filename, string contentType)
+		public Upload UploadFile(int roomId, UploadFileParams uploadFileParams, IObserver<ProgressState> progressObserver)
 		{
 			string relativeUri = String.Format("room/{0}/uploads.xml", roomId);
 			var uri = FormatUri(relativeUri);
 			var request = CreateRequest(uri);
+			request.Headers["Authorization"] = Convert.ToBase64String(
+				Encoding.UTF8.GetBytes( _loginInfo.Token + ":X"));
+			request.AllowWriteStreamBuffering = false;
 			var builder = new MultipartFormDataBuilder();
 			request.ContentType = "multipart/form-data; boundary=" + builder.Boundary;
 
+			builder.AddStream(uploadFileParams.Stream, "upload", uploadFileParams.Filename, uploadFileParams.ContentType);
+
+			request.ContentLength = builder.ContentLength;
+
 			using(var requestStream = request.GetRequestStream())
 			{
-				builder.SetRequestStream(requestStream);
-				builder.WriteStream(stream, "upload", filename, contentType);
+				builder.Write(requestStream, progressObserver);
 				requestStream.Flush();
 			}
 

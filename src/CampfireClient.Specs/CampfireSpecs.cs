@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using Castle.Core;
 using Machine.Fakes;
 using Machine.Specifications;
@@ -254,5 +257,46 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static ExceptionMessage _exceptionMessage;
 		private static readonly List<LogMessage> _logMessages = new List<LogMessage>();
 	}
+
+	public class When_sending_a_request_upload_file_message : CampfireContextBase
+	{
+		Establish context = () =>
+			{
+				_stream = Stream.Null;
+				_path = Path.GetTempFileName();
+				_requestUploadFileMessage = new RequestUploadFileMessage(42, _path, "text/plain");
+
+				_api.WhenToldTo(a => a.UploadFile(42, Moq.It.IsAny<UploadFileParams>(), Moq.It.IsAny<IObserver<ProgressState>>())).
+					Return<int, UploadFileParams, IObserver<ProgressState>>((id, p, o) =>
+						{
+							o.OnNext(new ProgressState(100, 10));
+							o.OnNext(new ProgressState(100, 50));
+							o.OnCompleted();
+							return new Upload();
+						});
+
+
+				_bus.Listen<FileUploadProgressChangedMessage>()
+					.Where(msg => msg.CorrelationId == _requestUploadFileMessage.CorrelationId)
+					.Subscribe(msg => _progressMessages.Add(msg));
+				_bus.Listen<FileUploadedMessage>()
+					.Where(msg => msg.CorrelationId == _requestUploadFileMessage.CorrelationId)
+					.Subscribe(msg => _msg = msg);
+			};
+
+		Because of = () => _bus.SendMessage(_requestUploadFileMessage);
+
+		It should_have_sent_file_uploaded_message = () => _msg.ShouldNotBeNull();
+		It should_have_sent_file_uploaded_message_with_path = () => _msg.Path.ShouldEqual(_path);
+		It should_have_sent_progress_messages = () => _progressMessages.Count.ShouldEqual(2);
+
+		private static Stream _stream;
+		private static FileUploadedMessage _msg;
+		private static string _path;
+		private static readonly List<FileUploadProgressChangedMessage> _progressMessages = new List<FileUploadProgressChangedMessage>();
+		private static RequestUploadFileMessage _requestUploadFileMessage;
+	}
+
+	
 
 }

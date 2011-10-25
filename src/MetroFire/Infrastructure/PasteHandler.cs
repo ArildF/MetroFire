@@ -25,6 +25,8 @@ namespace Rogue.MetroFire.UI.Infrastructure
 		{
 			var view = _pasteViewFactory.Create(pasteImageMessage.Room, pasteImageMessage.Image);
 			view.ShowDialog();
+
+			_pasteViewFactory.Release(view);
 		}
 
 		public void Stop()

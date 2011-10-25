@@ -96,6 +96,11 @@ namespace Rogue.MetroFire.UI
 
 				return view;
 			}
+
+			public void Release(IPasteView view)
+			{
+				_container.Release(view);
+			}
 		}
 
 

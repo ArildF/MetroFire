@@ -274,7 +274,27 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
-	public class RequestUploadFileMessage
+	public class CorrelatedMessage
+	{
+		public Guid CorrelationId { get; private set; }
+
+		public CorrelatedMessage()
+		{
+			CorrelationId = Guid.NewGuid();
+		}
+	}
+
+	public class CorrelatedReply
+	{
+		public CorrelatedReply(Guid correlationId)
+		{
+			CorrelationId = correlationId;
+		}
+
+		public Guid CorrelationId { get; private set; }
+	}
+
+	public class RequestUploadFileMessage : CorrelatedMessage
 	{
 		public string Path { get; private set; }
 		public string ContentType { get; private set; }
@@ -285,6 +305,52 @@ namespace Rogue.MetroFire.CampfireClient
 			RoomId = roomId;
 			Path = path;
 			ContentType = contentType;
+		}
+	}
+
+	public class FileUploadedMessage : CorrelatedReply
+	{
+		public string Path { get; private set; }
+		public Upload Upload { get; private set; }
+
+		public FileUploadedMessage(Guid correlationId, string path, Upload upload) : base(correlationId)
+		{
+			Path = path;
+			Upload = upload;
+		}
+	}
+
+	public class OperationFailedMessage
+	{
+		public Exception Exception { get; private set; }
+		public Guid CorrelationId { get; private set; }
+
+		public OperationFailedMessage(Exception exception, Guid correlationId)
+		{
+			Exception = exception;
+			CorrelationId = correlationId;
+		}
+	}
+
+	public class FileUploadProgressChangedMessage : CorrelatedReply
+	{
+		public ProgressState Progress { get; private set; }
+
+		public FileUploadProgressChangedMessage(Guid correlationId, ProgressState progress) : base(correlationId)
+		{
+			Progress = progress;
+		}
+	}
+
+	public class ProgressState
+	{
+		public long Total { get; private set; }
+		public long Current { get; private set; }
+
+		public ProgressState(long total, long current)
+		{
+			Total = total;
+			Current = current;
 		}
 	}
 }

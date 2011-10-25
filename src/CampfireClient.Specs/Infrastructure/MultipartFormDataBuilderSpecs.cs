@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reactive.Subjects;
 using System.Text;
 using Machine.Specifications;
 using Rogue.MetroFire.CampfireClient.Infrastructure;
@@ -13,12 +14,15 @@ namespace Rogue.MetroFire.CampfireClient.Specs.Infrastructure
 			{
 				_requestStream = new MemoryStream();
 				_builder = new MultipartFormDataBuilder();
-				_builder.SetRequestStream(_requestStream);
 
 				_inputStream = new MemoryStream(Encoding.UTF8.GetBytes("Hello world"));
 			};
 
-		Because of = () => _builder.WriteStream(_inputStream, "upload", "HelloWorld.txt", "text/plain");
+		private Because of = () =>
+			{
+				_builder.AddStream(_inputStream, "upload", "HelloWorld.txt", "text/plain");
+				_builder.Write(_requestStream, new Subject<ProgressState>());
+			};
 
 		It starts_with_two_dashes_and_the_boundary = () => GetRequestLines()[0].ShouldEqual("--" + _builder.Boundary);
 

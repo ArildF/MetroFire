@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reactive.Subjects;
 using Machine.Fakes;
 using Machine.Specifications;
 using Rogue.MetroFire.CampfireClient.Serialization;
@@ -293,9 +295,12 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 				var file = Path.GetTempFileName();
 				File.WriteAllText(file, "Hello world");
 				_stream = File.OpenRead(file);
+
+				_subject = new Subject<ProgressState>();
+				_subject.Subscribe(ps => _states.Add(ps), () => _completed = true);
 			};
 
-		Because of = () => _upload = api.UploadFile(_roomId, _stream, "HelloWorld.txt", "text/plain");
+		Because of = () => _upload = api.UploadFile(_roomId, new UploadFileParams(_stream, "HelloWorld.txt", "text/plain"), _subject);
 
 		It should_return_an_upload = () => _upload.ShouldNotBeNull();
 
@@ -306,6 +311,10 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		It should_be_text_plain = () => GetUploadForLastUploadMessage(_roomId).ContentType.ShouldEqual("text/plain");
 
 		It should_contain_hello_world = () => GetContentsForLastUploadMessage(_roomId).ShouldEqual("Hello world");
+
+		It should_have_reported_progress_at_least_twice = () => _states.Count.ShouldBeGreaterThanOrEqualTo(2);
+
+		It should_have_reported_completion = () => _completed.ShouldBeTrue();
 
 		private static string GetContentsForLastUploadMessage(int roomId)
 		{
@@ -325,6 +334,9 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static int _roomId;
 		private static FileStream _stream;
 		private static Upload _upload;
+		private static Subject<ProgressState> _subject;
+		private static bool _completed;
+		private static List<ProgressState> _states = new List<ProgressState>();
 	}
 
 }

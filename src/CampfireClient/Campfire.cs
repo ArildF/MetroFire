@@ -1,12 +1,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
+using System.Reactive.Subjects;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Threading;
 using Castle.Core;
 using ReactiveUI;
 using System;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using System.Reactive.Linq;
 
 namespace Rogue.MetroFire.CampfireClient
 {
@@ -59,14 +64,55 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestKeepAliveMessage>().SubscribeThreadPool(KeepAlive);
 			_bus.Listen<RequestUploadMessage>().SubscribeThreadPool(RequestUpload);
 			_bus.Listen<RequestDownloadFileMessage>().SubscribeThreadPool(RequestDownloadFile);
+			//_bus.Listen<RequestUploadFileMessage>().SubscribeThreadPool(TestRequestUploadFile);
 			_bus.Listen<RequestUploadFileMessage>().SubscribeThreadPool(RequestUploadFile);
+		}
+
+		private void TestRequestUploadFile(RequestUploadFileMessage obj)
+		{
+			var progressObserver = new Subject<ProgressState>();
+			var disposable = _bus.RegisterMessageSource(
+				progressObserver.Select(ps => new FileUploadProgressChangedMessage(obj.CorrelationId, ps)));
+			var requestStream = new NullStream();
+
+			var buf = new byte[4096];
+			var inputStream = File.OpenRead(obj.Path);
+			long total = 0;
+			long current = 0;
+			if (inputStream.CanSeek)
+			{
+				total = inputStream.Length;
+			}
+
+			progressObserver.OnNext(new ProgressState(total, current));
+
+			int read;
+			while ((read = inputStream.Read(buf, 0, buf.Length)) > 0)
+			{
+				requestStream.Write(buf, 0, read);
+				current += read;
+				progressObserver.OnNext(new ProgressState(total, current));
+
+			}
+			Thread.Sleep(1000);
+			_bus.SendMessage(new FileUploadedMessage(obj.CorrelationId, obj.Path, new Upload()));
+			disposable.Dispose();
 		}
 
 		private void RequestUploadFile(RequestUploadFileMessage obj)
 		{
-			CallApi(() => _api.UploadFile(obj.RoomId, File.OpenRead(obj.Path), Path.GetFileName(obj.Path), obj.ContentType),
-				upload => _bus.SendMessage(new FileUploadedMessage(obj.Path, upload))
-				);
+			var subject = new Subject<ProgressState>();
+			var disposable = _bus.RegisterMessageSource(
+				subject.Select(ps => new FileUploadProgressChangedMessage(obj.CorrelationId, ps)));
+
+			CallApi(() => _api.UploadFile(obj.RoomId, 
+					new UploadFileParams(File.OpenRead(obj.Path), Path.GetFileName(obj.Path), obj.ContentType),
+					subject),
+				upload =>
+					{
+						_bus.SendMessage(new FileUploadedMessage(obj.CorrelationId, obj.Path, upload));
+						disposable.Dispose();
+					});
 		}
 
 		private void RequestDownloadFile(RequestDownloadFileMessage obj)
@@ -231,15 +277,78 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
-	public class FileUploadedMessage
+	[Serializable]
+	public sealed class NullStream : Stream
 	{
-		public string Path { get; private set; }
-		public Upload Upload { get; private set; }
+		internal NullStream() { }
 
-		public FileUploadedMessage(string path, Upload upload)
+		public override bool CanRead
 		{
-			Path = path;
-			Upload = upload;
+			[Pure]
+			get { return true; }
+		}
+
+		public override bool CanWrite
+		{
+			[Pure]
+			get { return true; }
+		}
+
+		public override bool CanSeek
+		{
+			[Pure]
+			get { return true; }
+		}
+
+		public override long Length
+		{
+			get { return 0; }
+		}
+
+		public override long Position
+		{
+			get { return 0; }
+			set { }
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			// Do nothing - we don't want NullStream singleton (static) to be closable 
+		}
+
+		public override void Flush()
+		{
+		}
+
+
+		public override int Read([In, Out] byte[] buffer, int offset, int count)
+		{
+			return count;
+		}
+
+		public override int ReadByte()
+		{
+			return -1;
+		}
+
+		public override void Write(byte[] buffer, int offset, int count)
+		{
+			var now = DateTime.Now;
+			while ((DateTime.Now - now).TotalMilliseconds < 1) ;
+		}
+
+		public override void WriteByte(byte value)
+		{
+		}
+
+		public override long Seek(long offset, SeekOrigin origin)
+		{
+			return 0;
+		}
+
+		public override void SetLength(long length)
+		{
 		}
 	}
+
 }

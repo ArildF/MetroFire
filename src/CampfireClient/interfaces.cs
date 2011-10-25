@@ -12,6 +12,35 @@ namespace Rogue.MetroFire.CampfireClient
 		IEnumerable<Room> Rooms { get; }
 	}
 
+	public class UploadFileParams
+	{
+		private Stream _stream;
+		private string _filename;
+		private string _contentType;
+
+		public UploadFileParams(Stream stream, string filename, string contentType)
+		{
+			_stream = stream;
+			_filename = filename;
+			_contentType = contentType;
+		}
+
+		public Stream Stream
+		{
+			get { return _stream; }
+		}
+
+		public string Filename
+		{
+			get { return _filename; }
+		}
+
+		public string ContentType
+		{
+			get { return _contentType; }
+		}
+	}
+
 	public interface ICampfireApi
 	{
 		Account GetAccountInfo();
@@ -26,7 +55,7 @@ namespace Rogue.MetroFire.CampfireClient
 		IDisposable Stream(int id, Action<Message> action, Action<Exception> onError = null);
 		Upload GetUpload(int roomId, int uploadMessageId);
 		Unit DownloadFile(string uri, string destination);
-		Upload UploadFile(int roomId, Stream stream, string filename, string contentType);
+		Upload UploadFile(int roomId, UploadFileParams uploadFileParams, IObserver<ProgressState> progressObserver);
 	}
 
 	public interface ISettings

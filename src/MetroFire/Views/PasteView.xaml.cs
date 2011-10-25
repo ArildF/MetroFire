@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Data;
 
@@ -101,6 +102,13 @@ namespace Rogue.MetroFire.UI.Views
 
 			binding = new Binding("IsFinished"){Mode = BindingMode.OneWay, Source=vm};
 			SetBinding(IsFinishedProperty, binding);
+
+			progressBar.ValueChanged += ProgressBarOnValueChanged;
+		}
+
+		private void ProgressBarOnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> routedPropertyChangedEventArgs)
+		{
+			Debug.WriteLine(progressBar.Value);
 		}
 	}
 

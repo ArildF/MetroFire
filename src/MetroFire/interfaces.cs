@@ -169,6 +169,7 @@ namespace Rogue.MetroFire.UI
 	public interface IPasteViewFactory
 	{
 		IPasteView Create(IRoom room, BitmapSource bitmapSource);
+		void Release(IPasteView view);
 	}
 
 	public interface IPasteViewModel

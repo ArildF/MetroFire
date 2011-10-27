@@ -30,7 +30,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _streamingStarted = false;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
-			IClipboard clipboard)
+			IClipboard clipboard, IImageEncoder encoder)
 		{
 			_room = room;
 			_bus = bus;
@@ -61,8 +61,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			PasteCommand = new ReactiveCommand();
 
-			_bus.RegisterMessageSource(PasteCommand.Select(pc => _clipboard.GetImage())
-			                           	.Where(image => image != null).Select(image => new PasteImageMessage(room, image)));
+			PasteCommand.Select(pc => _clipboard.GetImage())
+				.Select(encoder.EncodeToTempPng)
+				.Subscribe(path => _chatDocument.AddPasteFile(_room, path));
 		}
 
 
@@ -261,4 +262,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 		}
 	}
 
+	public class PasteItem
+	{
+		public PasteItem(BitmapSource bitmapSource)
+		{
+			
+		}
+	}
 }

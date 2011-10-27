@@ -86,13 +86,10 @@ namespace Rogue.MetroFire.UI
 				_container = container;
 			}
 
-			public IPasteView Create(IRoom room, BitmapSource bitmapSource)
+			public IPasteView Create(IRoom room, string path)
 			{
-				var vm = _container.Resolve<IPasteViewModel>(new {room, bitmapSource});
+				var vm = _container.Resolve<IPasteViewModel>(new {room, path});
 				var view = _container.Resolve<IPasteView>(new {vm});
-
-				var shell = (Window)_container.Resolve<IShellWindow>();
-				((Window) view).Owner = shell;
 
 				return view;
 			}

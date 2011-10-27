@@ -13,16 +13,19 @@ namespace Rogue.MetroFire.UI.ViewModels
 {
 	public class PasteViewModel : ReactiveObject, IPasteViewModel
 	{
-		private readonly BitmapSource _bitmapSource;
+		private readonly BitmapImage _bitmapSource;
 		private bool _isUploading;
 		private bool _isFinished;
 		private long _progressCurrent;
 		private Guid _currentCorrelation;
 		private long _progressTotal;
 
-		public PasteViewModel(BitmapSource bitmapSource, IRoom room, IMessageBus bus, IImageEncoder encoder)
+		public PasteViewModel(string path, IRoom room, IMessageBus bus)
 		{
-			_bitmapSource = bitmapSource;
+			_bitmapSource = new BitmapImage();
+			_bitmapSource.BeginInit();
+			_bitmapSource.UriSource = new Uri(path);
+			_bitmapSource.EndInit();
 
 			PasteCommand = new ReactiveCommand();
 
@@ -42,12 +45,15 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			bus.RegisterMessageSource(
 				PasteCommand.Do(_ => IsUploading = true)
-				.Select(_ => encoder.EncodeToTempPng(bitmapSource))
-				.Select(path => new RequestUploadFileMessage(room.Id, path, "image/png"))
+				.Select(_ => new RequestUploadFileMessage(room.Id, path, "image/png"))
 				.Do(msg => _currentCorrelation = msg.CorrelationId));
+
+			CancelCommand = new ReactiveCommand();
+			CancelCommand.Subscribe(_ => IsFinished = true);
 		}
 
 		public ReactiveCommand PasteCommand { get; private set; }
+		public ReactiveCommand CancelCommand { get; private set; }
 
 		public BitmapSource BitmapSource
 		{

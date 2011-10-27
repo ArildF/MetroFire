@@ -15,16 +15,18 @@ namespace Rogue.MetroFire.UI.Views
 	{
 		private readonly IInlineUploadViewFactory _factory;
 		private readonly IWebBrowser _browser;
+		private readonly IPasteViewFactory _pasteViewFactory;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
 
 		private static readonly Regex UrlDetector = new
 			Regex(@"((?:http|https|ftp)\://(?:[a-zA-Z0-9\.\-]+(?:\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?(?:(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(?:[a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(?:\:[0-9]+)?(?:/[^/][a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$#\=~_\-@]*)*)");
 			
 
-		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser)
+		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser, IPasteViewFactory pasteViewFactory)
 		{
 			_factory = factory;
 			_browser = browser;
+			_pasteViewFactory = pasteViewFactory;
 			_handlers = new Dictionary<MessageType, Action<Message, User, Paragraph>>
 				{
 					{MessageType.TextMessage, FormatUserMessage},
@@ -184,6 +186,20 @@ namespace Rogue.MetroFire.UI.Views
 			}
 			paragraph.Inlines.Clear(); 
 			handler(message, user, paragraph);
+		}
+
+		public void AddPasteFile(IRoom room, string path)
+		{
+			var view = _pasteViewFactory.Create(room, path);
+			var paragraph = new Paragraph();
+			paragraph.Inlines.Add(view.Element);
+
+			Blocks.Add(paragraph);
+			view.Closing.Subscribe(_ =>
+				{
+					Blocks.Remove(paragraph);
+					_pasteViewFactory.Release(view);
+				});
 		}
 	}
 

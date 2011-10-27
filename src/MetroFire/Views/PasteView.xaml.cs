@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reactive;
+using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Data;
 
@@ -56,6 +58,8 @@ namespace Rogue.MetroFire.UI.Views
 				new FrameworkPropertyMetadata((bool)false,
 					new PropertyChangedCallback(OnIsFinishedChanged)));
 
+		private readonly Subject<Unit> _closing = new Subject<Unit>();
+
 		/// <summary>
 		/// Gets or sets the IsFinished property.  This dependency property 
 		/// indicates ....
@@ -82,7 +86,7 @@ namespace Rogue.MetroFire.UI.Views
 			var val = (bool) e.NewValue;
 			if (val)
 			{
-				Close();
+				_closing.OnNext(Unit.Default);
 			}
 		}
 		
@@ -109,6 +113,16 @@ namespace Rogue.MetroFire.UI.Views
 		private void ProgressBarOnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> routedPropertyChangedEventArgs)
 		{
 			Debug.WriteLine(progressBar.Value);
+		}
+
+		public FrameworkElement Element
+		{
+			get { return this; }
+		}
+
+		public IObservable<Unit> Closing
+		{
+			get { return _closing; }
 		}
 	}
 

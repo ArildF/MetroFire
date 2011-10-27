@@ -149,7 +149,6 @@
     <Compile Include="Infrastructure\InputBehavior.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\LogMessageDebugListener.cs" />
-    <Compile Include="Infrastructure\PasteHandler.cs" />
     <Compile Include="Infrastructure\UserCache.cs" />
     <Compile Include="Infrastructure\WebBrowser.cs" />
     <Compile Include="Infrastructure\WpfExtensions.cs" />

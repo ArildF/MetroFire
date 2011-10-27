@@ -115,6 +115,8 @@ namespace Rogue.MetroFire.UI
 	{
 		object AddMessage(Message message, User user);
 		void UpdateMessage(object textObject, Message message, User user);
+		void AddPasteFile(IRoom room, string path);
+
 	}
 
 	public interface IUserCache
@@ -163,12 +165,13 @@ namespace Rogue.MetroFire.UI
 
 	public interface IPasteView
 	{
-		bool? ShowDialog();
+		FrameworkElement Element { get; }
+		IObservable<Unit> Closing { get; }
 	}
 
 	public interface IPasteViewFactory
 	{
-		IPasteView Create(IRoom room, BitmapSource bitmapSource);
+		IPasteView Create(IRoom room, string bitmapSource);
 		void Release(IPasteView view);
 	}
 

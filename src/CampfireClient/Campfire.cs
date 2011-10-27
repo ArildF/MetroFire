@@ -255,6 +255,10 @@ namespace Rogue.MetroFire.CampfireClient
 					catch (WebException ex)
 					{
 						lastException = ex;
+						if (!ex.IsRecoverable())
+						{
+							break;
+						}
 					}
 					_bus.SendMessage(new ExceptionMessage(lastException));
 				}

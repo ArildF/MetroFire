@@ -14,8 +14,7 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			InitializeComponent();
 
-			WindowState = WindowState.Maximized;
-
+			SourceInitialized += (o, e) => WindowState = WindowState.Maximized;
 		}
 
 		public ImageView(string file) : this()

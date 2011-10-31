@@ -52,6 +52,8 @@ namespace Rogue.MetroFire.UI.Views
 			_moduleContainer.Content = obj.Module;
 
 			obj.Module.IsActive = true;
+
+			_bus.SendMessage(new ModuleActivatedMessage(obj.Module, obj.ParentModule));
 		}
 
 		public string Caption

@@ -42,6 +42,19 @@ namespace Rogue.MetroFire.UI
 		}
 	}
 
+	public class ModuleActivatedMessage
+	{
+		public IModule Module { get; private set; }
+		public string ParentModule { get; private set; }
+
+		public ModuleActivatedMessage(IModule module, string parentModule)
+		{
+			Module = module;
+			ParentModule = parentModule;
+		}
+	}
+
+
 	public class ModuleLoaded
 	{
 		public string ModuleName { get; private set; }

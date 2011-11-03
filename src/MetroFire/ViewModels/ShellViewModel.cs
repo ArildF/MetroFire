@@ -25,8 +25,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.Repeat() 
 				.Subscribe(_ => UnreadCount++);
 
-			
 		}
+
+		public ReactiveCommand NextModuleCommand { get; set; }
 
 		public ReactiveCommand SettingsCommand { get; private set; }
 

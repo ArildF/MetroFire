@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using ReactiveUI;
 using System.Reactive.Linq;
 
@@ -14,6 +15,7 @@ namespace Rogue.MetroFire.UI.Views
 		private readonly INavigationContent _content;
 
 		private bool _isLoaded;
+		private IMainCampfireViewModel _model;
 
 		protected MainCampfireView()
 		{
@@ -35,6 +37,7 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			_bus = bus;
 			_content = content;
+			_model = model;
 			DataContext = model;
 
 			bus.Listen<ActivateModuleMessage>()
@@ -86,5 +89,7 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			get { return _content.Visual; }
 		}
+
+		
 	}
 }

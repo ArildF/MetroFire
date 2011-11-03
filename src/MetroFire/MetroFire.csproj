@@ -140,6 +140,7 @@
     <Compile Include="Behaviors\StayScrolledToEndBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GlobalCommands.cs" />
     <Compile Include="Infrastructure\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CampfireLog.cs" />
     <Compile Include="Infrastructure\Clipboard.cs" />

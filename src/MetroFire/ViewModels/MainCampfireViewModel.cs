@@ -18,7 +18,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private readonly IModule _logModule;
 
 		public MainCampfireViewModel(ILobbyModule lobbyModule, ILogModule logModule, IMessageBus bus, 
-			IRoomModuleCreator creator, IRoomModuleViewModelFactory factory)
+			IRoomModuleCreator creator, IRoomModuleViewModelFactory factory, IGlobalCommands globalCommands)
 		{
 			_lobbyModule = lobbyModule;
 			_logModule = logModule;
@@ -50,6 +50,28 @@ namespace Rogue.MetroFire.UI.ViewModels
 			ActivateModuleCommand = new ReactiveCommand();
 			ActivateModuleCommand.OfType<ModuleViewModel>().Subscribe(HandleActivateModule);
 
+			globalCommands.NextModuleCommand.Subscribe(OnNextModuleCommand);
+			globalCommands.PreviousModuleCommand.Subscribe(OnPreviousModuleCommand);
+		}
+
+		private void OnPreviousModuleCommand(object o)
+		{
+			var index = Modules.IndexOf(_activeModule);
+			if (index >= 0)
+			{
+				int nextIndex = index - 1 >= 0 ? index - 1: Modules.Count - 1;
+				ActiveModule = Modules[nextIndex];
+			}
+		}
+
+		private void OnNextModuleCommand(object o)
+		{
+			var index = Modules.IndexOf(_activeModule);
+			if (index >= 0)
+			{
+				int nextIndex = (Modules.Count - 1) == index ? 0 : index + 1;
+				ActiveModule = Modules[nextIndex];
+			}
 		}
 
 		private void HandleActivateModuleById(ActivateModuleByIdMessage msg)

@@ -21,19 +21,76 @@ namespace Rogue.MetroFire.UI.Views
 	{
 		private readonly IRoomModuleViewModel _vm;
 
+		#region IsConnected
+
+		/// <summary>
+		/// IsConnected Dependency Property
+		/// </summary>
+		public static readonly DependencyProperty IsConnectedProperty =
+			DependencyProperty.Register("IsConnected", typeof(bool), typeof(RoomModule),
+				new FrameworkPropertyMetadata((bool)false,
+					OnIsConnectedChanged));
+
+		/// <summary>
+		/// Gets or sets the IsConnected property.  This dependency property 
+		/// indicates ....
+		/// </summary>
+		public bool IsConnected
+		{
+			get { return (bool)GetValue(IsConnectedProperty); }
+			set { SetValue(IsConnectedProperty, value); }
+		}
+
+		/// <summary>
+		/// Handles changes to the IsConnected property.
+		/// </summary>
+		private static void OnIsConnectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			((RoomModule)d).OnIsConnectedChanged(e);
+		}
+
+		/// <summary>
+		/// Provides derived classes an opportunity to handle changes to the IsConnected property.
+		/// </summary>
+		protected virtual void OnIsConnectedChanged(DependencyPropertyChangedEventArgs e)
+		{
+			var newValue = (bool) e.NewValue;
+			SetConnectionState(newValue);
+		}
+
+		private void SetConnectionState(bool newValue)
+		{
+			VisualStateManager.GoToState(this, newValue ? "Connected" : "Disconnected", true);
+		}
+
+		#endregion
+
+		
+
 			
 
 		public RoomModule()
 		{
 			InitializeComponent();
 
+
+			Loaded += OnLoaded;
+
 			
+		}
+
+		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+		{
+			SetConnectionState(IsConnected);
 		}
 
 		public RoomModule(IRoomModuleViewModel vm) : this()
 		{
 			_vm = vm;
 			DataContext = vm;
+
+			var binding = new Binding("IsConnected") {Mode = BindingMode.OneWay, Source = vm};
+			SetBinding(IsConnectedProperty, binding);
 		}
 
 		public string Caption

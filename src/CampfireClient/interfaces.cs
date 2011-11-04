@@ -52,7 +52,7 @@ namespace Rogue.MetroFire.CampfireClient
 		Message[] GetMessages(int id, int? sinceId = null);
 		Room GetRoom(int id);
 		User GetUser(int id);
-		IDisposable Stream(int id, Action<Message> action, Action<Exception> onError = null);
+		IDisposable Stream(int id, Action<Message> action, IObserver<ConnectionState> observer);
 		Upload GetUpload(int roomId, int uploadMessageId);
 		Unit DownloadFile(string uri, string destination);
 		Upload UploadFile(int roomId, UploadFileParams uploadFileParams, IObserver<ProgressState> progressObserver);

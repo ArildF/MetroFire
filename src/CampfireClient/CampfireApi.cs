@@ -345,42 +345,49 @@ namespace Rogue.MetroFire.CampfireClient
 			}
 		}
 
-		public IDisposable Stream(int id, Action<Message> action, Action<Exception> onError = null)
+		public IDisposable Stream(int id, Action<Message> action, IObserver<ConnectionState> observer)
 		{
-			return CreateStreamingObservable(id).Subscribe(action, e =>
-				{
-					if (onError != null)
-					{
-						onError(e);
-					}
-				});
+			return CreateStreamingObservable(id, observer).Subscribe(action, e => 
+				observer.OnNext(new ConnectionState(id, false, e)));
 		}
 
-		private IObservable<Message> CreateStreamingObservable(int id)
+		private IObservable<Message> CreateStreamingObservable(int id, IObserver<ConnectionState> observer)
 		{
 			return Observable.Create<Message>(o =>
-			{
-				Observable.Start(() =>
 				{
-					try
-					{
-						RunStream(id, o);
-					}
-					catch (Exception ex)
-					{
-						o.OnError(ex);
-					}
-				});
-				return () => { };
-			}).Catch<Message, StreamingDisconnectedException>(ex => Observable.Return(Unit.Default)
-					.Delay(TimeSpan.FromSeconds(2)).SelectMany(_ => CreateStreamingObservable(id)));
+					Observable.Start(() =>
+						{
+							try
+							{
+								observer.OnNext(new ConnectionState(id, true));
+								RunStream(id, o);
+							}
+							catch (Exception ex)
+							{
+								o.OnError(ex);
+							}
+						});
+					return () => { };
+				})
+				.Catch<Message, StreamingDisconnectedException>(ex => RestartConnection(ex, id, 2, observer))
+				.Catch<Message, WebException>(ex => RestartConnection(ex, id, 30, observer));
+		}
 
+		private IObservable<Message> RestartConnection(Exception ex, int roomId, int delay, IObserver<ConnectionState> observer)
+		{
+			return Observable.Return(0).Do(_ => observer.OnNext(new ConnectionState(roomId, false, ex)))
+				.Delay(TimeSpan.FromSeconds(delay))
+				.SelectMany(_ => CreateStreamingObservable(roomId, observer));
 		}
 
 		private void RunStream(int id, IObserver<Message> observer)
 		{
 			var uri = String.Format("http://streaming.campfirenow.com/room/{0}/live.json", id);
 			var request = CreateRequest(new Uri(uri));
+
+			var servicePoint = ServicePointManager.FindServicePoint(new Uri(uri));
+			servicePoint.SetTcpKeepAlive(true, 2000, 500);
+
 			request.Method = "GET";
 
 			request.Timeout = -1;
@@ -397,6 +404,7 @@ namespace Rogue.MetroFire.CampfireClient
 			{
 				try
 				{
+
 					var stream = response.GetResponseStream();
 					if (stream == null)
 					{

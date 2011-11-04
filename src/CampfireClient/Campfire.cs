@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
@@ -139,19 +140,21 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			lock (_currentStreamingRooms)
 			{
+				var subject = new Subject<ConnectionState>();
+				_bus.RegisterMessageSource(subject);
+				_bus.RegisterMessageSource(
+					subject.Where(cs => cs.Exception != null).Select(cs => new ExceptionMessage(cs.Exception)));
+
+				//_bus.RegisterMessageSource(
+				//    Observable.FromEventPattern<NetworkAvailabilityChangedEventHandler, NetworkAvailabilityEventArgs>(
+				//                h => NetworkChange.NetworkAvailabilityChanged += h,
+				//                h => NetworkChange.NetworkAvailabilityChanged -= h)
+				//        .Where(evt => !evt.EventArgs.IsAvailable)
+				//        .Select(_ => new ConnectionState(obj.RoomId, false)));
 				IDisposable d = _api.Stream(obj.RoomId,
 							msg => _bus.SendMessage(new MessagesReceivedMessage(obj.RoomId, new[] { msg }, null)),
-							ex =>
-							{
-								lock (_currentStreamingRooms)
-								{
-									if (_currentStreamingRooms.ContainsKey(obj.RoomId))
-									{
-										_currentStreamingRooms.Remove(obj.RoomId);
-									}
-								}
-								_bus.SendMessage(new ExceptionMessage(ex));
-							});
+							subject);
+							
 				_currentStreamingRooms[obj.RoomId] = d;
 			}
 		}

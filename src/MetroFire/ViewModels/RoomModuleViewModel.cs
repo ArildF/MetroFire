@@ -28,6 +28,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private int _notificationCount;
 
 		private bool _streamingStarted = false;
+		private bool _isConnected;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
 			IClipboard clipboard, IImageEncoder encoder)
@@ -49,6 +50,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_messages = new List<RoomMessage>();
 
 
+			_bus.Listen<ConnectionState>().Where(msg => msg.RoomId == room.Id).Subscribe(cs => IsConnected = cs.Connected);
 			_bus.Listen<MessagesReceivedMessage>().Where(msg => msg.RoomId == room.Id).SubscribeUI(HandleMessagesReceived);
 			_bus.Listen<RoomInfoReceivedMessage>().Where(msg => msg.Room.Id == _room.Id).SubscribeUI(HandleRoomInfoReceived);
 			_bus.Listen<UsersUpdatedMessage>().SubscribeUI(HandleUsersUpdated);
@@ -179,6 +181,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public string Topic
 		{
 			get { return _room.Topic; }
+		}
+
+		public bool IsConnected
+		{
+			get { return _isConnected; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.IsConnected, ref _isConnected, value); }
 		}
 
 		public bool IsActive

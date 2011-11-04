@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Rogue.MetroFire.UI.Views.RoomModule"
+﻿<UserControl x:Name="userControl" x:Class="Rogue.MetroFire.UI.Views.RoomModule"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -38,6 +38,18 @@
 	</Infrastructure:InputBehavior.CustomKeyBindings>
 	
 	<Grid>
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="ConnectionStateGroup">
+				<VisualState x:Name="Connected"/>
+				<VisualState x:Name="Disconnected">
+					<Storyboard>
+						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="userControl">
+							<EasingDoubleKeyFrame KeyTime="0" Value="0.215"/>
+						</DoubleAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="0.909*"/>
 			<RowDefinition Height="58.1"/>

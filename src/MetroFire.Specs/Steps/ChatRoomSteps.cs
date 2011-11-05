@@ -39,6 +39,13 @@ namespace MetroFire.Specs.Steps
 
 		}
 
+		[When(@"the streaming is (.*) for room ""(.*)""")]
+		public void WhenTheStreamingIsDisconnectedForRoomTest(string state, string roomName)
+		{
+			var id = _roomContext.IdForRoom(roomName);
+			bool connected = state == "reconnected";
+			_roomContext.SendMessage(roomName, new ConnectionState(id, connected));
+		}
 
 		[Then(@"the message ""(.*)"" should be displayed in room ""(.*)""")]
 		public void ThenTheMessageHelloWorldShouldBeDisplayedInRoomTest(string message, string roomName)
@@ -52,6 +59,14 @@ namespace MetroFire.Specs.Steps
 			var messageBodies = table.Rows.Select(r => r["Message"]);
 			_roomContext.MessagesForRoom(roomName).Select(m => m.Body).Should().BeEquivalentTo(messageBodies);
 		}
+
+		[Then(@"room ""(.*)"" should show that it is (.*)")]
+		public void ThenRoomTestShouldShowThatItIsDisconnected(string roomName, string state)
+		{
+			bool connected = state == "connected";
+			_roomContext.ViewModelFor(roomName).IsConnected.Should().Be(connected);
+		}
+
 
 	}
 }

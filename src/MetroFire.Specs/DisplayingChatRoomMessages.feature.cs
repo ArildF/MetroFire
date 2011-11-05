@@ -124,6 +124,42 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Show disconnections")]
+        public virtual void ShowDisconnections()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show disconnections", ((string[])(null)));
+#line 26
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 27
+ testRunner.When("the streaming is disconnected for room \"Test\"");
+#line 28
+ testRunner.Then("room \"Test\" should show that it is disconnected");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Show reconnections")]
+        public virtual void ShowReconnections()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show reconnections", ((string[])(null)));
+#line 30
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 31
+ testRunner.When("the streaming is disconnected for room \"Test\"");
+#line 32
+ testRunner.And("the streaming is reconnected for room \"Test\"");
+#line 33
+ testRunner.Then("room \"Test\" should show that it is connected");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

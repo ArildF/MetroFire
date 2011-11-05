@@ -47,5 +47,10 @@ namespace MetroFire.Specs.Steps
 		{
 			return _chatViewFake.Messages;
 		}
+
+		public RoomModuleViewModel ViewModelFor(string roomName)
+		{
+			return _rooms[roomName];
+		}
 	}
 }

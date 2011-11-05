@@ -22,4 +22,13 @@ Scenario: Receive multiple messages
 	| Ohai    |
 	| Hai     |
 	| Test    |
+
+Scenario: Show disconnections
+	When the streaming is disconnected for room "Test"
+	Then room "Test" should show that it is disconnected
+
+Scenario: Show reconnections
+	When the streaming is disconnected for room "Test"
+	And the streaming is reconnected for room "Test"
+	Then room "Test" should show that it is connected
 	

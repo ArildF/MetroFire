@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentAssertions;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
@@ -30,13 +31,20 @@ namespace MetroFire.Specs.Steps
 				new MessagesReceivedMessage(idForRoom, new[]{new Message{Body=message, Id=idForRoom}}, null));
 		}
 
+		[Given(@"that the following messages are received for room ""(.*)"" in order:")]
 		[When(@"the following messages are received for room ""(.*)"" in order:")]
 		public void WhenTheFollowingMessagesAreReceivedInOrder(string roomName, Table table)
 		{
-			var messages = table.Rows.Select(r => new Message {Body = r["Message"]}).ToArray();
+			var messages = table.Rows.Select(r => new Message {Id =int.Parse(r["Id"]), Body = r["Message"]}).ToArray();
 			var id = _roomContext.IdForRoom(roomName);
 			_roomContext.SendMessage(roomName, new MessagesReceivedMessage(id, messages, null));
 
+		}
+
+		[When(@"we wait (\d+) seconds")]
+		public void WhenWeWait12Seconds(int secs)
+		{
+			Events.TestScheduler.AdvanceBy((long)TimeSpan.FromSeconds(secs).Ticks);
 		}
 
 		[When(@"the streaming is (.*) for room ""(.*)""")]
@@ -65,6 +73,14 @@ namespace MetroFire.Specs.Steps
 		{
 			bool connected = state == "connected";
 			_roomContext.ViewModelFor(roomName).IsConnected.Should().Be(connected);
+		}
+
+		[Then(@"older messages should be requested for room ""(.*)""")]
+		public void ThenShouldRequestAllOlderMessages(string roomName)
+		{
+			var id = _roomContext.IdForRoom(roomName);
+			_roomContext.AllMessages.OfType<RequestRecentMessagesMessage>().Where(msg => msg.RoomId == id).
+				Skip(1).Should().NotBeEmpty();
 		}
 
 

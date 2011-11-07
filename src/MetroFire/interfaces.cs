@@ -121,7 +121,7 @@ namespace Rogue.MetroFire.UI
 
 	public interface IChatDocument
 	{
-		object AddMessage(Message message, User user);
+		object AddMessage(Message message, User user, object textObject);
 		void UpdateMessage(object textObject, Message message, User user);
 		void AddPasteFile(IRoom room, string path);
 

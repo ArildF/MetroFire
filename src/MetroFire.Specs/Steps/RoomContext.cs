@@ -2,9 +2,11 @@
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoMoq;
 using ReactiveUI;
+using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
 using Rogue.MetroFire.UI.ViewModels;
+using System;
 
 namespace MetroFire.Specs.Steps
 {
@@ -15,6 +17,7 @@ namespace MetroFire.Specs.Steps
 		private int _currentRoomId;
 		private readonly IMessageBus _bus;
 		private readonly ChatViewFake _chatViewFake ;
+		private readonly IList<object> _messages = new List<object>();
 
 		public RoomContext()
 		{
@@ -25,6 +28,17 @@ namespace MetroFire.Specs.Steps
 			_chatViewFake = new ChatViewFake();
 			_fixture.Inject<IChatDocument>(_chatViewFake);
 
+			Listen<RequestRecentMessagesMessage>();
+		}
+
+		private void Listen<T>()
+		{
+			_bus.Listen<T>().SubscribeUI(msg => _messages.Add(msg));
+		}
+
+		public IEnumerable<object> AllMessages
+		{
+			get { return _messages; }
 		}
 
 		public void CreateRoom(string roomName)

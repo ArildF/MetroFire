@@ -61,7 +61,7 @@ namespace Rogue.MetroFire.UI.Views
 			paragraph.Inlines.Add(view.Element);
 		}
 
-		public object AddMessage(Message message, User user)
+		public object AddMessage(Message message, User user, object textObject)
 		{
 			Action<Message, User, Paragraph> handler;
 			if (!_handlers.TryGetValue(message.Type, out handler))
@@ -71,7 +71,15 @@ namespace Rogue.MetroFire.UI.Views
 			var paragraph = new Paragraph {Margin = new Thickness(0)};
 			handler(message, user, paragraph);
 
-			Blocks.Add(paragraph);
+			var after = textObject as Paragraph;
+			if (after != null)
+			{
+				Blocks.InsertAfter(after, paragraph);
+			}
+			else
+			{
+				Blocks.Add(paragraph);
+			}
 
 			return paragraph;
 		}

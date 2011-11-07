@@ -231,6 +231,8 @@ namespace Rogue.MetroFire.CampfireClient
 			{
 				request.Proxy = null;
 			}
+			//request.Proxy = new WebProxy("http://127.0.0.1:8888");
+
 			request.Timeout = _defaultTimeout;
 			request.KeepAlive = false;
 

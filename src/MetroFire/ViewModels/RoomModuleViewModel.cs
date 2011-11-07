@@ -27,7 +27,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private int? _sinceMessageId;
 		private int _notificationCount;
 
-		private bool _streamingStarted = false;
+		private bool _streamingStarted;
 		private bool _isConnected;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
@@ -50,7 +50,14 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_messages = new List<RoomMessage>();
 
 
-			_bus.Listen<ConnectionState>().Where(msg => msg.RoomId == room.Id).Subscribe(cs => IsConnected = cs.Connected);
+			_bus.RegisterMessageSource(
+				_bus.Listen<ConnectionState>().Where(msg => msg.RoomId == room.Id)
+					.Do(cs => IsConnected = cs.Connected)
+					.Where(cs => cs.Connected)
+					.Delay(TimeSpan.FromSeconds(10), RxApp.TaskpoolScheduler)
+					.Where(_ => _streamingStarted && IsConnected)
+					.Select(_ => new RequestRecentMessagesMessage(_room.Id)));
+				;
 			_bus.Listen<MessagesReceivedMessage>().Where(msg => msg.RoomId == room.Id).SubscribeUI(HandleMessagesReceived);
 			_bus.Listen<RoomInfoReceivedMessage>().Where(msg => msg.Room.Id == _room.Id).SubscribeUI(HandleRoomInfoReceived);
 			_bus.Listen<UsersUpdatedMessage>().SubscribeUI(HandleUsersUpdated);
@@ -109,23 +116,35 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private void HandleMessagesReceived(MessagesReceivedMessage obj)
 		{
 			bool isInitialLoad = _sinceMessageId == null;
-			var messages = obj.Messages.Where(msg => _sinceMessageId == null || msg.Id > _sinceMessageId).ToList();
-			foreach (var message in messages)
+			var newMessages = obj.Messages.Except(_messages.Select(m => m.Message), MessageEqualityComparer.Default)
+				.ToArray();
+			foreach (var message in newMessages)
 			{
 				var existingUser = Users.Select(u => u.User).FirstOrDefault(u => u.Id == message.UserId);
 				User user = message.UserId != null ? _userCache.GetUser(message.UserId.GetValueOrDefault(), existingUser) : null;
-				var textObject = _chatDocument.AddMessage(message, user);
+				var after = _messages.LastOrDefault(m => m.Message.Id < message.Id);
 
-				_messages.Add(new RoomMessage(message, user, textObject));
+				var textObject = _chatDocument.AddMessage(message, user, after != null ? after.TextObject : null);
+
+				var roomMessage = new RoomMessage(message, user, textObject);
+				if (after != null)
+				{
+					int index = _messages.IndexOf(after);
+					_messages.Insert(index + 1, roomMessage);
+				}
+				else
+				{
+					_messages.Add(roomMessage);
+				}
 				_sinceMessageId = message.Id;
 			}
 
-			if (obj.Messages.Any(msg => msg.Type.In(MessageType.EnterMessage, MessageType.KickMessage, MessageType.LeaveMessage)))
+			if (newMessages.Any(msg => msg.Type.In(MessageType.EnterMessage, MessageType.KickMessage, MessageType.LeaveMessage)))
 			{
 				_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
 			}
 
-			var count = obj.Messages.Count(msg => msg.Type.In(MessageType.PasteMessage, MessageType.TextMessage));
+			var count = newMessages.Count(msg => msg.Type.In(MessageType.PasteMessage, MessageType.TextMessage));
 			if (count > 0)
 			{
 				_bus.SendMessage(new RoomActivityMessage(_room.Id, count));
@@ -267,6 +286,21 @@ namespace Rogue.MetroFire.UI.ViewModels
 			public int? UserId { get { return Message.UserId; } }
 			public User User { get; set; }
 			public object TextObject { get; private set; }
+		}
+
+		private class MessageEqualityComparer : IEqualityComparer<Message>
+		{
+			public static readonly MessageEqualityComparer Default = new MessageEqualityComparer();
+
+			public bool Equals(Message x, Message y)
+			{
+				return x.Id == y.Id;
+			}
+
+			public int GetHashCode(Message obj)
+			{
+				return obj.Id.GetHashCode();
+			}
 		}
 	}
 

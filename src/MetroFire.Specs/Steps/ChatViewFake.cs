@@ -9,11 +9,20 @@ namespace MetroFire.Specs.Steps
 	{
 		private readonly List<MessageEntry> _messages = new List<MessageEntry>();
 
-		public object AddMessage(Message message, User user)
+		public object AddMessage(Message message, User user, object textObject)
 		{
 			var entry = new MessageEntry(message, user);
 
-			_messages.Add(entry);
+			var afterEntry = textObject as MessageEntry;
+			if (afterEntry != null)
+			{
+				var index = _messages.IndexOf(afterEntry);
+				_messages.Insert(index, entry);
+			}
+			else
+			{
+				_messages.Add(entry);
+			}
 			return entry;
 		}
 

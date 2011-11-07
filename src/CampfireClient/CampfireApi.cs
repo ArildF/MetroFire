@@ -372,7 +372,8 @@ namespace Rogue.MetroFire.CampfireClient
 					return () => { };
 				})
 				.Catch<Message, StreamingDisconnectedException>(ex => RestartConnection(ex, id, 2, observer))
-				.Catch<Message, WebException>(ex => RestartConnection(ex, id, 30, observer));
+				.Catch<Message, WebException>(ex => RestartConnection(ex, id, 30, observer))
+				.Catch<Message, IOException>(ex => RestartConnection(ex, id, 30, observer));
 		}
 
 		private IObservable<Message> RestartConnection(Exception ex, int roomId, int delay, IObserver<ConnectionState> observer)

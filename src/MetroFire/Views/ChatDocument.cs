@@ -36,6 +36,7 @@ namespace Rogue.MetroFire.UI.Views
 					{MessageType.PasteMessage, FormatPasteMessage},
 					{MessageType.EnterMessage, FormatEnterMessage},
 					{MessageType.UploadMessage, FormatUploadMessage},
+					{MessageType.TweetMessage, FormatUserMessage},
 					{MessageType.TopicChangeMessage, FormatTopicChangeMessage}
 
 				};

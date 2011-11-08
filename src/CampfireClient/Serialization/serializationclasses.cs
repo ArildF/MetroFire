@@ -25,8 +25,8 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		PasteMessage,
 		UploadMessage,
 		AdvertisementMessage,
-		TopicChangeMessage
-
+		TopicChangeMessage,
+		TweetMessage
 	}
 
 	[XmlRoot("account")]

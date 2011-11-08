@@ -195,16 +195,18 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Show disconnections")]
+        [NUnit.Framework.CategoryAttribute("backgroundtestscheduler")]
         public virtual void ShowDisconnections()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show disconnections", ((string[])(null)));
-#line 46
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show disconnections", new string[] {
+                        "backgroundtestscheduler"});
+#line 47
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 47
- testRunner.When("the streaming is disconnected for room \"Test\"");
 #line 48
+ testRunner.When("the streaming is disconnected for room \"Test\"");
+#line 49
  testRunner.Then("room \"Test\" should show that it is disconnected");
 #line hidden
             this.ScenarioCleanup();
@@ -212,18 +214,20 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Show reconnections")]
+        [NUnit.Framework.CategoryAttribute("backgroundtestscheduler")]
         public virtual void ShowReconnections()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show reconnections", ((string[])(null)));
-#line 50
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show reconnections", new string[] {
+                        "backgroundtestscheduler"});
+#line 52
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 51
- testRunner.When("the streaming is disconnected for room \"Test\"");
-#line 52
- testRunner.And("the streaming is reconnected for room \"Test\"");
 #line 53
+ testRunner.When("the streaming is disconnected for room \"Test\"");
+#line 54
+ testRunner.And("the streaming is reconnected for room \"Test\"");
+#line 55
  testRunner.Then("room \"Test\" should show that it is connected");
 #line hidden
             this.ScenarioCleanup();
@@ -231,23 +235,25 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Retrieve old messages when disconnected")]
-        [NUnit.Framework.CategoryAttribute("testscheduler")]
+        [NUnit.Framework.CategoryAttribute("backgroundtestscheduler")]
         public virtual void RetrieveOldMessagesWhenDisconnected()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve old messages when disconnected", new string[] {
-                        "testscheduler"});
-#line 56
+                        "backgroundtestscheduler"});
+#line 58
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 57
- testRunner.When("the streaming is disconnected for room \"Test\"");
-#line 58
- testRunner.And("the streaming is reconnected for room \"Test\"");
 #line 59
- testRunner.And("we wait 12 seconds");
+ testRunner.Given("that streaming has started for room \"Test\"");
 #line 60
- testRunner.Then("older messages should be requested for room \"Test\"");
+ testRunner.When("the streaming is disconnected for room \"Test\"");
+#line 61
+ testRunner.And("the streaming is reconnected for room \"Test\"");
+#line 62
+ testRunner.And("we wait 20 seconds");
+#line 63
+ testRunner.Then("older messages should have been requested for room \"Test\"");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -257,7 +263,7 @@ this.FeatureBackground();
         public virtual void ShowOldMessagesSentWhileDisconnected()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show old messages sent while disconnected", ((string[])(null)));
-#line 62
+#line 65
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
@@ -274,11 +280,11 @@ this.FeatureBackground();
             table6.AddRow(new string[] {
                         "3",
                         "Three"});
-#line 63
+#line 66
  testRunner.Given("that the following messages are received for room \"Test\" in order:", ((string)(null)), table6);
-#line 68
+#line 71
  testRunner.When("the streaming is disconnected for room \"Test\"");
-#line 69
+#line 72
  testRunner.And("the streaming is reconnected for room \"Test\"");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -290,7 +296,7 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         "7",
                         "Seven"});
-#line 70
+#line 73
  testRunner.And("the following messages are received for room \"Test\" in order:", ((string)(null)), table7);
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -317,7 +323,7 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "7",
                         "Seven"});
-#line 74
+#line 77
  testRunner.And("the following messages are received for room \"Test\" in order:", ((string)(null)), table8);
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -344,7 +350,7 @@ this.FeatureBackground();
             table9.AddRow(new string[] {
                         "7",
                         "Seven"});
-#line 83
+#line 86
  testRunner.Then("the following messages should be displayed in room \"Test\" in order:", ((string)(null)), table9);
 #line hidden
             this.ScenarioCleanup();

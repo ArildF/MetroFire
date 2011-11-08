@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using FluentAssertions;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
@@ -23,6 +24,13 @@ namespace MetroFire.Specs.Steps
 			_roomContext.CreateRoom(roomName);
 		}
 
+		[Given(@"that streaming has started for room ""(.*)""")]
+		public void GivenThatStreamingHasStarted(string roomName)
+		{
+			var idForRoom = _roomContext.IdForRoom(roomName);
+			_roomContext.SendMessage(roomName, new MessagesReceivedMessage(idForRoom, new Message[]{}, null));
+		}
+
 		[When(@"the message ""(.*)"" is received for room ""(.*)""")]
 		public void GivenThatTheMessageHelloWorldIsReceivedForRoomTest(string message, string roomName)
 		{
@@ -44,7 +52,7 @@ namespace MetroFire.Specs.Steps
 		[When(@"we wait (\d+) seconds")]
 		public void WhenWeWait12Seconds(int secs)
 		{
-			Events.TestScheduler.AdvanceBy((long)TimeSpan.FromSeconds(secs).Ticks);
+			Events.TestScheduler.AdvanceBy(TimeSpan.FromSeconds(secs).Ticks);
 		}
 
 		[When(@"the streaming is (.*) for room ""(.*)""")]
@@ -75,7 +83,7 @@ namespace MetroFire.Specs.Steps
 			_roomContext.ViewModelFor(roomName).IsConnected.Should().Be(connected);
 		}
 
-		[Then(@"older messages should be requested for room ""(.*)""")]
+		[Then(@"older messages should have been requested for room ""(.*)""")]
 		public void ThenShouldRequestAllOlderMessages(string roomName)
 		{
 			var id = _roomContext.IdForRoom(roomName);

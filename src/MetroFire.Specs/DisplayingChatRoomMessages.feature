@@ -43,21 +43,24 @@ Scenario: Receive multiple messages multiple times
 	| Nah     |
 	| Zah    |
 
+@backgroundtestscheduler
 Scenario: Show disconnections
 	When the streaming is disconnected for room "Test"
 	Then room "Test" should show that it is disconnected
-
+	
+@backgroundtestscheduler
 Scenario: Show reconnections
 	When the streaming is disconnected for room "Test"
 	And the streaming is reconnected for room "Test"
 	Then room "Test" should show that it is connected
 
-@testscheduler
+@backgroundtestscheduler
 Scenario: Retrieve old messages when disconnected
+	Given that streaming has started for room "Test"
 	When the streaming is disconnected for room "Test"
 	And the streaming is reconnected for room "Test"
-	And we wait 12 seconds
-	Then older messages should be requested for room "Test"
+	And we wait 20 seconds
+	Then older messages should have been requested for room "Test"
 
 Scenario: Show old messages sent while disconnected
 	Given that the following messages are received for room "Test" in order:

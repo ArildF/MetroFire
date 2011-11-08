@@ -51,7 +51,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 
 			_bus.RegisterMessageSource(
-				_bus.Listen<ConnectionState>().Where(msg => msg.RoomId == room.Id)
+				_bus.Listen<ConnectionState>()
+					.Where(msg => msg.RoomId == room.Id)
 					.Do(cs => IsConnected = cs.Connected)
 					.Where(cs => cs.Connected)
 					.Delay(TimeSpan.FromSeconds(10), RxApp.TaskpoolScheduler)

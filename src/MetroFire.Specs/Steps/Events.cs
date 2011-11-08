@@ -51,21 +51,23 @@ namespace MetroFire.Specs.Steps
 			//TODO: implement logic that has to run after each scenario block (given-when-then)
 		}
 
-		[BeforeScenario("testscheduler")]
+		[BeforeScenario("backgroundtestscheduler")]
 		public void BeforeScenario()
 		{
 			TestScheduler = new TestScheduler();
-			_previousScheduler = RxApp.DeferredScheduler;
+			//_previousScheduler = RxApp.DeferredScheduler;
 			_previousTaskPoolScheduler = RxApp.TaskpoolScheduler;
-			RxApp.DeferredScheduler = TestScheduler;
+			//RxApp.DeferredScheduler = TestScheduler;
 			RxApp.TaskpoolScheduler = TestScheduler;
+
+			TestScheduler.Start();
 		}
 
-		[AfterScenario("testscheduler")]
+		[AfterScenario("backgroundtestscheduler")]
 		public void AfterScenario()
 		{
-			RxApp.DeferredScheduler = _previousScheduler;
-			RxApp.TaskpoolScheduler = _previousScheduler;
+			//RxApp.DeferredScheduler = _previousScheduler;
+			RxApp.TaskpoolScheduler = _previousTaskPoolScheduler;
 		}
 
 		[BeforeFeature]

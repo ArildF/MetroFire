@@ -37,6 +37,7 @@ namespace Rogue.MetroFire.UI.Views
 					{MessageType.EnterMessage, FormatEnterMessage},
 					{MessageType.UploadMessage, FormatUploadMessage},
 					{MessageType.TweetMessage, FormatUserMessage},
+					{MessageType.AdvertisementMessage, FormatAdvertisementMessage},
 					{MessageType.TopicChangeMessage, FormatTopicChangeMessage}
 
 				};
@@ -90,6 +91,12 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			var name = FormatUserName(user);
 			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} entered the room", name)));
+		}
+
+		private void FormatAdvertisementMessage(Message message, User user, Paragraph paragraph)
+		{
+			user = new User {Name = "Advertisement"};
+			FormatUserMessage(message, user, paragraph);
 		}
 
 		private void FormatTopicChangeMessage(Message message, User user, Paragraph paragraph)

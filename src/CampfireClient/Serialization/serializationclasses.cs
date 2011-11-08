@@ -24,7 +24,8 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		LeaveMessage,
 		PasteMessage,
 		UploadMessage,
-		AdvertisementMessage
+		AdvertisementMessage,
+		TopicChangeMessage
 
 	}
 

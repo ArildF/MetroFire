@@ -48,6 +48,12 @@ namespace MetroFire.Specs.Steps
 			_roomContext.SendMessage(roomName, new MessagesReceivedMessage(id, messages, null));
 
 		}
+		[When(@"the topic is changed to ""(.*)"" for room ""(.*)""")]
+		public void WhenTheTopicIsChangedToToPicForRoomTest(string topic, string roomName)
+		{
+			var id = _roomContext.IdForRoom(roomName);
+			_roomContext.SendMessage(roomName, new MessagesReceivedMessage(id, new []{new Message{Body = topic, RoomId = id, MessageTypeString = "TopicChangeMessage"}}, null));
+		}
 
 		[When(@"we wait (\d+) seconds")]
 		public void WhenWeWait12Seconds(int secs)
@@ -74,6 +80,12 @@ namespace MetroFire.Specs.Steps
 		{
 			var messageBodies = table.Rows.Select(r => r["Message"]);
 			_roomContext.MessagesForRoom(roomName).Select(m => m.Body).Should().BeEquivalentTo(messageBodies);
+		}
+
+		[Then(@"the topic should be ""(.*)"" for room ""(.*)""")]
+		public void ThenTheTopicShouldBeToPicForRoomTest(string topic, string room)
+		{
+			_roomContext.ViewModelFor(room).Topic.Should().Be(topic);
 		}
 
 		[Then(@"room ""(.*)"" should show that it is (.*)")]

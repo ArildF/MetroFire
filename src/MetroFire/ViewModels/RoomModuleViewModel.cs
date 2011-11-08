@@ -29,6 +29,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private bool _streamingStarted;
 		private bool _isConnected;
+		private string _topic;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
 			IClipboard clipboard, IImageEncoder encoder)
@@ -38,6 +39,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_userCache = userCache;
 			_chatDocument = chatDocument;
 			_clipboard = clipboard;
+
+
+			Topic = _room.Topic;
 
 			Users = new ReactiveCollection<UserViewModel>();
 
@@ -99,6 +103,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private void HandleRoomInfoReceived(RoomInfoReceivedMessage obj)
 		{
 			_room = obj.Room;
+			Topic = _room.Topic;
 			if (_room.Users != null)
 			{
 				PopulateUsers(_room.Users);
@@ -137,6 +142,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 				{
 					_messages.Add(roomMessage);
 				}
+
+				if (message.Type == MessageType.TopicChangeMessage)
+				{
+					Topic = message.Body;
+				}
+
 				_sinceMessageId = message.Id;
 			}
 
@@ -200,7 +211,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		public string Topic
 		{
-			get { return _room.Topic; }
+			get { return _topic; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.Topic, ref _topic, value); }
 		}
 
 		public bool IsConnected

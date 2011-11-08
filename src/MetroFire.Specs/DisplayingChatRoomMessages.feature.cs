@@ -355,6 +355,23 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Change topic")]
+        public virtual void ChangeTopic()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change topic", ((string[])(null)));
+#line 96
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 97
+ testRunner.When("the topic is changed to \"To pic\" for room \"Test\"");
+#line 98
+ testRunner.Then("the topic should be \"To pic\" for room \"Test\"");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

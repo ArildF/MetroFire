@@ -35,7 +35,8 @@ namespace Rogue.MetroFire.UI.Views
 					{MessageType.KickMessage, FormatKickMessage},
 					{MessageType.PasteMessage, FormatPasteMessage},
 					{MessageType.EnterMessage, FormatEnterMessage},
-					{MessageType.UploadMessage, FormatUploadMessage}
+					{MessageType.UploadMessage, FormatUploadMessage},
+					{MessageType.TopicChangeMessage, FormatTopicChangeMessage}
 
 				};
 
@@ -88,6 +89,12 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			var name = FormatUserName(user);
 			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} entered the room", name)));
+		}
+
+		private void FormatTopicChangeMessage(Message message, User user, Paragraph paragraph)
+		{
+			var name = FormatUserName(user);
+			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} changed the topic to '{1}'", name, message.Body)));
 		}
 
 		private void FormatPasteMessage(Message message, User user, Paragraph paragraph)

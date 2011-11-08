@@ -92,4 +92,8 @@ Scenario: Show old messages sent while disconnected
 	| 5  | Five    |
 	| 6  | Six     |
 	| 7  | Seven   |
+
+Scenario: Change topic
+	When the topic is changed to "To pic" for room "Test"
+	Then the topic should be "To pic" for room "Test"
 		

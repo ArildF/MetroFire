@@ -1,4 +1,10 @@
 ﻿using System.Collections.Generic;
+using Castle.Core;
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
+using Moq;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.AutoMoq;
 using ReactiveUI;
@@ -7,28 +13,60 @@ using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
 using Rogue.MetroFire.UI.ViewModels;
 using System;
+using System.Linq;
 
 namespace MetroFire.Specs.Steps
 {
 	public class RoomContext
 	{
-		private readonly Fixture _fixture;
-		private readonly Dictionary<string, RoomModuleViewModel> _rooms = new Dictionary<string, RoomModuleViewModel>();
 		private int _currentRoomId;
 		private readonly IMessageBus _bus;
 		private readonly ChatViewFake _chatViewFake ;
 		private readonly IList<object> _messages = new List<object>();
+		private readonly WindsorContainer _container;
+		private readonly List<RoomModuleViewModel> _roomViewModels = new List<RoomModuleViewModel>();
+		private readonly CampfireApiFake _campfireApiFake;
+		private LobbyModuleViewModel _lobbyModuleViewModel;
 
 		public RoomContext()
 		{
-			_fixture = new Fixture();
-			_fixture.Customize(new AutoMoqCustomization());
-			_bus = new MessageBus();
-			_fixture.Inject(_bus);
+			var bootstrapper = new Bootstrapper {TestMode = true};
+			_container = bootstrapper.Container;
+			_container.Kernel.ComponentCreated += KernelOnComponentCreated;
+
+			_campfireApiFake = new CampfireApiFake();
+			_container.Register(Component.For<ICampfireApi>().Instance(_campfireApiFake));
+
 			_chatViewFake = new ChatViewFake();
-			_fixture.Inject<IChatDocument>(_chatViewFake);
+			_container.Register(Component.For<IChatDocument>().Instance(_chatViewFake));
+
+			bootstrapper.Bootstrap();
+
+
+			_container.Install(FromAssembly.This());
+
+
+
+			_bus = _container.Resolve<IMessageBus>();
+
 
 			Listen<RequestRecentMessagesMessage>();
+
+			_bus.SendMessage(new ApplicationLoadedMessage());
+		}
+
+		private void KernelOnComponentCreated(ComponentModel model, object instance)
+		{
+			var roomModule = model.Services.FirstOrDefault(t => t == typeof (IRoomModuleViewModel));
+			if (roomModule != null)
+			{
+				_roomViewModels.Add((RoomModuleViewModel) instance);
+			}
+
+			if (instance is LobbyModuleViewModel)
+			{
+				_lobbyModuleViewModel = (LobbyModuleViewModel) instance;
+			}
 		}
 
 		private void Listen<T>()
@@ -41,30 +79,70 @@ namespace MetroFire.Specs.Steps
 			get { return _messages; }
 		}
 
-		public void CreateRoom(string roomName)
+		public CampfireApiFake ApiFake
 		{
-			_fixture.Freeze<IRoom>(new Room {Id =_currentRoomId++, Name = roomName});
-			_rooms.Add(roomName, _fixture.CreateAnonymous<RoomModuleViewModel>());
+			get {
+				return _campfireApiFake;
+			}
 		}
 
-		public void SendMessage<T>(string roomName, T message)
+		public void CreateRoom(string roomName)
+		{
+			var room = new Room {Id = _currentRoomId++, Name = roomName};
+
+			_campfireApiFake.AddRoom(room);
+			_bus.SendMessage(new RequestRoomListMessage());
+		}
+
+		public void SendMessage<T>(T message)
 		{
 			_bus.SendMessage(message);
 		}
 
 		public int IdForRoom(string roomName)
 		{
-			return _rooms[roomName].Id;
+			return _campfireApiFake.IdForRoom(roomName);
 		}
 
-		public IEnumerable<Message> MessagesForRoom(string roomName)
+		public IEnumerable<Message> MessagesDisplayedInRoom(string roomName)
 		{
 			return _chatViewFake.Messages;
 		}
 
 		public RoomModuleViewModel ViewModelFor(string roomName)
 		{
-			return _rooms[roomName];
+			return _roomViewModels.FirstOrDefault(vm => vm.RoomName == roomName);
+		}
+
+		public void JoinRoom(string roomName)
+		{
+			_lobbyModuleViewModel.Rooms.Single(r => r.Name == roomName).JoinCommand.Execute(null);
+		}
+
+		public void SendRoomMessage(string message, string roomName)
+		{
+			_campfireApiFake.NewRoomMessage(message, roomName);
+		}
+
+		public void SendRoomMessages(string roomName, params Message[] messages)
+		{
+			_campfireApiFake.SendRoomMessages(roomName, messages);
+		}
+	}
+
+	public class ModulesInstaller : IWindsorInstaller
+	{
+		public void Install(IWindsorContainer container, IConfigurationStore store)
+		{
+			container.Register(Component.For<IMainModule>().Named(ModuleNames.Login).LifestyleTransient().UsingFactoryMethod(_ => new Mock<IMainModule>().Object));
+			container.Register(Component.For<IMainModule>().Named(ModuleNames.SettingsModule).LifestyleTransient().UsingFactoryMethod(_ => new Mock<IMainModule>().Object));
+			container.Register(Component.For<IMainModule>().Named(ModuleNames.MainCampfireView).LifestyleTransient().UsingFactoryMethod(k =>
+				{
+					var ignored = k.Resolve<IMainCampfireViewModel>();
+					return new Mock<IMainModule>().Object;
+				}));
+			container.Register(
+				Component.For<IModule>().Named(ModuleNames.RoomModule).LifestyleTransient().UsingFactoryMethod(_ => new Mock<IModule>().Object));
 		}
 	}
 }

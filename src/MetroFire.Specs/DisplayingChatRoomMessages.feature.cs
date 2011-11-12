@@ -69,7 +69,11 @@ namespace MetroFire.Specs
         {
 #line 6
 #line 7
- testRunner.Given("a room called \"Test\"");
+ testRunner.Given("that I am logged in");
+#line 8
+ testRunner.And("a room called \"Test\"");
+#line 9
+ testRunner.And("that I have joined the room \"Test\"");
 #line hidden
         }
         
@@ -78,13 +82,13 @@ namespace MetroFire.Specs
         public virtual void ReceiveASingleMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Receive a single message", ((string[])(null)));
-#line 10
+#line 12
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 11
+#line 13
  testRunner.When("the message \"Hello world\" is received for room \"Test\"");
-#line 12
+#line 14
  testRunner.Then("the message \"Hello world\" should be displayed in room \"Test\"");
 #line hidden
             this.ScenarioCleanup();
@@ -95,7 +99,7 @@ this.FeatureBackground();
         public virtual void ReceiveMultipleMessages()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Receive multiple messages", ((string[])(null)));
-#line 14
+#line 16
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
@@ -112,7 +116,7 @@ this.FeatureBackground();
             table1.AddRow(new string[] {
                         "3",
                         "Test"});
-#line 15
+#line 17
  testRunner.When("the following messages are received for room \"Test\" in order:", ((string)(null)), table1);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -127,7 +131,7 @@ this.FeatureBackground();
             table2.AddRow(new string[] {
                         "3",
                         "Test"});
-#line 20
+#line 22
  testRunner.Then("the following messages should be displayed in room \"Test\" in order:", ((string)(null)), table2);
 #line hidden
             this.ScenarioCleanup();
@@ -138,7 +142,7 @@ this.FeatureBackground();
         public virtual void ReceiveMultipleMessagesMultipleTimes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Receive multiple messages multiple times", ((string[])(null)));
-#line 26
+#line 28
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
@@ -155,7 +159,7 @@ this.FeatureBackground();
             table3.AddRow(new string[] {
                         "3",
                         "Test"});
-#line 27
+#line 29
  testRunner.When("the following messages are received for room \"Test\" in order:", ((string)(null)), table3);
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -170,7 +174,7 @@ this.FeatureBackground();
             table4.AddRow(new string[] {
                         "6",
                         "Zah"});
-#line 32
+#line 34
  testRunner.And("the following messages are received for room \"Test\" in order:", ((string)(null)), table4);
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -187,7 +191,7 @@ this.FeatureBackground();
                         "Nah"});
             table5.AddRow(new string[] {
                         "Zah"});
-#line 37
+#line 39
  testRunner.Then("the following messages should be displayed in room \"Test\" in order:", ((string)(null)), table5);
 #line hidden
             this.ScenarioCleanup();
@@ -200,13 +204,13 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show disconnections", new string[] {
                         "backgroundtestscheduler"});
-#line 47
+#line 49
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 48
+#line 50
  testRunner.When("the streaming is disconnected for room \"Test\"");
-#line 49
+#line 51
  testRunner.Then("room \"Test\" should show that it is disconnected");
 #line hidden
             this.ScenarioCleanup();
@@ -219,15 +223,15 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show reconnections", new string[] {
                         "backgroundtestscheduler"});
-#line 52
+#line 54
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 53
- testRunner.When("the streaming is disconnected for room \"Test\"");
-#line 54
- testRunner.And("the streaming is reconnected for room \"Test\"");
 #line 55
+ testRunner.When("the streaming is disconnected for room \"Test\"");
+#line 56
+ testRunner.And("the streaming is reconnected for room \"Test\"");
+#line 57
  testRunner.Then("room \"Test\" should show that it is connected");
 #line hidden
             this.ScenarioCleanup();
@@ -240,19 +244,17 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retrieve old messages when disconnected", new string[] {
                         "backgroundtestscheduler"});
-#line 58
+#line 60
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 59
- testRunner.Given("that streaming has started for room \"Test\"");
-#line 60
- testRunner.When("the streaming is disconnected for room \"Test\"");
 #line 61
- testRunner.And("the streaming is reconnected for room \"Test\"");
+ testRunner.When("the streaming is disconnected for room \"Test\"");
 #line 62
- testRunner.And("we wait 20 seconds");
+ testRunner.And("the streaming is reconnected for room \"Test\"");
 #line 63
+ testRunner.And("we wait 20 seconds");
+#line 64
  testRunner.Then("older messages should have been requested for room \"Test\"");
 #line hidden
             this.ScenarioCleanup();
@@ -263,7 +265,7 @@ this.FeatureBackground();
         public virtual void ShowOldMessagesSentWhileDisconnected()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show old messages sent while disconnected", ((string[])(null)));
-#line 65
+#line 66
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
@@ -280,11 +282,11 @@ this.FeatureBackground();
             table6.AddRow(new string[] {
                         "3",
                         "Three"});
-#line 66
+#line 67
  testRunner.Given("that the following messages are received for room \"Test\" in order:", ((string)(null)), table6);
-#line 71
- testRunner.When("the streaming is disconnected for room \"Test\"");
 #line 72
+ testRunner.When("the streaming is disconnected for room \"Test\"");
+#line 73
  testRunner.And("the streaming is reconnected for room \"Test\"");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -296,7 +298,7 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         "7",
                         "Seven"});
-#line 73
+#line 74
  testRunner.And("the following messages are received for room \"Test\" in order:", ((string)(null)), table7);
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -323,7 +325,7 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "7",
                         "Seven"});
-#line 77
+#line 78
  testRunner.And("the following messages are received for room \"Test\" in order:", ((string)(null)), table8);
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -350,7 +352,7 @@ this.FeatureBackground();
             table9.AddRow(new string[] {
                         "7",
                         "Seven"});
-#line 86
+#line 87
  testRunner.Then("the following messages should be displayed in room \"Test\" in order:", ((string)(null)), table9);
 #line hidden
             this.ScenarioCleanup();
@@ -361,13 +363,13 @@ this.FeatureBackground();
         public virtual void ChangeTopic()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Change topic", ((string[])(null)));
-#line 96
+#line 97
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 97
- testRunner.When("the topic is changed to \"To pic\" for room \"Test\"");
 #line 98
+ testRunner.When("the topic is changed to \"To pic\" for room \"Test\"");
+#line 99
  testRunner.Then("the topic should be \"To pic\" for room \"Test\"");
 #line hidden
             this.ScenarioCleanup();

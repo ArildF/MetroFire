@@ -27,6 +27,10 @@ namespace Rogue.MetroFire.UI
 			_container = new WindsorContainer();
 		}
 
+		public bool TestMode { get; set; }
+
+		public WindsorContainer Container { get { return _container; } }
+
 		public IShellWindow Bootstrap()
 		{
 			_container.Kernel.ComponentModelBuilder.RemoveContributor(
@@ -37,9 +41,12 @@ namespace Rogue.MetroFire.UI
 
 			_container.Register(Component.For<Func<NotificationAction, INotificationAction>>().Instance(Create));
 
-			_container.Install(FromAssembly.This());
-			_container.Install(FromAssembly.Containing<RequestLoginMessage>());
+			if (!TestMode)
+			{
+				_container.Install(FromAssembly.This());
+			}
 
+			_container.Install(FromAssembly.Containing<RequestLoginMessage>());
 
 			_container.Register(Component.For<IInlineUploadView>().LifestyleTransient().ImplementedBy<InlineUploadView>());
 			_container.Register(

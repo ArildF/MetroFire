@@ -4,7 +4,9 @@
 	I want to see the messages from others
 
 Background: 
-	Given a room called "Test"
+	Given that I am logged in
+	And a room called "Test"
+	And that I have joined the room "Test"
 
 
 Scenario: Receive a single message
@@ -56,7 +58,6 @@ Scenario: Show reconnections
 
 @backgroundtestscheduler
 Scenario: Retrieve old messages when disconnected
-	Given that streaming has started for room "Test"
 	When the streaming is disconnected for room "Test"
 	And the streaming is reconnected for room "Test"
 	And we wait 20 seconds

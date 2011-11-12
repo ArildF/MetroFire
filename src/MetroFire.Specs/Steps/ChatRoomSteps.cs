@@ -4,6 +4,7 @@ using System.Threading;
 using FluentAssertions;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI;
 using TechTalk.SpecFlow;
 
 namespace MetroFire.Specs.Steps
@@ -24,19 +25,22 @@ namespace MetroFire.Specs.Steps
 			_roomContext.CreateRoom(roomName);
 		}
 
-		[Given(@"that streaming has started for room ""(.*)""")]
-		public void GivenThatStreamingHasStarted(string roomName)
+		[Given(@"that I am logged in")]
+		public void GivenThatIAmLoggedIn()
 		{
-			var idForRoom = _roomContext.IdForRoom(roomName);
-			_roomContext.SendMessage(roomName, new MessagesReceivedMessage(idForRoom, new Message[]{}, null));
+			_roomContext.SendMessage(new ActivateMainModuleMessage(ModuleNames.MainCampfireView));
+		}
+
+		[Given(@"that I have joined the room ""(.*)""")]
+		public void GivenThatIHaveJoinedRoom(string roomName)
+		{
+			_roomContext.JoinRoom(roomName);
 		}
 
 		[When(@"the message ""(.*)"" is received for room ""(.*)""")]
 		public void GivenThatTheMessageHelloWorldIsReceivedForRoomTest(string message, string roomName)
 		{
-			var idForRoom = _roomContext.IdForRoom(roomName);
-			_roomContext.SendMessage(roomName, 
-				new MessagesReceivedMessage(idForRoom, new[]{new Message{Body=message, Id=idForRoom}}, null));
+			_roomContext.SendRoomMessage(message, roomName);
 		}
 
 		[Given(@"that the following messages are received for room ""(.*)"" in order:")]
@@ -44,15 +48,14 @@ namespace MetroFire.Specs.Steps
 		public void WhenTheFollowingMessagesAreReceivedInOrder(string roomName, Table table)
 		{
 			var messages = table.Rows.Select(r => new Message {Id =int.Parse(r["Id"]), Body = r["Message"]}).ToArray();
-			var id = _roomContext.IdForRoom(roomName);
-			_roomContext.SendMessage(roomName, new MessagesReceivedMessage(id, messages, null));
+			_roomContext.SendRoomMessages(roomName, messages);
 
 		}
 		[When(@"the topic is changed to ""(.*)"" for room ""(.*)""")]
 		public void WhenTheTopicIsChangedToToPicForRoomTest(string topic, string roomName)
 		{
 			var id = _roomContext.IdForRoom(roomName);
-			_roomContext.SendMessage(roomName, new MessagesReceivedMessage(id, new []{new Message{Body = topic, RoomId = id, MessageTypeString = "TopicChangeMessage"}}, null));
+			_roomContext.SendMessage(new MessagesReceivedMessage(id, new []{new Message{Body = topic, RoomId = id, MessageTypeString = "TopicChangeMessage"}}, null));
 		}
 
 		[When(@"we wait (\d+) seconds")]
@@ -64,22 +67,21 @@ namespace MetroFire.Specs.Steps
 		[When(@"the streaming is (.*) for room ""(.*)""")]
 		public void WhenTheStreamingIsDisconnectedForRoomTest(string state, string roomName)
 		{
-			var id = _roomContext.IdForRoom(roomName);
 			bool connected = state == "reconnected";
-			_roomContext.SendMessage(roomName, new ConnectionState(id, connected));
+			_roomContext.ApiFake.SetStreamingConnectionState(roomName, connected);
 		}
 
 		[Then(@"the message ""(.*)"" should be displayed in room ""(.*)""")]
 		public void ThenTheMessageHelloWorldShouldBeDisplayedInRoomTest(string message, string roomName)
 		{
-			_roomContext.MessagesForRoom(roomName).Last().Body.Should().Be(message);
+			_roomContext.MessagesDisplayedInRoom(roomName).Last().Body.Should().Be(message);
 		}
 
 		[Then(@"the following messages should be displayed in room ""(.*)"" in order:")]
 		public void ThenTheFollowingMessagesShouldBeDisplayedInRoomTestInOrder(string roomName, Table table)
 		{
 			var messageBodies = table.Rows.Select(r => r["Message"]);
-			_roomContext.MessagesForRoom(roomName).Select(m => m.Body).Should().BeEquivalentTo(messageBodies);
+			_roomContext.MessagesDisplayedInRoom(roomName).Select(m => m.Body).Should().BeEquivalentTo(messageBodies);
 		}
 
 		[Then(@"the topic should be ""(.*)"" for room ""(.*)""")]

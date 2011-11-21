@@ -47,11 +47,22 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_bus.Listen<ModuleActivatedMessage>().Where(msg => msg.ParentModule == ModuleNames.MainCampfireView)
 				.SubscribeUI(msg => ActiveModule = msg.Module);
 
+			_bus.Listen<RequestLeaveRoomMessage>().SubscribeUI(OnRequestLeaveRoomMessage);
+
 			ActivateModuleCommand = new ReactiveCommand();
 			ActivateModuleCommand.OfType<ModuleViewModel>().Subscribe(HandleActivateModule);
 
 			globalCommands.NextModuleCommand.Subscribe(OnNextModuleCommand);
 			globalCommands.PreviousModuleCommand.Subscribe(OnPreviousModuleCommand);
+		}
+
+		private void OnRequestLeaveRoomMessage(RequestLeaveRoomMessage requestLeaveRoomMessage)
+		{
+			var module = FindModuleById(requestLeaveRoomMessage.Id);
+			if (module != null)
+			{
+				Modules.Remove(module);
+			}
 		}
 
 		private void OnPreviousModuleCommand(object o)
@@ -76,12 +87,18 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private void HandleActivateModuleById(ActivateModuleByIdMessage msg)
 		{
-			ActiveModule = CurrentModules.Select(m => m.Module).Where(m => m.Id == msg.Id).FirstOrDefault();
+			ActiveModule = FindModuleById(msg.Id);
 		}
 
-		private IModule ActiveModule
+		private IModule FindModuleById(int id)
 		{
-			set
+			return CurrentModules.Select(m => m.Module).Where(m => m.Id == id).FirstOrDefault();
+		}
+
+		public IModule  ActiveModule
+		{
+			get { return _activeModule; }
+			private set
 			{
 				if (_activeModule == value)
 				{
@@ -111,6 +128,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			foreach (var module in toRemove)
 			{
 				Modules.Remove(module);
+
+				if (module == _activeModule)
+				{
+					ActiveModule = _lobbyModule;
+				}
 			}
 			foreach (var room in toAdd)
 			{

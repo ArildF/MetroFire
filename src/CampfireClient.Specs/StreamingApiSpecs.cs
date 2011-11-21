@@ -51,4 +51,30 @@ world " + Guid.NewGuid();
 		private static string _msg;
 		private static readonly List<ConnectionState> _connectionStates = new List<ConnectionState>();
 	}
+
+	public class When_cancelling_streaming_from_Campfire : ApiContext
+	{
+		Establish context = () =>
+			{
+				_id = FindJoinedRoom();
+				_disposable = api.Stream(_id, msg => _messages.Add(msg), new Subject<ConnectionState>());
+
+				api.Speak(_id, "Hello");
+
+				Thread.Sleep(TimeSpan.FromSeconds(8));
+			};
+
+		Because of = () =>
+			{
+				_disposable.Dispose();
+				api.Speak(_id, "World");
+			};
+
+		It should_contain_hello = () => _messages.ShouldContain(msg => msg.Body == "Hello");
+		It should_not_contain_world = () => _messages.ShouldNotContain(msg => msg.Body == "World");
+
+		private static readonly List<Message> _messages = new List<Message>();
+		private static IDisposable _disposable;
+		private static int _id;
+	}
 }

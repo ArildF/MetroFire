@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using System.Reactive.Linq;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {

@@ -5,8 +5,8 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors" mc:Ignorable="d" 
-			 xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
-			 d:DesignHeight="539" d:DesignWidth="700" d:DataContext="{Binding Source={StaticResource SampleRoomViewModel}}" Padding="5" Background="White">
+			 xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure" xmlns:UI="clr-namespace:Rogue.MetroFire.UI"
+             d:DesignHeight="539" d:DesignWidth="700" d:DataContext="{Binding Source={StaticResource SampleRoomViewModel}}" Padding="5" Background="White">
 	<UserControl.Resources>
 		
 		<DataTemplate x:Key="_userListBoxItemsTemplate">
@@ -86,6 +86,8 @@
 			</Grid.RowDefinitions>
 			<ListBox ItemsSource="{Binding Users}" ItemTemplate="{DynamicResource _userListBoxItemsTemplate}" Margin="5,0,0,0" BorderBrush="Black" BorderThickness="0,0,0,1"/>
 			<StackPanel Margin="5,0,0,0" Grid.Row="1">
+				<Button Style="{DynamicResource MetroBigButton}" Margin="3,0" FontSize="14.667"
+						Command="{x:Static UI:GlobalCommands.LeaveRoomCommand}" CommandParameter="{Binding RoomId}" Template="{DynamicResource CloseButtonTemplate}" HorizontalAlignment="Right"/>
 				<TextBlock TextWrapping="WrapWithOverflow" Style="{DynamicResource MetroBlueCaption}" Text="{Binding RoomName}"/>
 				<TextBlock TextWrapping="Wrap" Text="{Binding Topic}" HorizontalAlignment="Left" Style="{DynamicResource MetroBodyText}"/>
 			</StackPanel>

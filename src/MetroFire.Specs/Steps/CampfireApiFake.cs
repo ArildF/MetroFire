@@ -11,6 +11,7 @@ namespace MetroFire.Specs.Steps
 	public class CampfireApiFake : ICampfireApi
 	{
 		private readonly List<Room> _rooms = new List<Room>();
+		private readonly List<Room> _allRooms = new List<Room>();
 		private readonly List<Room> _joinedRooms = new List<Room>();
 		private readonly List<Message> _messages = new List<Message>(); 
 		private readonly List<Streamer>  _streamers = new List<Streamer>();
@@ -88,6 +89,13 @@ namespace MetroFire.Specs.Steps
 			throw new NotImplementedException();
 		}
 
+		public Unit LeaveRoom(int id)
+		{
+			_rooms.RemoveAll(r => r.Id == id);
+
+			return Unit.Default;
+		}
+
 		public void AddRoom(Room room)
 		{
 			if (room.Users == null)
@@ -95,14 +103,15 @@ namespace MetroFire.Specs.Steps
 				room.Users = new User[]{};
 			}
 			_rooms.Add(room);
+			_allRooms.Add(room);
 		}
 
 		public int IdForRoom(string roomName)
 		{
-			return _rooms.First(r => r.Name == roomName).Id;
+			return _allRooms.First(r => r.Name == roomName).Id;
 		}
 
-		private class Streamer
+		public class Streamer
 		{
 			public int Id { get; private set; }
 			public Action<Message> Action { get; private set; }
@@ -178,6 +187,11 @@ namespace MetroFire.Specs.Steps
 			var id = IdForRoom(roomName);
 			var streamer = _streamers.Single(s => s.Id == id);
 			streamer.Observer.OnNext(new ConnectionState(id, connected));
+		}
+
+		public IEnumerable<Streamer> Streamers()
+		{
+			return _streamers;
 		}
 	}
 }

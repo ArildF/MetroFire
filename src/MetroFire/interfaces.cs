@@ -31,6 +31,7 @@ namespace Rogue.MetroFire.UI
 	{
 		ReactiveCommand NextModuleCommand { get; }
 		ReactiveCommand PreviousModuleCommand { get; }
+		ReactiveCommand LeaveRoomCommand { get; }
 	}
 
 	public interface IMainCampfireViewModel
@@ -62,6 +63,7 @@ namespace Rogue.MetroFire.UI
 		bool IsActive { get; set; }
 		int Id { get; }
 		string Notifications { get; }
+		bool Closable { get; }
 	}
 
 	public interface INavigationContent

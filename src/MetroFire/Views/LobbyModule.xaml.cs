@@ -38,12 +38,17 @@ namespace Rogue.MetroFire.UI.Views
 
 		public int Id
 		{
-			get { return -1; }
+			get { return ModuleIds.Lobby; }
 		}
 
 		public string Notifications
 		{
 			get { return ""; }
+		}
+
+		public bool Closable
+		{
+			get { return false; }
 		}
 	}
 

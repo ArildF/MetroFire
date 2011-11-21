@@ -160,6 +160,7 @@
     <Compile Include="Infrastructure\WpfExtensions.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="messages.cs" />
+    <Compile Include="ModuleIds.cs" />
     <Compile Include="ModuleNames.cs" />
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="ModulesInstaller.cs" />

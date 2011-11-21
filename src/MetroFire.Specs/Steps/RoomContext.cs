@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
@@ -27,6 +28,7 @@ namespace MetroFire.Specs.Steps
 		private readonly List<RoomModuleViewModel> _roomViewModels = new List<RoomModuleViewModel>();
 		private readonly CampfireApiFake _campfireApiFake;
 		private LobbyModuleViewModel _lobbyModuleViewModel;
+		private MainCampfireViewModel _mainCampfireViewModel;
 
 		public RoomContext()
 		{
@@ -67,6 +69,10 @@ namespace MetroFire.Specs.Steps
 			{
 				_lobbyModuleViewModel = (LobbyModuleViewModel) instance;
 			}
+			if (instance is MainCampfireViewModel)
+			{
+				_mainCampfireViewModel = (MainCampfireViewModel) instance;
+			}
 		}
 
 		private void Listen<T>()
@@ -83,6 +89,13 @@ namespace MetroFire.Specs.Steps
 		{
 			get {
 				return _campfireApiFake;
+			}
+		}
+
+		public MainCampfireViewModel MainViewModel
+		{
+			get {
+				return _mainCampfireViewModel;
 			}
 		}
 
@@ -128,6 +141,12 @@ namespace MetroFire.Specs.Steps
 		{
 			_campfireApiFake.SendRoomMessages(roomName, messages);
 		}
+
+		public void ActivateModule(string roomName)
+		{
+			var vm = _mainCampfireViewModel.CurrentModules.Single(m => m.Module.Caption == roomName);
+			_mainCampfireViewModel.ActivateModuleCommand.Execute(vm);
+		}
 	}
 
 	public class ModulesInstaller : IWindsorInstaller
@@ -142,7 +161,48 @@ namespace MetroFire.Specs.Steps
 					return new Mock<IMainModule>().Object;
 				}));
 			container.Register(
-				Component.For<IModule>().Named(ModuleNames.RoomModule).LifestyleTransient().UsingFactoryMethod(_ => new Mock<IModule>().Object));
+				Component.For<IModule>().Named(ModuleNames.RoomModule).LifestyleTransient().ImplementedBy<FakeRoomModule>());
+		}
+
+		private class FakeRoomModule : IModule
+		{
+			private IRoomModuleViewModel _vm;
+
+			public FakeRoomModule(IRoomModuleViewModel vm)
+			{
+				_vm = vm;
+			}
+
+			public string Caption
+			{
+				get { return _vm.RoomName; }
+			}
+
+			public DependencyObject Visual
+			{
+				get { return null; }
+			}
+
+			public bool IsActive
+			{
+				get { return _vm.IsActive; }
+				set { _vm.IsActive = value; }
+			}
+
+			public int Id
+			{
+				get { return _vm.Id; }
+			}
+
+			public string Notifications
+			{
+				get { throw new NotImplementedException(); }
+			}
+
+			public bool Closable
+			{
+				get { return true; }
+			}
 		}
 	}
 }

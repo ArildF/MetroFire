@@ -121,6 +121,25 @@ namespace Expression.Blend.SampleData.SampleMainViewModel
 				}
 			}
 		}
+
+		private bool _Closable = false;
+
+		public bool Closable
+		{
+			get
+			{
+				return this._Closable;
+			}
+
+			set
+			{
+				if (this._Closable != value)
+				{
+					this._Closable = value;
+					this.OnPropertyChanged("Closable");
+				}
+			}
+		}
 	}
 #endif
 }

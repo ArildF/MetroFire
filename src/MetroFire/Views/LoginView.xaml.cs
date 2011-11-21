@@ -90,6 +90,11 @@ namespace Rogue.MetroFire.UI.Views
 			get { return ""; }
 		}
 
+		public bool Closable
+		{
+			get { return false; }
+		}
+
 		public DependencyObject NavigationContent
 		{
 			get { return _content.Visual; }

@@ -25,5 +25,22 @@ namespace MetroFire.Specs
 
 			val.Should().Be(42);
 		}
+
+		[Test]
+		public void ObservableCreate()
+		{
+			bool disposed = false;
+			var observable = Observable.Create<string>(observer =>
+				{
+					observer.OnNext("Foo");
+
+					return () => disposed = true;
+				});
+
+			var disposable = observable.Subscribe(Console.WriteLine);
+			disposable.Dispose();
+
+			disposed.Should().BeTrue();
+		}
 	}
 }

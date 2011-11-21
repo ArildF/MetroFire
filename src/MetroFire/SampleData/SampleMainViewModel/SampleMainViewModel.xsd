@@ -20,5 +20,6 @@
     <xs:attribute name="Caption" type="xs:string" />
     <xs:attribute name="IsSelected" type="xs:boolean" />
     <xs:attribute name="Notifications" type="xs:string" />
+    <xs:attribute name="Closable" type="xs:boolean" />
   </xs:complexType>
 </xs:schema>

@@ -57,6 +57,11 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			get { return ""; }
 		}
+
+		public bool Closable
+		{
+			get { return false; }
+		}
 	}
 
 }

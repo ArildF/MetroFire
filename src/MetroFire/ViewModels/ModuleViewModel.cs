@@ -21,7 +21,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public IModule Module { get { return _module; } }
 
 		public bool IsActive { get { return _module.IsActive; } }
+		public bool Closable { get { return _module.Closable; } }
 		public string Caption { get { return _module.Caption; } }
+		public int Id { get { return _module.Id; } }
 		public string Notifications { get { return _module.Notifications; } }
 	}
 }

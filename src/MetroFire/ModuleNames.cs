@@ -4,9 +4,9 @@
 	{
 		public static readonly string Login = "Login";
 
-		public static string MainCampfireView = "MainCampfireView";
-		public static string RoomModule = "RoomModule";
-		public static string SettingsModule = "SettingsModule";
+		public static readonly string MainCampfireView = "MainCampfireView";
+		public static readonly string RoomModule = "RoomModule";
+		public static readonly string SettingsModule = "SettingsModule";
 
 	}
 }

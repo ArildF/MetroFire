@@ -6,6 +6,7 @@ namespace Rogue.MetroFire.UI
 	{
 		public static ReactiveCommand NextModuleCommand = new ReactiveCommand();
 		public static ReactiveCommand PreviousModuleCommand = new ReactiveCommand();
+		public static ReactiveCommand LeaveRoomCommand = new ReactiveCommand();
 	}
 
 
@@ -14,5 +15,6 @@ namespace Rogue.MetroFire.UI
 	{
 		public ReactiveCommand NextModuleCommand{get{ return GlobalCommands.NextModuleCommand;}}
 		public ReactiveCommand PreviousModuleCommand{get{ return GlobalCommands.PreviousModuleCommand;}}
+		public ReactiveCommand LeaveRoomCommand {get{ return GlobalCommands.LeaveRoomCommand;}}
 	}
 }

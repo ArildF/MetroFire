@@ -54,6 +54,7 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestRoomListMessage>().SubscribeThreadPool(ListRooms);
 			_bus.Listen<RequestRoomPresenceMessage>().SubscribeThreadPool(ListRoomPresence);
 			_bus.Listen<RequestJoinRoomMessage>().SubscribeThreadPool(JoinRoom);
+			_bus.Listen<RequestLeaveRoomMessage>().SubscribeThreadPool(LeaveRoom);
 			_bus.Listen<RequestSpeakInRoomMessage>().SubscribeThreadPool(SpeakInRoom);
 
 			_bus.Listen<RequestRecentMessagesMessage>().SubscribeThreadPool(GetRecentMessages);
@@ -65,8 +66,20 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestKeepAliveMessage>().SubscribeThreadPool(KeepAlive);
 			_bus.Listen<RequestUploadMessage>().SubscribeThreadPool(RequestUpload);
 			_bus.Listen<RequestDownloadFileMessage>().SubscribeThreadPool(RequestDownloadFile);
-			//_bus.Listen<RequestUploadFileMessage>().SubscribeThreadPool(TestRequestUploadFile);
 			_bus.Listen<RequestUploadFileMessage>().SubscribeThreadPool(RequestUploadFile);
+			_bus.Listen<RequestStopStreamingMessage>().SubscribeThreadPool(RequestStopStreaming);
+		}
+
+		private void RequestStopStreaming(RequestStopStreamingMessage obj)
+		{
+			lock (_currentStreamingRooms)
+			{
+				IDisposable disposable;
+				if (_currentStreamingRooms.TryGetValue(obj.RoomId, out disposable))
+				{
+					disposable.Dispose();
+				}
+			}
 		}
 
 		private void TestRequestUploadFile(RequestUploadFileMessage obj)
@@ -130,6 +143,11 @@ namespace Rogue.MetroFire.CampfireClient
 			
 		}
 
+		private void LeaveRoom(RequestLeaveRoomMessage requestLeaveRoomMessage)
+		{
+			CallApi(() => _api.LeaveRoom(requestLeaveRoomMessage.Id), _ => ListRooms(new RequestRoomListMessage()));
+		}
+
 		private void KeepAlive(RequestKeepAliveMessage requestKeepAliveMessage)
 		{
 			Debug.WriteLine("Sending keepalive for room " + requestKeepAliveMessage.RoomId);
@@ -145,12 +163,6 @@ namespace Rogue.MetroFire.CampfireClient
 				_bus.RegisterMessageSource(
 					subject.Where(cs => cs.Exception != null).Select(cs => new ExceptionMessage(cs.Exception)));
 
-				//_bus.RegisterMessageSource(
-				//    Observable.FromEventPattern<NetworkAvailabilityChangedEventHandler, NetworkAvailabilityEventArgs>(
-				//                h => NetworkChange.NetworkAvailabilityChanged += h,
-				//                h => NetworkChange.NetworkAvailabilityChanged -= h)
-				//        .Where(evt => !evt.EventArgs.IsAvailable)
-				//        .Select(_ => new ConnectionState(obj.RoomId, false)));
 				IDisposable d = _api.Stream(obj.RoomId,
 							msg => _bus.SendMessage(new MessagesReceivedMessage(obj.RoomId, new[] { msg }, null)),
 							subject);

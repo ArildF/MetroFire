@@ -56,6 +56,7 @@ namespace Rogue.MetroFire.CampfireClient
 		Upload GetUpload(int roomId, int uploadMessageId);
 		Unit DownloadFile(string uri, string destination);
 		Upload UploadFile(int roomId, UploadFileParams uploadFileParams, IObserver<ProgressState> progressObserver);
+		Unit LeaveRoom(int id);
 	}
 
 	public interface ISettings

@@ -88,6 +88,15 @@ namespace Rogue.MetroFire.CampfireClient
 			Id = id;
 		}
 	}
+	public class RequestLeaveRoomMessage
+	{
+		public int Id { get; private set; }
+
+		public RequestLeaveRoomMessage(int id)
+		{
+			Id = id;
+		}
+	}
 
 	public class RequestSpeakInRoomMessage
 	{
@@ -170,6 +179,16 @@ namespace Rogue.MetroFire.CampfireClient
 		public int RoomId { get; private set; }
 
 		public RequestStartStreamingMessage(int roomId)
+		{
+			RoomId = roomId;
+		}
+	}
+
+	public class RequestStopStreamingMessage
+	{
+		public int RoomId { get; private set; }
+
+		public RequestStopStreamingMessage(int roomId)
 		{
 			RoomId = roomId;
 		}

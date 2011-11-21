@@ -6,6 +6,7 @@ using System.Reactive;
 using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Rogue.MetroFire.CampfireClient.Infrastructure;
@@ -100,6 +101,13 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			var relativeUri = String.Format("users/{0}.xml", userId);
 			return Get<User>(relativeUri);
+		}
+
+		public Unit LeaveRoom(int id)
+		{
+			string relativeUri = String.Format("room/{0}/leave.xml", id);
+			Post<NoResponse>(relativeUri);
+			return Unit.Default;
 		}
 
 		public Upload GetUpload(int roomId, int uploadMessageId)
@@ -357,19 +365,21 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			return Observable.Create<Message>(o =>
 				{
+					var cts = new CancellationTokenSource();
+
 					Observable.Start(() =>
 						{
 							try
 							{
 								observer.OnNext(new ConnectionState(id, true));
-								RunStream(id, o);
+								RunStream(id, o, cts.Token);
 							}
 							catch (Exception ex)
 							{
 								o.OnError(ex);
 							}
 						});
-					return () => { };
+					return () => cts.Cancel();
 				})
 				.Catch<Message, StreamingDisconnectedException>(ex => RestartConnection(ex, id, 2, observer))
 				.Catch<Message, WebException>(ex => RestartConnection(ex, id, 30, observer))
@@ -383,7 +393,7 @@ namespace Rogue.MetroFire.CampfireClient
 				.SelectMany(_ => CreateStreamingObservable(roomId, observer));
 		}
 
-		private void RunStream(int id, IObserver<Message> observer)
+		private void RunStream(int id, IObserver<Message> observer, CancellationToken ct)
 		{
 			var uri = String.Format("http://streaming.campfirenow.com/room/{0}/live.json", id);
 			var request = CreateRequest(new Uri(uri));
@@ -407,7 +417,6 @@ namespace Rogue.MetroFire.CampfireClient
 			{
 				try
 				{
-
 					var stream = response.GetResponseStream();
 					if (stream == null)
 					{
@@ -417,6 +426,10 @@ namespace Rogue.MetroFire.CampfireClient
 					while (true)
 					{
 						string line = streamReader.ReadLine();
+						if (ct.IsCancellationRequested)
+						{
+							break;
+						}
 
 						Debug.WriteLine(String.Format("Streaming room id {0}. Received line: {1}", id, (line ?? "<null>")));
 						if (line == null)

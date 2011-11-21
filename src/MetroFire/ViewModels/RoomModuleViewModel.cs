@@ -32,7 +32,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _topic;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
-			IClipboard clipboard, IImageEncoder encoder)
+			IClipboard clipboard, IImageEncoder encoder, IGlobalCommands commands)
 		{
 			_room = room;
 			_bus = bus;
@@ -78,6 +78,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			PasteCommand.Select(pc => _clipboard.GetImage())
 				.Select(encoder.EncodeToTempPng)
 				.Subscribe(path => _chatDocument.AddPasteFile(_room, path));
+
+			var leaveRoomCommand = commands.LeaveRoomCommand.OfType<int>().Where(id => id == _room.Id);
+			_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new RequestStopStreamingMessage(_room.Id)));
+			_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new RequestLeaveRoomMessage(_room.Id)));
+			_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, ModuleIds.Lobby)));
 		}
 
 
@@ -207,6 +212,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public string RoomName
 		{
 			get { return _room.Name; }
+		}
+
+		public int RoomId
+		{
+			get { return _room.Id; }
 		}
 
 		public string Topic

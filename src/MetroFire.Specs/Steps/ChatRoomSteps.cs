@@ -5,6 +5,7 @@ using FluentAssertions;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
+using Rogue.MetroFire.UI.Views;
 using TechTalk.SpecFlow;
 
 namespace MetroFire.Specs.Steps
@@ -31,11 +32,25 @@ namespace MetroFire.Specs.Steps
 			_roomContext.SendMessage(new ActivateMainModuleMessage(ModuleNames.MainCampfireView));
 		}
 
+		[Given(@"that room ""(.*)"" is the active module")]
+		public void GivenThatRoomTestIsTheActiveModule(string roomName)
+		{
+			_roomContext.ActivateModule(roomName);
+		}
+
 		[Given(@"that I have joined the room ""(.*)""")]
 		public void GivenThatIHaveJoinedRoom(string roomName)
 		{
 			_roomContext.JoinRoom(roomName);
 		}
+
+		[When(@"I click the leave room button in room ""(.*)""")]
+		public void WhenIClickTheLeaveRoomButton(string roomName)
+		{
+			var vm = _roomContext.ViewModelFor(roomName);
+			GlobalCommands.LeaveRoomCommand.Execute(vm.Id);
+		}
+
 
 		[When(@"the message ""(.*)"" is received for room ""(.*)""")]
 		public void GivenThatTheMessageHelloWorldIsReceivedForRoomTest(string message, string roomName)
@@ -84,6 +99,12 @@ namespace MetroFire.Specs.Steps
 			_roomContext.MessagesDisplayedInRoom(roomName).Select(m => m.Body).Should().BeEquivalentTo(messageBodies);
 		}
 
+		[Then(@"I should leave room ""(.*)""")]
+		public void ThenIShouldLeaveRoomTest(string roomName)
+		{
+			_roomContext.ApiFake.ListRooms().Should().NotContain(r => r.Name == roomName);
+		}
+
 		[Then(@"the topic should be ""(.*)"" for room ""(.*)""")]
 		public void ThenTheTopicShouldBeToPicForRoomTest(string topic, string room)
 		{
@@ -105,6 +126,19 @@ namespace MetroFire.Specs.Steps
 				Skip(1).Should().NotBeEmpty();
 		}
 
+		[Then(@"the lobby should be active")]
+		public void ThenTheLobbyShouldBeActive()
+		{
+			_roomContext.MainViewModel.ActiveModule.Should().BeOfType<LobbyModule>();
+		}
+
+
+		[Then(@"streaming should be disconnected for room ""(.*)""")]
+		public void ThenStreamingShouldBeDisconnectedForRoomTest(string roomName)
+		{
+			var id = _roomContext.IdForRoom(roomName);
+			_roomContext.ApiFake.Streamers().Should().NotContain(s => s.Id == id);
+		}
 
 	}
 }

@@ -12,6 +12,7 @@ using ReactiveUI;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
+using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 using System;
 using System.Linq;
@@ -29,6 +30,9 @@ namespace MetroFire.Specs.Steps
 		private readonly CampfireApiFake _campfireApiFake;
 		private LobbyModuleViewModel _lobbyModuleViewModel;
 		private MainCampfireViewModel _mainCampfireViewModel;
+		private readonly MockSettingsLoader _loader;
+
+		private Mock<INotificationAction> _mockFlashTaskBarAction;
 
 		public RoomContext()
 		{
@@ -41,6 +45,12 @@ namespace MetroFire.Specs.Steps
 
 			_chatViewFake = new ChatViewFake();
 			_container.Register(Component.For<IChatDocument>().Instance(_chatViewFake));
+
+
+			_loader = new MockSettingsLoader();
+			_container.Register(Component.For<ISettingsLoader>().Instance(_loader));
+
+			_container.Register(Component.For<Func<NotificationAction, INotificationAction>>().Instance(CreateNotificationAction));
 
 			bootstrapper.Bootstrap();
 
@@ -55,6 +65,17 @@ namespace MetroFire.Specs.Steps
 			Listen<RequestRecentMessagesMessage>();
 
 			_bus.SendMessage(new ApplicationLoadedMessage());
+		}
+
+		private INotificationAction CreateNotificationAction(NotificationAction arg)
+		{
+			switch (arg.ActionType)
+			{
+					case ActionType.FlashTaskbar:
+					return (_mockFlashTaskBarAction = new Mock<INotificationAction>()).Object;
+			}
+
+			throw new InvalidOperationException();
 		}
 
 		private void KernelOnComponentCreated(ComponentModel model, object instance)
@@ -99,9 +120,14 @@ namespace MetroFire.Specs.Steps
 			}
 		}
 
+		public Mock<INotificationAction> FlashTaskBarActionMock
+		{
+			get { return _mockFlashTaskBarAction; }
+		}
+
 		public void CreateRoom(string roomName)
 		{
-			var room = new Room {Id = _currentRoomId++, Name = roomName};
+			var room = new Room {Id = _currentRoomId++, Name = roomName, Users = new[]{new User{Name = "User0", Id=0}}};
 
 			_campfireApiFake.AddRoom(room);
 			_bus.SendMessage(new RequestRoomListMessage());
@@ -146,6 +172,27 @@ namespace MetroFire.Specs.Steps
 		{
 			var vm = _mainCampfireViewModel.CurrentModules.Single(m => m.Module.Caption == roomName);
 			_mainCampfireViewModel.ActivateModuleCommand.Execute(vm);
+		}
+
+		public void ChangeSettings(MetroFireSettings settings)
+		{
+			_loader.Settings = settings;
+			SendMessage(new SettingsChangedMessage());
+		}
+
+		public class MockSettingsLoader : ISettingsLoader
+		{
+			public MetroFireSettings Settings = new MetroFireSettings
+				{
+					General = new GeneralSettings(),
+					Network = new NetworkSettings(),
+					Notification = new NotificationSettings {Notifications = new NotificationEntry[] {}}
+				};
+
+			public MetroFireSettings Load()
+			{
+				return Settings;
+			}
 		}
 	}
 

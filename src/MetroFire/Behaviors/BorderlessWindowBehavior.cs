@@ -246,8 +246,11 @@ namespace Rogue.MetroFire.UI.Behaviors
 		private void AddHwndHook()
 		{
 			m_hwndSource = HwndSource.FromVisual(AssociatedObject) as HwndSource;
-			m_hwndSource.AddHook(HwndHook);
-			m_hwnd = new WindowInteropHelper(AssociatedObject).Handle;
+			if (m_hwndSource != null)
+			{
+				m_hwndSource.AddHook(HwndHook);
+				m_hwnd = new WindowInteropHelper(AssociatedObject).Handle;
+			}
 		}
 
 		private void RemoveHwndHook()

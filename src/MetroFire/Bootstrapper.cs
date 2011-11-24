@@ -39,10 +39,10 @@ namespace Rogue.MetroFire.UI
 			_container.AddFacility<StartableFacility>();
 			_container.AddFacility<TypedFactoryFacility>();
 
-			_container.Register(Component.For<Func<NotificationAction, INotificationAction>>().Instance(Create));
 
 			if (!TestMode)
 			{
+				_container.Register(Component.For<Func<NotificationAction, INotificationAction>>().Instance(Create));
 				_container.Install(FromAssembly.This());
 			}
 

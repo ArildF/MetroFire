@@ -14,6 +14,7 @@ namespace Rogue.MetroFire.UI.Notifications
 
 		private readonly Dictionary<int, Room> _rooms = new Dictionary<int, Room>();
 		private readonly ISet<int> _loadedRooms = new SortedSet<int>();
+		private int _currentUserId;
 
 
 		public NotificationTransformer(IMessageBus bus, IUserCache userCache)
@@ -27,6 +28,7 @@ namespace Rogue.MetroFire.UI.Notifications
 			_bus.Listen<MessagesReceivedMessage>().Subscribe(MessagesReceived);
 			_bus.Listen<RoomInfoReceivedMessage>().Subscribe(RoomInfoReceived);
 			_bus.Listen<RoomBackLogLoadedMessage>().Subscribe(msg => _loadedRooms.Add(msg.RoomId));
+			_bus.Listen<CurrentUserInformationReceivedMessage>().Subscribe(msg => _currentUserId = msg.User.Id);
 		}
 
 		private void RoomInfoReceived(RoomInfoReceivedMessage roomInfoReceivedMessage)
@@ -44,7 +46,7 @@ namespace Rogue.MetroFire.UI.Notifications
 			foreach (var message in messagesReceivedMessage.Messages)
 			{
 				var user = _userCache.GetUser(message.UserId ?? -1);
-				if (user == null)
+				if (user == null || user.Id == _currentUserId)
 				{
 					continue;
 				}

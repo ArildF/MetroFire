@@ -24,16 +24,28 @@ namespace Rogue.MetroFire.UI.Infrastructure
 		{
 			_bus.Listen<RoomInfoReceivedMessage>().SubscribeThreadPool(UpdateFromRoomInfoReceived);
 			_bus.Listen<UserInfoReceivedMessage>().SubscribeThreadPool(UpdateFromUserInfoReceived);
+			_bus.Listen<CurrentUserInformationReceivedMessage>().SubscribeThreadPool(UpdateFromCurrentUserInformationReceived);
+
+		}
+
+		private void UpdateFromCurrentUserInformationReceived(CurrentUserInformationReceivedMessage obj)
+		{
+			UpdateFromUser(obj.User);
 		}
 
 		private void UpdateFromUserInfoReceived(UserInfoReceivedMessage obj)
 		{
+			UpdateFromUser(obj.User);
+		}
+
+		private void UpdateFromUser(User user)
+		{
 			lock (_pendingUserInformationRequests)
 			{
-				Update(obj.User);
-				if (_pendingUserInformationRequests.Contains(obj.User.Id))
+				Update(user);
+				if (_pendingUserInformationRequests.Contains(user.Id))
 				{
-					_pendingUserInformationRequests.Remove(obj.User.Id);
+					_pendingUserInformationRequests.Remove(user.Id);
 				}
 			}
 		}

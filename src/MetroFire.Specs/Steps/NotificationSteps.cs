@@ -48,5 +48,11 @@ namespace MetroFire.Specs.Steps
 		{
 			_context.FlashTaskBarActionMock.Verify(a => a.Execute(It.IsAny<NotificationMessage>()));
 		}
+
+		[Then(@"the taskbar should not flash")]
+		public void ThenTheTaskbarShouldNotFlash()
+		{
+			_context.FlashTaskBarActionMock.Verify(a => a.Execute(It.IsAny<NotificationMessage>()), Times.Never());
+		}
 	}
 }

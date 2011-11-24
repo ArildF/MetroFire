@@ -19,10 +19,17 @@ namespace MetroFire.Specs.Steps
 		private readonly List<User>  _users = new List<User>{new User{Name = "Default", Id=0}};
 
 		private int _currentMessageId;
+		private readonly User _meUser;
+
+		public CampfireApiFake()
+		{
+			_meUser = new User() {Id = 42, Name = "Me"};
+			_users.Add(_meUser);
+		}
 
 		public Account GetAccountInfo()
 		{
-			throw new NotImplementedException();
+			return new Account();
 		}
 
 		public Room[] ListRooms()
@@ -32,7 +39,6 @@ namespace MetroFire.Specs.Steps
 
 		public void SetLoginInfo(LoginInfo loginInfo)
 		{
-			throw new NotImplementedException();
 		}
 
 		public Room[] ListPresence()
@@ -48,7 +54,9 @@ namespace MetroFire.Specs.Steps
 
 		public Message Speak(int id, string text)
 		{
-			throw new NotImplementedException();
+			NewRoomMessage(text, _rooms.Single(r => r.Id == id).Name, _meUser.Id);
+
+			return _messages.Last();
 		}
 
 		public Message[] GetMessages(int id, int? sinceId = new int?())
@@ -94,6 +102,11 @@ namespace MetroFire.Specs.Steps
 			_rooms.RemoveAll(r => r.Id == id);
 
 			return Unit.Default;
+		}
+
+		public User GetMe()
+		{
+			return _meUser;
 		}
 
 		public void AddRoom(Room room)
@@ -146,7 +159,7 @@ namespace MetroFire.Specs.Steps
 		}
 
 
-		public void NewRoomMessage(string messageText, string roomName)
+		public void NewRoomMessage(string messageText, string roomName, int userId = 0)
 		{
 			int id = IdForRoom(roomName);
 			var message = new Message
@@ -156,7 +169,7 @@ namespace MetroFire.Specs.Steps
 					Id = _currentMessageId++,
 					MessageTypeString = MessageType.TextMessage.ToString(),
 					RoomId = id,
-					UserIdString = "0"
+					UserIdString = userId.ToString()
 				};
 
 			AddMessage(message);

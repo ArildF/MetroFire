@@ -232,10 +232,14 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			_api.SetLoginInfo(requestLoginMessage.LoginInfo);
 			CallApi(() => _api.GetAccountInfo(), account =>
-				{
-					_account = account;
-					_bus.SendMessage<LoginSuccessfulMessage>(null);
-				});
+					CallApi(() => _api.GetMe(), 
+						user =>
+							{
+								_account = account;
+								_bus.SendMessage<LoginSuccessfulMessage>(null);
+								_bus.SendMessage(new CurrentUserInformationReceivedMessage(user));
+							})
+				);
 		}
 
 		private void CallApi<T>(Func<T> call, Action<T> continuation)

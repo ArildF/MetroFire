@@ -250,6 +250,17 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 	//        }
 	//}
 
+	public class When_retrieving_me : ApiContext
+	{
+		Because of = () => _user = api.GetMe();
+
+		private It should_have_a_valid_user = () => _user.ShouldNotBeNull();
+		It should_have_a_valid_user_id = () => _user.Id.ShouldBeGreaterThan(0);
+
+
+		private static User _user;
+	}
+
 	public class When_retrieving_upload : ApiContext
 	{
 		Establish context = () =>

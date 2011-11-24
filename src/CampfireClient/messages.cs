@@ -42,6 +42,16 @@ namespace Rogue.MetroFire.CampfireClient
 	{
 	}
 
+	public class CurrentUserInformationReceivedMessage
+	{
+		public User User { get; private set; }
+
+		public CurrentUserInformationReceivedMessage(User user)
+		{
+			User = user;
+		}
+	}
+
 	public class RequestRoomPresenceMessage{}
 
 	public class RoomPresenceMessage

@@ -94,7 +94,13 @@ namespace MetroFire.Specs.Steps
 			{
 				_mainCampfireViewModel = (MainCampfireViewModel) instance;
 			}
+			if (instance is LoginViewModel)
+			{
+				LoginViewModel = (LoginViewModel) instance;
+			}
 		}
+
+		public LoginViewModel LoginViewModel { get; private set; }
 
 		private void Listen<T>()
 		{
@@ -200,7 +206,11 @@ namespace MetroFire.Specs.Steps
 	{
 		public void Install(IWindsorContainer container, IConfigurationStore store)
 		{
-			container.Register(Component.For<IMainModule>().Named(ModuleNames.Login).LifestyleTransient().UsingFactoryMethod(_ => new Mock<IMainModule>().Object));
+			container.Register(Component.For<IMainModule>().Named(ModuleNames.Login).LifestyleTransient().UsingFactoryMethod(k =>
+				{
+					var ignored = k.Resolve<ILoginViewModel>();
+					return new Mock<IMainModule>().Object;
+				}));
 			container.Register(Component.For<IMainModule>().Named(ModuleNames.SettingsModule).LifestyleTransient().UsingFactoryMethod(_ => new Mock<IMainModule>().Object));
 			container.Register(Component.For<IMainModule>().Named(ModuleNames.MainCampfireView).LifestyleTransient().UsingFactoryMethod(k =>
 				{

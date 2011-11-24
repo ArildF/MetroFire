@@ -170,6 +170,12 @@ namespace Rogue.MetroFire.CampfireClient
 			return Get<Message[]>(uri, "messages");
 		}
 
+		public User GetMe()
+		{
+			var uri = String.Format("users/me.xml");
+			return Get<User>(uri);
+		}
+
 		private T Post<T>(string relativeUri, object data = null, HttpStatusCode expectedCode = HttpStatusCode.OK,
 			string returnedRoot = null)
 			where T: class

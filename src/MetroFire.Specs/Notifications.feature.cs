@@ -95,6 +95,25 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Don\'t notify on message from self")]
+        public virtual void DonTNotifyOnMessageFromSelf()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Don\'t notify on message from self", ((string[])(null)));
+#line 16
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 17
+ testRunner.Given("that my settings are set to flash taskbar on any message");
+#line 18
+ testRunner.When("I send the message \"Hello world\" to room \"Test\"");
+#line 19
+ testRunner.Then("the taskbar should not flash");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

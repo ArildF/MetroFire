@@ -29,8 +29,10 @@ namespace MetroFire.Specs.Steps
 		[Given(@"that I am logged in")]
 		public void GivenThatIAmLoggedIn()
 		{
-			_roomContext.SendMessage(new ActivateMainModuleMessage(ModuleNames.MainCampfireView));
+			_roomContext.LoginViewModel.LoginCommand.Execute(null);
 		}
+
+
 
 		[Given(@"that room ""(.*)"" is the active module")]
 		public void GivenThatRoomTestIsTheActiveModule(string roomName)
@@ -51,6 +53,13 @@ namespace MetroFire.Specs.Steps
 			GlobalCommands.LeaveRoomCommand.Execute(vm.Id);
 		}
 
+		[When(@"I send the message ""(.*)"" to room ""(.*)""")]
+		public void WhenISendTheMessageHelloWorldToRoomTest(string message, string roomName)
+		{
+			var vm = _roomContext.ViewModelFor(roomName);
+			vm.UserMessage = message;
+			vm.PostMessageCommand.Execute(null);
+		}
 
 		[When(@"the message ""(.*)"" is received for room ""(.*)""")]
 		public void GivenThatTheMessageHelloWorldIsReceivedForRoomTest(string message, string roomName)

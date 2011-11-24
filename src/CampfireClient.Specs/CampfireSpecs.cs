@@ -36,7 +36,13 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 									_account = new Account();
 									_api.WhenToldTo(a => a.GetAccountInfo()).Return(_account);
 
+									_user = new User();
+									_api.WhenToldTo(a => a.GetMe()).Return(_user);
+
+
 									_bus.Listen<LoginSuccessfulMessage>().Subscribe(msg => _loginSuccessfulMessageSent = true);
+
+									_bus.Listen<CurrentUserInformationReceivedMessage>().Subscribe(msg => CurrentUserInformationReceivedMessage = msg);
 								};
 
 		Because of = () => _bus.SendMessage(new RequestLoginMessage(_loginInfo));
@@ -48,10 +54,13 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 
 		It should_expose_account = () => _campfire.Account.ShouldBeTheSameAs(_account);
 
+		It should_send_current_user_information = () => CurrentUserInformationReceivedMessage.User.ShouldBeTheSameAs(_user);
 
 		private static readonly LoginInfo _loginInfo = new LoginInfo("", "");
 		private static Account _account;
 		private static bool _loginSuccessfulMessageSent;
+		private static User _user;
+		private static CurrentUserInformationReceivedMessage CurrentUserInformationReceivedMessage;
 	}
 
 	public class When_sending_a_request_room_message_and_rooms_are_returned : CampfireContextBase

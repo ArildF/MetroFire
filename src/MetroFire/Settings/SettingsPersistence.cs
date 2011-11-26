@@ -9,7 +9,7 @@ namespace Rogue.MetroFire.UI.Settings
 	{
 		private readonly IMessageBus _bus;
 
-		private object _fileLock = new object();
+		private readonly object _fileLock = new object();
 
 
 

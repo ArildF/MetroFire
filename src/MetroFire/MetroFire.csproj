@@ -33,6 +33,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SGenUseProxyTypes>false</SGenUseProxyTypes>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -52,6 +53,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>

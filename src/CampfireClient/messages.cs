@@ -305,7 +305,7 @@ namespace Rogue.MetroFire.CampfireClient
 
 	public class CorrelatedMessage
 	{
-		public Guid CorrelationId { get; private set; }
+		public Guid CorrelationId { get; set; }
 
 		public CorrelatedMessage()
 		{

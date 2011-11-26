@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class RoomModuleViewModel : ReactiveObject, IRoomModuleViewModel
+	public class RoomModuleViewModel : ViewModelBase, IRoomModuleViewModel
 	{
 		private IRoom _room;
 		private readonly IMessageBus _bus;
@@ -49,40 +49,45 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			PostMessageCommand = new ReactiveCommand(this.ObservableForProperty(vm => vm.UserEditedMessage)
 				.Select(c => c.Value).StartWith(false));
-			PostMessageCommand.Subscribe(HandlePostMessage);
+			Subscribe(() => PostMessageCommand.Subscribe(HandlePostMessage));
 
 			_messages = new List<RoomMessage>();
 
 
-			_bus.RegisterMessageSource(
+			Subscribe(() => _bus.RegisterMessageSource(
 				_bus.Listen<ConnectionState>()
 					.Where(msg => msg.RoomId == room.Id)
 					.Do(cs => IsConnected = cs.Connected)
 					.Where(cs => cs.Connected)
 					.Delay(TimeSpan.FromSeconds(10), RxApp.TaskpoolScheduler)
 					.Where(_ => _streamingStarted && IsConnected)
-					.Select(_ => new RequestRecentMessagesMessage(_room.Id)));
+					.Select(_ => new RequestRecentMessagesMessage(_room.Id))));
 				;
-			_bus.Listen<MessagesReceivedMessage>().Where(msg => msg.RoomId == room.Id).SubscribeUI(HandleMessagesReceived);
-			_bus.Listen<RoomInfoReceivedMessage>().Where(msg => msg.Room.Id == _room.Id).SubscribeUI(HandleRoomInfoReceived);
-			_bus.Listen<UsersUpdatedMessage>().SubscribeUI(HandleUsersUpdated);
+			Subscribe(
+				() => _bus.Listen<MessagesReceivedMessage>().Where(msg => msg.RoomId == room.Id).SubscribeUI(HandleMessagesReceived));
+			Subscribe(
+				() =>
+				_bus.Listen<RoomInfoReceivedMessage>().Where(msg => msg.Room.Id == _room.Id).SubscribeUI(HandleRoomInfoReceived));
+			Subscribe(() => _bus.Listen<UsersUpdatedMessage>().SubscribeUI(HandleUsersUpdated));
 
 			_bus.SendMessage(new RequestRecentMessagesMessage(room.Id));
 			_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
 
-			_bus.RegisterMessageSource(Observable.Interval(TimeSpan.FromMinutes(5)).Select(
-				_ => new RequestKeepAliveMessage(_room.Id)));
+			Subscribe(() => _bus.RegisterMessageSource(Observable.Interval(TimeSpan.FromMinutes(5)).Select(
+				_ => new RequestKeepAliveMessage(_room.Id))));
 
 			PasteCommand = new ReactiveCommand();
 
-			PasteCommand.Select(pc => _clipboard.GetImage())
-				.Select(encoder.EncodeToTempPng)
-				.Subscribe(path => _chatDocument.AddPasteFile(_room, path));
+			Subscribe(() => PasteCommand.Select(pc => _clipboard.GetImage())
+			                	.Select(encoder.EncodeToTempPng)
+			                	.Subscribe(path => _chatDocument.AddPasteFile(_room, path)));
 
 			var leaveRoomCommand = commands.LeaveRoomCommand.OfType<int>().Where(id => id == _room.Id);
-			_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new RequestStopStreamingMessage(_room.Id)));
-			_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new RequestLeaveRoomMessage(_room.Id)));
-			_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, ModuleIds.Lobby)));
+			Subscribe(_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new RequestStopStreamingMessage(_room.Id))));
+			Subscribe(_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new RequestLeaveRoomMessage(_room.Id))));
+			Subscribe(
+				_bus.RegisterMessageSource(
+					leaveRoomCommand.Select(_ => new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, ModuleIds.Lobby))));
 		}
 
 

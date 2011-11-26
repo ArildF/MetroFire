@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using System.Windows;
-using System.Windows.Media.Imaging;
 using Castle.Facilities.Startable;
 using Castle.MicroKernel.ModelBuilder.Inspectors;
 using Castle.MicroKernel.Registration;
@@ -57,7 +55,6 @@ namespace Rogue.MetroFire.UI
 
 			_container.Register(Component.For<IChatDocument>().ImplementedBy<ChatDocument>().LifestyleTransient());
 			_container.Register(Component.For<IMessageBus>().ImplementedBy<MessageBus>());
-			_container.Register(Component.For<IRoomModuleViewModelFactory>().AsFactory());
 			_container.Register(Component.For<IInlineUploadViewFactory>().AsFactory());
 			_container.Register(Component.For<INotification>().ImplementedBy<Notification>().LifestyleTransient());
 			_container.Register(Component.For<FlashTaskBarAction>().ImplementedBy<FlashTaskBarAction>().LifestyleTransient());
@@ -70,7 +67,9 @@ namespace Rogue.MetroFire.UI
 			_container.Register(Component.For<IPasteViewFactory>().ImplementedBy<PasteViewFactory>());
 			_container.Register(Component.For<IPasteView>().ImplementedBy<PasteView>().LifestyleTransient());
 
-			_container.Register(AllTypes.FromThisAssembly().Pick().WithServiceAllInterfaces());
+			_container.Register(AllTypes.FromThisAssembly().Where(t => !t.Namespace.EndsWith("Views")).WithServiceAllInterfaces());
+			_container.Register(AllTypes.FromThisAssembly().Where(t => 
+				t.Namespace.EndsWith("Views") && !t.Name.In(ModuleNames.RoomModule)).WithServiceAllInterfaces());
 
 			_container.Register(Component.For<IWindsorContainer>().Instance(_container));
 

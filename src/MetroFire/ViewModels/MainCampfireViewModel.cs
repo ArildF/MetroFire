@@ -11,20 +11,18 @@ namespace Rogue.MetroFire.UI.ViewModels
 	{
 		private readonly ILobbyModule _lobbyModule;
 		private readonly IMessageBus _bus;
-		private readonly IRoomModuleCreator _creator;
-		private readonly IRoomModuleViewModelFactory _factory;
+		private readonly IModuleCreator _creator;
 		private IModule _activeModule;
 		private ReactiveCollection<ModuleViewModel> _currentModules;
 		private readonly IModule _logModule;
 
 		public MainCampfireViewModel(ILobbyModule lobbyModule, ILogModule logModule, IMessageBus bus, 
-			IRoomModuleCreator creator, IRoomModuleViewModelFactory factory, IGlobalCommands globalCommands)
+			IModuleCreator creator, IGlobalCommands globalCommands)
 		{
 			_lobbyModule = lobbyModule;
 			_logModule = logModule;
 			_bus = bus;
 			_creator = creator;
-			_factory = factory;
 
 			Modules = new ReactiveCollection<IModule>{_lobbyModule, _logModule};
 
@@ -62,6 +60,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			if (module != null)
 			{
 				Modules.Remove(module);
+				_creator.ReleaseModule(module);
 			}
 		}
 
@@ -133,12 +132,13 @@ namespace Rogue.MetroFire.UI.ViewModels
 				{
 					ActiveModule = _lobbyModule;
 				}
+
+				_creator.ReleaseModule(module);
 			}
 			foreach (var room in toAdd)
 			{
-				var vm = _factory.Create(room);
 
-				var newModule = _creator.CreateRoomModule(vm);
+				var newModule = _creator.CreateRoomModule(room);
 
 				int index = Modules.IndexOf(_logModule);
 				Modules.Insert(index, newModule);

@@ -51,9 +51,10 @@ namespace Rogue.MetroFire.UI
 		string Notifications { get; }
 	}
 
-	public interface IRoomModuleCreator
+	public interface IModuleCreator
 	{
-		IModule CreateRoomModule(IRoomModuleViewModel room);
+		IModule CreateRoomModule(Room room);
+		void ReleaseModule(IModule module);
 	}
 
 	public interface IModule
@@ -145,12 +146,6 @@ namespace Rogue.MetroFire.UI
 	{
 		void Process(NotificationMessage notificationMessage);
 	}
-
-	public interface IRoomModuleViewModelFactory
-	{
-		IRoomModuleViewModel Create(Room room);
-	}
-
 	public interface IInlineUploadView
 	{
 		UIElement Element { get; }

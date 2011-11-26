@@ -8,9 +8,9 @@ namespace Rogue.MetroFire.UI
 {
 	public static class Extensions
 	{
-		public static void SubscribeUI<T>(this IObservable<T> self, Action<T> onNext)
+		public static IDisposable SubscribeUI<T>(this IObservable<T> self, Action<T> onNext)
 		{
-			self.ObserveOn(RxApp.DeferredScheduler).Subscribe(onNext);
+			return self.ObserveOn(RxApp.DeferredScheduler).Subscribe(onNext);
 		}
 
 		public static void SubscribeOnceUI<T>(this IObservable<T> self, Action<T> onNext)

@@ -161,6 +161,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 				_sinceMessageId = message.Id;
 			}
 
+			if (newMessages.Any())
+			{
+				_bus.SendMessage(new NewMessagesReceivedMessage(newMessages, RoomId));
+			}
+
 			if (newMessages.Any(msg => msg.Type.In(MessageType.EnterMessage, MessageType.KickMessage, MessageType.LeaveMessage)))
 			{
 				_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));

@@ -61,6 +61,7 @@ namespace MetroFire.Specs.Steps
 			vm.PostMessageCommand.Execute(null);
 		}
 
+		[Given(@"the message ""(.*)"" is received for room ""(.*)""")]
 		[When(@"the message ""(.*)"" is received for room ""(.*)""")]
 		public void GivenThatTheMessageHelloWorldIsReceivedForRoomTest(string message, string roomName)
 		{

@@ -6,12 +6,11 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Moq;
-using Ploeh.AutoFixture;
-using Ploeh.AutoFixture.AutoMoq;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
+using Rogue.MetroFire.UI.Notifications;
 using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 using System;
@@ -65,6 +64,8 @@ namespace MetroFire.Specs.Steps
 			Listen<RequestRecentMessagesMessage>();
 
 			_bus.SendMessage(new ApplicationLoadedMessage());
+
+			var dummy = _container.Resolve<IToastWindow>();
 		}
 
 		private INotificationAction CreateNotificationAction(NotificationAction arg)
@@ -73,6 +74,7 @@ namespace MetroFire.Specs.Steps
 			{
 					case ActionType.FlashTaskbar:
 					return (_mockFlashTaskBarAction = new Mock<INotificationAction>()).Object;
+					case ActionType.ShowToast: return new ShowToastAction((ShowToastNotificationAction)arg, _bus);
 			}
 
 			throw new InvalidOperationException();
@@ -98,7 +100,13 @@ namespace MetroFire.Specs.Steps
 			{
 				LoginViewModel = (LoginViewModel) instance;
 			}
+			if (instance is ToastWindowViewModel)
+			{
+				ToastWindowViewModel = (ToastWindowViewModel) instance;
+			}
 		}
+
+		public ToastWindowViewModel ToastWindowViewModel { get; set; }
 
 		public LoginViewModel LoginViewModel { get; private set; }
 
@@ -186,6 +194,11 @@ namespace MetroFire.Specs.Steps
 			SendMessage(new SettingsChangedMessage());
 		}
 
+		public MetroFireSettings MetroFireSettings
+		{
+			get { return _loader.Settings; }
+		}
+
 		public class MockSettingsLoader : ISettingsLoader
 		{
 			public MetroFireSettings Settings = new MetroFireSettings
@@ -199,6 +212,11 @@ namespace MetroFire.Specs.Steps
 			{
 				return Settings;
 			}
+		}
+
+		public void PulseSettingsChanged()
+		{
+			SendMessage(new SettingsChangedMessage());
 		}
 	}
 

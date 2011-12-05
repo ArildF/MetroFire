@@ -15,7 +15,8 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			throw new NotImplementedException();
+			var v = (Visibility) value;
+			return v == Visibility.Visible;
 		}
 	}
 }

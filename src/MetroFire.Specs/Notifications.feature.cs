@@ -114,6 +114,50 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Notify with toast")]
+        [NUnit.Framework.CategoryAttribute("backgroundtestscheduler")]
+        public virtual void NotifyWithToast()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Notify with toast", new string[] {
+                        "backgroundtestscheduler"});
+#line 22
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 23
+ testRunner.Given("that my settings are set to show a toast on any message");
+#line 24
+ testRunner.When("the message \"Hello world\" is received for room \"Test\"");
+#line 25
+ testRunner.Then("a toast should appear containing the words \"Hello world\"");
+#line 26
+ testRunner.Then("after 8 seconds there should be 0 toasts");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Close toast manually")]
+        public virtual void CloseToastManually()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close toast manually", ((string[])(null)));
+#line 28
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 29
+ testRunner.Given("that my settings are set to show a toast on any message");
+#line 30
+ testRunner.And("the message \"Hello world\" is received for room \"Test\"");
+#line 31
+ testRunner.When("I close the toast by clicking on the X");
+#line 32
+ testRunner.Then("there should be 0 toasts");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

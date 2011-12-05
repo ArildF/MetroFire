@@ -25,7 +25,7 @@ namespace Rogue.MetroFire.UI.Notifications
 
 		public void Start()
 		{
-			_bus.Listen<MessagesReceivedMessage>().Subscribe(MessagesReceived);
+			_bus.Listen<NewMessagesReceivedMessage>().Subscribe(MessagesReceived);
 			_bus.Listen<RoomInfoReceivedMessage>().Subscribe(RoomInfoReceived);
 			_bus.Listen<RoomBackLogLoadedMessage>().Subscribe(msg => _loadedRooms.Add(msg.RoomId));
 			_bus.Listen<CurrentUserInformationReceivedMessage>().Subscribe(msg => _currentUserId = msg.User.Id);
@@ -36,7 +36,7 @@ namespace Rogue.MetroFire.UI.Notifications
 			_rooms[roomInfoReceivedMessage.Room.Id] = roomInfoReceivedMessage.Room;
 		}
 
-		private void MessagesReceived(MessagesReceivedMessage messagesReceivedMessage)
+		private void MessagesReceived(NewMessagesReceivedMessage messagesReceivedMessage)
 		{
 			Room room;
 			if (!_rooms.TryGetValue(messagesReceivedMessage.RoomId, out room) || !_loadedRooms.Contains(messagesReceivedMessage.RoomId))

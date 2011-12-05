@@ -27,6 +27,15 @@ namespace Rogue.MetroFire.UI
 	{
 	}
 
+	public interface IToastWindow
+	{
+		Window Window { get; }
+	}
+
+	public interface IToastWindowViewModel
+	{
+	}
+
 	public interface IGlobalCommands
 	{
 		ReactiveCommand NextModuleCommand { get; }
@@ -127,6 +136,7 @@ namespace Rogue.MetroFire.UI
 		object AddMessage(Message message, User user, object textObject);
 		void UpdateMessage(object textObject, Message message, User user);
 		void AddPasteFile(IRoom room, string path);
+		Double FontSize { get; set; }
 
 	}
 

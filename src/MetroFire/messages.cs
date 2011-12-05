@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.Settings;
 
 namespace Rogue.MetroFire.UI
 {
@@ -54,6 +55,18 @@ namespace Rogue.MetroFire.UI
 		}
 	}
 
+	public class NewMessagesReceivedMessage
+	{
+		public IEnumerable<Message> Messages { get; private set; }
+
+		public int RoomId { get; private set; }
+
+		public NewMessagesReceivedMessage(IEnumerable<Message> messages, int roomId)
+		{
+			Messages = messages;
+			RoomId = roomId;
+		}
+	}
 
 	public class ModuleLoaded
 	{
@@ -170,6 +183,18 @@ namespace Rogue.MetroFire.UI
 		{
 			Room = room;
 			Image = image;
+		}
+	}
+
+	public class ShowToastMessage
+	{
+		public NotificationMessage Message { get; private set; }
+		public ShowToastNotificationAction Action { get; private set; }
+
+		public ShowToastMessage(NotificationMessage message, ShowToastNotificationAction action)
+		{
+			Message = message;
+			Action = action;
 		}
 	}
 

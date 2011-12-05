@@ -36,6 +36,12 @@ namespace MetroFire.Specs.Steps
 			throw new System.NotImplementedException();
 		}
 
+		public double FontSize
+		{
+			set ;
+			get ;
+		}
+
 		public IEnumerable<Message> Messages
 		{
 			get { return _messages.Select(m => m.Message); }

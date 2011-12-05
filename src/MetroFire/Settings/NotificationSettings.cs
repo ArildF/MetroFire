@@ -43,7 +43,10 @@ namespace Rogue.MetroFire.UI.Settings
 		public ShowToastNotificationAction()
 		{
 			ActionType = ActionType.ShowToast;
+			SecondsVisible = 5;
 		}
+
+		public int SecondsVisible { get; set; }
 	}
 
 	public class PlaySoundNotificationAction : NotificationAction

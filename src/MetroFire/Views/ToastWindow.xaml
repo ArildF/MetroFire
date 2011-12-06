@@ -16,7 +16,7 @@
 			<Button Command="{Binding ActivateCommand}" Cursor="Hand">
 				<Button.Template>
 					<ControlTemplate>
-						<Grid x:Name="grid" Margin="5" Background="White" Width="310" Height="Auto" 
+						<Grid x:Name="grid" Margin="5" Background="White" Width="400" Height="Auto" 
 							  DockPanel.Dock="Bottom" MinHeight="40">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>

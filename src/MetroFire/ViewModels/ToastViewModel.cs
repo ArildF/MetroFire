@@ -17,7 +17,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public ToastViewModel(ShowToastMessage showToastMessage, IChatDocument document, IMessageBus bus)
 		{
 			_document = document;
-			_document.FontSize = 12;
+			_document.FontSize = 14;
 			IsVisible = true;
 			RoomName = showToastMessage.Message.Room.Name;
 			_document.AddMessage(showToastMessage.Message.Message, showToastMessage.Message.User, null);

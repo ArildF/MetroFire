@@ -158,6 +158,33 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Click on toast to activate room")]
+        public virtual void ClickOnToastToActivateRoom()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Click on toast to activate room", ((string[])(null)));
+#line 34
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 35
+ testRunner.Given("a room called \"Foo\"");
+#line 36
+ testRunner.And("that I have joined the room \"Foo\"");
+#line 37
+ testRunner.And("that my settings are set to show a toast on any message");
+#line 38
+ testRunner.And("the message \"Blah\" is received for room \"Test\"");
+#line 39
+ testRunner.When("I click on the toast");
+#line 40
+ testRunner.Then("room \"Test\" should be active");
+#line 41
+ testRunner.And("there should be 0 toasts");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

@@ -74,6 +74,13 @@ namespace MetroFire.Specs.Steps
 			_context.ToastWindowViewModel.Toasts.First().CloseCommand.Execute(null);
 		}
 
+		[When(@"I click on the toast")]
+		public void WhenIClickOnTheToast()
+		{
+			_context.ToastWindowViewModel.Toasts.First().ActivateCommand.Execute(null);
+		}
+
+
 
 
 		[Then(@"the taskbar should flash")]
@@ -113,5 +120,12 @@ namespace MetroFire.Specs.Steps
 		{
 			_context.FlashTaskBarActionMock.Verify(a => a.Execute(It.IsAny<NotificationMessage>()), Times.Never());
 		}
+
+		[Then(@"room ""(.*)"" should be active")]
+		public void ThenRoomTestShouldBeActive(string room)
+		{
+			_context.MainViewModel.ActiveModule.Caption.Should().Be(room);
+		}
+
 	}
 }

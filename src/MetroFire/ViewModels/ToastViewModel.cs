@@ -14,7 +14,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 
 
-		public ToastViewModel(ShowToastMessage showToastMessage, IChatDocument document)
+		public ToastViewModel(ShowToastMessage showToastMessage, IChatDocument document, IMessageBus bus)
 		{
 			_document = document;
 			_document.FontSize = 12;
@@ -23,11 +23,17 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_document.AddMessage(showToastMessage.Message.Message, showToastMessage.Message.User, null);
 
 			CloseCommand = new ReactiveCommand();
+			ActivateCommand = new ReactiveCommand();
 
 			Closed = Observable.Timer(TimeSpan.FromSeconds(showToastMessage.Action.SecondsVisible), RxApp.TaskpoolScheduler)
 				 .Do(_ => IsClosing = true).Delay(TimeSpan.FromSeconds(2), RxApp.TaskpoolScheduler)
 				 .Select(_ => Unit.Default)
-				 .Merge(CloseCommand.Select(_ => Unit.Default));
+				 .Merge(CloseCommand.Select(_ => Unit.Default))
+				 .Merge(ActivateCommand.Select(_ => Unit.Default));
+
+			bus.RegisterMessageSource(
+				ActivateCommand.Select(
+					_ => new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, showToastMessage.Message.Room.Id)));
 		}
 
 		public ReactiveCommand CloseCommand { get; private set; }
@@ -57,5 +63,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _isVisible; }
 			set { this.RaiseAndSetIfChanged(vm => vm.IsVisible, ref _isVisible, value); }
 		}
+
+		public ReactiveCommand ActivateCommand { get; private set; }
+
 	}
 }

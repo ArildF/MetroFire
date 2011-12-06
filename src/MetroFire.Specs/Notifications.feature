@@ -30,3 +30,12 @@ Scenario: Close toast manually
 	And the message "Hello world" is received for room "Test"
 	When I close the toast by clicking on the X
 	Then there should be 0 toasts
+
+Scenario: Click on toast to activate room
+	Given a room called "Foo"
+	And that I have joined the room "Foo"
+	And that my settings are set to show a toast on any message
+	And the message "Blah" is received for room "Test"
+	When I click on the toast
+	Then room "Test" should be active
+	And there should be 0 toasts

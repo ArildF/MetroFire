@@ -13,32 +13,43 @@
 					
 				</Storyboard>
 			</DataTemplate.Resources>
-			<Grid x:Name="grid" Margin="5" Background="White" Width="310" Height="Auto" 
-				  DockPanel.Dock="Bottom" MinHeight="40">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-				</Grid.RowDefinitions>
-				<Grid.Effect>
-					<DropShadowEffect/>
-				</Grid.Effect>
-				<FlowDocumentScrollViewer d:LayoutOverrides="Height" Document="{Binding Document}" IsSelectionEnabled="False"
-										  ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.RowSpan="2" Grid.Row="2">
-				</FlowDocumentScrollViewer>
-				<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding RoomName}" d:LayoutOverrides="Height" Style="{DynamicResource MetroBlueCaption}" FontSize="16"/>
-				<Button x:Name="button" Content="Button" HorizontalAlignment="Right" Width="Auto" 
-						Command="{Binding CloseCommand}"
-						d:LayoutOverrides="Height" Template="{DynamicResource CloseButtonTemplate}" Margin="0,-5,4,0" Visibility="Hidden"/>
-			</Grid>
+			<Button Command="{Binding ActivateCommand}" Cursor="Hand">
+				<Button.Template>
+					<ControlTemplate>
+						<Grid x:Name="grid" Margin="5" Background="White" Width="310" Height="Auto" 
+							  DockPanel.Dock="Bottom" MinHeight="40">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+							<Grid.Effect>
+								<DropShadowEffect/>
+							</Grid.Effect>
+							<FlowDocumentScrollViewer d:LayoutOverrides="Height" Document="{Binding Document}" IsSelectionEnabled="False"
+													  ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.RowSpan="2" Grid.Row="2">
+							</FlowDocumentScrollViewer>
+							<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding RoomName}" d:LayoutOverrides="Height" Style="{DynamicResource MetroBlueCaption}" FontSize="16"/>
+							<Button x:Name="button" Content="Button" HorizontalAlignment="Right" Width="Auto" 
+									Command="{Binding CloseCommand}"
+									Cursor="Arrow"
+									d:LayoutOverrides="Height" Template="{DynamicResource CloseButtonTemplate}" Margin="0,-5,4,0" Visibility="Hidden"/>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter Property="Visibility" TargetName="button" Value="Visible"/>
+							</Trigger>
+							<DataTrigger Binding="{Binding IsClosing}" Value="True">
+								<DataTrigger.EnterActions>
+									<BeginStoryboard Storyboard="{StaticResource _fadeOut}"/>
+								</DataTrigger.EnterActions>
+							</DataTrigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Button.Template>
+			</Button>
 			<DataTemplate.Triggers>
-				<DataTrigger Binding="{Binding IsClosing}" Value="True">
-					<DataTrigger.EnterActions>
-						<BeginStoryboard Storyboard="{StaticResource _fadeOut}"/>
-					</DataTrigger.EnterActions>
-				</DataTrigger>
-				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="Visibility" TargetName="button" Value="Visible"/>
-				</Trigger>
+				
+				
 			</DataTemplate.Triggers>
 		</DataTemplate>
 		<ItemsPanelTemplate x:Key="_itemsPanelTemplate">

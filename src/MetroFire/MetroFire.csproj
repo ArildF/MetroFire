@@ -199,6 +199,7 @@
     <Compile Include="Settings\NotificationSettings.cs" />
     <Compile Include="Settings\SettingsPersistence.cs" />
     <Compile Include="Settings\TriggerType.cs" />
+    <Compile Include="ViewModels\Direction.cs" />
     <Compile Include="ViewModels\InlineUploadViewModel.cs" />
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

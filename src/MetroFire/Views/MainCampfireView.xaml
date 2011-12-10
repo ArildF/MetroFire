@@ -14,7 +14,8 @@
 			<Button Content="{Binding Caption}" Style="{DynamicResource _tabWellButton}" 
 					Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=DataContext.ActivateModuleCommand}"
 					CommandParameter="{Binding}" Margin="0,0,16,0"/>
-		</DataTemplate>		
+		</DataTemplate>
+		
 	</UserControl.Resources>
 	<Grid d:DataContext="{Binding Source={StaticResource SampleMainViewModel}}">
 		<Grid.RowDefinitions>
@@ -22,8 +23,17 @@
 			<RowDefinition Height="0.912*"/>
 		</Grid.RowDefinitions>
 		<ItemsControl Margin="0" ItemsPanel="{DynamicResource _tabWellItemsPanelTemplate}" 
+					  x:Name="_tabWell"
 					  ItemTemplate="{DynamicResource _tabWellButtonTemplate}" ItemsSource="{Binding CurrentModules}"/>
-		<ContentControl x:Name="_moduleContainer" Content="" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-						HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+		<Grid x:Name="_animationGrid" Margin="0" Grid.Row="1" RenderTransformOrigin="0.5,0.5">
+			
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0*"/>
+				<ColumnDefinition/>
+				<ColumnDefinition Width="0*"/>
+			</Grid.ColumnDefinitions>
+			<ContentControl x:Name="_moduleContainer" Content="" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+				HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0" Grid.Column="1" RenderTransformOrigin="0.5,0.5"/>
+		</Grid>
 	</Grid>
 </UserControl>

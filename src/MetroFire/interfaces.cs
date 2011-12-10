@@ -45,6 +45,7 @@ namespace Rogue.MetroFire.UI
 
 	public interface IMainCampfireViewModel
 	{
+		Direction ModuleDirectionRelativeTo(IModule current, IModule module);
 	}
 
 	public interface ILobbyModuleViewModel

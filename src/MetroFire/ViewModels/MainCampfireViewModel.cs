@@ -54,6 +54,14 @@ namespace Rogue.MetroFire.UI.ViewModels
 			globalCommands.PreviousModuleCommand.Subscribe(OnPreviousModuleCommand);
 		}
 
+		public Direction ModuleDirectionRelativeTo(IModule current, IModule module)
+		{
+			int indexCurrent = Modules.IndexOf(current);
+			int indexModule = Modules.IndexOf(module);
+
+			return indexCurrent >= indexModule ? Direction.Left : Direction.Right;
+		}
+
 		private void OnRequestLeaveRoomMessage(RequestLeaveRoomMessage requestLeaveRoomMessage)
 		{
 			var module = FindModuleById(requestLeaveRoomMessage.Id);
@@ -154,6 +162,4 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private ReactiveCollection<IModule> Modules { get;  set; }
 	}
-
-	
 }

@@ -23,6 +23,9 @@ namespace Rogue.MetroFire.UI
 
 			shellView.Window.Show();
 
+			MainWindow = shellView.Window;
+			ShutdownMode = ShutdownMode.OnMainWindowClose;
+
 			var toastWindow = bootstrapper.Resolve<IToastWindow>();
 			toastWindow.Window.Show();
 

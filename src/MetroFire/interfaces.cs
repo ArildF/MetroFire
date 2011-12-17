@@ -207,6 +207,11 @@ namespace Rogue.MetroFire.UI
 		void Flash();
 	}
 
+	public interface IApplicationActivator
+	{
+		void Activate();
+	}
+
 
 	public interface IClipboard
 	{

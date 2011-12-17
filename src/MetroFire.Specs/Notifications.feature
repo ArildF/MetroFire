@@ -38,4 +38,5 @@ Scenario: Click on toast to activate room
 	And the message "Blah" is received for room "Test"
 	When I click on the toast
 	Then room "Test" should be active
+	And the application should be active
 	And there should be 0 toasts

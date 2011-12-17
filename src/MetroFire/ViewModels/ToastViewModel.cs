@@ -9,14 +9,16 @@ namespace Rogue.MetroFire.UI.ViewModels
 	public class ToastViewModel : ReactiveObject
 	{
 		private readonly IChatDocument _document;
+		private readonly IApplicationActivator _activator;
 		private bool _isClosing;
 		private bool _isVisible;
 
 
 
-		public ToastViewModel(ShowToastMessage showToastMessage, IChatDocument document, IMessageBus bus)
+		public ToastViewModel(ShowToastMessage showToastMessage, IChatDocument document, IMessageBus bus, IApplicationActivator activator)
 		{
 			_document = document;
+			_activator = activator;
 			_document.FontSize = 14;
 			IsVisible = true;
 			RoomName = showToastMessage.Message.Room.Name;
@@ -33,7 +35,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			bus.RegisterMessageSource(
 				ActivateCommand.Select(
-					_ => new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, showToastMessage.Message.Room.Id)));
+					_ => new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, showToastMessage.Message.Room.Id))
+					.Do(_ => activator.Activate()));
 		}
 
 		public ReactiveCommand CloseCommand { get; private set; }

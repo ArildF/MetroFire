@@ -89,6 +89,12 @@ namespace MetroFire.Specs.Steps
 			_context.FlashTaskBarActionMock.Verify(a => a.Execute(It.IsAny<NotificationMessage>()));
 		}
 
+		[Then(@"the application should be active")]
+		public void ThenTheApplicationShouldBeActive()
+		{
+			_context.ApplicationActivatorMock.Verify(a => a.Activate());
+		}
+
 		[Then(@"a toast should appear containing the words ""(.*)""")]
 		public void ThenAToastShouldAppearContainingTheWordsHelloWorld(string text)
 		{

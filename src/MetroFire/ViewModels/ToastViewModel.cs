@@ -6,10 +6,9 @@ using ReactiveUI.Xaml;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class ToastViewModel : ReactiveObject
+	public class ToastViewModel : ViewModelBase
 	{
 		private readonly IChatDocument _document;
-		private readonly IApplicationActivator _activator;
 		private bool _isClosing;
 		private bool _isVisible;
 
@@ -18,7 +17,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public ToastViewModel(ShowToastMessage showToastMessage, IChatDocument document, IMessageBus bus, IApplicationActivator activator)
 		{
 			_document = document;
-			_activator = activator;
 			_document.FontSize = 14;
 			IsVisible = true;
 			RoomName = showToastMessage.Message.Room.Name;
@@ -33,10 +31,10 @@ namespace Rogue.MetroFire.UI.ViewModels
 				 .Merge(CloseCommand.Select(_ => Unit.Default))
 				 .Merge(ActivateCommand.Select(_ => Unit.Default));
 
-			bus.RegisterMessageSource(
+			Subscribe(() =>bus.RegisterMessageSource(
 				ActivateCommand.Select(
 					_ => new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, showToastMessage.Message.Room.Id))
-					.Do(_ => activator.Activate()));
+					.Do(_ => activator.Activate())));
 		}
 
 		public ReactiveCommand CloseCommand { get; private set; }

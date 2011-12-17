@@ -3,7 +3,7 @@ using ReactiveUI;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class ToastWindowViewModel : IToastWindowViewModel
+	public class ToastWindowViewModel : ViewModelBase, IToastWindowViewModel
 	{
 		private readonly Func<IChatDocument> _chatDocumentCreator;
 		private readonly IMessageBus _bus;
@@ -17,8 +17,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			Toasts = new ReactiveCollection<ToastViewModel>();
 
-			bus.Listen<ShowToastMessage>().SubscribeUI(OnShowToast);
-
+			Subscribe(() => bus.Listen<ShowToastMessage>().SubscribeUI(OnShowToast));
 		}
 
 		private void OnShowToast(ShowToastMessage showToastMessage)
@@ -27,7 +26,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			var toast = new ToastViewModel(showToastMessage, _chatDocumentCreator(), _bus, _activator);
 			Toasts.Add(toast);
 
-			toast.Closed.SubscribeOnceUI(_ => Toasts.Remove(toast));
+			toast.Closed.SubscribeOnceUI(_ =>
+				{
+					Toasts.Remove(toast);
+					toast.Dispose();
+				});
 		}
 
 		public ReactiveCollection<ToastViewModel> Toasts { get; private set; }

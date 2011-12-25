@@ -19,7 +19,11 @@
 		
 		
 		<DataTemplate x:Key="_lobbyButtonTemplate">
-			<Views:LobbyButton/>
+			<Views:LobbyButton>
+				<Views:LobbyButton.Effect>
+					<DropShadowEffect BlurRadius="19" ShadowDepth="17"/>
+				</Views:LobbyButton.Effect>
+			</Views:LobbyButton>
 		</DataTemplate>
 		
 		<SolidColorBrush x:Key="ListBorder" Color="#828790"/>

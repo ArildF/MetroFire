@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Views="clr-namespace:Rogue.MetroFire.UI.Views" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="478.463" Width="Auto"
+             xmlns:Views="clr-namespace:Rogue.MetroFire.UI.Views" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="478.463" Width="Auto" Background="#FFFEFFFF"
 			 >
 	<UserControl.Resources>
 		<Style x:Key="MetroWhiteCaption" TargetType="{x:Type TextBlock}">
@@ -19,7 +19,11 @@
 		
 		
 		<DataTemplate x:Key="_lobbyButtonTemplate">
-			<Views:LobbyButton/>
+			<Views:LobbyButton>
+				<Views:LobbyButton.Effect>
+					<DropShadowEffect BlurRadius="19" ShadowDepth="17"/>
+				</Views:LobbyButton.Effect>
+			</Views:LobbyButton>
 		</DataTemplate>
 		
 		<SolidColorBrush x:Key="ListBorder" Color="#828790"/>

@@ -129,5 +129,9 @@ namespace Rogue.MetroFire.UI.Views
 			base.OnLostFocus(e);
 		}
 
+	    private void CloseOnExecuted(object sender, ExecutedRoutedEventArgs e)
+	    {
+            Close();
+	    }
 	}
 }

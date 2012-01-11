@@ -96,6 +96,9 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 		[XmlElement("name")]
 		public string Name { get; set; }
 
+		[XmlElement("email-address")]
+		public string EmailAddress { get; set; }
+
 		[XmlElement("created-at")]
 		public DateTime CreatedAt { get; set; }
 

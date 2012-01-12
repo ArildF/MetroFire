@@ -51,12 +51,13 @@ namespace MetroFire.Specs.Steps
 
 			_container.Register(Component.For<Func<NotificationAction, INotificationAction>>().Instance(CreateNotificationAction));
 
+			_container.Register(
+				Component.For<IApplicationActivator>().Instance(
+					(ApplicationActivatorMock = new Mock<IApplicationActivator>()).Object));
 			bootstrapper.Bootstrap();
 
 
 			_container.Install(FromAssembly.This());
-
-
 
 			_bus = _container.Resolve<IMessageBus>();
 
@@ -198,6 +199,8 @@ namespace MetroFire.Specs.Steps
 		{
 			get { return _loader.Settings; }
 		}
+
+		public Mock<IApplicationActivator> ApplicationActivatorMock { get; private set; }
 
 		public class MockSettingsLoader : ISettingsLoader
 		{

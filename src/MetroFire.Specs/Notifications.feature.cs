@@ -181,6 +181,8 @@ this.FeatureBackground();
 #line 40
  testRunner.Then("room \"Test\" should be active");
 #line 41
+ testRunner.And("the application should be active");
+#line 42
  testRunner.And("there should be 0 toasts");
 #line hidden
             this.ScenarioCleanup();

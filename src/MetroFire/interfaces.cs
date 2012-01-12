@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reactive;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
@@ -207,6 +208,11 @@ namespace Rogue.MetroFire.UI
 		void Flash();
 	}
 
+	public interface IApplicationActivator
+	{
+		void Activate();
+	}
+
 
 	public interface IClipboard
 	{
@@ -216,6 +222,6 @@ namespace Rogue.MetroFire.UI
 
 	public interface IImageEncoder
 	{
-		string EncodeToTempPng(BitmapSource bitmapSource);
+		string EncodeToTempPng(BitmapSource imageSource);
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.UI.ViewModels
@@ -14,6 +15,21 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public string Name
 		{
 			get { return _user.Name; }
+		}
+
+		public string AvatarUrl
+		{
+			get { return _user.AvatarUrl; }
+		}
+
+		public string EmailAddress
+		{
+			get { return _user.EmailAddress; }
+		}
+
+		public DateTime CreatedDate
+		{
+			get { return _user.CreatedAt; }
 		}
 
 		public User User

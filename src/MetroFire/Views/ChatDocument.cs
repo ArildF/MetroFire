@@ -134,10 +134,18 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void FormatUserMessage(Message message, User user, Paragraph paragraph)
 		{
-			RenderUserString(user, paragraph);
+			if (message.Body.StartsWith("/me", StringComparison.InvariantCultureIgnoreCase))
+			{
+				paragraph.Inlines.Add(RenderUserMessage(user.Name + message.Body.Substring("/me".Length)));
 
-			var inline = RenderUserMessage(message.Body);
-			paragraph.Inlines.Add(inline);
+				paragraph.FontStyle = FontStyles.Italic;
+			}
+			else
+			{
+				RenderUserString(user, paragraph);
+				var inline = RenderUserMessage(message.Body);
+				paragraph.Inlines.Add(inline);
+			}
 
 			paragraph.BorderThickness = new Thickness(0, 0, 0, 0.2);
 			paragraph.BorderBrush = Brushes.LightGray;

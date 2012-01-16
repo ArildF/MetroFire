@@ -350,4 +350,23 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static List<ProgressState> _states = new List<ProgressState>();
 	}
 
+	public class When_checking_connectivity_with_bad_proxy : ApiContext
+	{
+		Establish context = () =>
+			{
+				WebRequest.DefaultWebProxy = new WebProxy("10.9.8.6");
+			};
+
+
+		Because of = () => _state = api.CheckConnectivity();
+
+		It should_have_sensible_result = () => _state.ShouldNotBeNull();
+
+		It should_be_positive_for_no_proxy = () =>  _state.WithoutProxy.ShouldBeTrue();
+		It should_be_negative_for_proxy = () => _state.WithProxy.ShouldBeFalse();
+
+		private static ConnectivityState _state;
+	}
+
 }
+

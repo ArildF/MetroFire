@@ -306,6 +306,21 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static RequestUploadFileMessage _requestUploadFileMessage;
 	}
 
-	
+	public class when_requesting_connectivity_check : CampfireContextBase
+	{
+		Establish context = () =>
+			{
+				_connectivityState = new ConnectivityState(true, false);
+				_api.WhenToldTo(a => a.CheckConnectivity()).Return(_connectivityState);
 
+				_bus.Listen<ConnectivityState>().Subscribe(s => _receivedState = s);
+			};
+
+		private Because of = () => _bus.SendMessage(new RequestConnectivityCheckMessage());
+
+		It should_have_sent_connectivity_state = () => _receivedState.ShouldEqual(_connectivityState);
+
+		private static ConnectivityState _connectivityState;
+		private static ConnectivityState _receivedState;
+	}
 }

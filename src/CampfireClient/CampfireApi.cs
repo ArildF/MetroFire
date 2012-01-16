@@ -176,6 +176,39 @@ namespace Rogue.MetroFire.CampfireClient
 			return Get<User>(uri);
 		}
 
+		public ConnectivityState CheckConnectivity()
+		{
+			Func<bool, bool> check = useProxy =>
+				{
+					var rq = WebRequest.Create("http://campfirenow.com");
+					rq.Method = "HEAD";
+					rq.Timeout = (int)TimeSpan.FromSeconds(2).TotalMilliseconds;
+
+					if (!useProxy)
+					{
+						rq.Proxy = null;
+					}
+
+					try
+					{
+						using(rq.GetResponse())
+						{
+							return true;
+						}
+					}
+					catch (Exception)
+					{
+						return false;
+					}
+
+				};
+
+
+			var withProxy = check(true);
+			var withoutProxy = check(false);
+			return new ConnectivityState(withProxy, withoutProxy);
+		}
+
 		private T Post<T>(string relativeUri, object data = null, HttpStatusCode expectedCode = HttpStatusCode.OK,
 			string returnedRoot = null)
 			where T: class

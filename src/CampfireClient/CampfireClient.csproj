@@ -91,6 +91,7 @@
     <Compile Include="CampfireApi.cs" />
     <Compile Include="CampfireApiLoggingInterceptor.cs" />
     <Compile Include="ConnectionState.cs" />
+    <Compile Include="ConnectivityState.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Infrastructure\MultipartFormDataBuilder.cs" />
     <Compile Include="LoginInfo.cs" />

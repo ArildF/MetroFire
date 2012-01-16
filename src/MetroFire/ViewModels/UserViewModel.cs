@@ -27,6 +27,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _user.EmailAddress; }
 		}
 
+		public bool Admin
+		{
+			get { return _user.Admin; }
+		}
+
 		public DateTime CreatedDate
 		{
 			get { return _user.CreatedAt; }

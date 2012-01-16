@@ -68,6 +68,7 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestDownloadFileMessage>().SubscribeThreadPool(RequestDownloadFile);
 			_bus.Listen<RequestUploadFileMessage>().SubscribeThreadPool(RequestUploadFile);
 			_bus.Listen<RequestStopStreamingMessage>().SubscribeThreadPool(RequestStopStreaming);
+			_bus.Listen<RequestConnectivityCheckMessage>().Subscribe(RequestConnectivityCheck);
 		}
 
 		private void RequestStopStreaming(RequestStopStreamingMessage obj)
@@ -80,6 +81,12 @@ namespace Rogue.MetroFire.CampfireClient
 					disposable.Dispose();
 				}
 			}
+		}
+
+
+		private void RequestConnectivityCheck(RequestConnectivityCheckMessage msg)
+		{
+			CallApi(() => _api.CheckConnectivity(), cs => _bus.SendMessage(cs));
 		}
 
 		private void TestRequestUploadFile(RequestUploadFileMessage obj)

@@ -382,4 +382,6 @@ namespace Rogue.MetroFire.CampfireClient
 			Current = current;
 		}
 	}
+
+	public class RequestConnectivityCheckMessage{}
 }

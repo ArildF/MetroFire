@@ -22,6 +22,9 @@ namespace Rogue.MetroFire.UI.Views
 			Regex(@"((?:http|https|ftp)\://(?:[a-zA-Z0-9\.\-]+(?:\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?(?:(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(?:[a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(?:\:[0-9]+)?(?:/[^/][a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$#\=~_\-@]*)*)");
 			
 
+		private static readonly Regex TwitterMessageParser =
+			new Regex(@"@(.*?),\s*(.*)");
+
 		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser, IPasteViewFactory pasteViewFactory)
 		{
 			_factory = factory;
@@ -36,7 +39,7 @@ namespace Rogue.MetroFire.UI.Views
 					{MessageType.PasteMessage, FormatPasteMessage},
 					{MessageType.EnterMessage, FormatEnterMessage},
 					{MessageType.UploadMessage, FormatUploadMessage},
-					{MessageType.TweetMessage, FormatUserMessage},
+					{MessageType.TweetMessage, FormatTweetMessage},
 					{MessageType.AdvertisementMessage, FormatAdvertisementMessage},
 					{MessageType.TopicChangeMessage, FormatTopicChangeMessage}
 
@@ -46,6 +49,31 @@ namespace Rogue.MetroFire.UI.Views
 			FontFamily = new FontFamily("Segoe UI");
 
 			AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(NavigateToLink));
+		}
+
+		private void FormatTweetMessage(Message msg, User user, Paragraph paragraph)
+		{
+			int separatorIndex = msg.Body.LastIndexOf("--", StringComparison.InvariantCulture);
+			if (separatorIndex >= 0)
+			{
+				var bodyText = msg.Body.Substring(0, separatorIndex);
+				
+				var twitterText = msg.Body.Substring(separatorIndex);
+
+				var match = TwitterMessageParser.Match(twitterText);
+				if (match != Match.Empty)
+				{
+					var bodyInline = RenderUserMessage(bodyText);
+					var tweetView = new InlineTweetView(match.Groups[1].Value, bodyInline, match.Groups[2].Value);
+
+					paragraph.Inlines.Add(FormatUserName(user) + ":" + Environment.NewLine);
+					paragraph.Inlines.Add(tweetView);
+					return;
+				}
+			}
+
+			// fallback
+			FormatUserMessage(msg, user, paragraph);
 		}
 
 		private void NavigateToLink(object sender, RequestNavigateEventArgs requestNavigateEventArgs)
@@ -134,10 +162,18 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void FormatUserMessage(Message message, User user, Paragraph paragraph)
 		{
-			RenderUserString(user, paragraph);
+			if (message.Body.StartsWith("/me", StringComparison.InvariantCultureIgnoreCase))
+			{
+				paragraph.Inlines.Add(RenderUserMessage(user.Name + message.Body.Substring("/me".Length)));
 
-			var inline = RenderUserMessage(message.Body);
-			paragraph.Inlines.Add(inline);
+				paragraph.FontStyle = FontStyles.Italic;
+			}
+			else
+			{
+				RenderUserString(user, paragraph);
+				var inline = RenderUserMessage(message.Body);
+				paragraph.Inlines.Add(inline);
+			}
 
 			paragraph.BorderThickness = new Thickness(0, 0, 0, 0.2);
 			paragraph.BorderBrush = Brushes.LightGray;

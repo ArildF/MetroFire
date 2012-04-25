@@ -36,7 +36,7 @@
 		<DataTemplate x:Key="_userListBoxItemsTemplate">
 			<Grid>
 				<TextBlock TextWrapping="Wrap" d:LayoutOverrides="Width, Height" 
-						   FontSize="16" FontWeight="ExtraLight"><Run V</TextBlock>
+						   FontSize="16" FontWeight="ExtraLight"/>
 				<ToolTipService.ToolTip>
 					<ToolTip Style="{DynamicResource _userToolTipStyle}"/>
 				</ToolTipService.ToolTip>

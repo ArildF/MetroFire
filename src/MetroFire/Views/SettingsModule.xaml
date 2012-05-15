@@ -212,7 +212,9 @@
 		</DataTemplate>
 		
 		
-		<Button Style="{StaticResource NavigationButton}" Content="BACK" x:Key="BackButton" Command="{Binding BackCommand}"/>
+		<Button Style="{StaticResource NavigationButton}" Content="BACK" x:Key="BackButton" 
+				Visibility="{Binding CanGoBack}"
+				Command="{Binding BackCommand}"/>
 
 	</UserControl.Resources>
     <Grid Margin="18,0,0,0">

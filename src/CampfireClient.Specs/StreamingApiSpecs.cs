@@ -52,6 +52,39 @@ world " + Guid.NewGuid();
 		private static readonly List<ConnectionState> _connectionStates = new List<ConnectionState>();
 	}
 
+	public class When_streaming_tweet_messages_from_Campfire : ApiContext
+	{
+		Establish context = () =>
+			{
+				_id = FindJoinedRoom();
+				_disposable = api.Stream(_id, msg =>
+					{
+						if (msg.Type == MessageType.TweetMessage)
+						{
+							_tweetMessage = msg;
+							_event.Set();
+						}
+					}, new Subject<ConnectionState>());
+			};
+
+		Because of = () =>
+			{
+				Thread.Sleep(8000);
+				api.Speak(_id, "https://twitter.com/#!/GarethWild/status/201975545645379584");
+				_event.WaitOne(8000);
+			};
+
+		It should_be_posted_as_a_tweet_message = () => _tweetMessage.Tweet.ShouldNotBeNull();
+
+		It should_post_that_particular_tweet_message = () => _tweetMessage.Tweet.Id.ShouldEqual("201975545645379584");
+
+		It should_post_it_as_a_tweet_from_gareth_wild = () => _tweetMessage.Tweet.AuthorUsername.ShouldEqual("GarethWild");
+		private static int _id;
+		private static Message _tweetMessage;
+		private static IDisposable _disposable;
+		private static AutoResetEvent _event = new AutoResetEvent(false);
+	}
+
 	public class When_cancelling_streaming_from_Campfire : ApiContext
 	{
 		Establish context = () =>

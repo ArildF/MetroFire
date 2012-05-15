@@ -53,23 +53,15 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void FormatTweetMessage(Message msg, User user, Paragraph paragraph)
 		{
-			int separatorIndex = msg.Body.LastIndexOf("--", StringComparison.InvariantCulture);
-			if (separatorIndex >= 0)
+			if (msg.Tweet != null)
 			{
-				var bodyText = msg.Body.Substring(0, separatorIndex);
-				
-				var twitterText = msg.Body.Substring(separatorIndex);
+				var bodyInline = RenderUserMessage(msg.Tweet.Message);
 
-				var match = TwitterMessageParser.Match(twitterText);
-				if (match != Match.Empty)
-				{
-					var bodyInline = RenderUserMessage(bodyText);
-					var tweetView = new InlineTweetView(match.Groups[1].Value, bodyInline, match.Groups[2].Value);
+				var tweetView = new InlineTweetView(bodyInline, msg.Tweet);
 
-					paragraph.Inlines.Add(FormatUserName(user) + ":" + Environment.NewLine);
-					paragraph.Inlines.Add(tweetView);
-					return;
-				}
+				paragraph.Inlines.Add(FormatUserName(user) + ":" + Environment.NewLine);
+				paragraph.Inlines.Add(tweetView);
+				return;
 			}
 
 			// fallback

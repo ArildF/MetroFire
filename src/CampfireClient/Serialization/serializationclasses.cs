@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -144,6 +145,7 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 	public class Message
 	{
 		private string _messageTypeString;
+		private Tweet[] _tweets;
 
 		[XmlElement("id")]
 		public int Id { get; set; }
@@ -198,6 +200,41 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 			}
 		}
 
+		[XmlElement("tweet")]
+		public Tweet[] Tweets
+		{
+			get { return _tweets; }
+			set
+			{
+				_tweets = value;
+				if(value != null)
+				{
+					Tweet = _tweets.Last(t => t.Id != null);
+				}
+			}
+		}
 
+		[JsonProperty("tweet")]
+		public Tweet Tweet { get; set; }
+
+	}
+
+	public class Tweet
+	{
+		[JsonProperty("author_avatar_url")]
+		[XmlElement("author_avatar_url")]
+		public string AuthorAvatarUrl { get; set; }
+
+		[JsonProperty("author_username")]
+		[XmlElement("author_username")]
+		public string AuthorUsername { get; set; }
+
+		[JsonProperty("id")]
+		[XmlElement("id")]
+		public string Id { get; set; }
+
+		[JsonProperty("message")]
+		[XmlElement("message")]
+		public string Message { get; set; }
 	}
 }

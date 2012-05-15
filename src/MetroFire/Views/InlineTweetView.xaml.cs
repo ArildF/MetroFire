@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Documents;
+using Rogue.MetroFire.CampfireClient.Serialization;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -8,18 +9,18 @@ namespace Rogue.MetroFire.UI.Views
 	/// </summary>
 	public partial class InlineTweetView
 	{
-		private readonly string _user;
-		private readonly string _tweetUrl;
+		private Tweet _tweet;
 
 		private InlineTweetView()
 		{
 			InitializeComponent();
 		}
 
-		public InlineTweetView(string user, Inline body, string tweetUrl) : this()
+		
+
+		public InlineTweetView(Inline body, Tweet tweet) : this()
 		{
-			_user = user;
-			_tweetUrl = tweetUrl;
+			_tweet = tweet;
 			_body.Inlines.Add(body);
 
 			DataContext = this;
@@ -27,22 +28,22 @@ namespace Rogue.MetroFire.UI.Views
 
 		public string AvatarUrl
 		{
-			get { return string.Format("http://api.twitter.com/1/users/profile_image?screen_name={0}", _user); }
+			get { return _tweet.AuthorAvatarUrl; }
 		}
 
 		public string TwitterUserName
 		{
-			get { return _user; }
+			get { return _tweet.AuthorUsername; }
 		}
 
 		public string TwitterProfileUrl
 		{
-			get { return string.Format("https://twitter.com/#!/{0}", _user); }
+			get { return string.Format("https://twitter.com/#!/{0}", _tweet.AuthorUsername); }
 		}
 
 		public string TweetUrl
 		{
-			get { return _tweetUrl; }
+			get { return string.Format("https://twitter.com/#!/{0}/status/{1}", _tweet.AuthorUsername, _tweet.Id); }
 		}
 	}
 }

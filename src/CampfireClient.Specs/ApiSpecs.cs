@@ -203,6 +203,34 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static Message _msg;
 	}
 
+
+	public class When_posting_twitter_message : ApiContext
+	{
+		private Establish context = () =>
+			{
+				_idToPostTo = FindJoinedRoom();
+			};
+
+		private Because of =
+			() =>
+				{
+					_msg = api.Speak(_idToPostTo, "https://twitter.com/#!/GarethWild/status/201975545645379584");
+					_receivedMessage = api.GetMessages(_idToPostTo).Last();
+				};
+
+		It should_be_posted_as_a_tweet_message = () => _receivedMessage.Tweet.ShouldNotBeNull();
+
+		It should_post_that_particular_tweet_message = () => _receivedMessage.Tweet.Id.ShouldEqual("201975545645379584");
+
+		It should_post_it_as_a_tweet_from_gareth_wild = () => _receivedMessage.Tweet.AuthorUsername.ShouldEqual("GarethWild");
+
+
+
+		private static Message _msg;
+		private static int _idToPostTo;
+		private static Message _receivedMessage;
+	}
+
 	public class When_requesting_extended_room_information : ApiContext
 	{
 		Establish context = () =>

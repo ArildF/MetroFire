@@ -36,7 +36,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			var upload = uploadReceivedMessage.Upload;
 			if (upload.ContentType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
 			{
-				Data = new InlineImageViewModel(uploadReceivedMessage.Upload, _bus, _imageViewCreator);
+				Data = new InlineImageViewModel(upload.ContentType, uploadReceivedMessage.Upload, _bus, _imageViewCreator);
 			}
 			else
 			{
@@ -74,17 +74,24 @@ namespace Rogue.MetroFire.UI.ViewModels
 	{
 		private readonly Func<string, IImageView> _imageViewCreator;
 		private string _file;
+		private bool _showAnimated;
+		private bool _showUnanimated;
 
-		public InlineImageViewModel(Upload upload, IMessageBus bus, Func<string, IImageView> imageViewCreator) : base(upload)
+		public InlineImageViewModel(string contentType, Upload upload, IMessageBus bus, Func<string, IImageView> imageViewCreator) : base(upload)
 		{
 			_imageViewCreator = imageViewCreator;
 			ShowFullSizeImageCommand = new ReactiveCommand(
 				this.ObservableForProperty(vm => vm.File).Select(c => c.Value != null));
 			ShowFullSizeImageCommand.Subscribe(ViewImage);
 			bus.Listen<FileDownloadedMessage>().Where(msg => msg.Url == Upload.FullUrl)
-				.SubscribeUI(msg => File = msg.File);
-			bus.SendMessage(new RequestDownloadFileMessage(Upload.FullUrl));
+				.SubscribeUI(msg =>
+					{
+						File = msg.File;
+						ShowAnimated = contentType.Equals("image/gif", StringComparison.OrdinalIgnoreCase);
+						ShowUnanimated = !ShowAnimated;
+					});
 
+			bus.SendMessage(new RequestDownloadFileMessage(Upload.FullUrl));
 
 		}
 
@@ -95,6 +102,19 @@ namespace Rogue.MetroFire.UI.ViewModels
 		}
 
 		public ReactiveCommand ShowFullSizeImageCommand { get; private set; }
+
+
+		public bool ShowAnimated
+		{
+			get { return _showAnimated; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.ShowAnimated, ref _showAnimated, value); }
+		}
+
+		public bool ShowUnanimated
+		{
+			get { return _showUnanimated; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.ShowUnanimated, ref _showUnanimated, value); }
+		}
 
 		public string File
 		{

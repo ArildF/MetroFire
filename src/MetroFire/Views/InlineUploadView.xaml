@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:ViewModels="clr-namespace:Rogue.MetroFire.UI.ViewModels" mc:Ignorable="d" 
+             xmlns:ViewModels="clr-namespace:Rogue.MetroFire.UI.ViewModels"
+             xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 	<UserControl.Resources>
+		<BooleanToVisibilityConverter x:Key="btvc"/>
+		
 		<DataTemplate DataType="{x:Type ViewModels:InlineImageViewModel}">
 			<StackPanel>
 				<TextBlock ToolTip="{Binding FullUrl}">
@@ -16,7 +19,9 @@
 				<Button Command="{Binding ShowFullSizeImageCommand}" Cursor="Hand">
 					<Button.Template>
 						<ControlTemplate>
-							<Image Source="{Binding Path=File, IsAsync=True}" MaxHeight="200"/>
+							<Grid>
+								<Infrastructure:GifSupportingImage Uri="{Binding Path=File, IsAsync=True}" MaxHeight="200"/>
+							</Grid>
 						</ControlTemplate>
 					</Button.Template>
 				</Button>

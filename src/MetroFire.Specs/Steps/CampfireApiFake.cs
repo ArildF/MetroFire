@@ -109,6 +109,11 @@ namespace MetroFire.Specs.Steps
 			return _meUser;
 		}
 
+		public ConnectivityState CheckConnectivity()
+		{
+			throw new NotImplementedException();
+		}
+
 		public void AddRoom(Room room)
 		{
 			if (room.Users == null)

@@ -259,7 +259,7 @@
     			<Setter Property="Foreground" Value="#FF0297C4"/>
     			<Setter Property="FontWeight" Value="Normal"/>
     		</Style>
-    		<Color x:Key="FadedOutTextBoxTextColor">#FF8C8C8C</Color>
+    		<Color x:Key="FadedOutTextBoxTextColor">#B3B3B3</Color>
 		
     		<Style TargetType="{x:Type ScrollBar}">
     			<Setter Property="Template" Value="{DynamicResource ScrollBarControlTemplate}"/>

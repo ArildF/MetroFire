@@ -18,11 +18,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _isActive;
 		private bool _userEditingMessage;
 
-		private const string DefaultMessage = "Type your message here or paste/drop files\u00A0";
 		private string _userMessage;
-		private bool _userEditedMessage;
 		private readonly IChatDocument _chatDocument;
-		private readonly IClipboard _clipboard;
 		private readonly List<RoomMessage> _messages;
 		private int? _sinceMessageId;
 		private int _notificationCount;
@@ -30,6 +27,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _streamingStarted;
 		private bool _isConnected;
 		private string _topic;
+		private bool _userEditedMessage;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
 			IClipboardService clipboardService , IGlobalCommands commands)
@@ -44,7 +42,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			Users = new ReactiveCollection<UserViewModel>();
 
-			UserMessage = DefaultMessage;
+			UserMessage = String.Empty;
 
 			PostMessageCommand = new ReactiveCommand(this.ObservableForProperty(vm => vm.UserEditedMessage)
 				.Select(c => c.Value).StartWith(false));
@@ -268,26 +266,26 @@ namespace Rogue.MetroFire.UI.ViewModels
 			set
 			{
 				this.RaiseAndSetIfChanged(vm => vm.UserMessage, ref _userMessage, value);
-				UserEditedMessage = value != DefaultMessage && !String.IsNullOrEmpty(value);
+				UserEditedMessage = !String.IsNullOrEmpty(value);
 			}
 		}
 
-		public bool UserEditingMessage
-		{
-			get { return _userEditingMessage; }
-			set
-			{
-				if (value && UserMessage == DefaultMessage)
-				{
-					UserMessage = string.Empty;
-				}
-				if (!value && String.IsNullOrEmpty(UserMessage))
-				{
-					UserMessage = DefaultMessage;
-				}
-				this.RaiseAndSetIfChanged(vm => vm.UserEditingMessage, ref _userEditingMessage, value);
-			}
-		}
+		//public bool UserEditingMessage
+		//{
+		//    get { return _userEditingMessage; }
+		//    set
+		//    {
+		//        if (value && UserMessage == DefaultMessage)
+		//        {
+		//            UserMessage = string.Empty;
+		//        }
+		//        if (!value && String.IsNullOrEmpty(UserMessage))
+		//        {
+		//            UserMessage = DefaultMessage;
+		//        }
+		//        this.RaiseAndSetIfChanged(vm => vm.UserEditingMessage, ref _userEditingMessage, value);
+		//    }
+		//}
 
 		public bool UserEditedMessage
 		{

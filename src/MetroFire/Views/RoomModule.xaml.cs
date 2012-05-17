@@ -82,6 +82,8 @@ namespace Rogue.MetroFire.UI.Views
 		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
 		{
 			SetConnectionState(IsConnected);
+
+			_textBox.Focus();
 		}
 
 		public RoomModule(IRoomModuleViewModel vm) : this()

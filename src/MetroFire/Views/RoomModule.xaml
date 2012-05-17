@@ -45,14 +45,27 @@
 		
 		<Style x:Key="_userMessageTextBoxStyle" BasedOn="{StaticResource LargeTextBoxStyle}" TargetType="TextBox">
 			<Setter Property="FontSize" Value="18.667"/>
-			<Setter Property="Foreground">
+
+			<Setter Property="Background">
 				<Setter.Value>
-					<SolidColorBrush Color="{DynamicResource FadedOutTextBoxTextColor}"/>
-				</Setter.Value>				
+					<VisualBrush TileMode="None" Stretch="None">
+						<VisualBrush.Visual>
+							<Grid>
+								<TextBlock Text="Type your message here or paste/drop files" 
+										   FontSize="20"
+										   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+									<TextBlock.Foreground>
+										<SolidColorBrush Color="{DynamicResource FadedOutTextBoxTextColor}"/>
+									</TextBlock.Foreground>
+								</TextBlock>
+							</Grid>
+						</VisualBrush.Visual>
+					</VisualBrush>
+				</Setter.Value>
 			</Setter>
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding UserEditedMessage}" Value="true">
-					<Setter Property="TextBox.Foreground"  Value="Black"/>
+					<Setter Property="TextBox.Background" Value="{x:Null}"/>
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
@@ -94,8 +107,9 @@
 				 AcceptsReturn="True" VerticalScrollBarVisibility="Auto" SelectionBrush="#7E3399FF"
 				 >
 			
+			
 			<i:Interaction.Behaviors>
-				<Behaviors:BindableFocusBehavior BindableIsFocused="{Binding UserEditingMessage, Mode=OneWayToSource}"/>
+				<!--<Behaviors:BindableFocusBehavior BindableIsFocused="{Binding UserEditingMessage, Mode=OneWayToSource}"/>-->
 				<Behaviors:CustomPasteBehavior Command="{Binding PasteCommand}"/>
 			</i:Interaction.Behaviors>
 			<TextBox.Triggers>

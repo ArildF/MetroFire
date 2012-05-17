@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using ReactiveUI;
 using ReactiveUI.Xaml;
@@ -7,25 +8,39 @@ using System.Reactive.Linq;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.Infrastructure;
-using Rogue.MetroFire.UI;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
 	public class PasteViewModel : ReactiveObject, IPasteViewModel
 	{
-		private readonly BitmapImage _bitmapSource;
+		private readonly object _imageSource;
 		private bool _isUploading;
 		private bool _isFinished;
 		private long _progressCurrent;
 		private Guid _currentCorrelation;
 		private long _progressTotal;
 
-		public PasteViewModel(string path, IRoom room, IMessageBus bus)
+		public PasteViewModel(ClipboardItem clipboardItem, IRoom room, IMessageBus bus)
 		{
-			_bitmapSource = new BitmapImage();
-			_bitmapSource.BeginInit();
-			_bitmapSource.UriSource = new Uri(path);
-			_bitmapSource.EndInit();
+			if (clipboardItem.IsImage)
+			{
+				var bitmapSource = new BitmapImage();
+				bitmapSource.BeginInit();
+				bitmapSource.UriSource = new Uri(clipboardItem.LocalPath);
+				bitmapSource.EndInit();
+
+				_imageSource = bitmapSource;
+			}
+			else
+			{
+				_imageSource = DependencyProperty.UnsetValue;
+			}
+			
+
+			Caption = "Upload this " + (clipboardItem.IsImage ? "image" : "file") + "?";
+			LocalPath = clipboardItem.LocalPath;
+			ShowLocalPath = !clipboardItem.IsImage;
+			ContentType = clipboardItem.ContentType;
 
 			PasteCommand = new ReactiveCommand();
 
@@ -45,19 +60,24 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			bus.RegisterMessageSource(
 				PasteCommand.Do(_ => IsUploading = true)
-				.Select(_ => new RequestUploadFileMessage(room.Id, path, "image/png"))
+				.Select(_ => new RequestUploadFileMessage(room.Id, clipboardItem.LocalPath, clipboardItem.ContentType))
 				.Do(msg => _currentCorrelation = msg.CorrelationId));
 
 			CancelCommand = new ReactiveCommand();
 			CancelCommand.Subscribe(_ => IsFinished = true);
 		}
 
+		public bool ShowLocalPath { get; private set; }
+		public string LocalPath { get; private set; }
+		public string Caption { get; private set; }
+		public string ContentType { get; private set; }
+
 		public ReactiveCommand PasteCommand { get; private set; }
 		public ReactiveCommand CancelCommand { get; private set; }
 
-		public BitmapSource BitmapSource
+		public object ImageSource
 		{
-			get { return _bitmapSource; }
+			get { return _imageSource; }
 		}
 
 		public bool IsUploading

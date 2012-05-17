@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
 using System.Linq;
+using Rogue.MetroFire.UI.Infrastructure;
 
 namespace MetroFire.Specs.Steps
 {
@@ -31,7 +32,7 @@ namespace MetroFire.Specs.Steps
 			throw new System.NotImplementedException();
 		}
 
-		public void AddPasteFile(IRoom room, string path)
+		public void AddPasteFile(IRoom room, ClipboardItem path)
 		{
 			throw new System.NotImplementedException();
 		}

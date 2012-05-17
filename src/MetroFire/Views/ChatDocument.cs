@@ -8,6 +8,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.Infrastructure;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -239,9 +240,9 @@ namespace Rogue.MetroFire.UI.Views
 			handler(message, user, paragraph);
 		}
 
-		public void AddPasteFile(IRoom room, string path)
+		public void AddPasteFile(IRoom room, ClipboardItem clipboardItem)
 		{
-			var view = _pasteViewFactory.Create(room, path);
+			var view = _pasteViewFactory.Create(room, clipboardItem);
 			var paragraph = new Paragraph();
 			paragraph.Inlines.Add(view.Element);
 

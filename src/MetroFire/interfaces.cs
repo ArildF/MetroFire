@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.Infrastructure;
 using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 
@@ -137,7 +138,7 @@ namespace Rogue.MetroFire.UI
 	{
 		object AddMessage(Message message, User user, object textObject);
 		void UpdateMessage(object textObject, Message message, User user);
-		void AddPasteFile(IRoom room, string path);
+		void AddPasteFile(IRoom room, ClipboardItem path);
 		Double FontSize { get; set; }
 
 	}
@@ -188,7 +189,7 @@ namespace Rogue.MetroFire.UI
 
 	public interface IPasteViewFactory
 	{
-		IPasteView Create(IRoom room, string bitmapSource);
+		IPasteView Create(IRoom room, ClipboardItem bitmapSource);
 		void Release(IPasteView view);
 	}
 
@@ -218,10 +219,22 @@ namespace Rogue.MetroFire.UI
 	{
 		string GetText();
 		BitmapSource GetImage();
+		string GetFilePath();
 	}
 
 	public interface IImageEncoder
 	{
 		string EncodeToTempPng(BitmapSource imageSource);
+	}
+
+
+	public interface IClipboardService
+	{
+		ClipboardItem GetClipboardItem();
+	}
+
+	public interface IMimeTypeResolver
+	{
+		string GetMimeType(string path);
 	}
 }

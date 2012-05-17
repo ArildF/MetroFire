@@ -8,6 +8,7 @@ using ReactiveUI;
 using System;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.Infrastructure;
 using Rogue.MetroFire.UI.Notifications;
 using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
@@ -92,9 +93,9 @@ namespace Rogue.MetroFire.UI
 				_container = container;
 			}
 
-			public IPasteView Create(IRoom room, string path)
+			public IPasteView Create(IRoom room, ClipboardItem clipboardItem)
 			{
-				var vm = _container.Resolve<IPasteViewModel>(new {room, path});
+				var vm = _container.Resolve<IPasteViewModel>(new {room, clipboardItem});
 				var view = _container.Resolve<IPasteView>(new {vm});
 
 				return view;

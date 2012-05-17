@@ -152,6 +152,8 @@
     <Compile Include="Infrastructure\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CampfireLog.cs" />
     <Compile Include="Infrastructure\Clipboard.cs" />
+    <Compile Include="Infrastructure\ClipboardItem.cs" />
+    <Compile Include="Infrastructure\ClipboardService.cs" />
     <Compile Include="Infrastructure\CustomKeyBinding.cs" />
     <Compile Include="Infrastructure\CustomKeyBindingsCollection.cs" />
     <Compile Include="Infrastructure\GifSupportingImage.cs" />
@@ -159,6 +161,7 @@
     <Compile Include="Infrastructure\InputBehavior.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\LogMessageDebugListener.cs" />
+    <Compile Include="Infrastructure\MimeTypeResolver.cs" />
     <Compile Include="Infrastructure\UserCache.cs" />
     <Compile Include="Infrastructure\WebBrowser.cs" />
     <Compile Include="Infrastructure\WpfExtensions.cs" />
@@ -320,6 +323,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignTimeOnly>
+    <Resource Include="Assets\DocumentDrawing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
     <Page Include="Assets\preferences-system.Brush.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

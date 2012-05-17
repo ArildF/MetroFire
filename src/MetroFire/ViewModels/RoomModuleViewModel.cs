@@ -32,13 +32,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _topic;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
-			IClipboard clipboard, IImageEncoder encoder, IGlobalCommands commands)
+			IClipboardService clipboardService , IGlobalCommands commands)
 		{
 			_room = room;
 			_bus = bus;
 			_userCache = userCache;
 			_chatDocument = chatDocument;
-			_clipboard = clipboard;
 
 
 			Topic = _room.Topic;
@@ -78,9 +77,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			PasteCommand = new ReactiveCommand();
 
-			Subscribe(() => PasteCommand.Select(pc => _clipboard.GetImage())
-			                	.Select(encoder.EncodeToTempPng)
-			                	.Subscribe(path => _chatDocument.AddPasteFile(_room, path)));
+			Subscribe(() => PasteCommand.Select(pc => clipboardService.GetClipboardItem())
+								.Where(ci => ci != null)
+			                	.Subscribe(ci => _chatDocument.AddPasteFile(_room, ci)));
 
 			var leaveRoomCommand = commands.LeaveRoomCommand.OfType<int>().Where(id => id == _room.Id);
 			Subscribe(_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new RequestStopStreamingMessage(_room.Id))));

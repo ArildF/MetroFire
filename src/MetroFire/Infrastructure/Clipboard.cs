@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -16,6 +18,12 @@ namespace Rogue.MetroFire.UI.Infrastructure
 		public BitmapSource GetImage()
 		{
 			return System.Windows.Clipboard.ContainsImage() ? ImageFromClipboardDib() : null;
+		}
+
+		public string GetFilePath()
+		{
+			var paths = System.Windows.Clipboard.GetData("FileNameW") as string[];
+			return paths != null && paths.Any() ? paths.First() : null;
 		}
 
 

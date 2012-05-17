@@ -831,8 +831,11 @@
 			
 
 
+			<Infrastructure:BoolToVisibilityConverter x:Key="_boolToVisibilityConverter"/>
+			
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Assets/preferences-system.Brush.xaml"/>
+				<ResourceDictionary Source="Assets/DocumentDrawing.xaml"/>
 				<ResourceDictionary Source="Views/NotificationViews.xaml"/>
 				<ResourceDictionary Source="Simple Styles.xaml"/>
 			</ResourceDictionary.MergedDictionaries>

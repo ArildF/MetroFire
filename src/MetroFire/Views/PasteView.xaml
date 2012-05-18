@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
         xmlns:Converters="clr-namespace:Rogue.MetroFire.UI.Converters" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.Views.PasteView"
-        MaxHeight="200">
+        MaxHeight="200"
+		Infrastructure:DesignTime.Background="White"
+	>
 	<UserControl.Resources>
 		<Converters:SizeValueConverter x:Key="_sizeValueConverter"/>
 	</UserControl.Resources>

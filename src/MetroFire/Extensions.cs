@@ -40,5 +40,31 @@ namespace Rogue.MetroFire.UI
 				ev => Application.Current.Activated -= ev)
 				.Select(_ => Unit.Default);
 		}
+
+		public static string AsKiloBytes(this long d)
+		{
+			return String.Format("{0:0.0}", d / 1024);
+		}
+
+		public static string AsMegaBytes(this long d)
+		{
+			return String.Format("{0:0.0}", d / 1024 / 1024);
+		}
+
+		public static long MegaBytes(this long megaBytes)
+		{
+			return megaBytes * 1024 * 1024;
+		}
+
+		public static long MegaBytes(this int megaBytes)
+		{
+			return ((long) megaBytes).MegaBytes();
+		}
+
+		public static long KiloBytes(this long kiloBytes)
+		{
+			return kiloBytes * 1024;
+		}
+
 	}
 }

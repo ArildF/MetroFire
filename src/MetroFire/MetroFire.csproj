@@ -146,6 +146,7 @@
     <Compile Include="Behaviors\CustomPasteBehavior.cs" />
     <Compile Include="Behaviors\StayScrolledToEndBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Converters\SizeValueConverter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GlobalCommands.cs" />
     <Compile Include="Infrastructure\ApplicationActivator.cs" />

@@ -35,6 +35,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			LocalPath = clipboardItem.LocalPath;
 			ShowLocalPath = !clipboardItem.IsImage;
 			ContentType = clipboardItem.ContentType;
+			Size = clipboardItem.Size;
 
 			PasteCommand = new ReactiveCommand();
 
@@ -65,6 +66,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public string LocalPath { get; private set; }
 		public string Caption { get; private set; }
 		public string ContentType { get; private set; }
+		public long Size { get; private set; }
 
 		public ReactiveCommand PasteCommand { get; private set; }
 		public ReactiveCommand CancelCommand { get; private set; }

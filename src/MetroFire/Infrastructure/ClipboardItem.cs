@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Rogue.MetroFire.UI.Infrastructure
 {
 	public class ClipboardItem
@@ -16,5 +18,17 @@ namespace Rogue.MetroFire.UI.Infrastructure
 		public string LocalPath { get; private set; }
 
 		public string ContentType { get; private set; }
+
+		public long Size
+		{
+			get
+			{
+				if (File.Exists(LocalPath))
+				{
+					return new FileInfo(LocalPath).Length;
+				}
+				return -1;
+			}
+		}
 	}
 }

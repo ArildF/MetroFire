@@ -1,7 +1,8 @@
 ﻿<UserControl
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.Views.PasteView"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.Views.PasteView"
         MaxHeight="200">
 	
 	<VisualStateManager.VisualStateGroups>
@@ -35,16 +36,14 @@
 		<TextBlock x:Name="_caption" TextWrapping="Wrap" Text="{Binding Caption}" 
 				   Style="{DynamicResource MetroLargeLightHeader}" TextAlignment="Center"
 				   />
-		<Image Margin="10" Grid.Row="1" ToolTip="{Binding ContentType}">
-			<Image.Source>
-				<PriorityBinding>
+		<Infrastructure:GifSupportingImage Margin="20" Grid.Row="1" ToolTip="{Binding ContentType}">
+			<Infrastructure:GifSupportingImage.Uri>
+				<PriorityBinding FallbackValue="pack://application:,,,/Assets/Document.png">
 					<Binding Path="ImageSource"/>
-					<Binding Source="{StaticResource DocumentDrawing}"/>
 				</PriorityBinding>
-			</Image.Source>
-			
-			
-		</Image>
+			</Infrastructure:GifSupportingImage.Uri>
+		</Infrastructure:GifSupportingImage>
+		
 		<TextBlock TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Text="{Binding LocalPath}"
 				   Style="{StaticResource MetroBodyText}"
 				Grid.Row="2" Visibility="{Binding ShowLocalPath, Converter={StaticResource _boolToVisibilityConverter}}"/>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Media.Imaging;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using System.Reactive.Linq;
@@ -24,12 +23,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			if (clipboardItem.IsImage)
 			{
-				var bitmapSource = new BitmapImage();
-				bitmapSource.BeginInit();
-				bitmapSource.UriSource = new Uri(clipboardItem.LocalPath);
-				bitmapSource.EndInit();
-
-				_imageSource = bitmapSource;
+				_imageSource = clipboardItem.LocalPath;
 			}
 			else
 			{

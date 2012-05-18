@@ -21,14 +21,14 @@
 			{
 				string path = _encoder.EncodeToTempPng(image);
 
-				return new ClipboardItem(true, path, "image/png");
+				return new ClipboardItem(path, "image/png");
 			}
 
 			string filePath = _clipboard.GetFilePath();
 			if (filePath != null)
 			{
 				string contentType = _mimeTypeResolver.GetMimeType(filePath);
-				return new ClipboardItem(false, filePath, contentType);
+				return new ClipboardItem(filePath, contentType);
 			}
 
 			return null;

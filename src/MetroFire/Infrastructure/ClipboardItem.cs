@@ -2,14 +2,16 @@ namespace Rogue.MetroFire.UI.Infrastructure
 {
 	public class ClipboardItem
 	{
-		public ClipboardItem(bool isImage, string localPath, string contentType)
+		public ClipboardItem(string localPath, string contentType)
 		{
-			IsImage = isImage;
 			LocalPath = localPath;
 			ContentType = contentType;
 		}
 
-		public bool IsImage { get; private set; }
+		public bool IsImage
+		{
+			get { return ContentType.ToLower().StartsWith("image/"); }
+		}
 
 		public string LocalPath { get; private set; }
 

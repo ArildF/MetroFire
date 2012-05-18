@@ -2,12 +2,21 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SampleMainViewModel" xmlns:SampleData1="clr-namespace:Expression.Blend.SampleData.SampleLobbyViewModel" xmlns:SampleData2="clr-namespace:Expression.Blend.SampleData.SampleRoomViewModel" xmlns:SampleData3="clr-namespace:Expression.Blend.SampleData.SampleSettingsDataSource" xmlns:SampleData4="clr-namespace:Expression.Blend.SampleData.SampleNotificationSettingsViewModel"
              xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
-	d:StartupUri="blah"
-             xmlns:UI="clr-namespace:Rogue.MetroFire.UI" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.App" 
+             xmlns:UI="clr-namespace:Rogue.MetroFire.UI" 
+		xmlns:SampleData5="clr-namespace:Expression.Blend.SampleData.SamplePasteViewModel" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.App"
              >
     <Application.Resources>
          
     	<ResourceDictionary>
+			
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Assets/preferences-system.Brush.xaml"/>
+				<ResourceDictionary Source="Assets/DocumentDrawing.xaml"/>
+				<ResourceDictionary Source="Views/NotificationViews.xaml"/>
+				<ResourceDictionary Source="Simple Styles.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+
+    		<SampleData5:SamplePasteViewModel x:Key="SamplePasteViewModel1" d:IsDataSource="True"/>
     		<SampleData3:SampleSettingsDataSource x:Key="SampleSettingsDataSource" d:IsDataSource="True"/>
 			
     		<SampleData4:SampleNotificationSettingsViewModel x:Key="SampleNotificationSettingsViewModel" d:IsDataSource="True"/>
@@ -832,13 +841,6 @@
 
 
 			<Infrastructure:BoolToVisibilityConverter x:Key="_boolToVisibilityConverter"/>
-			
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Assets/preferences-system.Brush.xaml"/>
-				<ResourceDictionary Source="Assets/DocumentDrawing.xaml"/>
-				<ResourceDictionary Source="Views/NotificationViews.xaml"/>
-				<ResourceDictionary Source="Simple Styles.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
 
     	</ResourceDictionary>
 

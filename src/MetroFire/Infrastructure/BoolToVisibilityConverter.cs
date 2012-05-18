@@ -10,7 +10,13 @@ namespace Rogue.MetroFire.UI.Infrastructure
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			var b = (bool) value;
-			return b ? Visibility.Visible : Visibility.Hidden;
+			Visibility visibility;
+			if (parameter == null || !Enum.TryParse(parameter.ToString(), out visibility))
+			{
+				visibility = Visibility.Hidden;
+			}
+
+			return b ? Visibility.Visible : visibility;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

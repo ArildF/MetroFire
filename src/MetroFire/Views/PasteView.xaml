@@ -5,6 +5,7 @@
         xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
         xmlns:Converters="clr-namespace:Rogue.MetroFire.UI.Converters" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.Views.PasteView"
         MaxHeight="200"
+	d:DataContext="{StaticResource SamplePasteViewModel1}"
 		Infrastructure:DesignTime.Background="White"
 	>
 	<UserControl.Resources>
@@ -34,7 +35,7 @@
 	</VisualStateManager.VisualStateGroups>
 	<Grid d:LayoutOverrides="Width">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="0.55*"/>
+			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
@@ -44,9 +45,9 @@
 			<RowDefinition Height="0.167*"/>
 		</Grid.RowDefinitions>
 		<TextBlock x:Name="_caption" TextWrapping="Wrap" Text="{Binding Caption}" 
-				   Style="{DynamicResource MetroLargeLightHeader}" TextAlignment="Center" Grid.ColumnSpan="2"
+				   TextAlignment="Center" Grid.ColumnSpan="2" VerticalAlignment="Top" Style="{DynamicResource MetroMediumLightHeader}"
 				   />
-		<Infrastructure:GifSupportingImage Margin="20" Grid.Row="1" ToolTip="{Binding ContentType}" Grid.ColumnSpan="2">
+		<Infrastructure:GifSupportingImage Grid.Row="1" ToolTip="{Binding ContentType}" Grid.ColumnSpan="2">
 			<Infrastructure:GifSupportingImage.Uri>
 				<PriorityBinding FallbackValue="pack://application:,,,/Assets/Document.png">
 					<Binding Path="ImageSource"/>
@@ -55,8 +56,9 @@
 		</Infrastructure:GifSupportingImage>
 		
 		<TextBlock TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Text="{Binding LocalPath}"
+				   MaxWidth="500"
 				   Style="{StaticResource MetroBodyText}"
-				Grid.Row="2" Visibility="{Binding ShowLocalPath, Converter={StaticResource _boolToVisibilityConverter}}" Margin="0"/>
+				Grid.Row="2" Visibility="{Binding ShowLocalPath, Converter={StaticResource _boolToVisibilityConverter},ConverterParameter=Collapsed}" Margin="0"/>
 		<ProgressBar x:Name="progressBar" Grid.Row="3" Margin="5" Visibility="Hidden" 
 					 Value="{Binding ProgressCurrent, Mode=OneWay}" Maximum="{Binding ProgressTotal, Mode=OneWay}" Grid.ColumnSpan="2"/>
 		<StackPanel HorizontalAlignment="Right" Margin="0" Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2" d:LayoutOverrides="GridBox">

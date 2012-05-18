@@ -191,6 +191,9 @@
     <Compile Include="SampleData\SampleNotificationSettingsViewModel\SampleNotificationSettingsViewModel.xaml.cs">
       <DependentUpon>SampleNotificationSettingsViewModel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SampleData\SamplePasteViewModel\SamplePasteViewModel.xaml.cs">
+      <DependentUpon>SamplePasteViewModel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml.cs">
       <DependentUpon>SampleRoomViewModel.xaml</DependentUpon>
     </Compile>
@@ -313,6 +316,7 @@
     <DesignTimeOnly Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xsd" />
     <DesignTimeOnly Include="SampleData\SampleSettingsDataSource\SampleSettingsDataSource.xsd" />
     <DesignTimeOnly Include="SampleData\SampleNotificationSettingsViewModel\SampleNotificationSettingsViewModel.xsd" />
+    <DesignTimeOnly Include="SampleData\SamplePasteViewModel\SamplePasteViewModel.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CampfireClient\CampfireClient.csproj">
@@ -341,6 +345,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignTimeOnly>
+    <Page Include="SampleData\SamplePasteViewModel\SamplePasteViewModel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SampleData\SampleRoomViewModel\SampleRoomViewModel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

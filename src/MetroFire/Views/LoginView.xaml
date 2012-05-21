@@ -3,7 +3,9 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:Rogue_MetroFire_UI="clr-namespace:Rogue.MetroFire.UI" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects" x:Class="Rogue.MetroFire.UI.Views.LoginView" 
+			 xmlns:Rogue_MetroFire_UI="clr-namespace:Rogue.MetroFire.UI" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"
+			 xmlns:Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
+			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" x:Class="Rogue.MetroFire.UI.Views.LoginView" 
 			 mc:Ignorable="d" 
 			 d:DesignHeight="458" d:DesignWidth="565">
 	<UserControl.Resources>
@@ -38,6 +40,15 @@
 		<VisualStateManager.CustomVisualStateManager>
 			<ei:ExtendedVisualStateManager/>
 		</VisualStateManager.CustomVisualStateManager>
+		
+		<i:Interaction.Behaviors>
+			<Behaviors:VisualStateBehavior>
+				<Behaviors:Transition Source="{Binding IsLoggingIn}" Value="False" VisualState="NormalState"/>
+				<Behaviors:Transition Source="{Binding IsLoggingIn}" Value="True" VisualState="LoggingInState"/>
+			</Behaviors:VisualStateBehavior>
+		</i:Interaction.Behaviors>
+		
+		
 		<Grid x:Name="grid" HorizontalAlignment="Center" Height="286" VerticalAlignment="Center" Width="487">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="0.471*"/>

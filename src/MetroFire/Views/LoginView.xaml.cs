@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
-using System.Windows.Data;
+﻿using System.Windows;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -10,58 +8,16 @@ namespace Rogue.MetroFire.UI.Views
 	public partial class LoginView : IMainModule
 	{
 		private readonly INavigationContent _content;
-		public static readonly DependencyProperty IsLoggingInProperty;
-
-
-		static LoginView()
-		{
-			var md = new FrameworkPropertyMetadata(false, IsLoggingInPropertyChanged);
-			IsLoggingInProperty = DependencyProperty.Register("IsLoggingIn", typeof (bool), typeof (LoginView), md);
-			
-		}
-
-		/// <summary>
-		/// A property wrapper for the <see cref="IsLoggingInProperty"/>
-		/// dependency property:<br/>
-		/// Description
-		/// </summary>
-		public bool IsLoggingIn
-		{
-			get { return (bool) GetValue(IsLoggingInProperty); }
-			set { SetValue(IsLoggingInProperty, value); }
-		}
-
-
-		private static void IsLoggingInPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			var owner = (LoginView) d;
-			var newValue = (bool) e.NewValue;
-
-			bool retval = VisualStateManager.GoToElementState(owner._root, newValue ? "LoggingInState" : "NormalState", true);
-			Debug.WriteLine("RetVal: " + retval);
-		}
-
 		private LoginView()
 		{
 			InitializeComponent();
-
-			Loaded += OnLoaded;
 		}
 
-		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-		{
-			var retval = VisualStateManager.GoToElementState(_root, "NormalState", false);
-			Debug.WriteLine("RetVal: " + retval);
-		}
 
 		public LoginView(ILoginViewModel viewModel, INavigationContent content) : this()
 		{
 			_content = content;
 			DataContext = viewModel;
-
-			var binding = new Binding("IsLoggingIn") {Mode = BindingMode.OneWay, Source = viewModel};
-
-			SetBinding(IsLoggingInProperty, binding);
 		}
 
 		public string Caption

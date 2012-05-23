@@ -31,6 +31,11 @@ namespace Rogue.MetroFire.UI.Behaviors
 		{
 			get { return GetValue(TransitionsProperty) as IList; }
 		}
+
+		public VisualStateBehavior()
+		{
+			
+		}
 	
 
 		protected override void OnAttached()
@@ -40,20 +45,38 @@ namespace Rogue.MetroFire.UI.Behaviors
 			HookObservables();
 
 			AssociatedObject.DataContextChanged += AssociatedObjectOnDataContextChanged;
-			AssignDataContext();
+			AssignDataContext(AssociatedObject.DataContext);
+		}
+
+		protected override void OnDetaching()
+		{
+			base.OnDetaching();
+
+			UnhookObservables();
+
+			AssociatedObject.DataContextChanged -= AssociatedObjectOnDataContextChanged;
+			AssignDataContext(null);
+		}
+
+		private void UnhookObservables()
+		{
+			if (_subscription != null)
+			{
+				_subscription.Dispose();
+			}
 		}
 
 
 		private void AssociatedObjectOnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
 		{
-			AssignDataContext();
+			AssignDataContext(AssociatedObject.DataContext);
 		}
 
-		private void AssignDataContext()
+		private void AssignDataContext(object dataContext)
 		{
 			foreach (Transition transition in Transitions)
 			{
-				transition.DataContext = AssociatedObject.DataContext;
+				transition.DataContext = dataContext;
 			}
 		}
 

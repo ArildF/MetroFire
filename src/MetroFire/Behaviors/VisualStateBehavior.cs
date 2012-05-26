@@ -16,11 +16,15 @@ namespace Rogue.MetroFire.UI.Behaviors
 
 		public static readonly DependencyProperty TransitionsProperty =
 			DependencyProperty.Register("Transitions", typeof (IList), 
-			typeof (VisualStateBehavior), new PropertyMetadata(new ObservableCollection<Transition>()));
+			typeof (VisualStateBehavior), new PropertyMetadata(null));
 
 		public static readonly DependencyProperty DataContextProperty =
 			DependencyProperty.Register("DataContext", typeof (object), typeof (VisualStateBehavior), new PropertyMetadata(default(object)));
 
+		public VisualStateBehavior()
+		{
+			SetValue(TransitionsProperty, new ObservableCollection<Transition>());
+		}
 		public object DataContext
 		{
 			get { return GetValue(DataContextProperty); }
@@ -32,11 +36,6 @@ namespace Rogue.MetroFire.UI.Behaviors
 			get { return GetValue(TransitionsProperty) as IList; }
 		}
 
-		public VisualStateBehavior()
-		{
-			
-		}
-	
 
 		protected override void OnAttached()
 		{

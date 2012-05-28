@@ -209,7 +209,7 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 				_tweets = value;
 				if(value != null)
 				{
-					Tweet = _tweets.Last(t => t.Id != null);
+					Tweet = _tweets.LastOrDefault(t => t.Id != null);
 				}
 			}
 		}

@@ -188,7 +188,7 @@
     			<Setter Property="Template">
     				<Setter.Value>
     					<ControlTemplate TargetType="{x:Type Button}">
-    						<Grid x:Name="grid" Margin="0" Background="#03000000" RenderTransformOrigin="0.5,0.5">
+    						<Grid x:Name="grid" Margin="0" RenderTransformOrigin="0.5,0.5">
     							<Grid.RenderTransform>
     								<TransformGroup>
     									<ScaleTransform/>

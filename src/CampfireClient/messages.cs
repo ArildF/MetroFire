@@ -225,6 +225,16 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
+	public class CorrelatedExceptionMessage : ExceptionMessage
+	{
+		public Guid CorrelationId { get; private set; }
+
+		public CorrelatedExceptionMessage(Exception exception, Guid correlationId) : base(exception)
+		{
+			CorrelationId = correlationId;
+		}
+	}
+
 	public enum LogMessageType
 	{
 		Info,

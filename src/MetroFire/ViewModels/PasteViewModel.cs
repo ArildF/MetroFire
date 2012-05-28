@@ -18,6 +18,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private long _progressCurrent;
 		private Guid _currentCorrelation;
 		private long _progressTotal;
+		private bool _isErrored;
+		private Exception _lastException;
 
 		public PasteViewModel(ClipboardItem clipboardItem, IRoom room, IMessageBus bus)
 		{
@@ -43,18 +45,31 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.SubscribeUI(_ => IsFinished = true);
 
 			bus.Listen<FileUploadProgressChangedMessage>().Where(msg => msg.CorrelationId == _currentCorrelation)
-				.SubscribeUI(msg =>
+				.SubscribeUI(
+					msg =>
 					{
 						ProgressCurrent = msg.Progress.Current;
 						ProgressTotal = msg.Progress.Total;
 						Debug.WriteLine("Current, total" + ProgressCurrent + ", " + ProgressTotal);
 					});
 
+			bus.Listen<CorrelatedExceptionMessage>().Where(msg => msg.CorrelationId == _currentCorrelation)
+				.SubscribeUI(msg =>
+					{
+						IsErrored = true;
+						IsUploading = false;
+						LastException = msg.Exception;
+					});
+
 			ProgressCurrent = 0;
 			ProgressTotal = 100;
 
 			bus.RegisterMessageSource(
-				PasteCommand.Do(_ => IsUploading = true)
+				PasteCommand.Do(_ =>
+					{
+						IsUploading = true;
+						IsErrored = false;
+					})
 				.Select(_ => new RequestUploadFileMessage(room.Id, clipboardItem.LocalPath, clipboardItem.ContentType))
 				.Do(msg => _currentCorrelation = msg.CorrelationId));
 
@@ -74,6 +89,17 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public object ImageSource
 		{
 			get { return _imageSource; }
+		}
+
+		public Exception LastException
+		{
+			get { return _lastException; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.LastException, ref _lastException, value); }
+		}
+		public bool IsErrored
+		{
+			get { return _isErrored; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.IsErrored, ref _isErrored, value); }
 		}
 
 		public bool IsUploading

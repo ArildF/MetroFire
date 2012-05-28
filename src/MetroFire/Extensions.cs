@@ -13,6 +13,11 @@ namespace Rogue.MetroFire.UI
 			return self.ObserveOn(RxApp.DeferredScheduler).Subscribe(onNext);
 		}
 
+		public static IDisposable SubscribeUI<T>(this IObservable<T> self, Action<T> onNext, Action<Exception> onError)
+		{
+			return self.ObserveOn(RxApp.DeferredScheduler).Subscribe(onNext, onError);
+		}
+
 		public static void SubscribeOnceUI<T>(this IObservable<T> self, Action<T> onNext)
 		{
 			IDisposable disposable = null;

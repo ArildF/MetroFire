@@ -8,7 +8,7 @@ namespace Rogue.MetroFire.UI.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var val = (long) value;
+			var val = System.Convert.ToInt64(value);
 
 			if (val > 1.MegaBytes())
 			{

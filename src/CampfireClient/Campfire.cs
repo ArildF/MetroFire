@@ -123,17 +123,16 @@ namespace Rogue.MetroFire.CampfireClient
 		private void RequestUploadFile(RequestUploadFileMessage obj)
 		{
 			var subject = new Subject<ProgressState>();
-			var disposable = _bus.RegisterMessageSource(
-				subject.Select(ps => new FileUploadProgressChangedMessage(obj.CorrelationId, ps)));
-
-			CallApi(() => _api.UploadFile(obj.RoomId, 
+			using(_bus.RegisterMessageSource(
+				subject.Select(ps => new FileUploadProgressChangedMessage(obj.CorrelationId, ps))))
+			{
+				CallApi(() => _api.UploadFile(obj.RoomId,
 					new UploadFileParams(File.OpenRead(obj.Path), Path.GetFileName(obj.Path), obj.ContentType),
 					subject),
-				upload =>
-					{
-						_bus.SendMessage(new FileUploadedMessage(obj.CorrelationId, obj.Path, upload));
-						disposable.Dispose();
-					});
+				upload => _bus.SendMessage(new FileUploadedMessage(obj.CorrelationId, obj.Path, upload)),
+				retry: false,
+				correlationId: obj.CorrelationId);
+			}
 		}
 
 		private void RequestDownloadFile(RequestDownloadFileMessage obj)
@@ -249,9 +248,22 @@ namespace Rogue.MetroFire.CampfireClient
 				);
 		}
 
-		private void CallApi<T>(Func<T> call, Action<T> continuation)
+		private void CallApi<T>(Func<T> call, Action<T> continuation, 
+			bool retry = true, Guid correlationId = new Guid())
 		{
-			for (int i = 0; i < 10; i++)
+			Action<Exception> onError = ex =>
+				{
+					if (correlationId == Guid.Empty)
+					{
+						_bus.SendMessage(new ExceptionMessage(ex));
+					}
+					else
+					{
+						_bus.SendMessage(new CorrelatedExceptionMessage(ex, correlationId));
+					}
+				};
+
+			for (int i = 0; i < (retry ? 10 : 1); i++)
 			{
 				_apiSemaphore.WaitOne();
 				try
@@ -267,8 +279,10 @@ namespace Rogue.MetroFire.CampfireClient
 					catch (TimeoutException ex)
 					{
 						lastException = ex;
+
+
 						_bus.SendMessage(new LogMessage(LogMessageType.Warning, "Call to Campfire API timed out. This is attempt #{0}",
-						                                i));
+														i));
 						Thread.Sleep(TimeSpan.FromSeconds(2));
 
 						if (i == 9)
@@ -281,12 +295,17 @@ namespace Rogue.MetroFire.CampfireClient
 					catch (WebException ex)
 					{
 						lastException = ex;
-						if (!ex.IsRecoverable())
+						if (!(ex.IsRecoverable() || retry))
 						{
+							onError(lastException);
 							break;
 						}
 					}
-					_bus.SendMessage(new ExceptionMessage(lastException));
+					catch (Exception ex)
+					{
+						onError(ex);
+						break;
+					}
 				}
 				finally
 				{

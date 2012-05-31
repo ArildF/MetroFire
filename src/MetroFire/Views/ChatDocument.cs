@@ -131,7 +131,8 @@ namespace Rogue.MetroFire.UI.Views
 			var name = FormatUserName(user);
 			paragraph.Inlines.Add(name + ": " + Environment.NewLine);
 
-			var run = new Run(message.Body) {FontFamily = new FontFamily("Consolas")};
+			var run = RenderUserMessage(message.Body); 
+			run.FontFamily = new FontFamily("Consolas");
 			paragraph.Inlines.Add(run);
 
 			paragraph.BorderThickness = new Thickness(0, 0.5, 0, 0.5);

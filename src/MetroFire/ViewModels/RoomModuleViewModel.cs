@@ -168,7 +168,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 				_bus.SendMessage(new RequestRoomInfoMessage(_room.Id));
 			}
 
-			var count = newMessages.Count(msg => msg.Type.In(MessageType.PasteMessage, MessageType.TextMessage));
+			var count = newMessages.Count(msg => 
+				msg.Type.In(MessageType.PasteMessage, MessageType.TextMessage, MessageType.UploadMessage));
 			if (count > 0)
 			{
 				_bus.SendMessage(new RoomActivityMessage(_room.Id, count));

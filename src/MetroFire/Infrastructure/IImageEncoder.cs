@@ -7,7 +7,7 @@ namespace Rogue.MetroFire.UI.Infrastructure
 	{
 		public string EncodeToTempPng(BitmapSource imageSource)
 		{
-			var path = Path.GetTempFileName();
+			var path = GetTempFileName();
 			using (var fs = File.OpenWrite(path))
 			{
 				var encoder = new PngBitmapEncoder();
@@ -16,6 +16,18 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			}
 
 			return path;
+		}
+
+		private static string GetTempFileName()
+		{
+			string filename;
+			do
+			{
+				filename = Path.GetTempFileName() + ".png";
+
+			} while (File.Exists(filename));
+
+			return filename;
 		}
 	}
 

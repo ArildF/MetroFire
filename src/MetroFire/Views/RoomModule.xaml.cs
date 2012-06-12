@@ -76,10 +76,10 @@ namespace Rogue.MetroFire.UI.Views
 
 			Loaded += OnLoaded;
 
-			PreviewTextInput += OnTextInput;
+			PreviewTextInput += OnPreviewTextInput;
 		}
 
-		private void OnTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
+		private void OnPreviewTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
 		{
 			_textBox.Focus();
 		}

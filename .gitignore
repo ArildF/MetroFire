@@ -29,4 +29,5 @@ ProxiesBin
 *.obj
 *~
 *.swp
-
+*_NCrunch*/
+*tmp_proj

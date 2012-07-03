@@ -3,10 +3,8 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Threading;
 using Castle.Core;
 using ReactiveUI;
@@ -271,8 +269,11 @@ namespace Rogue.MetroFire.CampfireClient
 					Exception lastException;
 					try
 					{
+						lastException = null;
+
 						var result = call();
 						continuation(result);
+
 
 						return;
 					}
@@ -297,7 +298,6 @@ namespace Rogue.MetroFire.CampfireClient
 						lastException = ex;
 						if (!(ex.IsRecoverable() || retry))
 						{
-							onError(lastException);
 							break;
 						}
 					}
@@ -305,6 +305,10 @@ namespace Rogue.MetroFire.CampfireClient
 					{
 						onError(ex);
 						break;
+					}
+					if (lastException != null)
+					{
+						onError(lastException);
 					}
 				}
 				finally

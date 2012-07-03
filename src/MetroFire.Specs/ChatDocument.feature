@@ -4,7 +4,11 @@
 	I want to have chat messages rendered and formatted in a pleasing way
 
 Background: 
-	Given a user 'Testuser'
+	Given that I am logged in
+	And a user 'Testuser'
+	And a room called "Test"
+	And that I have joined the room "Test"
+	And that the current room is "Test"
 	
 Scenario: Display simple text message
 	When I add the message "Hello world" from user 'Testuser'
@@ -14,6 +18,7 @@ Scenario: Emotes
 	When I add the message "/me is emotional" from user 'Testuser'
 	Then the message should be displayed like "Testuser is emotional"
 	And the message should be displayed in italics
+
 
 Scenario: Room joins
 	When user 'Testuser' joins the room

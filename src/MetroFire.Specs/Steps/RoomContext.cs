@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Documents;
 using Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
@@ -15,6 +16,7 @@ using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 using System;
 using System.Linq;
+using Rogue.MetroFire.UI.Views;
 
 namespace MetroFire.Specs.Steps
 {
@@ -22,7 +24,6 @@ namespace MetroFire.Specs.Steps
 	{
 		private int _currentRoomId;
 		private readonly IMessageBus _bus;
-		private readonly ChatViewFake _chatViewFake ;
 		private readonly IList<object> _messages = new List<object>();
 		private readonly WindsorContainer _container;
 		private readonly List<RoomModuleViewModel> _roomViewModels = new List<RoomModuleViewModel>();
@@ -41,10 +42,6 @@ namespace MetroFire.Specs.Steps
 
 			_campfireApiFake = new CampfireApiFake();
 			_container.Register(Component.For<ICampfireApi>().Instance(_campfireApiFake));
-
-			_chatViewFake = new ChatViewFake();
-			_container.Register(Component.For<IChatDocument>().Instance(_chatViewFake));
-
 
 			_loader = new MockSettingsLoader();
 			_container.Register(Component.For<ISettingsLoader>().Instance(_loader));
@@ -160,7 +157,9 @@ namespace MetroFire.Specs.Steps
 
 		public IEnumerable<Message> MessagesDisplayedInRoom(string roomName)
 		{
-			return _chatViewFake.Messages;
+			var chatDocument = ((ChatDocument) ViewModelFor(roomName).ChatDocument);
+			return chatDocument.Blocks.OfType<Paragraph>()
+				.Select(p => p.GetText()).Select(str => new Message {Body = str});
 		}
 
 		public RoomModuleViewModel ViewModelFor(string roomName)
@@ -173,9 +172,10 @@ namespace MetroFire.Specs.Steps
 			_lobbyModuleViewModel.Rooms.Single(r => r.Name == roomName).JoinCommand.Execute(null);
 		}
 
-		public void SendRoomMessage(string message, string roomName)
+		public void SendRoomMessage(string username, string message, string roomName)
 		{
-			_campfireApiFake.NewRoomMessage(message, roomName);
+			var user = _campfireApiFake.Users().First(u => u.Name == username);
+			_campfireApiFake.NewRoomMessage(message, roomName, userId: user.Id);
 		}
 
 		public void SendRoomMessages(string roomName, params Message[] messages)
@@ -220,6 +220,17 @@ namespace MetroFire.Specs.Steps
 		public void PulseSettingsChanged()
 		{
 			SendMessage(new SettingsChangedMessage());
+		}
+
+		public User GetUser(string user)
+		{
+			return _campfireApiFake.Users().FirstOrDefault(u => u.Name == user);
+		}
+
+		public void AddUser(string userName)
+		{
+			var user = _campfireApiFake.AddUser(userName);
+			_bus.SendMessage(new UserInfoReceivedMessage(user));
 		}
 	}
 

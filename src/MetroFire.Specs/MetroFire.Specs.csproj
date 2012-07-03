@@ -136,6 +136,7 @@
     <Compile Include="Steps\Events.cs" />
     <Compile Include="Steps\NotificationSteps.cs" />
     <Compile Include="Steps\RoomContext.cs" />
+    <Compile Include="Steps\MessageLoop.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

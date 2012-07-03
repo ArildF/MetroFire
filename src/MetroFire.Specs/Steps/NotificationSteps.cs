@@ -4,6 +4,7 @@ using System.Windows.Documents;
 using Moq;
 using Rogue.MetroFire.UI;
 using Rogue.MetroFire.UI.Settings;
+using Rogue.MetroFire.UI.Views;
 using TechTalk.SpecFlow;
 using FluentAssertions;
 
@@ -98,10 +99,15 @@ namespace MetroFire.Specs.Steps
 		[Then(@"a toast should appear containing the words ""(.*)""")]
 		public void ThenAToastShouldAppearContainingTheWordsHelloWorld(string text)
 		{
-			_context.ToastWindowViewModel.Toasts.Should().Contain(
-				p => ((ChatViewFake) p.Document).Messages.First().Body == text);
+			var toastViewModels = _context.ToastWindowViewModel.Toasts;
+			var texts = toastViewModels.Select(
+				p =>
+					{
+						var paragraph = ((ChatDocument) p.Document).Blocks.OfType<Paragraph>().First();
+						return paragraph.GetText();
+					});
 
-			
+			texts.Should().Contain(text);
 		}
 
 		[Then(@"after (\d+) seconds there should be (\d+) toasts")]

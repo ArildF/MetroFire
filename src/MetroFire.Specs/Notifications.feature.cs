@@ -73,6 +73,8 @@ namespace MetroFire.Specs
 #line 8
  testRunner.And("a room called \"Test\"");
 #line 9
+ testRunner.And("a user \'Testuser\'");
+#line 10
  testRunner.And("that I have joined the room \"Test\"");
 #line hidden
         }
@@ -82,15 +84,15 @@ namespace MetroFire.Specs
         public virtual void NotifyOnMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Notify on message", ((string[])(null)));
-#line 11
+#line 12
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 12
- testRunner.Given("that my settings are set to flash taskbar on any message");
 #line 13
- testRunner.When("the message \"Hello world\" is received for room \"Test\"");
+ testRunner.Given("that my settings are set to flash taskbar on any message");
 #line 14
+ testRunner.When("the message \"Hello world\" is received from user \'Testuser\' for room \"Test\"");
+#line 15
  testRunner.Then("the taskbar should flash");
 #line hidden
             this.ScenarioCleanup();
@@ -101,15 +103,15 @@ this.FeatureBackground();
         public virtual void DonTNotifyOnMessageFromSelf()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Don\'t notify on message from self", ((string[])(null)));
-#line 16
+#line 17
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 17
- testRunner.Given("that my settings are set to flash taskbar on any message");
 #line 18
- testRunner.When("I send the message \"Hello world\" to room \"Test\"");
+ testRunner.Given("that my settings are set to flash taskbar on any message");
 #line 19
+ testRunner.When("I send the message \"Hello world\" to room \"Test\"");
+#line 20
  testRunner.Then("the taskbar should not flash");
 #line hidden
             this.ScenarioCleanup();
@@ -122,17 +124,17 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Notify with toast", new string[] {
                         "backgroundtestscheduler"});
-#line 22
+#line 23
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 23
- testRunner.Given("that my settings are set to show a toast on any message");
 #line 24
- testRunner.When("the message \"Hello world\" is received for room \"Test\"");
+ testRunner.Given("that my settings are set to show a toast on any message");
 #line 25
- testRunner.Then("a toast should appear containing the words \"Hello world\"");
+ testRunner.When("the message \"Hello world\" is received from user \'Testuser\' for room \"Test\"");
 #line 26
+ testRunner.Then("a toast should appear containing the words \"<Testuser> Hello world\"");
+#line 27
  testRunner.Then("after 8 seconds there should be 0 toasts");
 #line hidden
             this.ScenarioCleanup();
@@ -143,17 +145,17 @@ this.FeatureBackground();
         public virtual void CloseToastManually()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Close toast manually", ((string[])(null)));
-#line 28
+#line 29
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 29
- testRunner.Given("that my settings are set to show a toast on any message");
 #line 30
- testRunner.And("the message \"Hello world\" is received for room \"Test\"");
+ testRunner.Given("that my settings are set to show a toast on any message");
 #line 31
- testRunner.When("I close the toast by clicking on the X");
+ testRunner.And("the message \"Hello world\" is received from user \'Testuser\' for room \"Test\"");
 #line 32
+ testRunner.When("I close the toast by clicking on the X");
+#line 33
  testRunner.Then("there should be 0 toasts");
 #line hidden
             this.ScenarioCleanup();
@@ -164,25 +166,25 @@ this.FeatureBackground();
         public virtual void ClickOnToastToActivateRoom()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Click on toast to activate room", ((string[])(null)));
-#line 34
+#line 35
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 35
- testRunner.Given("a room called \"Foo\"");
 #line 36
- testRunner.And("that I have joined the room \"Foo\"");
+ testRunner.Given("a room called \"Foo\"");
 #line 37
- testRunner.And("that my settings are set to show a toast on any message");
+ testRunner.And("that I have joined the room \"Foo\"");
 #line 38
- testRunner.And("the message \"Blah\" is received for room \"Test\"");
+ testRunner.And("that my settings are set to show a toast on any message");
 #line 39
- testRunner.When("I click on the toast");
+ testRunner.And("the message \"Blah\" is received from user \'Testuser\' for room \"Test\"");
 #line 40
- testRunner.Then("room \"Test\" should be active");
+ testRunner.When("I click on the toast");
 #line 41
- testRunner.And("the application should be active");
+ testRunner.Then("room \"Test\" should be active");
 #line 42
+ testRunner.And("the application should be active");
+#line 43
  testRunner.And("there should be 0 toasts");
 #line hidden
             this.ScenarioCleanup();

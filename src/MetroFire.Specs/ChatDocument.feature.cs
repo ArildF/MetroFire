@@ -69,7 +69,15 @@ namespace MetroFire.Specs
         {
 #line 6
 #line 7
- testRunner.Given("a user \'Testuser\'");
+ testRunner.Given("that I am logged in");
+#line 8
+ testRunner.And("a user \'Testuser\'");
+#line 9
+ testRunner.And("a room called \"Test\"");
+#line 10
+ testRunner.And("that I have joined the room \"Test\"");
+#line 11
+ testRunner.And("that the current room is \"Test\"");
 #line hidden
         }
         
@@ -78,13 +86,13 @@ namespace MetroFire.Specs
         public virtual void DisplaySimpleTextMessage()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Display simple text message", ((string[])(null)));
-#line 9
+#line 13
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 10
+#line 14
  testRunner.When("I add the message \"Hello world\" from user \'Testuser\'");
-#line 11
+#line 15
  testRunner.Then("the message should be displayed like \"<Testuser> Hello world\"");
 #line hidden
             this.ScenarioCleanup();
@@ -95,15 +103,15 @@ this.FeatureBackground();
         public virtual void Emotes()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Emotes", ((string[])(null)));
-#line 13
+#line 17
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 14
+#line 18
  testRunner.When("I add the message \"/me is emotional\" from user \'Testuser\'");
-#line 15
+#line 19
  testRunner.Then("the message should be displayed like \"Testuser is emotional\"");
-#line 16
+#line 20
  testRunner.And("the message should be displayed in italics");
 #line hidden
             this.ScenarioCleanup();
@@ -114,15 +122,15 @@ this.FeatureBackground();
         public virtual void RoomJoins()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Room joins", ((string[])(null)));
-#line 18
+#line 23
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 19
+#line 24
  testRunner.When("user \'Testuser\' joins the room");
-#line 20
+#line 25
  testRunner.Then("the message should be displayed like \"Testuser entered the room\"");
-#line 21
+#line 26
  testRunner.And("the message should be displayed in italics");
 #line hidden
             this.ScenarioCleanup();
@@ -133,15 +141,15 @@ this.FeatureBackground();
         public virtual void RoomLeaves()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Room leaves", ((string[])(null)));
-#line 23
+#line 28
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 24
+#line 29
  testRunner.When("user \'Testuser\' leaves the room");
-#line 25
+#line 30
  testRunner.Then("the message should be displayed like \"Testuser left the room\"");
-#line 26
+#line 31
  testRunner.And("the message should be displayed in italics");
 #line hidden
             this.ScenarioCleanup();
@@ -152,15 +160,15 @@ this.FeatureBackground();
         public virtual void RoomKicks()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Room kicks", ((string[])(null)));
-#line 28
+#line 33
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 29
+#line 34
  testRunner.When("user \'Testuser\' is kicked from the room");
-#line 30
+#line 35
  testRunner.Then("the message should be displayed like \"Testuser was kicked from the room\"");
-#line 31
+#line 36
  testRunner.And("the message should be displayed in italics");
 #line hidden
             this.ScenarioCleanup();
@@ -171,17 +179,17 @@ this.FeatureBackground();
         public virtual void Hyperlinks()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Hyperlinks", ((string[])(null)));
-#line 33
+#line 38
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 34
+#line 39
  testRunner.When("I add the message \"This is a hyperlink: http://www.test.com\" from user \'Testuser\'" +
                     "");
-#line 35
+#line 40
  testRunner.Then("the message should be displayed like \"<Testuser> This is a hyperlink: http://www." +
                     "test.com\"");
-#line 36
+#line 41
  testRunner.And("\"http://www.test.com\" should be a hyperlink");
 #line hidden
             this.ScenarioCleanup();

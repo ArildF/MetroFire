@@ -32,6 +32,12 @@ namespace MetroFire.Specs.Steps
 			_roomContext.LoginViewModel.LoginCommand.Execute(null);
 		}
 
+		[Given(@"a user '(.*)'")]
+		public void GivenAUserTestuser(string user)
+		{
+			_roomContext.AddUser(user);
+		}
+
 
 
 		[Given(@"that room ""(.*)"" is the active module")]
@@ -61,18 +67,22 @@ namespace MetroFire.Specs.Steps
 			vm.PostMessageCommand.Execute(null);
 		}
 
-		[Given(@"the message ""(.*)"" is received for room ""(.*)""")]
-		[When(@"the message ""(.*)"" is received for room ""(.*)""")]
-		public void GivenThatTheMessageHelloWorldIsReceivedForRoomTest(string message, string roomName)
+		[Given(@"the message ""(.*)"" is received from user '(.*)' for room ""(.*)""")]
+		[When(@"the message ""(.*)"" is received from user '(.*)' for room ""(.*)""")]
+		public void GivenThatTheMessageHelloWorldIsReceivedForRoomTest(string message, string username, string roomName)
 		{
-			_roomContext.SendRoomMessage(message, roomName);
+			_roomContext.SendRoomMessage(username, message, roomName);
 		}
 
-		[Given(@"that the following messages are received for room ""(.*)"" in order:")]
-		[When(@"the following messages are received for room ""(.*)"" in order:")]
-		public void WhenTheFollowingMessagesAreReceivedInOrder(string roomName, Table table)
+		[Given(@"that the following messages are received from user '(.*)' for room ""(.*)"" in order:")]
+		[When(@"the following messages are received from user '(.*)' for room ""(.*)"" in order:")]
+		public void WhenTheFollowingMessagesAreReceivedInOrder(string userName, string roomName, Table table)
 		{
-			var messages = table.Rows.Select(r => new Message {Id =int.Parse(r["Id"]), Body = r["Message"]}).ToArray();
+			var user = _roomContext.GetUser(userName);
+
+			var messages = table.Rows.Select(r => new Message {Id =int.Parse(r["Id"]), 
+				UserIdString =  user.Id.ToString(),
+				Body = r["Message"], Type = MessageType.TextMessage}).ToArray();
 			_roomContext.SendRoomMessages(roomName, messages);
 
 		}

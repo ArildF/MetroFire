@@ -74,6 +74,11 @@ namespace MetroFire.Specs.Steps
 			return _users.Single(u => u.Id == id);
 		}
 
+		public IEnumerable<User> Users()
+		{
+			return _users;
+		}
+
 		public IDisposable Stream(int id, Action<Message> action, IObserver<ConnectionState> observer)
 		{
 			var streamer = new Streamer(id, action, observer);
@@ -95,6 +100,13 @@ namespace MetroFire.Specs.Steps
 		public Upload UploadFile(int roomId, UploadFileParams uploadFileParams, IObserver<ProgressState> progressObserver)
 		{
 			throw new NotImplementedException();
+		}
+
+		public User AddUser(string name)
+		{
+			var user = new User {Name = name, Id = _users.Max(u => u.Id) + 1};
+			_users.Add(user);
+			return user;
 		}
 
 		public Unit LeaveRoom(int id)

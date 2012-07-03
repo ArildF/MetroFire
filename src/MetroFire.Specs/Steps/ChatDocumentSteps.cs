@@ -18,45 +18,62 @@ namespace MetroFire.Specs.Steps
 	[Scope(Feature = "Chat document")]
 	public class ChatDocumentSteps
 	{
-		private readonly ChatDocument _chatDocument;
-		private Mock<IMessageBus> _bus;
-		private User _user;
+		private readonly RoomContext _context;
+		private ChatDocument _chatDocument;
+		private string _currentRoom;
 
-		public ChatDocumentSteps()
+		public ChatDocumentSteps(RoomContext context)
 		{
-			_bus = new Mock<IMessageBus>();
-			_chatDocument = new ChatDocument(new Mock<IInlineUploadViewFactory>().Object, new Mock<IWebBrowser>().Object, 
-				new Mock<IPasteViewFactory>().Object);
+			_context = context;
 		}
 
-		[Given(@"a user '(.*)'")]
-		public void GivenAUserTestuser(string name)
+		[Given(@"that the current room is ""(.*)""")]
+		public void GivenThatTheCurrentRoomIsTest(string roomName)
 		{
-			_user = new User {Admin = false, Name = name};
+			_currentRoom = roomName;
+			_chatDocument = (ChatDocument) _context.ViewModelFor(roomName).ChatDocument;
 		}
+
 
 		[When(@"I add the message ""(.*)"" from user '(.*)'")]
 		public void WhenIAddTheMessageHelloWorldFromUserTestuser(string message, string user)
 		{
-			_chatDocument.AddMessage(new Message {Body = message, Type = MessageType.TextMessage}, _user, new object());
+			_context.SendRoomMessages(_currentRoom, new Message
+				{
+					Body = message, Type = MessageType.TextMessage, UserIdString = _context.GetUser(user).Id.ToString()
+				});
+		}
+	
+		[When(@"user '(.*)' joins the room")]
+		public void WhenUserTestuserJoinsTheRoom(string user)
+		{
+			_context.SendRoomMessages(_currentRoom, new Message
+				{
+					Type = MessageType.EnterMessage,
+					UserIdString = _context.GetUser(user).Id.ToString()
+				});
 		}
 
-		[When(@"user 'Testuser' joins the room")]
-		public void WhenUserTestuserJoinsTheRoom()
+		[When(@"user '(.*)' leaves the room")]
+		public void WhenUserTestuserLeavesTheRoom(string user)
 		{
-			_chatDocument.AddMessage(new Message {Type = MessageType.EnterMessage}, _user, new object());
+			_context.SendRoomMessages(_currentRoom, 
+				new Message
+					{
+						Type = MessageType.LeaveMessage,
+						UserIdString = _context.GetUser(user).Id.ToString()
+					});
 		}
 
-		[When(@"user 'Testuser' leaves the room")]
-		public void WhenUserTestuserLeavesTheRoom()
+		[When(@"user '(.*)' is kicked from the room")]
+		public void WhenUserTestuserIsKickedFromTheRoom(string user)
 		{
-			_chatDocument.AddMessage(new Message {Type = MessageType.LeaveMessage}, _user, new object());
-		}
-
-		[When(@"user 'Testuser' is kicked from the room")]
-		public void WhenUserTestuserIsKickedFromTheRoom()
-		{
-			_chatDocument.AddMessage(new Message {Type = MessageType.KickMessage}, _user, new object());
+			_context.SendRoomMessages(_currentRoom, 
+				new Message
+					{
+						Type = MessageType.KickMessage,
+						UserIdString = _context.GetUser(user).Id.ToString()
+					});
 		}
 
 
@@ -95,22 +112,37 @@ namespace MetroFire.Specs.Steps
 				{typeof(Run), i => ((Run)i).Text}
 			};
 
-		public static string GetText(this InlineCollection inlines)
+		public static string GetText(this IEnumerable<Inline> inlines)
 		{
 			var sb = new StringBuilder();
 
 			foreach (var inline in inlines.Flatten())
 			{
-				Func<Inline, string> func;
-				if (Extractors.TryGetValue(inline.GetType(), out func))
+				var s = inline.GetText();
+				if (s != null)
 				{
-					sb.Append(func(inline));
+					sb.Append(s);
 				}
 			}
 			return sb.ToString();
 		}
 
-		public static IEnumerable<Inline> Flatten(this InlineCollection inlines)
+		public static string GetText(this Paragraph paragraph)
+		{
+			return paragraph.Inlines.GetText();
+		}
+
+		public static string GetText(this Inline inline)
+		{
+			Func<Inline, string> func;
+			if (Extractors.TryGetValue(inline.GetType(), out func))
+			{
+				return func(inline);
+			}
+			return null;
+		}
+
+		public static IEnumerable<Inline> Flatten(this IEnumerable<Inline> inlines)
 		{
 			foreach (var inline in inlines)
 			{

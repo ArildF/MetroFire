@@ -103,7 +103,9 @@ namespace Rogue.MetroFire.UI
 
 			public void Release(IPasteView view)
 			{
+				var vm = view.Element.DataContext;
 				_container.Release(view);
+				_container.Release(vm);
 			}
 		}
 

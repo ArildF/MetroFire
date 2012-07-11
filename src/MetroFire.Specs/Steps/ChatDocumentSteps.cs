@@ -7,10 +7,12 @@ using Moq;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
+using Rogue.MetroFire.UI.ViewModels;
 using Rogue.MetroFire.UI.Views;
 using TechTalk.SpecFlow;
 using System.Linq;
 using FluentAssertions;
+using Castle.Core.Internal;
 
 namespace MetroFire.Specs.Steps
 {
@@ -76,6 +78,26 @@ namespace MetroFire.Specs.Steps
 					});
 		}
 
+		[When(@"I add (\d+) image pastes to the room")]
+		public void WhenIAdd40ImagePastesToTheRoom(int num)
+		{
+			_context.PutImageOnClipboard();
+			for (int i = 0; i < num; i++)
+			{
+				_context.ViewModelFor(_currentRoom).PasteCommand.Execute(null);
+			}
+		}
+
+		[When(@"I cancel all the image pastes in the room")]
+		public void WhenICancelAllTheImagePastesInTheRoom()
+		{
+			var vms = _chatDocument.Blocks.OfType<Paragraph>().SelectMany(p => p.Inlines).OfType<InlineUIContainer>()
+				.Select(uc => uc.Child).OfType<IPasteView>().Select(pv => pv.Element.DataContext).Cast<PasteViewModel>().ToArray();
+			vms.ForEach(vm => vm.CancelCommand.Execute(null));
+
+		}
+
+
 
 		[Then(@"the message should be displayed like ""(.*)""")]
 		public void ThenTheMessageShouldBeDisplayedLikeTestuserHelloWorld(string message)
@@ -100,6 +122,13 @@ namespace MetroFire.Specs.Steps
 			var inline = block.Inlines.Flatten().OfType<Run>().First(r => r.Text == url);
 			inline.Parent.Should().BeOfType<Hyperlink>();
 		}
+
+		[Then(@"there should be (\d+) PasteViewModels in the system")]
+		public void ThenThereShouldBe0PasteViewModelsInTheSystem(int num)
+		{
+			_context.NumComponentsOfType<PasteViewModel>().Should().Be(0);
+		}
+
 
 
 

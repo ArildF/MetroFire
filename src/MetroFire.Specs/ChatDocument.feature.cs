@@ -194,6 +194,25 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Image pastes without memory leaks")]
+        public virtual void ImagePastesWithoutMemoryLeaks()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Image pastes without memory leaks", ((string[])(null)));
+#line 43
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 44
+ testRunner.When("I add 40 image pastes to the room");
+#line 45
+ testRunner.And("I cancel all the image pastes in the room");
+#line 46
+ testRunner.Then("there should be 0 PasteViewModels in the system");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

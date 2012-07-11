@@ -40,3 +40,7 @@ Scenario: Hyperlinks
 	Then the message should be displayed like "<Testuser> This is a hyperlink: http://www.test.com"
 	And "http://www.test.com" should be a hyperlink
 
+Scenario: Image pastes without memory leaks
+	When I add 40 image pastes to the room
+	And I cancel all the image pastes in the room
+	Then there should be 0 PasteViewModels in the system

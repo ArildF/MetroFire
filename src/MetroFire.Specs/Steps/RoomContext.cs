@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media.Imaging;
 using Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
@@ -11,12 +16,14 @@ using ReactiveUI;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
+using Rogue.MetroFire.UI.Infrastructure;
 using Rogue.MetroFire.UI.Notifications;
 using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 using System;
 using System.Linq;
 using Rogue.MetroFire.UI.Views;
+using Component = Castle.MicroKernel.Registration.Component;
 
 namespace MetroFire.Specs.Steps
 {
@@ -33,6 +40,8 @@ namespace MetroFire.Specs.Steps
 		private readonly MockSettingsLoader _loader;
 
 		private Mock<INotificationAction> _mockFlashTaskBarAction;
+		private readonly Dictionary<Type, int> _componentCounts;
+		private FakeClipBoardService _fakeClipboardService;
 
 		public RoomContext()
 		{
@@ -51,7 +60,14 @@ namespace MetroFire.Specs.Steps
 			_container.Register(
 				Component.For<IApplicationActivator>().Instance(
 					(ApplicationActivatorMock = new Mock<IApplicationActivator>()).Object));
+
+			_fakeClipboardService = new FakeClipBoardService();
+			_container.Register(Component.For<IClipboardService>().Instance(_fakeClipboardService));
+
+			_container.Register(Component.For<IPasteView>().ImplementedBy<FakePasteView>().LifestyleTransient());
+
 			bootstrapper.Bootstrap();
+
 
 
 			_container.Install(FromAssembly.This());
@@ -64,6 +80,27 @@ namespace MetroFire.Specs.Steps
 			_bus.SendMessage(new ApplicationLoadedMessage());
 
 			var dummy = _container.Resolve<IToastWindow>();
+
+
+			_componentCounts = new Dictionary<Type, int>();
+			_container.Kernel.ComponentCreated += (model, instance) =>
+				{
+					int count = 0;
+					_componentCounts.TryGetValue(instance.GetType(), out count);
+					count++;
+					_componentCounts[instance.GetType()] = count;
+				};
+			_container.Kernel.ComponentDestroyed += (model, instance) =>
+				{
+					int count = _componentCounts[instance.GetType()];
+					count--;
+					_componentCounts[instance.GetType()] = count;
+				};
+		}
+
+		private void CountCreatedComponents(ComponentModel model, object instance)
+		{
+			throw new NotImplementedException();
 		}
 
 		private INotificationAction CreateNotificationAction(NotificationAction arg)
@@ -231,6 +268,55 @@ namespace MetroFire.Specs.Steps
 		{
 			var user = _campfireApiFake.AddUser(userName);
 			_bus.SendMessage(new UserInfoReceivedMessage(user));
+		}
+
+		public int NumComponentsOfType<T>()
+		{
+			int num = 0;
+			_componentCounts.TryGetValue(typeof (T), out num);
+			return num;
+
+		}
+
+		public void PutImageOnClipboard()
+		{
+			_fakeClipboardService.SetImage();
+		}
+	}
+
+	public class FakePasteView : FrameworkElement, IPasteView
+	{
+		private readonly PasteViewModel _vm;
+		private readonly IObservable<Unit> _closing;
+
+		public FakePasteView(IPasteViewModel vm)
+		{
+			_vm = (PasteViewModel) vm;
+			_closing = Observable.FromEventPattern<PropertyChangedEventArgs>(vm, "PropertyChanged")
+				.Where(_ => _vm.IsFinished).Select(_ => Unit.Default);
+			DataContext = vm;
+		}
+
+		public FrameworkElement Element { get { return this; } }
+
+		public IObservable<Unit> Closing
+		{
+			get { return _closing; }
+		}
+	}
+
+	public class FakeClipBoardService : IClipboardService
+	{
+		private ClipboardItem _currentItem;
+
+		public ClipboardItem GetClipboardItem()
+		{
+			return _currentItem;
+		}
+
+		public void SetImage()
+		{
+			_currentItem = new ClipboardItem("Test.png", "image/png");
 		}
 	}
 

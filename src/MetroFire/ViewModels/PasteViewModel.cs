@@ -10,7 +10,7 @@ using Rogue.MetroFire.UI.Infrastructure;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class PasteViewModel : ReactiveObject, IPasteViewModel
+	public class PasteViewModel : ViewModelBase, IPasteViewModel
 	{
 		private readonly object _imageSource;
 		private bool _isUploading;
@@ -41,40 +41,40 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			PasteCommand = new ReactiveCommand();
 
-			bus.Listen<FileUploadedMessage>().Where(msg => msg.CorrelationId == _currentCorrelation)
-				.SubscribeUI(_ => IsFinished = true);
+			Subscribe(bus.Listen<FileUploadedMessage>().Where(msg => msg.CorrelationId == _currentCorrelation)
+				.SubscribeUI(_ => IsFinished = true));
 
-			bus.Listen<FileUploadProgressChangedMessage>().Where(msg => msg.CorrelationId == _currentCorrelation)
+			Subscribe(bus.Listen<FileUploadProgressChangedMessage>().Where(msg => msg.CorrelationId == _currentCorrelation)
 				.SubscribeUI(
 					msg =>
 					{
 						ProgressCurrent = msg.Progress.Current;
 						ProgressTotal = msg.Progress.Total;
 						Debug.WriteLine("Current, total" + ProgressCurrent + ", " + ProgressTotal);
-					});
+					}));
 
-			bus.Listen<CorrelatedExceptionMessage>().Where(msg => msg.CorrelationId == _currentCorrelation)
+			Subscribe(bus.Listen<CorrelatedExceptionMessage>().Where(msg => msg.CorrelationId == _currentCorrelation)
 				.SubscribeUI(msg =>
 					{
 						IsErrored = true;
 						IsUploading = false;
 						LastException = msg.Exception;
-					});
+					}));
 
 			ProgressCurrent = 0;
 			ProgressTotal = 100;
 
-			bus.RegisterMessageSource(
+			Subscribe(bus.RegisterMessageSource(
 				PasteCommand.Do(_ =>
 					{
 						IsUploading = true;
 						IsErrored = false;
 					})
 				.Select(_ => new RequestUploadFileMessage(room.Id, clipboardItem.LocalPath, clipboardItem.ContentType))
-				.Do(msg => _currentCorrelation = msg.CorrelationId));
+				.Do(msg => _currentCorrelation = msg.CorrelationId)));
 
 			CancelCommand = new ReactiveCommand();
-			CancelCommand.Subscribe(_ => IsFinished = true);
+			Subscribe(CancelCommand.Subscribe(_ => IsFinished = true));
 		}
 
 		public bool ShowLocalPath { get; private set; }

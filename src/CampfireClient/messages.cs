@@ -394,4 +394,24 @@ namespace Rogue.MetroFire.CampfireClient
 	}
 
 	public class RequestConnectivityCheckMessage{}
+
+	public class RequestCheckAccountName : CorrelatedMessage
+	{
+		public string AccountName { get; private set; }
+
+		public RequestCheckAccountName(string accountName)
+		{
+			AccountName = accountName;
+		}
+	}
+
+	public class RequestCheckAccountNameReply : CorrelatedReply
+	{
+		public bool Result { get; private set; }
+
+		public RequestCheckAccountNameReply(bool result, Guid correlationId) : base(correlationId)
+		{
+			Result = result;
+		}
+	}
 }

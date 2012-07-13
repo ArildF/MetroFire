@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+	<DrawingBrush x:Key="jean_victor_balin_green_tick" Stretch="Uniform">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<DrawingGroup>
+					<DrawingGroup Transform="1,0,0,1,-8,-8">
+						<GeometryDrawing Geometry="F1M32.000,8.631C19.113,8.631 8.631,19.113 8.631,32.000 8.631,44.887 19.113,55.369 32.000,55.369 44.887,55.369 55.369,44.887 55.369,32.000 55.369,19.113 44.887,8.631 32.000,8.631z">
+							<GeometryDrawing.Brush>
+								<LinearGradientBrush StartPoint="10.018,8.631" EndPoint="63.488,63.66" MappingMode="Absolute" SpreadMethod="Pad">
+									<GradientStop Color="#FF236B0D" Offset="0" ></GradientStop>
+									<GradientStop Color="#FF0A2205" Offset="1" ></GradientStop>
+								</LinearGradientBrush>
+							</GeometryDrawing.Brush>
+						</GeometryDrawing>
+						<GeometryDrawing Geometry="F1M54.500,32.000C54.500,44.420 44.420,54.500 32.000,54.500 19.580,54.500 9.500,44.420 9.500,32.000 9.500,19.580 19.580,9.500 32.000,9.500 44.420,9.500 54.500,19.580 54.500,32.000z">
+							<GeometryDrawing.Brush>
+								<RadialGradientBrush Center="21.96,14.922" RadiusX="27.5" RadiusY="27.5" GradientOrigin="21.96,14.922" MappingMode="Absolute" Transform="0,1.08870804309845,-1.10242700576782,1.65875990205677E-05,41.48828125,-4.73233795166016">
+									<GradientStop Color="#FF2EDC32" Offset="0" ></GradientStop>
+									<GradientStop Color="#FF11661D" Offset="1" ></GradientStop>
+								</RadialGradientBrush>
+							</GeometryDrawing.Brush>
+						</GeometryDrawing>
+						<GeometryDrawing Geometry="F1M36.813,14.438C36.464,14.481,36.166,14.707,36.031,15.031L25.844,39.938 18.438,29.344C18.248,29.065 17.929,28.903 17.592,28.916 17.255,28.929 16.949,29.114 16.781,29.406L13.156,35.438C12.931,35.823,12.996,36.311,13.313,36.625L25.375,48.688C25.569,48.881 25.834,48.984 26.107,48.972 26.381,48.960 26.636,48.834 26.813,48.625L49.750,22.063C49.941,21.833 50.017,21.529 49.957,21.237 49.896,20.945 49.704,20.696 49.438,20.563L37.375,14.531C37.201,14.445,37.005,14.412,36.813,14.438z">
+							<GeometryDrawing.Brush>
+								<LinearGradientBrush StartPoint="24.916,22.962" EndPoint="39.939,43.969" MappingMode="Absolute" SpreadMethod="Pad">
+									<GradientStop Color="#FFD3CECE" Offset="0" ></GradientStop>
+									<GradientStop Color="#FF474240" Offset="1" ></GradientStop>
+								</LinearGradientBrush>
+							</GeometryDrawing.Brush>
+						</GeometryDrawing>
+						<GeometryDrawing Geometry="F1M37.188,16.125L26.781,41.594C26.663,41.878 26.399,42.074 26.093,42.107 25.787,42.140 25.488,42.003 25.313,41.750L17.688,30.844 14.656,35.844 26.063,47.250 48.188,21.625 37.188,16.125z">
+							<GeometryDrawing.Brush>
+								<LinearGradientBrush StartPoint="24.916,28.824" EndPoint="39.817,49.099" MappingMode="Absolute" SpreadMethod="Pad">
+									<GradientStop Color="White" Offset="0" ></GradientStop>
+									<GradientStop Color="#00A3A5EE" Offset="1" ></GradientStop>
+								</LinearGradientBrush>
+							</GeometryDrawing.Brush>
+						</GeometryDrawing>
+					</DrawingGroup>
+				</DrawingGroup>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+</ResourceDictionary>

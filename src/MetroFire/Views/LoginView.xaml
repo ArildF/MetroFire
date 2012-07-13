@@ -5,9 +5,11 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:Rogue_MetroFire_UI="clr-namespace:Rogue.MetroFire.UI" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"
 			 xmlns:Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
+			 xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
 			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" x:Class="Rogue.MetroFire.UI.Views.LoginView" 
 			 mc:Ignorable="d" 
-			 d:DesignHeight="458" d:DesignWidth="565">
+			Infrastructure:DesignTime.Background="White"
+			 d:DesignHeight="458" Width="613">
 	<UserControl.Resources>
 		<Style x:Key="MetroHeader2" TargetType="{x:Type TextBlock}"/>
 	</UserControl.Resources>
@@ -36,6 +38,36 @@
 				</VisualState>
 				<VisualState x:Name="NormalState"/>
 			</VisualStateGroup>
+			<VisualStateGroup x:Name="AccountNameVerifiedGroup">
+				<VisualState x:Name="AccountNameVerified">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="border_Verified">
+							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+				<VisualState x:Name="AccountNameNotVerified"/>
+			</VisualStateGroup>
+			<VisualStateGroup x:Name="AccountNameErrorGroup">
+				<VisualState x:Name="AccountNameNoError"/>
+				<VisualState x:Name="AccountNameError">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="border_Error">
+							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
+			<VisualStateGroup x:Name="AccountNameVerifyingGroup">
+				<VisualState x:Name="NotVerifyingAccountName"/>
+				<VisualState x:Name="VerifyingAccountName">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="verifyAccountProgressIndicator">
+							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
 		<VisualStateManager.CustomVisualStateManager>
 			<ei:ExtendedVisualStateManager/>
@@ -45,14 +77,21 @@
 			<Behaviors:VisualStateBehavior>
 				<Behaviors:Transition Source="{Binding IsLoggingIn}" Value="False" VisualState="NormalState"/>
 				<Behaviors:Transition Source="{Binding IsLoggingIn}" Value="True" VisualState="LoggingInState"/>
+				<Behaviors:Transition Source="{Binding IsAccountNameVerified}" Value="True" VisualState="AccountNameVerified"/>
+				<Behaviors:Transition Source="{Binding IsAccountNameVerified}" Value="False" VisualState="AccountNameNotVerified"/>
+				<Behaviors:Transition Source="{Binding IsAccountNameInError}" Value="False" VisualState="AccountNameNoError"/>
+				<Behaviors:Transition Source="{Binding IsAccountNameInError}" Value="True" VisualState="AccountNameError"/>
+				<Behaviors:Transition Source="{Binding IsVerifyingAccountInProgress}" Value="False" VisualState="NotVerifyingAccountName"/>
+				<Behaviors:Transition Source="{Binding IsVerifyingAccountInProgress}" Value="True" VisualState="VerifyingAccountName"/>
 			</Behaviors:VisualStateBehavior>
 		</i:Interaction.Behaviors>
 		
 		
 		<Grid x:Name="grid" HorizontalAlignment="Center" Height="286" VerticalAlignment="Center" Width="487">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="0.471*"/>
-				<ColumnDefinition Width="0.529*"/>
+				<ColumnDefinition Width="0.6*"/>
+				<ColumnDefinition Width="0.6*"/>
+				<ColumnDefinition Width="40"/>
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="0.189*"/>
@@ -63,11 +102,15 @@
 			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="SemiBold" Style="{DynamicResource SmallMetroHeading}" d:LayoutOverrides="GridBox" Grid.ColumnSpan="2"><Run Language="nb-no" Text="Provide login info"/></TextBlock>
 			<TextBlock TextWrapping="Wrap" Grid.Row="1" FontWeight="Light" Height="50.22" Width="221.377" Style="{DynamicResource MetroLargeLightHeader}" Margin="4,8.924" VerticalAlignment="Center"><Run Language="nb-no" Text="Account name"/><LineBreak/><Run Language="nb-no"/></TextBlock>
 			<TextBlock TextWrapping="Wrap" Grid.Row="2" FontWeight="Light" Height="50.22" Width="221.377" Style="{DynamicResource MetroLargeLightHeader}" Margin="4,8.924" VerticalAlignment="Center"><Run Language="nb-no" Text="Token"/><LineBreak/><Run Language="nb-no"/></TextBlock>
-			<TextBox TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width" Text="{Binding Account, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+			<TextBox x:Name="textBox" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width" Text="{Binding Account, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 			<TextBox TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width" Text="{Binding Token, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 			<Button Content="Login" Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource MetroBigButton}" VerticalAlignment="Center" Command="{Binding LoginCommand}"/>
+			<Border x:Name="border_Verified" BorderThickness="1" Margin="3" Grid.Column="3" Background="{DynamicResource jean_victor_balin_green_tick}" Grid.Row="1" Visibility="Hidden" ToolTip="The account name exists."/>
+			<Border x:Name="border_Error" BorderThickness="1" Margin="3" Grid.Column="2" Background="{DynamicResource molumen_red_round_error_warning_icon}" Grid.Row="1" Visibility="Hidden" d:LayoutOverrides="GridBox" ToolTip="The account name is invalid."/>
+			<Rogue_MetroFire_UI:ProgressIndicator x:Name="verifyAccountProgressIndicator" Margin="4" d:LayoutOverrides="Width, Height" Grid.Row="1" Grid.Column="2" Visibility="Hidden"/>
 		</Grid>
-		<Rogue_MetroFire_UI:ProgressIndicator x:Name="progressIndicator" Visibility="Hidden"/>
+		<Rogue_MetroFire_UI:ProgressIndicator x:Name="progressIndicator" Visibility="Hidden" Width="100" Height="100"
+											  VerticalAlignment="Center" HorizontalAlignment="Center"/>
 		<TextBlock x:Name="textBlock" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Logging in" VerticalAlignment="Center" FontSize="34.667" FontWeight="Light" Visibility="Hidden"/>
 	</Grid>
 </UserControl>

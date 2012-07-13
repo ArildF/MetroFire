@@ -170,6 +170,31 @@ namespace Rogue.MetroFire.CampfireClient
 			return Get<Message[]>(uri, "messages");
 		}
 
+		public bool CheckAccountExists(string account)
+		{
+			var uri = new Uri(String.Format("https://{0}.campfirenow.com", account));
+			var request = CreateRequest(uri);
+			request.Method = "HEAD";
+
+			try
+			{
+				var response = (HttpWebResponse)request.GetResponse();
+				return response.StatusCode != HttpStatusCode.NotFound;
+			}
+			catch (WebException ex)
+			{
+				if (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound)
+				{
+					return false;
+				}
+				if (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.Unauthorized)
+				{
+					return true;
+				}
+				throw;
+			}
+		}
+
 		public User GetMe()
 		{
 			var uri = String.Format("users/me.xml");
@@ -348,7 +373,11 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private NetworkCredential CreateCredentials()
 		{
-			return new NetworkCredential(_loginInfo.Token, "X");
+			if (_loginInfo != null)
+			{
+				return new NetworkCredential(_loginInfo.Token, "X");
+			}
+			return null;
 		}
 
 		private class NoResponse{}

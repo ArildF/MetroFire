@@ -43,13 +43,13 @@ namespace MetroFire.Specs.Steps
 		private readonly Dictionary<Type, int> _componentCounts;
 		private FakeClipBoardService _fakeClipboardService;
 
-		public RoomContext()
+		public RoomContext(CampfireApiFake campfireApiFake)
 		{
 			var bootstrapper = new Bootstrapper {TestMode = true};
 			_container = bootstrapper.Container;
 			_container.Kernel.ComponentCreated += KernelOnComponentCreated;
 
-			_campfireApiFake = new CampfireApiFake();
+			_campfireApiFake = campfireApiFake;
 			_container.Register(Component.For<ICampfireApi>().Instance(_campfireApiFake));
 
 			_loader = new MockSettingsLoader();

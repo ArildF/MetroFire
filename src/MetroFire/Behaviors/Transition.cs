@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
@@ -53,7 +54,8 @@ namespace Rogue.MetroFire.UI.Behaviors
 
 		public void EffectTransition(FrameworkElement associatedObject)
 		{
-			VisualStateManager.GoToElementState(associatedObject, VisualState, UseTransitions);
+			bool success = VisualStateManager.GoToElementState(associatedObject, VisualState, UseTransitions);
+			Debug.WriteLine(String.Format("Transition to state {0}, success: {1}", VisualState, success));
 		}
 
 		private static void OnSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)

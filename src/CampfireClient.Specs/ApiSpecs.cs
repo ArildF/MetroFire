@@ -17,12 +17,16 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 
 		private static CampfireApi CreateApi()
 		{
-			var lines = File.ReadAllLines("Creds.txt");
-			var url = lines[0];
-			var token = lines[1];
-
 			var api = new CampfireApi(new Settings());
-			api.SetLoginInfo(new LoginInfo(url, token));
+			if (File.Exists("Creds.txt"))
+			{
+				var lines = File.ReadAllLines("Creds.txt");
+				var url = lines[0];
+				var token = lines[1];
+
+				api.SetLoginInfo(new LoginInfo(url, token));
+				
+			}
 
 			return api;
 		}
@@ -396,5 +400,22 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 		private static ConnectivityState _state;
 	}
 
+	public class When_verifying_account_name_that_does_not_exist : ApiContext
+	{
+		Because of = () => _result = api.CheckAccountExists("sdjhsdf");
+
+		It should_fail = () => _result.ShouldBeFalse();
+
+		private static bool _result;
+	}
+
+	public class When_verifying_account_name_that_does_exist : ApiContext
+	{
+		Because of = () => _result = api.CheckAccountExists("natesting");
+
+		It should_succeed = () => _result.ShouldBeTrue();
+
+		private static bool _result;
+	}
 }
 

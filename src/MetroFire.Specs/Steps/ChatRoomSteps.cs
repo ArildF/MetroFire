@@ -94,6 +94,7 @@ namespace MetroFire.Specs.Steps
 		}
 
 		[When(@"we wait (\d+) seconds")]
+		[When(@"I wait (\d+) seconds")]
 		public void WhenWeWait12Seconds(int secs)
 		{
 			Events.TestScheduler.AdvanceBy(TimeSpan.FromSeconds(secs).Ticks);

@@ -60,6 +60,7 @@ namespace Rogue.MetroFire.CampfireClient
 		User GetMe();
 		ConnectivityState CheckConnectivity();
 
+		bool CheckAccountExists(string account);
 	}
 
 	public interface ISettings

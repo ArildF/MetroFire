@@ -20,6 +20,7 @@ namespace MetroFire.Specs.Steps
 
 		private int _currentMessageId;
 		private readonly User _meUser;
+		private readonly List<string> _validAccounts = new List<string>();
 
 		public CampfireApiFake()
 		{
@@ -126,6 +127,11 @@ namespace MetroFire.Specs.Steps
 			throw new NotImplementedException();
 		}
 
+		public bool CheckAccountExists(string account)
+		{
+			return _validAccounts.Contains(account);
+		}
+
 		public void AddRoom(Room room)
 		{
 			if (room.Users == null)
@@ -222,6 +228,16 @@ namespace MetroFire.Specs.Steps
 		public IEnumerable<Streamer> Streamers()
 		{
 			return _streamers;
+		}
+
+		public void IsInvalidAccount(string accountName)
+		{
+			
+		}
+
+		public void IsValidAccount(string accountName)
+		{
+			_validAccounts.Add(accountName);
 		}
 	}
 }

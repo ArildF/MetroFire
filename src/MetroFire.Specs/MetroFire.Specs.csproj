@@ -117,6 +117,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DisplayingChatRoomMessages.feature</DependentUpon>
     </Compile>
+    <Compile Include="Login.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Login.feature</DependentUpon>
+    </Compile>
     <Compile Include="Misc.cs" />
     <Compile Include="Notifications.feature.cs">
       <AutoGen>True</AutoGen>
@@ -134,6 +139,7 @@
     <Compile Include="Steps\ChatViewFake.cs" />
     <Compile Include="Steps\ChatDocumentSteps.cs" />
     <Compile Include="Steps\Events.cs" />
+    <Compile Include="Steps\LoginSteps.cs" />
     <Compile Include="Steps\NotificationSteps.cs" />
     <Compile Include="Steps\RoomContext.cs" />
   </ItemGroup>
@@ -146,6 +152,10 @@
     <None Include="DisplayingChatRoomMessages.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DisplayingChatRoomMessages.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Login.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Login.feature.cs</LastGenOutput>
     </None>
     <None Include="Notifications.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

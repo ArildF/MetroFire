@@ -36,12 +36,9 @@
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
-
-	
-	<PropertyGroup Condition="'$(AssemblyNameOverride)' != ''">
-		<AssemblyName>$(AssemblyNameOverride)</AssemblyName>
-	</PropertyGroup>
-	
+  <PropertyGroup Condition="'$(AssemblyNameOverride)' != ''">
+    <AssemblyName>$(AssemblyNameOverride)</AssemblyName>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -140,9 +137,6 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
-
-	
-	
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -349,6 +343,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Resource>
+    <Page Include="Assets\check-System.Brush.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Assets\error-System.Brush.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Assets\preferences-system.Brush.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

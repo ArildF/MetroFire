@@ -18,3 +18,8 @@ Scenario: Valid account name
 	And I wait 3 seconds
 	Then an error message should not be displayed on the login screen
 	And the account name should be verified on the login screen
+
+@backgrountestscheduler
+Scenario: Show animation while verifying account
+	When I enter 'Foobar' for the account name on the login screen
+	Then a progress animation should be displayed next to the account name text box

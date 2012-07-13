@@ -60,6 +60,13 @@ namespace MetroFire.Specs.Steps
 			_context.LoginViewModel.IsAccountNameVerified.Should().BeTrue();
 		}
 
+		[Then(@"a progress animation should be displayed next to the account name text box")]
+		public void ThenAProgressAnimationShouldBeDisplayedNextToTheAccountNameTextBox()
+		{
+			_context.LoginViewModel.IsVerifyingAccountInProgress.Should().BeTrue();
+		}
+
+
 
 
 	}

@@ -110,6 +110,23 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Show animation while verifying account")]
+        [NUnit.Framework.CategoryAttribute("backgrountestscheduler")]
+        public virtual void ShowAnimationWhileVerifyingAccount()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show animation while verifying account", new string[] {
+                        "backgrountestscheduler"});
+#line 23
+this.ScenarioSetup(scenarioInfo);
+#line 24
+ testRunner.When("I enter \'Foobar\' for the account name on the login screen");
+#line 25
+ testRunner.Then("a progress animation should be displayed next to the account name text box");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

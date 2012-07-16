@@ -172,6 +172,31 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Go to settings if network error")]
+        [NUnit.Framework.CategoryAttribute("backgroundtestscheduler")]
+        public virtual void GoToSettingsIfNetworkError()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Go to settings if network error", new string[] {
+                        "backgroundtestscheduler"});
+#line 49
+this.ScenarioSetup(scenarioInfo);
+#line 50
+ testRunner.Given("that Campfire cannot be reached while verifying account name");
+#line 51
+ testRunner.When("I enter \'Foobar\' for the account name on the login screen");
+#line 52
+ testRunner.And("I enter a token");
+#line 53
+ testRunner.And("I wait 3 seconds");
+#line 54
+ testRunner.And("I click Proxy settings on the login screen");
+#line 55
+ testRunner.Then("Proxy Settings should be the active module");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

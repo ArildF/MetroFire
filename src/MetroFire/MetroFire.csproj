@@ -210,6 +210,7 @@
     <Compile Include="SampleData\SampleSettingsDataSource\SampleSettingsDataSource.xaml.cs">
       <DependentUpon>SampleSettingsDataSource.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SettingsPageNames.cs" />
     <Compile Include="Settings\ActionCondition.cs" />
     <Compile Include="Settings\ActionType.cs" />
     <Compile Include="Settings\CurrentSettings.cs" />

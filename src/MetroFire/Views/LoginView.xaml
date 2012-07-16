@@ -111,7 +111,7 @@
 			<Rogue_MetroFire_UI:ProgressIndicator x:Name="verifyAccountProgressIndicator" Margin="4" d:LayoutOverrides="Width, Height" Grid.Row="1" Grid.Column="2" Visibility="Hidden"/>
 			<StackPanel Grid.Row="4" Grid.ColumnSpan="4" Visibility="{Binding ShowConnectionError, Converter={StaticResource BoolToVisibilityConverter}}">
 				<TextBlock TextWrapping="Wrap" Style="{DynamicResource SmallMetroHeading}" Foreground="{DynamicResource RedErrorMessage}">
-					Unable to connect to Campfire. Verify your proxy settings and/or <Hyperlink Command="{Binding RetryCommand}">try again.</Hyperlink>
+					Unable to connect to Campfire. Verify your <Hyperlink Command="{Binding ProxySettingsCommand}">proxy settings</Hyperlink> and/or <Hyperlink Command="{Binding RetryCommand}">try again.</Hyperlink>
 				</TextBlock>
 				<TextBlock TextWrapping="Wrap" Text="{Binding ConnectionErrorMessage}" Style="{DynamicResource MetroBodyText}" Foreground="{DynamicResource RedErrorMessage}"/>
 			</StackPanel>

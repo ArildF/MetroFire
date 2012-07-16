@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Linq;
+using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.UI.Settings;
@@ -7,6 +8,8 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 {
 	public class SettingsViewModel : ReactiveObject, ISettingsViewModel
 	{
+		private ISettingsSubPage _selectedPage;
+
 		public SettingsViewModel(IMessageBus bus, ISettingsLoader loader, ISettingsSaver saver)
 		{
 			SettingsCommand = new ReactiveCommand();
@@ -24,6 +27,12 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 			};
 
+			SelectedPage = SettingsViewModels.First();
+
+			bus.RegisterMessageSource(bus.Listen<NavigateSettingsPageMessage>().Do(
+					msg => SelectedPage = SettingsViewModels.First(vm => vm.GetType().Name.StartsWith(msg.SettingsPage)))
+				.Select(_ => new NavigateMainModuleMessage(ModuleNames.SettingsModule)));
+
 			SaveCommand = new ReactiveCommand();
 			bus.RegisterMessageSource(
 				SaveCommand.Do(_ => CommitViewModels()).Do(_ => saver.Save(settings)).Select(_ => new NavigateBackMainModuleMessage()));
@@ -35,6 +44,12 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			{
 				settingsViewModel.Commit();
 			}
+		}
+
+		public ISettingsSubPage SelectedPage
+		{
+			get { return _selectedPage; }
+			set { this.RaiseAndSetIfChanged(vm => vm.SelectedPage, ref _selectedPage, value); }
 		}
 
 		public ReactiveCommand BackCommand { get; private set; }

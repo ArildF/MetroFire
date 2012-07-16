@@ -43,3 +43,15 @@ Scenario: Retry if Campfire initially cannot be reached
 	And I click Retry on the login screen
 	And I wait 3 seconds
 	Then I should be able to log in
+
+
+@backgroundtestscheduler
+Scenario: Go to settings if network error
+	Given that Campfire cannot be reached while verifying account name
+	When I enter 'Foobar' for the account name on the login screen
+	And I enter a token
+	And I wait 3 seconds
+	And I click Proxy settings on the login screen
+	Then Proxy Settings should be the active module
+
+

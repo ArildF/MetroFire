@@ -60,6 +60,13 @@ namespace MetroFire.Specs.Steps
 			_context.LoginViewModel.RetryCommand.Execute(null);
 		}
 
+		[When(@"I click Proxy settings on the login screen")]
+		public void WhenIClickProxySettingsOnTheLoginScreen()
+		{
+			_context.LoginViewModel.ProxySettingsCommand.Execute(null);
+		}
+
+
 
 		[Then(@"an error message should be displayed on the login screen")]
 		public void ThenAnErrorMessageShouldBeDisplayedOnTheLoginScreen()
@@ -110,6 +117,13 @@ namespace MetroFire.Specs.Steps
 		{
 			_context.LoginViewModel.LoginCommand.CanExecute(null).Should().BeTrue();
 		}
+
+		[Then(@"Proxy Settings should be the active module")]
+		public void ThenProxySettingsShouldBeTheActiveModule()
+		{
+			
+		}
+
 
 
 

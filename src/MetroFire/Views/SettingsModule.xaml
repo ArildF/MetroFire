@@ -226,6 +226,7 @@
     	<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBlueCaption}" Text="settings"/>
     	<TabControl Grid.Row="1" Style="{DynamicResource _settingsTabControlStyle}" TabStripPlacement="Left" 
 					FocusVisualStyle="{x:Null}"
+					SelectedItem="{Binding SelectedPage}"
 					ItemContainerStyle="{DynamicResource TabItemStyle1}" ItemsSource="{Binding SettingsViewModels}" DisplayMemberPath="Title" ContentTemplate="{DynamicResource _tabControlTemplate}"/>
     	<Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
 				Command="{Binding SaveCommand}"

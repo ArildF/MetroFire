@@ -81,6 +81,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 						ConnectionErrorMessage = msg.Exception.Message;
 					});
 
+			ProxySettingsCommand = new ReactiveCommand();
+			_bus.RegisterMessageSource(ProxySettingsCommand.Select(_ => new NavigateSettingsPageMessage(SettingsPageNames.Network)));
+
 			LoginInfo info = storage.GetStoredLoginInfo();
 			if (info != null)
 			{
@@ -91,6 +94,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 
 		public ReactiveCommand RetryCommand { get; private set; }
+		public ReactiveCommand ProxySettingsCommand { get; private set; }
 
 		public ReactiveCommand LoginCommand { get; private set; }
 

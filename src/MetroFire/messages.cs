@@ -150,6 +150,16 @@ namespace Rogue.MetroFire.UI
 
 	public class SettingsChangedMessage{}
 
+	public class NavigateSettingsPageMessage
+	{
+		public string SettingsPage { get; private set; }
+
+		public NavigateSettingsPageMessage(string settingsPage)
+		{
+			SettingsPage = settingsPage;
+		}
+	}
+
 	public class NotificationMessage
 	{
 		public IRoom Room { get; private set; }

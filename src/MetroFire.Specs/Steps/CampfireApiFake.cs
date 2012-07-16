@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Reactive;
 using System.Reactive.Linq;
 using Rogue.MetroFire.CampfireClient;
@@ -21,6 +22,7 @@ namespace MetroFire.Specs.Steps
 		private int _currentMessageId;
 		private readonly User _meUser;
 		private readonly List<string> _validAccounts = new List<string>();
+		private bool _throwOnValidatingAccount;
 
 		public CampfireApiFake()
 		{
@@ -129,6 +131,10 @@ namespace MetroFire.Specs.Steps
 
 		public bool CheckAccountExists(string account)
 		{
+			if (_throwOnValidatingAccount)
+			{
+				throw new WebException("Ohai", WebExceptionStatus.NameResolutionFailure);
+			}
 			return _validAccounts.Contains(account);
 		}
 
@@ -238,6 +244,11 @@ namespace MetroFire.Specs.Steps
 		public void IsValidAccount(string accountName)
 		{
 			_validAccounts.Add(accountName);
+		}
+
+		public void ThrowOnValidatingAccount()
+		{
+			_throwOnValidatingAccount = true;
 		}
 	}
 }

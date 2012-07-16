@@ -844,6 +844,7 @@
 
 
 			<Infrastructure:BoolToVisibilityConverter x:Key="_boolToVisibilityConverter"/>
+			<SolidColorBrush x:Key="RedErrorMessage" Color="#FFEF0B0B"/>
 
     	</ResourceDictionary>
 

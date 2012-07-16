@@ -15,11 +15,19 @@ Scenario: Invalid account name
 Scenario: Valid account name
 	Given that 'Foobar' is a valid Campfire account name
 	When I enter 'Foobar' for the account name on the login screen
+	And I enter a token
 	And I wait 3 seconds
 	Then an error message should not be displayed on the login screen
 	And the account name should be verified on the login screen
+	And I should be able to log in
 
-@backgrountestscheduler
-Scenario: Show animation while verifying account
+
+@backgroundtestscheduler
+Scenario: Error message if Campfire cannot be reached
+	Given that Campfire cannot be reached while verifying account name
 	When I enter 'Foobar' for the account name on the login screen
-	Then a progress animation should be displayed next to the account name text box
+	And I wait 3 seconds
+	Then a connection error message should be displayed on the login screen
+	And an error message should be displayed on the login screen
+	And the account name should not be verified on the login screen
+	And I should not be able to log in

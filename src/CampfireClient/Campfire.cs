@@ -73,7 +73,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private void RequestCheckAccountName(RequestCheckAccountName obj)
 		{
 			CallApi(() => _api.CheckAccountExists(obj.AccountName),
-			        res => _bus.SendMessage(new RequestCheckAccountNameReply(res, obj.CorrelationId)));
+				res => _bus.SendMessage(new RequestCheckAccountNameReply(res, obj.CorrelationId)), retry: false, correlationId: obj.CorrelationId);
 		}
 
 		private void RequestStopStreaming(RequestStopStreamingMessage obj)
@@ -268,12 +268,12 @@ namespace Rogue.MetroFire.CampfireClient
 					}
 				};
 
+			Exception lastException = null;
 			for (int i = 0; i < (retry ? 10 : 1); i++)
 			{
 				_apiSemaphore.WaitOne();
 				try
 				{
-					Exception lastException;
 					try
 					{
 						lastException = null;
@@ -313,16 +313,18 @@ namespace Rogue.MetroFire.CampfireClient
 						onError(ex);
 						break;
 					}
-					if (lastException != null)
-					{
-						onError(lastException);
-					}
+					
 				}
 				finally
 				{
 					_apiSemaphore.Release();
 				}
+				
 
+			}
+			if (lastException != null)
+			{
+				onError(lastException);
 			}
 		}
 

@@ -102,28 +102,42 @@ this.ScenarioSetup(scenarioInfo);
 #line 17
  testRunner.When("I enter \'Foobar\' for the account name on the login screen");
 #line 18
- testRunner.And("I wait 3 seconds");
+ testRunner.And("I enter a token");
 #line 19
- testRunner.Then("an error message should not be displayed on the login screen");
+ testRunner.And("I wait 3 seconds");
 #line 20
+ testRunner.Then("an error message should not be displayed on the login screen");
+#line 21
  testRunner.And("the account name should be verified on the login screen");
+#line 22
+ testRunner.And("I should be able to log in");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Show animation while verifying account")]
-        [NUnit.Framework.CategoryAttribute("backgrountestscheduler")]
-        public virtual void ShowAnimationWhileVerifyingAccount()
+        [NUnit.Framework.DescriptionAttribute("Error message if Campfire cannot be reached")]
+        [NUnit.Framework.CategoryAttribute("backgroundtestscheduler")]
+        public virtual void ErrorMessageIfCampfireCannotBeReached()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show animation while verifying account", new string[] {
-                        "backgrountestscheduler"});
-#line 23
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Error message if Campfire cannot be reached", new string[] {
+                        "backgroundtestscheduler"});
+#line 26
 this.ScenarioSetup(scenarioInfo);
-#line 24
+#line 27
+ testRunner.Given("that Campfire cannot be reached while verifying account name");
+#line 28
  testRunner.When("I enter \'Foobar\' for the account name on the login screen");
-#line 25
- testRunner.Then("a progress animation should be displayed next to the account name text box");
+#line 29
+ testRunner.And("I wait 3 seconds");
+#line 30
+ testRunner.Then("a connection error message should be displayed on the login screen");
+#line 31
+ testRunner.And("an error message should be displayed on the login screen");
+#line 32
+ testRunner.And("the account name should not be verified on the login screen");
+#line 33
+ testRunner.And("I should not be able to log in");
 #line hidden
             this.ScenarioCleanup();
         }

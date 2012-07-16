@@ -28,12 +28,26 @@ namespace MetroFire.Specs.Steps
 			_campfireApiFake.IsValidAccount(accountName);
 		}
 
+		[Given(@"that Campfire cannot be reached while verifying account name")]
+		public void GivenThatCampfireCannotBeReachedWhileVerifyingAccountName()
+		{
+			_campfireApiFake.ThrowOnValidatingAccount();
+		}
 
 		[When(@"I enter '(.*)' for the account name on the login screen")]
 		public void WhenIEnterFobsdForTheAccountNameOnTheLoginScreen(string accountName)
 		{
 			_context.LoginViewModel.Account = accountName;
 		}
+
+		[When(@"I enter a token")]
+		public void WhenIEnterAToken()
+		{
+			_context.LoginViewModel.Token = "1235lkdjfglkdf";
+		}
+
+
+
 
 		[Then(@"an error message should be displayed on the login screen")]
 		public void ThenAnErrorMessageShouldBeDisplayedOnTheLoginScreen()
@@ -64,6 +78,25 @@ namespace MetroFire.Specs.Steps
 		public void ThenAProgressAnimationShouldBeDisplayedNextToTheAccountNameTextBox()
 		{
 			_context.LoginViewModel.IsVerifyingAccountInProgress.Should().BeTrue();
+		}
+
+		[Then(@"a connection error message should be displayed on the login screen")]
+		public void ThenAConnectionErrorMessageShouldBeDisplayedOnTheLoginScreen()
+		{
+			_context.LoginViewModel.ShowConnectionError.Should().BeTrue();
+			_context.LoginViewModel.ConnectionErrorMessage.Should().NotBeNullOrEmpty();
+		}
+
+		[Then(@"I should not be able to log in")]
+		public void ThenIShouldNotBeAbleToLogIn()
+		{
+			_context.LoginViewModel.LoginCommand.CanExecute(null).Should().BeFalse();
+		}
+
+		[Then(@"I should be able to log in")]
+		public void ThenIShouldBeAbleToLogIn()
+		{
+			_context.LoginViewModel.LoginCommand.CanExecute(null).Should().BeTrue();
 		}
 
 

@@ -15,19 +15,23 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _isAccountNameInError;
 		private bool _isAccountNameVerified;
 		private bool _isVerifyingAccountInProgress;
+		private bool _showConnectionError;
+		private Guid _accountNameCorrelationId;
+		private string _connectionErrorMessage;
 
 		public LoginViewModel(IMessageBus bus, ILoginInfoStorage storage)
 		{
 			_bus = bus;
 
-			Func<IObservedChange<LoginViewModel, string>, bool> isValid = c => !String.IsNullOrEmpty(c.Value);
+			_isTokenValid = this.ObservableToProperty(
+				this.ObservableForProperty(vm => vm.Token).Select(t => !String.IsNullOrEmpty(t.Value)), 
+				vm => vm.IsTokenValid);
 			LoginCommand = new ReactiveCommand(
-				Observable.CombineLatest(
-					this.ObservableForProperty(vm => vm.IsAccountNameVerified).Select(c => c.Value),
-					this.ObservableForProperty(vm => vm.Token).Select(isValid),
-					(b1, b2) => b1 && b2
+				this.WhenAny(
+					vm => vm.IsAccountNameVerified,
+					vm => vm.IsTokenValid,
+					(verified, token) => verified.Value && token.Value
 					));
-
 			_bus.RegisterMessageSource(
 				LoginCommand.Select(_ => new RequestLoginMessage(new LoginInfo(Account, Token))).Do(_ => IsLoggingIn = true));
 
@@ -42,18 +46,35 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.Do(_ => 
 				{
 					IsAccountNameVerified = false;
-					IsAccountNameInError = false;
-					IsVerifyingAccountInProgress = true;
+					IsAccountNameInError = String.IsNullOrEmpty(Account);
+					ShowConnectionError = false;
 				})
 				.Throttle(TimeSpan.FromSeconds(1), RxApp.TaskpoolScheduler)
-				.Select(_ => new RequestCheckAccountName(Account)));
+				.Where(_ => !String.IsNullOrEmpty(Account))
+				.Select(_ => new RequestCheckAccountName(Account))
+				.Do(_ => IsVerifyingAccountInProgress = true)
+				.Do(msg => _accountNameCorrelationId = msg.CorrelationId)
+				.Select(msg => msg));
 
-			_bus.Listen<RequestCheckAccountNameReply>().Subscribe(rep =>
+			_bus.Listen<RequestCheckAccountNameReply>()
+				.Where(msg => msg.CorrelationId == _accountNameCorrelationId)
+				.SubscribeUI(rep =>
 				{
 					IsVerifyingAccountInProgress = false;
 					IsAccountNameVerified = rep.Result;
 					IsAccountNameInError = !rep.Result;
 				});
+
+			_bus.Listen<CorrelatedExceptionMessage>()
+				.Where(msg => msg.CorrelationId == _accountNameCorrelationId)
+				.SubscribeUI(msg =>
+					{
+						IsVerifyingAccountInProgress = false;
+						IsAccountNameVerified = false;
+						IsAccountNameInError = true;
+						ShowConnectionError = true;
+						ConnectionErrorMessage = msg.Exception.Message;
+					});
 
 			LoginInfo info = storage.GetStoredLoginInfo();
 			if (info != null)
@@ -64,8 +85,14 @@ namespace Rogue.MetroFire.UI.ViewModels
 		}
 
 
+
 		public ReactiveCommand LoginCommand { get; private set; }
 
+		private ObservableAsPropertyHelper<bool> _isTokenValid;
+		public bool IsTokenValid
+		{
+			get { return _isTokenValid.Value; }
+		}
 		public string Account
 		{
 			get { return _account; }
@@ -101,5 +128,19 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _isVerifyingAccountInProgress; }
 			private set{ this.RaiseAndSetIfChanged(vm => vm.IsVerifyingAccountInProgress, ref _isVerifyingAccountInProgress, value);}
 		}
+
+		public bool ShowConnectionError
+		{
+			get { return _showConnectionError; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.ShowConnectionError, ref _showConnectionError, value); }
+		}
+
+		public string ConnectionErrorMessage
+		{
+			get { return _connectionErrorMessage; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.ConnectionErrorMessage, ref _connectionErrorMessage, value); }
+		}
+
+
 	}
 }

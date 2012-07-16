@@ -22,6 +22,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private readonly IDictionary<SerializerEntry, XmlSerializer> _xmlSerializers = new Dictionary<SerializerEntry, XmlSerializer>();
 		private static int _defaultTimeout;
 		private string _cookie;
+		private const string CampfireBaseUri = "https://{0}.campfirenow.com";
 
 		public CampfireApi(ISettings settings)
 		{
@@ -172,7 +173,7 @@ namespace Rogue.MetroFire.CampfireClient
 
 		public bool CheckAccountExists(string account)
 		{
-			var uri = new Uri(String.Format("https://{0}.campfirenow.com", account));
+			var uri = new Uri(String.Format(CampfireBaseUri, account));
 			var request = CreateRequest(uri);
 			request.Method = "HEAD";
 
@@ -183,6 +184,10 @@ namespace Rogue.MetroFire.CampfireClient
 			}
 			catch (WebException ex)
 			{
+				if (ex.Response == null)
+				{
+					throw;
+				}
 				if (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound)
 				{
 					return false;
@@ -352,7 +357,7 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private Uri FormatUri(string relativeUri)
 		{
-			var baseUri = new Uri(String.Format("https://{0}.campfirenow.com", _loginInfo.Account));
+			var baseUri = new Uri(String.Format(CampfireBaseUri, _loginInfo.Account));
 			var uri = new Uri(baseUri, relativeUri);
 			return uri;
 		}

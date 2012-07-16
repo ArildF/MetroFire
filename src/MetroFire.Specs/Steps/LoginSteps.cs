@@ -34,6 +34,13 @@ namespace MetroFire.Specs.Steps
 			_campfireApiFake.ThrowOnValidatingAccount();
 		}
 
+		[When(@"then Campfire can be reached while verifying account name")]
+		public void WhenThenCampfireCanBeReachedWhileVerifyingAccountName()
+		{
+			_campfireApiFake.DontThrowOnValidatingAccount();
+		}
+
+
 		[When(@"I enter '(.*)' for the account name on the login screen")]
 		public void WhenIEnterFobsdForTheAccountNameOnTheLoginScreen(string accountName)
 		{
@@ -47,6 +54,11 @@ namespace MetroFire.Specs.Steps
 		}
 
 
+		[When(@"I click Retry on the login screen")]
+		public void WhenIClickRetryOnTheLoginScreen()
+		{
+			_context.LoginViewModel.RetryCommand.Execute(null);
+		}
 
 
 		[Then(@"an error message should be displayed on the login screen")]

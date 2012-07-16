@@ -141,6 +141,37 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Retry if Campfire initially cannot be reached")]
+        [NUnit.Framework.CategoryAttribute("backgroundtestscheduler")]
+        public virtual void RetryIfCampfireInitiallyCannotBeReached()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Retry if Campfire initially cannot be reached", new string[] {
+                        "backgroundtestscheduler"});
+#line 36
+this.ScenarioSetup(scenarioInfo);
+#line 37
+ testRunner.Given("that Campfire cannot be reached while verifying account name");
+#line 38
+ testRunner.And("that \'Foobar\' is a valid Campfire account name");
+#line 39
+ testRunner.When("I enter \'Foobar\' for the account name on the login screen");
+#line 40
+ testRunner.And("I enter a token");
+#line 41
+ testRunner.And("I wait 3 seconds");
+#line 42
+ testRunner.And("then Campfire can be reached while verifying account name");
+#line 43
+ testRunner.And("I click Retry on the login screen");
+#line 44
+ testRunner.And("I wait 3 seconds");
+#line 45
+ testRunner.Then("I should be able to log in");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

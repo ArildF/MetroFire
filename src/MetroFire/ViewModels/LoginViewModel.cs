@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Xaml;
@@ -41,15 +42,19 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.Do(_ => IsLoggingIn = false)
 				.Select(msg => new ActivateMainModuleMessage(ModuleNames.MainCampfireView)));
 
+			RetryCommand = new ReactiveCommand();
+			
 			_bus.RegisterMessageSource(this.ObservableForProperty(vm => vm.Account)
 				.DistinctUntilChanged()
-				.Do(_ => 
+				.Select(_ => Unit.Default)
+				.Throttle(TimeSpan.FromSeconds(1), RxApp.TaskpoolScheduler)
+				.Merge(RetryCommand.Select(_ => Unit.Default))
+				.Do(_ =>
 				{
 					IsAccountNameVerified = false;
 					IsAccountNameInError = String.IsNullOrEmpty(Account);
 					ShowConnectionError = false;
 				})
-				.Throttle(TimeSpan.FromSeconds(1), RxApp.TaskpoolScheduler)
 				.Where(_ => !String.IsNullOrEmpty(Account))
 				.Select(_ => new RequestCheckAccountName(Account))
 				.Do(_ => IsVerifyingAccountInProgress = true)
@@ -85,6 +90,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		}
 
 
+		public ReactiveCommand RetryCommand { get; private set; }
 
 		public ReactiveCommand LoginCommand { get; private set; }
 

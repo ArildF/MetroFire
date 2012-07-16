@@ -31,3 +31,15 @@ Scenario: Error message if Campfire cannot be reached
 	And an error message should be displayed on the login screen
 	And the account name should not be verified on the login screen
 	And I should not be able to log in
+
+@backgroundtestscheduler
+Scenario: Retry if Campfire initially cannot be reached
+	Given that Campfire cannot be reached while verifying account name
+	And that 'Foobar' is a valid Campfire account name
+	When I enter 'Foobar' for the account name on the login screen
+	And I enter a token
+	And I wait 3 seconds
+	And then Campfire can be reached while verifying account name
+	And I click Retry on the login screen
+	And I wait 3 seconds
+	Then I should be able to log in

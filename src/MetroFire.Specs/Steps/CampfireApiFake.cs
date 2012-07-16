@@ -250,5 +250,10 @@ namespace MetroFire.Specs.Steps
 		{
 			_throwOnValidatingAccount = true;
 		}
+
+		public void DontThrowOnValidatingAccount()
+		{
+			_throwOnValidatingAccount = false; 
+		}
 	}
 }

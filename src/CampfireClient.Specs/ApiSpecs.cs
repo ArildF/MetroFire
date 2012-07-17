@@ -417,5 +417,15 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 
 		private static bool _result;
 	}
+
+	public class When_using_the_wrong_token : ApiContext
+	{
+		Establish context = () => api.SetLoginInfo(new LoginInfo("natesting", ""));
+
+		Because of = () => _account = api.GetAccountInfo();
+
+		It should_not_succeed = () => _account.ShouldBeNull();
+		private static Account _account;
+	}
 }
 

@@ -40,7 +40,7 @@ namespace Rogue.MetroFire.CampfireClient.Specs
 									_api.WhenToldTo(a => a.GetMe()).Return(_user);
 
 
-									_bus.Listen<LoginSuccessfulMessage>().Subscribe(msg => _loginSuccessfulMessageSent = true);
+									_bus.Listen<RequestLoginResponse>().Subscribe(msg => _loginSuccessfulMessageSent = true);
 
 									_bus.Listen<CurrentUserInformationReceivedMessage>().Subscribe(msg => CurrentUserInformationReceivedMessage = msg);
 								};

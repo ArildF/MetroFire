@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using TechTalk.SpecFlow;
 
 namespace MetroFire.Specs.Steps
@@ -66,9 +67,36 @@ namespace MetroFire.Specs.Steps
 			_context.LoginViewModel.ProxySettingsCommand.Execute(null);
 		}
 
+		[Given(@"that '(.*)' is an invalid token")]
+		public void GivenThat12345IsAnInvalidToken(string token)
+		{
+			_campfireApiFake.CorrectToken = Guid.NewGuid().ToString();
+		}
+
+		[Given(@"that '(.*)' is a valid token")]
+		public void GivenThat12345IsAvalidToken(string token)
+		{
+			_campfireApiFake.CorrectToken = token;
+		}
 
 
-		[Then(@"an error message should be displayed on the login screen")]
+		[When(@"I enter the token '(.*)' on the login screen")]
+		public void WhenIEnterTheToken12345OnTheLoginScreen(string token)
+		{
+			_context.LoginViewModel.Token = token;
+		}
+
+
+		[When(@"I click Login")]
+		public void WhenIClickLogin()
+		{
+			_context.LoginViewModel.LoginCommand.Execute(null);
+		}
+
+
+
+
+		[Then(@"an account name error message should be displayed on the login screen")]
 		public void ThenAnErrorMessageShouldBeDisplayedOnTheLoginScreen()
 		{
 			_context.LoginViewModel.IsAccountNameInError.Should().BeTrue();
@@ -123,6 +151,27 @@ namespace MetroFire.Specs.Steps
 		{
 			
 		}
+
+		[Then(@"the token should be marked as wrong on the login screen")]
+		public void ThenTheTokenShouldBeMarkedAsWrongOnTheLoginScreen()
+		{
+			_context.LoginViewModel.IsTokenInError.Should().BeTrue();
+		}
+
+		[Then(@"the token should not be marked as wrong on the login screen")]
+		public void ThenTheTokenShouldNotBeMarkedAsWrongOnTheLoginScreen()
+		{
+			_context.LoginViewModel.IsTokenInError.Should().BeFalse();
+		}
+
+
+		[Then(@"it should not be logging in")]
+		public void ThenItShouldNotBeLoggingIn()
+		{
+			_context.LoginViewModel.IsLoggingIn.Should().BeFalse();
+		}
+
+
 
 
 

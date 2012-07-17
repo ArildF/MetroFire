@@ -50,7 +50,24 @@ namespace Rogue.MetroFire.CampfireClient
 
 		public Account GetAccountInfo()
 		{
-			return Get<Account>("/account.xml");
+			try
+			{
+				return Get<Account>("/account.xml");
+			}
+			catch (WebException e)
+			{
+				if (e.Response == null)
+				{
+					throw;
+				}
+
+				if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.Unauthorized)
+				{
+					return null;
+				}
+				throw;
+			}
+
 		}
 
 		public Room[] ListRooms()

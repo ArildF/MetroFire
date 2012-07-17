@@ -68,6 +68,16 @@
 					</Storyboard>
 				</VisualState>
 			</VisualStateGroup>
+			<VisualStateGroup x:Name="LoginErrorGroup">
+				<VisualState x:Name="NoLoginError"/>
+				<VisualState x:Name="LoginError">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="border_LoginError">
+							<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
 		<VisualStateManager.CustomVisualStateManager>
 			<ei:ExtendedVisualStateManager/>
@@ -83,6 +93,8 @@
 				<Behaviors:Transition Source="{Binding IsAccountNameInError}" Value="True" VisualState="AccountNameError"/>
 				<Behaviors:Transition Source="{Binding IsVerifyingAccountInProgress}" Value="False" VisualState="NotVerifyingAccountName"/>
 				<Behaviors:Transition Source="{Binding IsVerifyingAccountInProgress}" Value="True" VisualState="VerifyingAccountName"/>
+				<Behaviors:Transition Source="{Binding IsTokenInError}" Value="False" VisualState="NoLoginError"/>
+				<Behaviors:Transition Source="{Binding IsTokenInError}" Value="True" VisualState="LoginError"/>
 			</Behaviors:VisualStateBehavior>
 		</i:Interaction.Behaviors>
 		
@@ -115,6 +127,7 @@
 				</TextBlock>
 				<TextBlock TextWrapping="Wrap" Text="{Binding ConnectionErrorMessage}" Style="{DynamicResource MetroBodyText}" Foreground="{DynamicResource RedErrorMessage}"/>
 			</StackPanel>
+			<Border x:Name="border_LoginError" BorderThickness="1" Margin="3" Grid.Column="2" Background="{DynamicResource molumen_red_round_error_warning_icon}" Grid.Row="2" Visibility="Hidden" ToolTip="The token is invalid or the user is not authorized to access this account."/>
 		</Grid>
 		<Rogue_MetroFire_UI:ProgressIndicator x:Name="progressIndicator" Visibility="Hidden" Width="100" Height="100"
 											  VerticalAlignment="Center" HorizontalAlignment="Center"/>

@@ -29,6 +29,8 @@ namespace MetroFire.Specs.Steps
 		[Given(@"that I am logged in")]
 		public void GivenThatIAmLoggedIn()
 		{
+			_roomContext.LoginViewModel.Token = "12345";
+			_roomContext.ApiFake.CorrectToken = "12345";
 			_roomContext.LoginViewModel.LoginCommand.Execute(null);
 		}
 

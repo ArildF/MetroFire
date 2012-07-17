@@ -23,6 +23,7 @@ namespace MetroFire.Specs.Steps
 		private readonly User _meUser;
 		private readonly List<string> _validAccounts = new List<string>();
 		private bool _throwOnValidatingAccount;
+		private LoginInfo _loginInfo;
 
 		public CampfireApiFake()
 		{
@@ -32,6 +33,11 @@ namespace MetroFire.Specs.Steps
 
 		public Account GetAccountInfo()
 		{
+			if (_loginInfo != null && _loginInfo.Token != CorrectToken)
+			{
+				return null;
+			}
+
 			return new Account();
 		}
 
@@ -42,6 +48,8 @@ namespace MetroFire.Specs.Steps
 
 		public void SetLoginInfo(LoginInfo loginInfo)
 		{
+			_loginInfo = loginInfo;
+
 		}
 
 		public Room[] ListPresence()
@@ -123,6 +131,8 @@ namespace MetroFire.Specs.Steps
 		{
 			return _meUser;
 		}
+
+		public string CorrectToken { get; set; }
 
 		public ConnectivityState CheckConnectivity()
 		{

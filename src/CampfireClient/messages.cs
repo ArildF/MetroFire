@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Rogue.MetroFire.CampfireClient
 {
-	public class RequestLoginMessage
+	public class RequestLoginMessage : CorrelatedMessage
 	{
 		public LoginInfo LoginInfo { get; private set; }
 
@@ -15,8 +15,15 @@ namespace Rogue.MetroFire.CampfireClient
 		}
 	}
 
-	public class LoginSuccessfulMessage
-	{}
+	public class RequestLoginResponse : CorrelatedReply
+	{
+		public bool SuccessFul { get; set; }
+
+		public RequestLoginResponse(bool successFul, Guid correlationId) : base(correlationId)
+		{
+			SuccessFul = successFul;
+		}
+	}
 
 	public class AccountUpdated
 	{

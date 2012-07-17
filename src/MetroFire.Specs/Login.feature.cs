@@ -81,7 +81,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("I wait 3 seconds");
 #line 11
- testRunner.Then("an error message should be displayed on the login screen");
+ testRunner.Then("an account name error message should be displayed on the login screen");
 #line 12
  testRunner.And("the account name should not be verified on the login screen");
 #line hidden
@@ -133,7 +133,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 30
  testRunner.Then("a connection error message should be displayed on the login screen");
 #line 31
- testRunner.And("an error message should be displayed on the login screen");
+ testRunner.And("an account name error message should be displayed on the login screen");
 #line 32
  testRunner.And("the account name should not be verified on the login screen");
 #line 33
@@ -158,7 +158,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 39
  testRunner.When("I enter \'Foobar\' for the account name on the login screen");
 #line 40
- testRunner.And("I enter a token");
+ testRunner.And("I enter the token \'12345\' on the login screen");
 #line 41
  testRunner.And("I wait 3 seconds");
 #line 42
@@ -194,6 +194,68 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I click Proxy settings on the login screen");
 #line 55
  testRunner.Then("Proxy Settings should be the active module");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Invalid token")]
+        [NUnit.Framework.CategoryAttribute("backgroundtestscheduler")]
+        public virtual void InvalidToken()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid token", new string[] {
+                        "backgroundtestscheduler"});
+#line 58
+this.ScenarioSetup(scenarioInfo);
+#line 59
+ testRunner.Given("that \'12345\' is an invalid token");
+#line 60
+ testRunner.And("that \'Foobar\' is a valid Campfire account name");
+#line 61
+ testRunner.When("I enter \'Foobar\' for the account name on the login screen");
+#line 62
+ testRunner.And("I enter the token \'12345\' on the login screen");
+#line 63
+ testRunner.And("I wait 3 seconds");
+#line 64
+ testRunner.And("I click Login");
+#line 65
+ testRunner.And("I wait 3 seconds");
+#line 66
+ testRunner.Then("the token should be marked as wrong on the login screen");
+#line 67
+ testRunner.And("it should not be logging in");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Valid token")]
+        [NUnit.Framework.CategoryAttribute("backgroundtestscheduler")]
+        public virtual void ValidToken()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Valid token", new string[] {
+                        "backgroundtestscheduler"});
+#line 71
+this.ScenarioSetup(scenarioInfo);
+#line 72
+ testRunner.Given("that \'12345\' is a valid token");
+#line 73
+ testRunner.And("that \'Foobar\' is a valid Campfire account name");
+#line 74
+ testRunner.When("I enter \'Foobar\' for the account name on the login screen");
+#line 75
+ testRunner.And("I enter the token \'12345\' on the login screen");
+#line 76
+ testRunner.And("I wait 3 seconds");
+#line 77
+ testRunner.And("I click Login");
+#line 78
+ testRunner.And("I wait 3 seconds");
+#line 79
+ testRunner.Then("the token should not be marked as wrong on the login screen");
+#line 80
+ testRunner.And("it should not be logging in");
 #line hidden
             this.ScenarioCleanup();
         }

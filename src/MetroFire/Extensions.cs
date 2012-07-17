@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
 using ReactiveUI;
+using Rogue.MetroFire.CampfireClient;
+using Castle.Core.Internal;
 
 namespace Rogue.MetroFire.UI
 {
@@ -28,6 +31,26 @@ namespace Rogue.MetroFire.UI
 						if (disposable != null) disposable.Dispose();
 					}
 				);
+		}
+
+		public static IDisposable RegisterSourceAndHandleReply<TRequest, TResponse>(
+			this IMessageBus self,
+			IObservable<TRequest> req, 
+			Action<TResponse> responseHandler, Action<Exception> errorHandler = null)
+			where TRequest : CorrelatedMessage where TResponse : CorrelatedReply
+		{
+			var coll = new DisposableCollection();
+			Guid currentCorrelation = Guid.Empty;
+			if (errorHandler != null)
+			{
+				coll.Add(self.Listen<CorrelatedExceptionMessage>().Where(msg => msg.CorrelationId == currentCorrelation)
+					.SubscribeUI(msg => errorHandler(msg.Exception)));
+			}
+			coll.Add(self.Listen<TResponse>().Where(msg => msg.CorrelationId == currentCorrelation).SubscribeUI(responseHandler));
+
+			coll.Add(self.RegisterMessageSource(req.Do(msg => currentCorrelation = msg.CorrelationId)));
+
+			return coll;
 		}
 
 		public static IObservable<Unit> GetDeactivated(this Application application)
@@ -69,6 +92,21 @@ namespace Rogue.MetroFire.UI
 		public static long KiloBytes(this long kiloBytes)
 		{
 			return kiloBytes * 1024;
+		}
+
+		private class DisposableCollection : IDisposable
+		{
+			private readonly IList<IDisposable> _innerList = new List<IDisposable>();
+
+			public void Add(IDisposable disposable)
+			{
+				_innerList.Add(disposable);
+			}
+
+			public void Dispose()
+			{
+				_innerList.ForEach(i => i.Dispose());
+			}
 		}
 
 	}

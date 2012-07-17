@@ -243,14 +243,27 @@ namespace Rogue.MetroFire.CampfireClient
 		{
 			_api.SetLoginInfo(requestLoginMessage.LoginInfo);
 			CallApi(() => _api.GetAccountInfo(), account =>
-					CallApi(() => _api.GetMe(), 
-						user =>
-							{
-								_account = account;
-								_bus.SendMessage<LoginSuccessfulMessage>(null);
-								_bus.SendMessage(new CurrentUserInformationReceivedMessage(user));
-							})
-				);
+				{
+					if (account == null)
+					{
+						_bus.SendMessage(new RequestLoginResponse(false, requestLoginMessage.CorrelationId));
+					}
+					else
+					{
+						CallApi(
+							() => _api.GetMe(),
+							user =>
+								{
+									_account = account;
+									_bus.SendMessage(new RequestLoginResponse(true, requestLoginMessage.CorrelationId));
+									_bus.SendMessage(new CurrentUserInformationReceivedMessage(user));
+								},
+							retry: false,
+							correlationId: requestLoginMessage.CorrelationId);
+					}
+				}, 
+				retry: false,
+				correlationId: requestLoginMessage.CorrelationId);
 		}
 
 		private void CallApi<T>(Func<T> call, Action<T> continuation, 

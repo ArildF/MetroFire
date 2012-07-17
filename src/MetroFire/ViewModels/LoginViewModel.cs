@@ -19,6 +19,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _showConnectionError;
 		private Guid _accountNameCorrelationId;
 		private string _connectionErrorMessage;
+		private bool _isTokenInError;
 
 		public LoginViewModel(IMessageBus bus, ILoginInfoStorage storage)
 		{
@@ -33,18 +34,31 @@ namespace Rogue.MetroFire.UI.ViewModels
 					vm => vm.IsTokenValid,
 					(verified, token) => verified.Value && token.Value
 					));
-			_bus.RegisterMessageSource(
-				LoginCommand.Select(_ => new RequestLoginMessage(new LoginInfo(Account, Token))).Do(_ => IsLoggingIn = true));
+			_bus.RegisterSourceAndHandleReply<RequestLoginMessage, RequestLoginResponse>(
+				LoginCommand.Select(_ => new RequestLoginMessage(new LoginInfo(Account, Token)))
+					.Do(_ => IsLoggingIn = true)
+					.Do(_ => IsTokenInError = false),
 
-			_bus.RegisterMessageSource(
-				_bus.Listen<LoginSuccessfulMessage>()
-				.Do(_ => storage.PersistLoginInfo(new LoginInfo(Account, Token)))
-				.Do(_ => IsLoggingIn = false)
-				.Select(msg => new ActivateMainModuleMessage(ModuleNames.MainCampfireView)));
+				res =>
+					{
+						IsLoggingIn = false;
+						if (res.SuccessFul)
+						{
+							storage.PersistLoginInfo(new LoginInfo(Account, Token));
+							IsTokenInError = false;
+							_bus.SendMessage(new ActivateMainModuleMessage(ModuleNames.MainCampfireView));
+						}
+						else
+						{
+							IsTokenInError = true;
+						}
+					});
+
 
 			RetryCommand = new ReactiveCommand();
 			
-			_bus.RegisterMessageSource(this.ObservableForProperty(vm => vm.Account)
+			_bus.RegisterSourceAndHandleReply<RequestCheckAccountName, RequestCheckAccountNameReply>(
+				this.ObservableForProperty(vm => vm.Account)
 				.DistinctUntilChanged()
 				.Select(_ => Unit.Default)
 				.Throttle(TimeSpan.FromSeconds(1), RxApp.TaskpoolScheduler)
@@ -58,28 +72,23 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.Where(_ => !String.IsNullOrEmpty(Account))
 				.Select(_ => new RequestCheckAccountName(Account))
 				.Do(_ => IsVerifyingAccountInProgress = true)
-				.Do(msg => _accountNameCorrelationId = msg.CorrelationId)
-				.Select(msg => msg));
+				.Do(msg => _accountNameCorrelationId = msg.CorrelationId),
 
-			_bus.Listen<RequestCheckAccountNameReply>()
-				.Where(msg => msg.CorrelationId == _accountNameCorrelationId)
-				.SubscribeUI(rep =>
+				rep =>
 				{
 					IsVerifyingAccountInProgress = false;
 					IsAccountNameVerified = rep.Result;
 					IsAccountNameInError = !rep.Result;
-				});
+				},
 
-			_bus.Listen<CorrelatedExceptionMessage>()
-				.Where(msg => msg.CorrelationId == _accountNameCorrelationId)
-				.SubscribeUI(msg =>
-					{
-						IsVerifyingAccountInProgress = false;
-						IsAccountNameVerified = false;
-						IsAccountNameInError = true;
-						ShowConnectionError = true;
-						ConnectionErrorMessage = msg.Exception.Message;
-					});
+				ex =>
+				{
+					IsVerifyingAccountInProgress = false;
+					IsAccountNameVerified = false;
+					IsAccountNameInError = true;
+					ShowConnectionError = true;
+					ConnectionErrorMessage = ex.Message;
+				});
 
 			ProxySettingsCommand = new ReactiveCommand();
 			_bus.RegisterMessageSource(ProxySettingsCommand.Select(_ => new NavigateSettingsPageMessage(SettingsPageNames.Network)));
@@ -98,7 +107,15 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		public ReactiveCommand LoginCommand { get; private set; }
 
-		private ObservableAsPropertyHelper<bool> _isTokenValid;
+		private readonly ObservableAsPropertyHelper<bool> _isTokenValid;
+
+
+		public bool IsTokenInError
+		{
+			get { return _isTokenInError; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.IsTokenInError, ref _isTokenInError, value); }
+		}
+
 		public bool IsTokenValid
 		{
 			get { return _isTokenValid.Value; }

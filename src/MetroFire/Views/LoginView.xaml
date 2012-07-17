@@ -117,7 +117,7 @@
 			<TextBlock TextWrapping="Wrap" Grid.Row="2" FontWeight="Light" Height="50.22" Width="221.377" Style="{DynamicResource MetroLargeLightHeader}" Margin="4,8.924" VerticalAlignment="Center"><Run Language="nb-no" Text="Token"/><LineBreak/><Run Language="nb-no"/></TextBlock>
 			<TextBox x:Name="textBox" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width" Text="{Binding Account, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 			<TextBox TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Style="{DynamicResource LargeTextBoxStyle}" d:LayoutOverrides="Width" Text="{Binding Token, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-			<Button Content="Login" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MetroBigButton}" VerticalAlignment="Center" Command="{Binding LoginCommand}"/>
+			<Button Content="_Login" Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource MetroBigButton}" VerticalAlignment="Center" Command="{Binding LoginCommand}"/>
 			<Border x:Name="border_Verified" BorderThickness="1" Margin="3" Grid.Column="3" Background="{DynamicResource jean_victor_balin_green_tick}" Grid.Row="1" Visibility="Hidden" ToolTip="The account name exists."/>
 			<Border x:Name="border_Error" BorderThickness="1" Margin="3" Grid.Column="2" Background="{DynamicResource molumen_red_round_error_warning_icon}" Grid.Row="1" Visibility="Hidden" d:LayoutOverrides="GridBox" ToolTip="The account name is invalid."/>
 			<Rogue_MetroFire_UI:ProgressIndicator x:Name="verifyAccountProgressIndicator" Margin="4" d:LayoutOverrides="Width, Height" Grid.Row="1" Grid.Column="2" Visibility="Hidden"/>

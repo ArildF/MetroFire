@@ -31,6 +31,7 @@
     <xs:sequence>
       <xs:element name="TriggerTypes" type="tns:TriggerTypes" />
     </xs:sequence>
+    <xs:attribute name="DisplayText" type="xs:string" />
   </xs:complexType>
   <xs:complexType name="TriggerTypes">
     <xs:sequence>
@@ -45,5 +46,7 @@
       <xs:element maxOccurs="unbounded" name="ActionsItem" type="tns:ActionsItem" />
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="ActionsItem" />
+  <xs:complexType name="ActionsItem">
+    <xs:attribute name="DisplayText" type="xs:string" />
+  </xs:complexType>
 </xs:schema>

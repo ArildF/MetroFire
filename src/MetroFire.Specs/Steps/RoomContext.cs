@@ -22,6 +22,7 @@ using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 using System;
 using System.Linq;
+using Rogue.MetroFire.UI.ViewModels.Settings;
 using Rogue.MetroFire.UI.Views;
 using Component = Castle.MicroKernel.Registration.Component;
 
@@ -79,7 +80,9 @@ namespace MetroFire.Specs.Steps
 
 			_bus.SendMessage(new ApplicationLoadedMessage());
 
-			var dummy = _container.Resolve<IToastWindow>();
+			object dummy = _container.Resolve<IToastWindow>();
+			dummy = _container.Resolve<ISettingsViewModel>();
+			
 
 
 			_componentCounts = new Dictionary<Type, int>();
@@ -139,7 +142,13 @@ namespace MetroFire.Specs.Steps
 			{
 				ToastWindowViewModel = (ToastWindowViewModel) instance;
 			}
+			if (instance is SettingsViewModel)
+			{
+				SettingsViewModel = (SettingsViewModel) instance;
+			}
 		}
+
+		public SettingsViewModel SettingsViewModel { get; private set; }
 
 		public ToastWindowViewModel ToastWindowViewModel { get; set; }
 

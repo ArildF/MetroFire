@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.UI.Settings;
@@ -6,6 +7,11 @@ using System;
 
 namespace Rogue.MetroFire.UI.ViewModels.Settings
 {
+	public interface IToggleEdit
+	{
+		bool IsEditing { get; set; }
+	}
+
 	public class NotificationSettingsViewModel : ISettingsSubPage
 	{
 		private readonly NotificationSettings _notification;
@@ -24,9 +30,28 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			AddNotificationCommand = new ReactiveCommand();
 			AddNotificationCommand.Subscribe(_ => Notifications.Add(new NotificationViewModel(
 				new NotificationEntry{Triggers = new NotificationTrigger[]{}, Actions = new NotificationAction[]{}})));
+
+
+			DeleteNotificationCommand = new ReactiveCommand();
+			DeleteNotificationCommand.OfType<NotificationViewModel>().Subscribe(n => Notifications.Remove(n));
+
+			(ToggleEditCommand = new ReactiveCommand()).OfType<IToggleEdit>().Subscribe(editable =>
+			{
+				bool valueToSet = !editable.IsEditing;
+				foreach (var notificationViewModel in Notifications)
+				{
+					notificationViewModel.CollapseAll();
+				}
+
+				editable.IsEditing = valueToSet;
+			});
 		}
 
+		public ReactiveCommand ToggleEditCommand { get; private set; }
+
+
 		public ReactiveCommand AddNotificationCommand { get; private set; }
+		public ReactiveCommand DeleteNotificationCommand { get; private set; }
 
 		public ReactiveCollection<NotificationViewModel> Notifications { get; private set; }
 
@@ -34,6 +59,8 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 		{
 			get { return "Notifications"; }
 		}
+
+		
 
 		public void Commit()
 		{

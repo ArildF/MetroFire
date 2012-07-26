@@ -72,5 +72,13 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			_notificationEntry.Triggers = Triggers.Select(t => t.Trigger).ToArray();
 			_notificationEntry.Actions = Actions.Select(a => a.Action).ToArray();
 		}
+
+		public void CollapseAll()
+		{
+			foreach (var editable in Triggers.Cast<IToggleEdit>().Concat(Actions.Cast<IToggleEdit>()))
+			{
+				editable.IsEditing = false;
+			}
+		}
 	}
 }

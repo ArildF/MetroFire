@@ -1,7 +1,9 @@
 using System.Linq;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.UI.Settings;
+using System;
 
 namespace Rogue.MetroFire.UI.ViewModels.Settings
 {
@@ -9,7 +11,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 	{
 		void Commit();
 	}
-	public class ActionViewModel : ReactiveObject
+	public class ActionViewModel : ReactiveObject, IToggleEdit
 	{
 		private NotificationAction _notificationAction;
 		private ComboViewModel<ActionType> _selectedActionType;
@@ -18,6 +20,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 		private bool _showInterval;
 		private string _intervalText;
 		private IActionSubViewModel _subViewModel;
+		private bool _isEditing;
 
 		public ActionViewModel(NotificationAction notificationAction)
 		{
@@ -42,6 +45,34 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			SelectedActionType = ActionTypes.FirstOrDefault(at => at.Data == notificationAction.ActionType);
 			SelectedActionCondition = ActionConditions.FirstOrDefault(ac => ac.Data == notificationAction.ActionCondition);
 			Interval = notificationAction.Interval;
+
+		}
+
+
+
+		public bool IsEditing
+		{
+			get { return _isEditing; }
+			set 
+			{
+				if (_isEditing == value)
+				{
+					return;
+				}
+				this.RaiseAndSetIfChanged(vm => vm.IsEditing, ref _isEditing, value);
+				raisePropertyChanged(null);
+			}
+		}
+
+
+		public string DisplayText
+		{
+			get { return FormatDisplayText(); }
+		}
+
+		private string FormatDisplayText()
+		{
+			return SelectedActionType.Text;
 		}
 
 		public ComboViewModel<ActionCondition>[] ActionConditions { get; private set; }

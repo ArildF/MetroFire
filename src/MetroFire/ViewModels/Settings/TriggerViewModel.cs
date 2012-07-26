@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
 using ReactiveUI;
+using ReactiveUI.Xaml;
 using Rogue.MetroFire.UI.Settings;
 
 namespace Rogue.MetroFire.UI.ViewModels.Settings
 {
-	public class TriggerViewModel : ReactiveObject
+	public class TriggerViewModel : ReactiveObject, IToggleEdit
 	{
 		private readonly NotificationTrigger _trigger;
 		private ComboViewModel<TriggerType> _selectedTriggerType;
@@ -15,6 +16,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 		private string _matchRoom;
 		private bool _doMatchUser;
 		private string _matchUser;
+		private bool _isEditing;
 
 		public TriggerViewModel(NotificationTrigger trigger)
 		{
@@ -36,6 +38,34 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			DoMatchRoom = !String.IsNullOrEmpty(MatchRoom);
 			MatchUser = trigger.MatchUser;
 			DoMatchUser = !String.IsNullOrEmpty(MatchUser);
+
+
+			
+		}
+
+		public bool IsEditing
+		{
+			get { return _isEditing; }
+			set
+			{
+				if (_isEditing == value)
+				{
+					return;
+				}
+				this.RaiseAndSetIfChanged(vm => vm.IsEditing, ref _isEditing, value);
+				raisePropertyChanged(null);
+			}
+		}
+
+		public string DisplayText
+		{
+			get{ return FormatDisplayText(); }
+		}
+
+		private string FormatDisplayText()
+		{
+			return SelectedTriggerType.Text + 
+				(DoMatchText ? " matching the text '" + MatchText + "'" : String.Empty);
 		}
 
 		public ComboViewModel<TriggerType> SelectedTriggerType

@@ -128,6 +128,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Notifications.feature</DependentUpon>
     </Compile>
+    <Compile Include="NotificationSettings.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NotificationSettings.feature</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Steps\CampfireApiFake.cs" />
     <Compile Include="RoomManagement.feature.cs">
@@ -140,6 +145,7 @@
     <Compile Include="Steps\ChatDocumentSteps.cs" />
     <Compile Include="Steps\Events.cs" />
     <Compile Include="Steps\LoginSteps.cs" />
+    <Compile Include="Steps\NotificationSettingsSteps.cs" />
     <Compile Include="Steps\NotificationSteps.cs" />
     <Compile Include="Steps\RoomContext.cs" />
   </ItemGroup>
@@ -160,6 +166,10 @@
     <None Include="Notifications.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Notifications.feature.cs</LastGenOutput>
+    </None>
+    <None Include="NotificationSettings.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>NotificationSettings.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="RoomManagement.feature">

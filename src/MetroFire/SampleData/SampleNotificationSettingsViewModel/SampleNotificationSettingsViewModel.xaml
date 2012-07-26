@@ -7,35 +7,35 @@
 	<SampleData:SampleNotificationSettingsViewModel.Notifications>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Maecenas praesent nam cras">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="User enters room"/>
 						<SampleData:TriggerTypesItem Text="User leaves room"/>
 						<SampleData:TriggerTypesItem Text="User speaks"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Sed class curae dis">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Cras aenean quisque"/>
 						<SampleData:TriggerTypesItem Text="Vivamus mauris"/>
 						<SampleData:TriggerTypesItem Text="Class sed maecenas curae"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Aliquam est hac">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Nullam duis aliquam"/>
 						<SampleData:TriggerTypesItem Text="Curae aptent dis nunc"/>
 						<SampleData:TriggerTypesItem Text="Integer aenean praesent"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Accumsan aenean mauris">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Donec amet est"/>
 						<SampleData:TriggerTypesItem Text="Ante hac arcu auctor"/>
 						<SampleData:TriggerTypesItem Text="Mauris cras duis quisque"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Donec nullam">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Maecenas congue"/>
 						<SampleData:TriggerTypesItem Text="Praesent aliquet"/>
@@ -44,44 +44,44 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Maecenas praesent"/>
+				<SampleData:ActionsItem DisplayText="Aenean accumsan bibendum mauris"/>
+				<SampleData:ActionsItem DisplayText="Dictumst aliquam"/>
+				<SampleData:ActionsItem DisplayText="Eleifend cras class"/>
+				<SampleData:ActionsItem DisplayText="Facilisi nullam duis curae"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Bibendum leo aptent etiam">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Blandit diam eget commodo"/>
 						<SampleData:TriggerTypesItem Text="Leo etiam conubia"/>
 						<SampleData:TriggerTypesItem Text="Aptent dis"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Auctor duis congue">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Cursus accumsan bibendum"/>
 						<SampleData:TriggerTypesItem Text="Dictumst cubilia eleifend mus"/>
 						<SampleData:TriggerTypesItem Text="Etiam accumsan bibendum"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Cursus dictumst">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Dapibus dictum lectus nec"/>
 						<SampleData:TriggerTypesItem Text="Elit enim erat"/>
 						<SampleData:TriggerTypesItem Text="Est vivamus"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Dictum integer">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Libero non"/>
 						<SampleData:TriggerTypesItem Text="Eros nibh"/>
 						<SampleData:TriggerTypesItem Text="Fusce dictumst aliquam hac"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Fusce lectus eleifend">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Facilisi nisi per ligula"/>
 						<SampleData:TriggerTypesItem Text="Fusce litora sed lorem"/>
@@ -90,44 +90,44 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Nunc integer amet"/>
+				<SampleData:ActionsItem DisplayText="Ante quisque"/>
+				<SampleData:ActionsItem DisplayText="Donec nam arcu"/>
+				<SampleData:ActionsItem DisplayText="Faucibus sed dis habitant"/>
+				<SampleData:ActionsItem DisplayText="Etiam vivamus diam"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Lorem quisque">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Egestas sem luctus"/>
 						<SampleData:TriggerTypesItem Text="Morbi faucibus nisl"/>
 						<SampleData:TriggerTypesItem Text="Nunc dictum lectus"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Nunc facilisi mus vivamus">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Nulla magnis habitant nunc"/>
 						<SampleData:TriggerTypesItem Text="Proin mattis mauris sit"/>
 						<SampleData:TriggerTypesItem Text="Lorem aliquet amet blandit"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Aliquam morbi amet ante">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Vel augue"/>
 						<SampleData:TriggerTypesItem Text="Mollis inceptos interdum odio"/>
 						<SampleData:TriggerTypesItem Text="Morbi ante"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Nec arcu aliquet">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Euismod dolor orci"/>
 						<SampleData:TriggerTypesItem Text="Nam lobortis montes pede"/>
 						<SampleData:TriggerTypesItem Text="Nulla arcu"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Libero faucibus nulla">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Sed feugiat dis"/>
 						<SampleData:TriggerTypesItem Text="Fames quam gravida"/>
@@ -136,44 +136,44 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Eget est fusce aliquam"/>
+				<SampleData:ActionsItem DisplayText="Elit aliquet lorem aptent"/>
+				<SampleData:ActionsItem DisplayText="Auctor morbi nulla"/>
+				<SampleData:ActionsItem DisplayText="Proin enim blandit erat"/>
+				<SampleData:ActionsItem DisplayText="Eros commodo augue"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Habitant inceptos">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Felis quis"/>
 						<SampleData:TriggerTypesItem Text="Est hac urna iaculis"/>
 						<SampleData:TriggerTypesItem Text="Habitant leo mus nec"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Non diam">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Nascetur pharetra nostra ipsum"/>
 						<SampleData:TriggerTypesItem Text="Cras ornare lacinia"/>
 						<SampleData:TriggerTypesItem Text="Libero inceptos ligula interdum"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Ligula blandit litora">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Platea placerat leo"/>
 						<SampleData:TriggerTypesItem Text="Primis mus"/>
 						<SampleData:TriggerTypesItem Text="Lobortis commodo conubia"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Luctus commodo conubia">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Rutrum laoreet natoque"/>
 						<SampleData:TriggerTypesItem Text="Posuere duis pulvinar"/>
 						<SampleData:TriggerTypesItem Text="Litora diam proin luctus"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Eget magnis proin mattis">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Justo sapien lacus sagittis"/>
 						<SampleData:TriggerTypesItem Text="Lorem potenti pretium"/>
@@ -182,44 +182,44 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Nibh hac conubia nisi"/>
+				<SampleData:ActionsItem DisplayText="Leo congue cursus cubilia"/>
+				<SampleData:ActionsItem DisplayText="Dapibus dictum egestas"/>
+				<SampleData:ActionsItem DisplayText="Euismod feugiat dolor mus"/>
+				<SampleData:ActionsItem DisplayText="Lectus inceptos nisl fames"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Mauris per">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Rhoncus nec"/>
 						<SampleData:TriggerTypesItem Text="Sodales nunc senectus non"/>
 						<SampleData:TriggerTypesItem Text="Non nascetur"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Mollis cubilia">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Amet magna ante sociosqu"/>
 						<SampleData:TriggerTypesItem Text="Massa per sed suscipit"/>
 						<SampleData:TriggerTypesItem Text="Augue magnis egestas dolor"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Montes augue dapibus egestas">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Metus sem torquent morbi"/>
 						<SampleData:TriggerTypesItem Text="Ultrices sit vel vehicula"/>
 						<SampleData:TriggerTypesItem Text="Pharetra per placerat mattis"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Nostra ornare">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Semper volutpat sociis maecenas"/>
 						<SampleData:TriggerTypesItem Text="Arcu viverra taciti"/>
 						<SampleData:TriggerTypesItem Text="Sed fames euismod enim"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Euismod dolor feugiat">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Neque praesent tellus"/>
 						<SampleData:TriggerTypesItem Text="Accumsan tempor tempus"/>
@@ -228,44 +228,44 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Interdum nec gravida iaculis"/>
+				<SampleData:ActionsItem DisplayText="Nunc libero"/>
+				<SampleData:ActionsItem DisplayText="Lacinia odio lobortis nascetur"/>
+				<SampleData:ActionsItem DisplayText="Felis laoreet"/>
+				<SampleData:ActionsItem DisplayText="Natoque ipsum ligula non"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Elit fames enim platea">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Tortor bibendum diam"/>
 						<SampleData:TriggerTypesItem Text="Dictumst nam netus aliquam"/>
 						<SampleData:TriggerTypesItem Text="Feugiat gravida sagittis"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Sed primis rutrum">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Nulla integer porta"/>
 						<SampleData:TriggerTypesItem Text="Turpis eget eleifend"/>
 						<SampleData:TriggerTypesItem Text="Sem iaculis sit"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Gravida iaculis erat eros">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Facilisi purus"/>
 						<SampleData:TriggerTypesItem Text="Varius aenean risus mauris"/>
 						<SampleData:TriggerTypesItem Text="Vel ipsum senectus lacinia"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Felis sapien nibh">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Quisque faucibus"/>
 						<SampleData:TriggerTypesItem Text="Velit vivamus nullam"/>
 						<SampleData:TriggerTypesItem Text="Laoreet justo sociosqu"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Semper sem nisi sociis">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Sed habitant aptent aliquam"/>
 						<SampleData:TriggerTypesItem Text="Aliquet dis blandit est"/>
@@ -274,44 +274,44 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Litora luctus pharetra"/>
+				<SampleData:ActionsItem DisplayText="Per posuere"/>
+				<SampleData:ActionsItem DisplayText="Orci magnis"/>
+				<SampleData:ActionsItem DisplayText="Placerat pulvinar potenti"/>
+				<SampleData:ActionsItem DisplayText="Pretium rhoncus"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Nisl sit lacinia taciti">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Vitae class"/>
 						<SampleData:TriggerTypesItem Text="Inceptos elit auctor"/>
 						<SampleData:TriggerTypesItem Text="Mauris mollis suscipit torquent"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Vel laoreet interdum lobortis">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Curae interdum commodo"/>
 						<SampleData:TriggerTypesItem Text="Donec etiam lobortis congue"/>
 						<SampleData:TriggerTypesItem Text="Ultrices lacus"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Tellus tempor nam">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Nascetur cursus enim conubia"/>
 						<SampleData:TriggerTypesItem Text="Erat cubilia eros hac"/>
 						<SampleData:TriggerTypesItem Text="Lorem magna natoque"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Ipsum justo tempus nunc">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Nibh pharetra dictum"/>
 						<SampleData:TriggerTypesItem Text="Leo mus lectus placerat"/>
 						<SampleData:TriggerTypesItem Text="Montes posuere potenti eros"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Sed odio orci">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Nec dapibus"/>
 						<SampleData:TriggerTypesItem Text="Pulvinar libero ligula litora"/>
@@ -320,44 +320,44 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Sed justo mattis"/>
+				<SampleData:ActionsItem DisplayText="Sodales sagittis viverra senectus"/>
+				<SampleData:ActionsItem DisplayText="Lacus mauris pede"/>
+				<SampleData:ActionsItem DisplayText="Mollis montes quam lorem"/>
+				<SampleData:ActionsItem DisplayText="Nostra aliquam quis integer"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Tortor pede dis">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Luctus sagittis"/>
 						<SampleData:TriggerTypesItem Text="Magnis non nisi"/>
 						<SampleData:TriggerTypesItem Text="Sed metus morbi"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Nascetur pharetra natoque">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Senectus nisl"/>
 						<SampleData:TriggerTypesItem Text="Mattis sociosqu"/>
 						<SampleData:TriggerTypesItem Text="Vehicula rhoncus"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Posuere potenti lacus lorem">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Nunc fusce mauris odio"/>
 						<SampleData:TriggerTypesItem Text="Mollis lorem egestas"/>
 						<SampleData:TriggerTypesItem Text="Nostra sodales viverra"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Est quam hac">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Suscipit morbi per torquent"/>
 						<SampleData:TriggerTypesItem Text="Montes ultrices"/>
 						<SampleData:TriggerTypesItem Text="Neque volutpat maecenas dis"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Pretium quis leo turpis">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Nulla euismod feugiat sed"/>
 						<SampleData:TriggerTypesItem Text="Vehicula nostra gravida"/>
@@ -366,44 +366,44 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Sem magna sit"/>
+				<SampleData:ActionsItem DisplayText="Massa metus vel nam"/>
+				<SampleData:ActionsItem DisplayText="Sed quisque ornare morbi"/>
+				<SampleData:ActionsItem DisplayText="Vivamus sociosqu neque"/>
+				<SampleData:ActionsItem DisplayText="Suscipit dis urna"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Magna mus rhoncus massa">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Sem proin volutpat orci"/>
 						<SampleData:TriggerTypesItem Text="Maecenas augue ornare platea"/>
 						<SampleData:TriggerTypesItem Text="Ornare nibh platea primis"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Varius aenean">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Primis sit"/>
 						<SampleData:TriggerTypesItem Text="Praesent vel rutrum dolor"/>
 						<SampleData:TriggerTypesItem Text="Rutrum quisque vivamus netus"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Urna nec placerat">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Iaculis pede sapien lacinia"/>
 						<SampleData:TriggerTypesItem Text="Nam fames"/>
 						<SampleData:TriggerTypesItem Text="Accumsan est nulla porta"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Mauris metus">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Felis accumsan ipsum"/>
 						<SampleData:TriggerTypesItem Text="Semper laoreet sed"/>
 						<SampleData:TriggerTypesItem Text="Nisi purus hac"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Sodales viverra non nullam">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Sociis taciti"/>
 						<SampleData:TriggerTypesItem Text="Bibendum quam dis"/>
@@ -412,44 +412,44 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Platea cras primis"/>
+				<SampleData:ActionsItem DisplayText="Aliquam torquent rutrum duis"/>
+				<SampleData:ActionsItem DisplayText="Sapien nunc"/>
+				<SampleData:ActionsItem DisplayText="Ultrices amet vehicula netus"/>
+				<SampleData:ActionsItem DisplayText="Aliquet blandit commodo est"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 		<SampleData:NotificationsItem>
 			<SampleData:NotificationsItem.Triggers>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Pulvinar morbi aptent per">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Est natoque posuere potenti"/>
 						<SampleData:TriggerTypesItem Text="Dictumst tellus quis justo"/>
 						<SampleData:TriggerTypesItem Text="Aliquet velit"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Neque cras duis">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Urna pretium hac cras"/>
 						<SampleData:TriggerTypesItem Text="Lacus leo"/>
 						<SampleData:TriggerTypesItem Text="Bibendum dictumst sociis"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Sagittis aliquam nunc netus">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Eleifend mus"/>
 						<SampleData:TriggerTypesItem Text="Lorem rhoncus tempor"/>
 						<SampleData:TriggerTypesItem Text="Vitae blandit eleifend"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Auctor integer nulla congue">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Duis magna facilisi"/>
 						<SampleData:TriggerTypesItem Text="Nec nunc"/>
 						<SampleData:TriggerTypesItem Text="Class facilisi leo"/>
 					</SampleData:TriggersItem.TriggerTypes>
 				</SampleData:TriggersItem>
-				<SampleData:TriggersItem>
+				<SampleData:TriggersItem DisplayText="Porta amet purus senectus">
 					<SampleData:TriggersItem.TriggerTypes>
 						<SampleData:TriggerTypesItem Text="Amet faucibus ante tempus"/>
 						<SampleData:TriggerTypesItem Text="Sodales viverra"/>
@@ -458,11 +458,11 @@
 				</SampleData:TriggersItem>
 			</SampleData:NotificationsItem.Triggers>
 			<SampleData:NotificationsItem.Actions>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
-				<SampleData:ActionsItem/>
+				<SampleData:ActionsItem DisplayText="Conubia ante semper"/>
+				<SampleData:ActionsItem DisplayText="Cubilia volutpat nulla"/>
+				<SampleData:ActionsItem DisplayText="Dapibus egestas"/>
+				<SampleData:ActionsItem DisplayText="Hac arcu"/>
+				<SampleData:ActionsItem DisplayText="Maecenas euismod"/>
 			</SampleData:NotificationsItem.Actions>
 		</SampleData:NotificationsItem>
 	</SampleData:SampleNotificationSettingsViewModel.Notifications>

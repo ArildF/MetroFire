@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using ReactiveUI;
 using Rogue.MetroFire.UI.Behaviors;
+using TriggerAction = System.Windows.TriggerAction;
 
 namespace Rogue.MetroFire.UI.Views
 {

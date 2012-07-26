@@ -49,6 +49,10 @@ namespace Expression.Blend.SampleData.SampleNotificationSettingsViewModel
 		}
 	}
 
+	public class Notifications : System.Collections.ObjectModel.ObservableCollection<NotificationsItem>
+	{ 
+	}
+
 	public class NotificationsItem : System.ComponentModel.INotifyPropertyChanged
 	{
 		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -82,7 +86,7 @@ namespace Expression.Blend.SampleData.SampleNotificationSettingsViewModel
 		}
 	}
 
-	public class Notifications : System.Collections.ObjectModel.ObservableCollection<NotificationsItem>
+	public class Triggers : System.Collections.ObjectModel.ObservableCollection<TriggersItem>
 	{ 
 	}
 
@@ -107,26 +111,28 @@ namespace Expression.Blend.SampleData.SampleNotificationSettingsViewModel
 				return this._TriggerTypes;
 			}
 		}
-	}
 
-	public class Triggers : System.Collections.ObjectModel.ObservableCollection<TriggersItem>
-	{ 
-	}
+		private string _DisplayText = string.Empty;
 
-	public class ActionsItem : System.ComponentModel.INotifyPropertyChanged
-	{
-		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-		protected virtual void OnPropertyChanged(string propertyName)
+		public string DisplayText
 		{
-			if (this.PropertyChanged != null)
+			get
 			{
-				this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+				return this._DisplayText;
+			}
+
+			set
+			{
+				if (this._DisplayText != value)
+				{
+					this._DisplayText = value;
+					this.OnPropertyChanged("DisplayText");
+				}
 			}
 		}
 	}
 
-	public class Actions : System.Collections.ObjectModel.ObservableCollection<ActionsItem>
+	public class TriggerTypes : System.Collections.ObjectModel.ObservableCollection<TriggerTypesItem>
 	{ 
 	}
 
@@ -162,8 +168,40 @@ namespace Expression.Blend.SampleData.SampleNotificationSettingsViewModel
 		}
 	}
 
-	public class TriggerTypes : System.Collections.ObjectModel.ObservableCollection<TriggerTypesItem>
+	public class Actions : System.Collections.ObjectModel.ObservableCollection<ActionsItem>
 	{ 
+	}
+
+	public class ActionsItem : System.ComponentModel.INotifyPropertyChanged
+	{
+		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			if (this.PropertyChanged != null)
+			{
+				this.PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+			}
+		}
+
+		private string _DisplayText = string.Empty;
+
+		public string DisplayText
+		{
+			get
+			{
+				return this._DisplayText;
+			}
+
+			set
+			{
+				if (this._DisplayText != value)
+				{
+					this._DisplayText = value;
+					this.OnPropertyChanged("DisplayText");
+				}
+			}
+		}
 	}
 #endif
 }

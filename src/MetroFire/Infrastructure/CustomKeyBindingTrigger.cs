@@ -1,26 +1,57 @@
+using System;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Interactivity;
 
 namespace Rogue.MetroFire.UI.Infrastructure
 {
-	public class CustomKeyBinding : FrameworkElement
+	public class CustomKeyBindingTrigger : TriggerBase<UIElement>
 	{
 
-		static CustomKeyBinding()
+		static CustomKeyBindingTrigger()
 		{
 			//register dependency property
 			var mdText = new FrameworkPropertyMetadata("", TextPropertyChanged);
-			TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(CustomKeyBinding), mdText);
+			TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(CustomKeyBindingTrigger), mdText);
 
 			var mdKey = new FrameworkPropertyMetadata(Key.None, KeyPropertyChanged);
-			KeyProperty = DependencyProperty.Register("Key", typeof(Key), typeof(CustomKeyBinding), mdKey);
-
-			var metadata = new FrameworkPropertyMetadata(null, CommandPropertyChanged);
-			CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(CustomKeyBinding), metadata);
+			KeyProperty = DependencyProperty.Register("Key", typeof(Key), typeof(CustomKeyBindingTrigger), mdKey);
 
 			var mdModifier = new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None);
-			ModifierProperty = DependencyProperty.Register("Modifier", typeof(ModifierKeys?), typeof(CustomKeyBinding),
+			ModifierProperty = DependencyProperty.Register("Modifier", typeof(ModifierKeys?), typeof(CustomKeyBindingTrigger),
 														   mdModifier);
+		}
+
+		protected override void OnAttached()
+		{
+			base.OnAttached();
+			AssociatedObject.PreviewTextInput += AssociatedObjectOnPreviewTextInput;
+			AssociatedObject.PreviewKeyDown += AssociatedObjectOnPreviewKeyDown;
+		}
+
+		protected override void OnDetaching()
+		{
+			base.OnDetaching();
+			AssociatedObject.PreviewTextInput -= AssociatedObjectOnPreviewTextInput;
+			AssociatedObject.PreviewKeyDown -= AssociatedObjectOnPreviewKeyDown;
+		}
+
+
+		private void AssociatedObjectOnPreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (Keyboard.FocusedElement is TextBoxBase)
+			{
+				e.Handled = false;
+				return;
+			}
+
+			e.Handled = Handle(e.Key);
+		}
+
+		private void AssociatedObjectOnPreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			e.Handled = Handle(e.Text);
 		}
 
 		/// <summary>
@@ -52,40 +83,10 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			set { SetValue(ModifierProperty, value); }
 		}
 
-		/// <summary>
-		/// Description
-		/// </summary>
-		public static readonly DependencyProperty CommandProperty;
-
 		public static readonly DependencyProperty KeyProperty;
 
 		public static DependencyProperty ModifierProperty;
 
-
-		/// <summary>
-		/// A property wrapper for the <see cref="CommandProperty"/>
-		/// dependency property:<br/>
-		/// Description
-		/// </summary>
-		public ICommand Command
-		{
-			get { return (ICommand)GetValue(CommandProperty); }
-			set { SetValue(CommandProperty, value); }
-		}
-
-
-		/// <summary>
-		/// Handles changes on the <see cref="CommandProperty"/> dependency property. As
-		/// WPF internally uses the dependency property system and bypasses the
-		/// <see cref="Command"/> property wrapper, updates should be handled here.
-		/// </summary>
-		/// <param name="d">The currently processed owner of the property.</param>
-		/// <param name="e">Provides information about the updated property.</param>
-		private static void CommandPropertyChanged(DependencyObject d,
-											 DependencyPropertyChangedEventArgs
-												 e)
-		{
-		}
 
 		private static void TextPropertyChanged(DependencyObject d,
 											 DependencyPropertyChangedEventArgs
@@ -113,12 +114,7 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 		private bool DoHandle()
 		{
-			if (Command == null || !Command.CanExecute(null))
-			{
-				return false;
-			}
-
-			Command.Execute(null);
+			InvokeActions(null);
 			return true;
 		}
 	}

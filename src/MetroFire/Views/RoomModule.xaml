@@ -6,7 +6,7 @@
 			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors" mc:Ignorable="d" 
 			 xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure" xmlns:UI="clr-namespace:Rogue.MetroFire.UI"
-             d:DesignHeight="539" d:DesignWidth="700" d:DataContext="{Binding Source={StaticResource SampleRoomViewModel}}" Padding="5" Background="White">
+             xmlns:Views="clr-namespace:Rogue.MetroFire.UI.Views" d:DesignHeight="539" d:DesignWidth="700" d:DataContext="{Binding Source={StaticResource SampleRoomViewModel}}" Padding="5" Background="White">
 	<UserControl.Resources>
 		
 		<Style x:Key="_userToolTipStyle" TargetType="{x:Type ToolTip}">
@@ -72,11 +72,11 @@
 		
 	</UserControl.Resources>
 	
-	<Infrastructure:InputBehavior.CustomKeyBindings>
-		<Infrastructure:CustomKeyBindingsCollection>
-			<Infrastructure:CustomKeyBinding Key="Enter" Command="{Binding PostMessageCommand}" Modifier=""/>
-		</Infrastructure:CustomKeyBindingsCollection>
-	</Infrastructure:InputBehavior.CustomKeyBindings>
+	<i:Interaction.Triggers>
+		<Infrastructure:CustomKeyBindingTrigger Key="Enter"  Modifier="">
+			<i:InvokeCommandAction Command="{Binding PostMessageCommand}"/>
+		</Infrastructure:CustomKeyBindingTrigger>
+	</i:Interaction.Triggers>
 	
 	<Grid>
 		<VisualStateManager.VisualStateGroups>
@@ -115,6 +115,7 @@
 			<TextBox.Triggers>
 				
 			</TextBox.Triggers>
+
 		</TextBox>
 		<FlowDocumentScrollViewer Background="White" BorderThickness="0" x:Name="_chatViewer" Document="{Binding ChatDocument}">
 			<i:Interaction.Behaviors>

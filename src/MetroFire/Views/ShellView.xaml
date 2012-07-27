@@ -11,16 +11,15 @@
         <CommandBinding Command="Close" Executed="CloseOnExecuted"/>
     </Window.CommandBindings>
     
-	<i:Interaction.Behaviors>
-	</i:Interaction.Behaviors>
-	<Infrastructure:InputBehavior.CustomKeyBindings>
-		<Infrastructure:CustomKeyBindingsCollection>
-			<Infrastructure:CustomKeyBinding Key="Tab" Modifier="Ctrl" 
-											 Command="{x:Static UI:GlobalCommands.NextModuleCommand}"/>
-			<Infrastructure:CustomKeyBinding Key="Tab" Modifier="Shift+Ctrl" 
-											 Command="{x:Static UI:GlobalCommands.PreviousModuleCommand}"/>
-		</Infrastructure:CustomKeyBindingsCollection>
-	</Infrastructure:InputBehavior.CustomKeyBindings>
+	<i:Interaction.Triggers>
+		<Infrastructure:CustomKeyBindingTrigger Key="Tab" Modifier="Ctrl">
+			<i:InvokeCommandAction Command="{x:Static UI:GlobalCommands.NextModuleCommand}"/>
+		</Infrastructure:CustomKeyBindingTrigger>
+		<Infrastructure:CustomKeyBindingTrigger Key="Tab" Modifier="Shift+Ctrl" >
+			<i:InvokeCommandAction Command="{x:Static UI:GlobalCommands.NextModuleCommand}"/>
+		</Infrastructure:CustomKeyBindingTrigger>
+
+	</i:Interaction.Triggers>
     <Grid>
     	<Grid.RowDefinitions>
     		<RowDefinition Height="Auto"/>

@@ -169,7 +169,6 @@
     <Compile Include="Infrastructure\DesignTime.cs" />
     <Compile Include="Infrastructure\GifSupportingImage.cs" />
     <Compile Include="Infrastructure\IImageEncoder.cs" />
-    <Compile Include="Infrastructure\InputBehavior.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\LogMessageDebugListener.cs" />
     <Compile Include="Infrastructure\MimeTypeResolver.cs" />

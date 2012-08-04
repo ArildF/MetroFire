@@ -64,8 +64,11 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 		private string FormatDisplayText()
 		{
-			return SelectedTriggerType.Text + 
-				(DoMatchText ? " matching the text '" + MatchText + "'" : String.Empty);
+			return SelectedTriggerType.Text +
+			       ((DoMatchText ? " matching the text '" + MatchText + "'" : String.Empty)) +
+			       (DoMatchUser ? " matching the username '" + MatchUser + "'" : String.Empty) + 
+			       (DoMatchRoom ? " in a room matching '" + MatchRoom + "'" : String.Empty);
+
 		}
 
 		public ComboViewModel<TriggerType> SelectedTriggerType

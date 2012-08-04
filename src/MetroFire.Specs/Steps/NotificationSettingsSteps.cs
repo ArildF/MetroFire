@@ -15,6 +15,8 @@ namespace MetroFire.Specs.Steps
 		private RoomContext _context;
 		private NotificationSettingsViewModel _vm;
 		private NotificationViewModel _currentNotification;
+		private TriggerViewModel _currentTrigger;
+		private ActionViewModel _currentAction;
 
 		public NotificationSettingsSteps(RoomContext context)
 		{
@@ -28,6 +30,8 @@ namespace MetroFire.Specs.Steps
 		{
 			_vm.AddNotificationCommand.Execute(null);
 			_currentNotification = _vm.Notifications.Last();
+			_currentNotification.DeleteItemCommand.Execute(_currentNotification.Triggers.First());
+			_currentNotification.DeleteItemCommand.Execute(_currentNotification.Actions.First());
 		}
 
 		[Given(@"the notification has the following triggers:")]
@@ -46,7 +50,7 @@ namespace MetroFire.Specs.Steps
 				trigger.MatchUser = notificationTrigger.MatchUser;
 				trigger.DoMatchUser = !string.IsNullOrEmpty(notificationTrigger.MatchUser);
 			}
-
+			_currentNotification.CollapseAll();
 		}
 
 		[Given(@"the notification has the following actions")]
@@ -73,6 +77,68 @@ namespace MetroFire.Specs.Steps
 			_vm.ToggleEditCommand.Execute(_currentNotification.Triggers[num - 1]);
 		}
 
+		[When(@"I add a new notification")]
+		public void WhenIAddANewNotification()
+		{
+			_vm.AddNotificationCommand.Execute(null);
+			_currentNotification = _vm.Notifications.Last();
+		}
+
+
+		[When(@"I add a new trigger")]
+		public void WhenIAddANewTrigger()
+		{
+			_currentNotification.AddNewTriggerCommand.Execute(null);
+			_currentTrigger = _currentNotification.Triggers.Last();
+		}
+
+		[When(@"I add a new action")]
+		public void WhenIAddANewAction()
+		{
+			_currentNotification.AddNewActionCommand.Execute(null);
+			_currentAction = _currentNotification.Actions.Last();
+		}
+
+
+		[Then(@"the new trigger should be editable")]
+		public void ThenTheNewTriggerShouldBeEditable()
+		{
+			_currentTrigger.IsEditing.Should().BeTrue();
+		}
+
+		[Then(@"the new action should be editable")]
+		public void ThenTheNewActionShouldBeEditable()
+		{
+			_currentAction.IsEditing.Should().BeTrue();
+		}
+
+		[Then(@"the new trigger should be selected")]
+		public void ThenTheNewTriggerShouldBeSelected()
+		{
+			_currentNotification.SelectedTrigger.Should().Be(_currentTrigger);
+		}
+
+		[Then(@"the new notification should have a trigger")]
+		public void ThenItShouldHaveATrigger()
+		{
+			_currentNotification.Triggers.Any().Should().BeTrue();
+		}
+
+		[Then(@"the new notification should have an action")]
+		public void ThenTheNewNotificationShouldHaveAnAction()
+		{
+			_currentNotification.Actions.Any().Should().BeTrue();
+		}
+
+
+
+		[Then(@"the new action should be selected")]
+		public void ThenTheNewActionShouldBeSelected()
+		{
+			_currentNotification.SelectedAction.Should().Be(_currentAction);
+		}
+
+
 
 		[Then(@"there should be (\d+) notifications")]
 		public void ThenThereShouldBe0Notifications(int num)
@@ -85,6 +151,13 @@ namespace MetroFire.Specs.Steps
 		{
 			_currentNotification.Triggers[num - 1].IsEditing.Should().BeTrue();
 		}
+
+		[Then(@"action \#(\d+) should be editable")]
+		public void ThenAction1ShouldBeEditable(int num)
+		{
+			_currentNotification.Actions[num - 1].IsEditing.Should().BeTrue();
+		}
+
 
 		[Then(@"all triggers except \#(\d+) should not be editable")]
 		public void ThenAllTriggersExcept1ShouldNotBeEditable(int num)

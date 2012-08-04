@@ -30,7 +30,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 				{
 					new ComboViewModel<ActionType>("flash the task bar", ActionType.FlashTaskbar),
 					new ComboViewModel<ActionType>("show a toast", ActionType.ShowToast),
-					new ComboViewModel<ActionType>("play a sound", ActionType.PlaySound),
+					//new ComboViewModel<ActionType>("play a sound", ActionType.PlaySound),
 				};
 
 			ActionConditions = new[]

@@ -167,6 +167,7 @@
     <Compile Include="Infrastructure\ClipboardService.cs" />
     <Compile Include="Infrastructure\CustomKeyBindingTrigger.cs" />
     <Compile Include="Infrastructure\DesignTime.cs" />
+    <Compile Include="Infrastructure\FocusBehavior.cs" />
     <Compile Include="Infrastructure\GifSupportingImage.cs" />
     <Compile Include="Infrastructure\IImageEncoder.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />

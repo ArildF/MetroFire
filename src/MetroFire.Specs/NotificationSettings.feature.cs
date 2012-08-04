@@ -86,13 +86,28 @@ this.FeatureBackground();
  testRunner.Given("a new notification");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Type",
+                        "TriggerType",
                         "MatchText",
                         "MatchUser",
                         "MatchRoom"});
             table1.AddRow(new string[] {
-                        "Room activity",
+                        "Room Activity",
                         "Boink",
+                        "",
+                        ""});
+            table1.AddRow(new string[] {
+                        "User Enters",
+                        "",
+                        "Arild",
+                        ""});
+            table1.AddRow(new string[] {
+                        "User message",
+                        "",
+                        "",
+                        "Oslo"});
+            table1.AddRow(new string[] {
+                        "User paste",
+                        "",
                         "",
                         ""});
 #line 11
@@ -104,7 +119,13 @@ this.FeatureBackground();
             table2.AddRow(new string[] {
                         "Show toast",
                         ""});
-#line 14
+            table2.AddRow(new string[] {
+                        "Flash taskbar",
+                        ""});
+            table2.AddRow(new string[] {
+                        "Flash taskbar",
+                        ""});
+#line 18
  testRunner.And("the notification has the following actions", ((string)(null)), table2);
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -114,10 +135,20 @@ this.FeatureBackground();
             table3.AddRow(new string[] {
                         "there is any activity matching the text \'Boink\'"});
             table3.AddRow(new string[] {
+                        "a user enters matching the username \'Arild\'"});
+            table3.AddRow(new string[] {
+                        "a user posts a message in a room matching \'Oslo\'"});
+            table3.AddRow(new string[] {
+                        "a user posts a file or picture"});
+            table3.AddRow(new string[] {
                         "then"});
             table3.AddRow(new string[] {
                         "show a toast"});
-#line 18
+            table3.AddRow(new string[] {
+                        "flash the task bar"});
+            table3.AddRow(new string[] {
+                        "flash the task bar"});
+#line 24
  testRunner.Then("the screen should read like this:", ((string)(null)), table3);
 #line hidden
             this.ScenarioCleanup();
@@ -128,15 +159,15 @@ this.FeatureBackground();
         public virtual void DeleteNotification()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete notification", ((string[])(null)));
-#line 25
+#line 36
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 26
+#line 37
  testRunner.Given("a new notification");
-#line 27
+#line 38
  testRunner.When("I close notification #1");
-#line 28
+#line 39
  testRunner.Then("there should be 0 notifications");
 #line hidden
             this.ScenarioCleanup();
@@ -147,11 +178,11 @@ this.FeatureBackground();
         public virtual void EditTrigger()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit trigger", ((string[])(null)));
-#line 30
+#line 41
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 31
+#line 42
  testRunner.Given("a new notification");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -164,15 +195,15 @@ this.FeatureBackground();
                         "Boink",
                         "",
                         ""});
-#line 32
+#line 43
  testRunner.And("the notification has the following triggers:", ((string)(null)), table4);
-#line 35
+#line 46
  testRunner.When("I double click on trigger #1");
-#line 36
+#line 47
  testRunner.Then("trigger #1 should be editable");
-#line 37
+#line 48
  testRunner.And("all triggers except #1 should not be editable");
-#line 38
+#line 49
  testRunner.And("all actions should not be editable");
 #line hidden
             this.ScenarioCleanup();
@@ -183,11 +214,11 @@ this.FeatureBackground();
         public virtual void EditingOneTriggerShouldStopEditingAnother()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Editing one trigger should stop editing another", ((string[])(null)));
-#line 40
+#line 51
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 41
+#line 52
  testRunner.Given("a new notification");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -205,18 +236,83 @@ this.FeatureBackground();
                         "Moink",
                         "",
                         ""});
-#line 42
+#line 53
  testRunner.And("the notification has the following triggers:", ((string)(null)), table5);
-#line 46
+#line 57
  testRunner.When("I double click on trigger #1");
-#line 47
+#line 58
  testRunner.And("I double click on trigger #2");
-#line 48
+#line 59
  testRunner.Then("trigger #2 should be editable");
-#line 49
+#line 60
  testRunner.And("all triggers except #2 should not be editable");
-#line 50
+#line 61
  testRunner.And("all actions should not be editable");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Adding new notification should add a trigger and action in edit mode")]
+        public virtual void AddingNewNotificationShouldAddATriggerAndActionInEditMode()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding new notification should add a trigger and action in edit mode", ((string[])(null)));
+#line 63
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 64
+ testRunner.When("I add a new notification");
+#line 65
+ testRunner.Then("the new notification should have a trigger");
+#line 66
+ testRunner.And("trigger #1 should be editable");
+#line 67
+ testRunner.And("the new notification should have an action");
+#line 68
+ testRunner.And("action #1 should be editable");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Adding new trigger should select it and set it directly into edit mode")]
+        public virtual void AddingNewTriggerShouldSelectItAndSetItDirectlyIntoEditMode()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding new trigger should select it and set it directly into edit mode", ((string[])(null)));
+#line 70
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 71
+ testRunner.Given("a new notification");
+#line 72
+ testRunner.When("I add a new trigger");
+#line 73
+ testRunner.Then("the new trigger should be editable");
+#line 74
+ testRunner.Then("the new trigger should be selected");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Adding new action should select it and set it directly into edit mode")]
+        public virtual void AddingNewActionShouldSelectItAndSetItDirectlyIntoEditMode()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding new action should select it and set it directly into edit mode", ((string[])(null)));
+#line 76
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 77
+ testRunner.Given("a new notification");
+#line 78
+ testRunner.When("I add a new action");
+#line 79
+ testRunner.Then("the new action should be editable");
+#line 80
+ testRunner.And("the new action should be selected");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -3,23 +3,67 @@
 					xmlns:Settings="clr-namespace:Rogue.MetroFire.UI.ViewModels.Settings" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors" mc:Ignorable="d">
+                    xmlns:Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib" mc:Ignorable="d">
 
 	<Infrastructure:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-	
+
+	<DataTemplate x:Key="_notificationsItemTemplate">
+		<Border BorderBrush="Black" BorderThickness="0,0,0,0.5" Height="Auto" Width="Auto" x:Name="rootBorder" Margin="0 0 0 10" Padding="0 0 0 10" >
+			<Grid>
+				<StackPanel Height="Auto" Width="Auto" Background="White" d:LayoutOverrides="Width, Height" Margin="0,0,0,0"
+							>
+					<TextBlock TextWrapping="Wrap" Style="{DynamicResource MetroSmallLightHeader}">
+						<Run>When</Run>
+					<Hyperlink Command="{Binding AddNewTriggerCommand}" Foreground="{DynamicResource MetroBlueBrush}" FontSize="10">(Add)</Hyperlink>
+					</TextBlock>
+					<ListBox Height="Auto" Margin="10,0,0,0" ItemsSource="{Binding Triggers}" 
+							 SelectedItem="{Binding SelectedTrigger}"
+							 ItemTemplate="{DynamicResource _triggerActionItemTemplate}"
+						Style="{DynamicResource _plainListBoxStyle}" >
+
+					</ListBox>
+					<TextBlock TextWrapping="Wrap" Style="{DynamicResource MetroSmallLightHeader}">
+						<Run>then</Run>
+						<Hyperlink Command="{Binding AddNewActionCommand}" Foreground="{DynamicResource MetroBlueBrush}" FontSize="10">(Add)</Hyperlink>
+					</TextBlock>
+					<ListBox Height="Auto" Margin="10,0,0,0" Style="{DynamicResource _plainListBoxStyle}" 
+							 SelectedItem="{Binding SelectedAction}"
+							 ItemsSource="{Binding Actions}" ItemTemplate="{DynamicResource _triggerActionItemTemplate}"/>
+				</StackPanel>
+				<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="shadeGrid"/>
+
+				<Button x:Name="deleteButton" 
+						Command="{Binding DataContext.DeleteNotificationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+						CommandParameter="{Binding}"
+						Template="{DynamicResource CloseButtonTemplate}" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,7,0"/>
+
+			</Grid>
+		</Border>
+		<DataTemplate.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="Visibility" TargetName="deleteButton" Value="Visible"/>
+			</Trigger>
+			<Trigger Property="IsMouseOver" Value="True" SourceName="deleteButton">
+				<Setter Property="Background" TargetName="shadeGrid" Value="#33000000"/>
+			</Trigger>
+		</DataTemplate.Triggers>
+
+	</DataTemplate>
+
 	<DataTemplate x:Key="_triggerActionItemTemplate">
 
 
-		<StackPanel Background="Transparent">
-			<Infrastructure:InputBehavior.CustomKeyBindings>
-				<Infrastructure:CustomKeyBindingsCollection>
-					<Infrastructure:CustomKeyBinding Key="Enter"
-													Command="{Binding DataContext.ToggleEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorLevel=2, AncestorType={x:Type ListBox}}, PresentationTraceSources.TraceLevel=High}"/>
-					<!--CommandParameter="{Binding}"/>-->
-				</Infrastructure:CustomKeyBindingsCollection>
-			</Infrastructure:InputBehavior.CustomKeyBindings>
-
+		<Grid Background="Transparent" d:DataContext="{Binding Notifications[0].Triggers[0], Source={StaticResource SampleNotificationSettingsViewModel}}">
 			<i:Interaction.Triggers>
+				<Infrastructure:CustomKeyBindingTrigger Key="Enter" SourceObject="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}">
+					<i:InvokeCommandAction	Command="{Binding DataContext.ToggleEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorLevel=2, AncestorType={x:Type ListBox}}}"
+											CommandParameter="{Binding}"/>
+				</Infrastructure:CustomKeyBindingTrigger>
+				<Infrastructure:CustomKeyBindingTrigger Key="Delete" SourceObject="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}">
+					<i:InvokeCommandAction	Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type ListBox}}}"
+											CommandParameter="{Binding}"/>
+				</Infrastructure:CustomKeyBindingTrigger>
 				<i:EventTrigger EventName="MouseDoubleClick" 
 								SourceObject="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}">
 					<i:InvokeCommandAction 
@@ -53,55 +97,145 @@
 				</VisualStateGroup>
 			</VisualStateManager.VisualStateGroups>
 			<Grid x:Name="grid">
-				<TextBlock Margin="0,0,0,4.04" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" Style="{DynamicResource MetroMediumLightHeader}">
+				<TextBlock Margin="0,0,0,4.04" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" Style="{DynamicResource MetroSmallLightHeader}">
 						<Run Text="{Binding DisplayText, Mode=OneWay, StringFormat=&#x2022;  {0}}"/>
 				</TextBlock>
 			</Grid>
-			<ContentPresenter x:Name="contentPresenter" Content="{Binding}" Visibility="Collapsed"/>
+			<Grid x:Name="contentPresenter" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+				  Background="White">
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<ContentPresenter Content="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+								  Margin="0 15 0 0"/>
+				<Button Grid.Row="1" Style="{DynamicResource MetroBigButton}"
+						FontSize="16"
+						Margin="2"
+							HorizontalAlignment="Right"
+							CommandParameter="{Binding}"
+							Command="{Binding DataContext.ToggleEditCommand, RelativeSource={RelativeSource FindAncestor, AncestorLevel=2, AncestorType={x:Type ListBox}}}">
+					Apply
+				</Button>
+			</Grid>
+			<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="shadeGrid"/>
+			<Button x:Name="deleteButton" Content="X" d:LayoutOverrides="Height" Grid.Column="2" Visibility="Hidden" 
+					Template="{DynamicResource CloseButtonTemplate}"
+					Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.DeleteItemCommand}"
+					CommandParameter="{Binding}"
+					HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0"/>
+
+
+
+
 			<i:Interaction.Behaviors>
 				<Behaviors:VisualStateBehavior>
 					<Behaviors:Transition Source="{Binding IsEditing}" Value="False" VisualState="NotEditing"/>
 					<Behaviors:Transition Source="{Binding IsEditing}" Value="True" VisualState="Editing"/>
 				</Behaviors:VisualStateBehavior>
 			</i:Interaction.Behaviors>
-		</StackPanel>
-	</DataTemplate>
-			
-	
-	<DataTemplate x:Key="_notificationsItemTemplate">
-		<Border BorderBrush="Black" BorderThickness="0,0,0,1" Height="Auto" Width="Auto">
-			<Grid>
-				<StackPanel Height="Auto" Width="Auto" Background="White" d:LayoutOverrides="Width, Height" Margin="0,0,0,0"
-							>
-					<TextBlock TextWrapping="Wrap" Style="{DynamicResource MetroMediumLightHeader}">
-						<Run>When</Run>
-						<Hyperlink Command="{Binding AddNewTriggerCommand}" FontSize="10">(Add)</Hyperlink>
-					</TextBlock>
-					<ListBox Height="Auto" Margin="10,0,0,0" ItemsSource="{Binding Triggers}" ItemTemplate="{DynamicResource _triggerActionItemTemplate}"
-						Style="{DynamicResource _plainListBoxStyle}">
-						
-					</ListBox>
-					<TextBlock TextWrapping="Wrap" Style="{DynamicResource MetroMediumLightHeader}">
-						<Run>then</Run>
-						<Hyperlink Command="{Binding AddNewActionCommand}" FontSize="10">(Add)</Hyperlink>
-					</TextBlock>
-					<ListBox Height="Auto" Margin="10,0,0,0" Style="{DynamicResource _plainListBoxStyle}" ItemsSource="{Binding Actions}" ItemTemplate="{DynamicResource _triggerActionItemTemplate}"/>
-				</StackPanel>
-				
-				<Button x:Name="button" 
-						Command="{Binding DataContext.DeleteNotificationCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
-						CommandParameter="{Binding}"
-						Template="{DynamicResource CloseButtonTemplate}" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,7,0"/>
-
-			</Grid>
-		</Border>
+		</Grid>
 		<DataTemplate.Triggers>
 			<Trigger Property="IsMouseOver" Value="True">
-				<Setter Property="Visibility" TargetName="button" Value="Visible"/>
+				<Setter Property="Visibility" TargetName="deleteButton" Value="Visible"/>
+			</Trigger>
+			<Trigger Property="IsMouseOver" Value="True" SourceName="deleteButton">
+				<Setter Property="Background" TargetName="shadeGrid" Value="#33000000"/>
 			</Trigger>
 		</DataTemplate.Triggers>
-		
 	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type Settings:TriggerViewModel}">
+		<Grid Margin="0" Height="Auto">
+
+			<Grid VerticalAlignment="Stretch" d:DesignWidth="504.733" d:DesignHeight="112.88" Background="White" d:LayoutOverrides="Width, Height">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="2*"/>
+					<ColumnDefinition Width="5*"/>
+				</Grid.ColumnDefinitions>
+				<ComboBox Width="Auto" d:LayoutOverrides="Height, GridBox" Grid.ColumnSpan="1" Grid.Column="1" 
+					HorizontalAlignment="Stretch" ItemsSource="{Binding TriggerTypes}" 
+					SelectedItem="{Binding SelectedTriggerType}"
+						  x:Name="triggerTypeCheckBox"
+						  VerticalAlignment="Center"
+					DisplayMemberPath="Text" Margin="0,0,0,6" HorizontalContentAlignment="Stretch"/>
+				<CheckBox x:Name="checkBox" Content="Matching" Margin="6,0,-0.001,0" d:LayoutOverrides="Width" Grid.Row="1" 
+					IsChecked="{Binding DoMatchText}"
+					VerticalAlignment="Center"/>
+				<TextBox TextWrapping="Wrap" d:LayoutOverrides="Width" Grid.Row="1" 
+					Text="{Binding MatchText}"
+						 VerticalAlignment="Center"
+					Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox}"  Margin="0,0,0,6" ToolTip="Enter a regular expression to match room text"/>
+				<CheckBox x:Name="checkBox1" Content="In room matching" Margin="6,0,5.999,0" d:LayoutOverrides="Width" 
+					IsChecked="{Binding DoMatchRoom}"
+					Grid.Row="2" VerticalAlignment="Center"/>
+				<TextBox HorizontalAlignment="Stretch" TextWrapping="Wrap" d:LayoutOverrides="Height, GridBox" 
+					Text="{Binding MatchRoom}"
+						 VerticalAlignment="Center"
+					Grid.Row="2" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch" ToolTip="Enter a regular expression to match the room title"/>
+				<CheckBox x:Name="checkBox1_Copy" Content="User matching" Margin="6,0,5.998,0" 
+					IsChecked="{Binding DoMatchUser}"
+					Grid.Row="3" VerticalAlignment="Center" d:LayoutOverrides="Width"/>
+				<TextBox HorizontalAlignment="Stretch" TextWrapping="Wrap" 
+					Text="{Binding MatchUser}"
+						 VerticalAlignment="Center"
+					Grid.Row="3" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1_Copy}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch" d:LayoutOverrides="Height, GridBox" ToolTip="Enter a regular expression to match the user name"/>
+			</Grid>
+		</Grid>
+		<DataTemplate.Triggers>
+			<Trigger Property="IsVisible" SourceName="triggerTypeCheckBox" Value="True">
+				<Setter Property="Infrastructure:FocusBehavior.BindableFocus" TargetName="triggerTypeCheckBox" Value="True"/>
+			</Trigger>
+		</DataTemplate.Triggers>
+	</DataTemplate>
+
+	<DataTemplate DataType="{x:Type Settings:ActionViewModel}">
+		<Grid d:DesignWidth="422" d:DesignHeight="93.96" Background="White">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.656*"/>
+				<ColumnDefinition Width="0.163*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<ComboBox d:LayoutOverrides="Height" DisplayMemberPath="Text" ItemsSource="{Binding ActionTypes}" 
+					  x:Name="actionTypeCheckBox"
+					  SelectedItem="{Binding SelectedActionType}" Grid.ColumnSpan="3"/>
+			<ComboBox HorizontalAlignment="Stretch" Margin="0" Width="Auto" d:LayoutOverrides="Height, GridBox" Grid.Row="2"
+					  Visibility="Collapsed"
+					  DisplayMemberPath="Text"
+					  ItemsSource="{Binding ActionConditions}" SelectedItem="{Binding SelectedActionCondition}"/>
+
+			<ContentControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="{Binding SubViewModel}" 
+							HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<TextBox Height="Auto" TextWrapping="Wrap"  Width="Auto" Margin="19,0,20,0" Grid.RowSpan="1" 
+					 Text="{Binding Interval}"
+					 Visibility="{Binding ShowInterval, Converter={StaticResource BoolToVisibilityConverter}}"
+					 Grid.Row="2" Grid.Column="1"/>
+			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
+					   Visibility="{Binding ShowInterval, Converter={StaticResource BoolToVisibilityConverter}}"
+					   Grid.Row="2" Grid.Column="2" Margin="13,0,12,0"><Run Language="nb-no" Text="{Binding IntervalText}"/></TextBlock>
+		</Grid>
+		<DataTemplate.Triggers>
+			<Trigger Property="IsVisible" SourceName="actionTypeCheckBox" Value="True">
+				<Setter Property="Infrastructure:FocusBehavior.BindableFocus" TargetName="actionTypeCheckBox" Value="True"/>
+			</Trigger>
+		</DataTemplate.Triggers>
+	</DataTemplate>
+
+
+
 
 	<DataTemplate DataType="{x:Type Settings:PlaySoundViewModel}">
 		<Grid d:DesignWidth="275.183" d:DesignHeight="25.92">
@@ -117,45 +251,7 @@
 		
 	</DataTemplate>
 
-		<DataTemplate DataType="{x:Type Settings:ActionViewModel}">
-		<Grid d:DesignWidth="422" d:DesignHeight="93.96">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="0.656*"/>
-				<ColumnDefinition Width="0.163*"/>
-				<ColumnDefinition Width="Auto"/>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition/>
-				<RowDefinition/>
-			</Grid.RowDefinitions>
-			<ComboBox d:LayoutOverrides="Height" DisplayMemberPath="Text" ItemsSource="{Binding ActionTypes}" SelectedItem="{Binding SelectedActionType}" Grid.ColumnSpan="3"/>
-			<ComboBox HorizontalAlignment="Stretch" Margin="0" Width="Auto" d:LayoutOverrides="Height, GridBox" Grid.Row="2"
-					  DisplayMemberPath="Text"
-					  ItemsSource="{Binding ActionConditions}" SelectedItem="{Binding SelectedActionCondition}"/>
-			
-			<ContentControl Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Content="{Binding SubViewModel}" 
-							HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-			<TextBox Height="Auto" TextWrapping="Wrap"  Width="Auto" Margin="19,0,20,0" Grid.RowSpan="1" 
-					 Text="{Binding Interval}"
-					 Visibility="{Binding ShowInterval, Converter={StaticResource BoolToVisibilityConverter}}"
-					 Grid.Row="2" Grid.Column="1"/>
-			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" 
-					   Visibility="{Binding ShowInterval, Converter={StaticResource BoolToVisibilityConverter}}"
-					   Grid.Row="2" Grid.Column="2" Margin="13,0,12,0"><Run Language="nb-no" Text="{Binding IntervalText}"/></TextBlock>
-			<Button x:Name="button" Content="X" d:LayoutOverrides="Height" Grid.Column="2" Visibility="Hidden" 
-					Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.DeleteActionCommand}"
-					CommandParameter="{Binding}"
-					HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="3"/>
-		</Grid>
-
-		<DataTemplate.Triggers>
-			<Trigger Property="IsMouseOver" Value="True">
-				<Setter Property="Visibility" TargetName="button" Value="Visible"/>
-			</Trigger>
-		</DataTemplate.Triggers>
-	</DataTemplate>
+		
 	
 	<DataTemplate DataType="{x:Type Settings:NotificationSettingsViewModel}">
 		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch">
@@ -238,54 +334,5 @@
 		</Setter>
 
 	</Style>
-	<DataTemplate DataType="{x:Type Settings:TriggerViewModel}">
-		<Grid Margin="0" Height="Auto">
 	
-			<Grid VerticalAlignment="Stretch" d:DesignWidth="504.733" d:DesignHeight="112.88" Background="White" d:LayoutOverrides="Width, Height">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="2*"/>
-					<ColumnDefinition Width="5*"/>
-				</Grid.ColumnDefinitions>
-				<TextBlock TextWrapping="Wrap" d:LayoutOverrides="Width" Grid.ColumnSpan="2" VerticalAlignment="Center"><Run Text="When"/></TextBlock>
-				<ComboBox Width="Auto" d:LayoutOverrides="Height, GridBox" Grid.ColumnSpan="1" Grid.Column="1" 
-					HorizontalAlignment="Stretch" ItemsSource="{Binding TriggerTypes}" 
-					SelectedItem="{Binding SelectedTriggerType}"
-					DisplayMemberPath="Text" Margin="0,0,0,6" HorizontalContentAlignment="Stretch"/>
-				<CheckBox x:Name="checkBox" Content="Matching" Margin="6,0,-0.001,0" d:LayoutOverrides="Width" Grid.Row="1" 
-					IsChecked="{Binding DoMatchText}"
-					VerticalAlignment="Center"/>
-				<TextBox TextWrapping="Wrap" d:LayoutOverrides="Width" Grid.Row="1" 
-					Text="{Binding MatchText}"
-					Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox}" VerticalAlignment="Top" Margin="0,0,0,6" ToolTip="Enter a regular expression to match room text"/>
-				<CheckBox x:Name="checkBox1" Content="In room matching" Margin="6,0,5.999,0" d:LayoutOverrides="Width" 
-					IsChecked="{Binding DoMatchRoom}"
-					Grid.Row="2" VerticalAlignment="Center"/>
-				<TextBox HorizontalAlignment="Stretch" TextWrapping="Wrap" d:LayoutOverrides="Height, GridBox" 
-					Text="{Binding MatchRoom}"
-					Grid.Row="2" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch" ToolTip="Enter a regular expression to match the room title"/>
-				<CheckBox x:Name="checkBox1_Copy" Content="User matching" Margin="6,0,5.998,0" 
-					IsChecked="{Binding DoMatchUser}"
-					Grid.Row="3" VerticalAlignment="Center" d:LayoutOverrides="Width"/>
-				<TextBox HorizontalAlignment="Stretch" TextWrapping="Wrap" 
-					Text="{Binding MatchUser}"
-					Grid.Row="3" Grid.Column="1" IsEnabled="{Binding IsChecked, ElementName=checkBox1_Copy}" Margin="0,0,0,6" HorizontalContentAlignment="Stretch" d:LayoutOverrides="Height, GridBox" ToolTip="Enter a regular expression to match the user name"/>
-				<Button x:Name="button" Content="X" d:LayoutOverrides="Height" Grid.Column="2" Visibility="Hidden" 
-					Command="{Binding DataContext.DeleteTriggerCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}"
-					CommandParameter="{Binding}"
-					HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="4"/>
-			</Grid>
-		</Grid>
-		<DataTemplate.Triggers>
-			<Trigger Property="IsMouseOver" Value="True">
-				<Setter Property="Visibility" TargetName="button" Value="Visible"/>
-			</Trigger>
-		</DataTemplate.Triggers>
-	</DataTemplate>
 </ResourceDictionary>

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Xaml;
@@ -24,18 +25,28 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 			foreach (var notificationEntry in notification.Notifications)
 			{
-				Notifications.Add(new NotificationViewModel(notificationEntry));
+				Notifications.Add(new NotificationViewModel(notificationEntry, this));
 			}
 
 			AddNotificationCommand = new ReactiveCommand();
-			AddNotificationCommand.Subscribe(_ => Notifications.Add(new NotificationViewModel(
-				new NotificationEntry{Triggers = new NotificationTrigger[]{}, Actions = new NotificationAction[]{}})));
+			AddNotificationCommand.Subscribe(_ =>
+				{
+					Notifications.Add(new NotificationViewModel(
+					                  	new NotificationEntry
+					                  		{
+					                  			Triggers = new[] {new NotificationTrigger()},
+					                  			Actions = new[] {new NotificationAction()}
+					                  		},
+					                  	this));
+					Notifications.Last().Actions.First().IsEditing = true;
+					Notifications.Last().Triggers.First().IsEditing = true;
+				});
 
 
 			DeleteNotificationCommand = new ReactiveCommand();
 			DeleteNotificationCommand.OfType<NotificationViewModel>().Subscribe(n => Notifications.Remove(n));
 
-			(ToggleEditCommand = new ReactiveCommand()).OfType<IToggleEdit>().Subscribe(editable =>
+			(ToggleEditCommand = new ReactiveCommand()).Do(_ => Trace.WriteLine(_)).OfType<IToggleEdit>().Subscribe(editable =>
 			{
 				bool valueToSet = !editable.IsEditing;
 				foreach (var notificationViewModel in Notifications)

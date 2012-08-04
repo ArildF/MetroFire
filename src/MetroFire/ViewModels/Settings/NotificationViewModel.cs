@@ -7,13 +7,17 @@ using Rogue.MetroFire.UI.Settings;
 
 namespace Rogue.MetroFire.UI.ViewModels.Settings
 {
-	public class NotificationViewModel
+	public class NotificationViewModel : ReactiveObject
 	{
 		private readonly NotificationEntry _notificationEntry;
+		private readonly NotificationSettingsViewModel _parent;
+		private TriggerViewModel _selectedTrigger;
+		private ActionViewModel _selectedAction;
 
-		public NotificationViewModel(NotificationEntry notificationEntry)
+		public NotificationViewModel(NotificationEntry notificationEntry, NotificationSettingsViewModel parent)
 		{
 			_notificationEntry = notificationEntry;
+			_parent = parent;
 			Triggers = new ReactiveCollection<TriggerViewModel>();
 
 			foreach (var trigger in notificationEntry.Triggers)
@@ -28,26 +32,32 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			}
 
 			AddNewTriggerCommand = new ReactiveCommand();
-			AddNewTriggerCommand.Subscribe(_ => Triggers.Add(new TriggerViewModel(new NotificationTrigger())));
+			AddNewTriggerCommand.Subscribe(_ =>
+				{
+					Triggers.Add(new TriggerViewModel(new NotificationTrigger()));
+					SelectedTrigger = Triggers.Last();
+					_parent.ToggleEditCommand.Execute(Triggers.Last());
+				});
 
 
 			AddNewActionCommand = new ReactiveCommand();
-			AddNewActionCommand.Subscribe(_ => Actions.Add(new ActionViewModel(new FlashTaskBarNotificationAction())));
+			AddNewActionCommand.Subscribe(_ =>
+				{
+					Actions.Add(new ActionViewModel(new FlashTaskBarNotificationAction()));
+					SelectedAction = Actions.Last();
+					_parent.ToggleEditCommand.Execute(Actions.Last());
+				});
 
-			DeleteTriggerCommand = new ReactiveCommand();
-			DeleteTriggerCommand.Cast<TriggerViewModel>().Subscribe(trigger => Triggers.Remove(trigger));
-
-			DeleteActionCommand = new ReactiveCommand();
-			DeleteActionCommand.Cast<ActionViewModel>().Subscribe(action => Actions.Remove(action));
+			DeleteItemCommand = new ReactiveCommand();
+			DeleteItemCommand.OfType<TriggerViewModel>().Subscribe(t => Triggers.Remove(t));
+			DeleteItemCommand.OfType<ActionViewModel>().Subscribe(a => Actions.Remove(a));
 		}
-
-		public ReactiveCommand DeleteActionCommand { get; private set; }
 
 		public ReactiveCommand AddNewActionCommand { get; private set; }
 
 		public ReactiveCollection<ActionViewModel> Actions { get; private set; }
 
-		public ReactiveCommand DeleteTriggerCommand { get; private set; }
+		public ReactiveCommand DeleteItemCommand { get; private set; }
 
 		public ReactiveCommand AddNewTriggerCommand { get; private set; }
 
@@ -56,6 +66,18 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 		public NotificationEntry Notification
 		{
 			get { return _notificationEntry; }
+		}
+
+		public TriggerViewModel SelectedTrigger
+		{
+			get { return _selectedTrigger; }
+			set { this.RaiseAndSetIfChanged(vm => vm.SelectedTrigger, ref _selectedTrigger, value);}
+		}
+
+		public ActionViewModel SelectedAction
+		{
+			get { return _selectedAction; }
+			set { this.RaiseAndSetIfChanged(vm => vm.SelectedAction, ref _selectedAction, value); }
 		}
 
 		public void Commit()
@@ -75,7 +97,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 		public void CollapseAll()
 		{
-			foreach (var editable in Triggers.Cast<IToggleEdit>().Concat(Actions.Cast<IToggleEdit>()))
+			foreach (var editable in Triggers.Cast<IToggleEdit>().Concat(Actions))
 			{
 				editable.IsEditing = false;
 			}

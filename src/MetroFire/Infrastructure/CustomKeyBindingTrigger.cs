@@ -18,23 +18,90 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			var mdKey = new FrameworkPropertyMetadata(Key.None, KeyPropertyChanged);
 			KeyProperty = DependencyProperty.Register("Key", typeof(Key), typeof(CustomKeyBindingTrigger), mdKey);
 
-			var mdModifier = new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None);
+			var mdModifier = new FrameworkPropertyMetadata(ModifierKeys.None, FrameworkPropertyMetadataOptions.None);
 			ModifierProperty = DependencyProperty.Register("Modifier", typeof(ModifierKeys?), typeof(CustomKeyBindingTrigger),
 														   mdModifier);
+
+			var mdSourceObject = new FrameworkPropertyMetadata{PropertyChangedCallback = SourceObjectChanged};
+			SourceObjectProperty = DependencyProperty.Register("SourceObject", typeof (UIElement),
+				typeof (CustomKeyBindingTrigger), mdSourceObject);
 		}
+
+		#region SourceObject dependency property
+
+		/// <summary>
+		/// Description
+		/// </summary>
+		public static readonly DependencyProperty SourceObjectProperty;
+
+
+
+		/// <summary>
+		/// A property wrapper for the <see cref="SourceObjectProperty"/>
+		/// dependency property:<br/>
+		/// Description
+		/// </summary>
+		public UIElement SourceObject
+		{
+			get { return (UIElement) GetValue(SourceObjectProperty); }
+			set { SetValue(SourceObjectProperty, value); }
+		}
+
+
+		/// <summary>
+		/// Handles changes on the <see cref="SourceObjectProperty"/> dependency property. As
+		/// WPF internally uses the dependency property system and bypasses the
+		/// <see cref="SourceObject"/> property wrapper, updates should be handled here.
+		/// </summary>
+		/// <param name="d">The currently processed owner of the property.</param>
+		/// <param name="e">Provides information about the updated property.</param>
+		private static void SourceObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			var owner = (CustomKeyBindingTrigger) d;
+			var newValue = e.NewValue as UIElement;
+			var oldValue = e.OldValue as UIElement;
+
+			if(oldValue != DependencyProperty.UnsetValue && oldValue != null)
+			{
+				owner.Unsubscribe(oldValue);
+			}
+			if(newValue != DependencyProperty.UnsetValue && newValue != null)
+			{
+				owner.Unsubscribe(owner.AssociatedObject);
+				owner.Subscribe(newValue);
+			}
+
+		}
+
+		#endregion
+
 
 		protected override void OnAttached()
 		{
 			base.OnAttached();
-			AssociatedObject.PreviewTextInput += AssociatedObjectOnPreviewTextInput;
-			AssociatedObject.PreviewKeyDown += AssociatedObjectOnPreviewKeyDown;
+			if (GetValue(SourceObjectProperty) == DependencyProperty.UnsetValue)
+			{
+				Subscribe(AssociatedObject);
+			}
+		}
+
+		private void Subscribe(UIElement uiElement)
+		{
+			uiElement.AddHandler(UIElement.TextInputEvent,
+			                            new TextCompositionEventHandler(AssociatedObjectOnPreviewTextInput), true);
+			uiElement.AddHandler(UIElement.PreviewKeyDownEvent, new KeyEventHandler(AssociatedObjectOnPreviewKeyDown), true);
 		}
 
 		protected override void OnDetaching()
 		{
 			base.OnDetaching();
-			AssociatedObject.PreviewTextInput -= AssociatedObjectOnPreviewTextInput;
-			AssociatedObject.PreviewKeyDown -= AssociatedObjectOnPreviewKeyDown;
+			Unsubscribe(AssociatedObject);
+		}
+
+		private void Unsubscribe(UIElement uiElement)
+		{
+			uiElement.PreviewTextInput -= AssociatedObjectOnPreviewTextInput;
+			uiElement.PreviewKeyDown -= AssociatedObjectOnPreviewKeyDown;
 		}
 
 

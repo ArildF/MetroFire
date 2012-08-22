@@ -113,8 +113,13 @@ namespace Rogue.MetroFire.UI
 	
 	public interface ISettingsViewModel
 	{
-		
+		ICommand SettingsCommand { get; }
 	}
+
+	public interface INavigationContentViewModel
+	{
+	}
+
 
 	public interface ICampfireLog
 	{
@@ -236,5 +241,13 @@ namespace Rogue.MetroFire.UI
 	public interface IMimeTypeResolver
 	{
 		string GetMimeType(string path);
+	}
+
+	public interface IApplicationDeployment
+	{
+		bool IsNetworkDeployed { get; }
+		IObservable<Unit> UpdateAvailable { get; }
+		IObservable<AppUpdateProgressMessage> UpdateProgress { get; }
+		void Update();
 	}
 }

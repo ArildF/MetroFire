@@ -40,8 +40,8 @@
 	    		</Button.RenderTransform>
 	    	</Button>
 		</Grid>
-	<ContentControl x:Name="_mainContent" Content="" Grid.Row="1" Margin="10 0 0 0" Background="LimeGreen"/>
-		<ContentControl x:Name="_navigationContent" Content=""/>
-		
-    </Grid>
+		<ContentControl x:Name="_mainContent" Content="" Grid.Row="1" Margin="10 0 0 0" Background="LimeGreen"/>
+		<ContentControl x:Name="_navigationContent" Content="" HorizontalContentAlignment ="Stretch" HorizontalAlignment="Stretch"/>
+
+	</Grid>
 </Window>

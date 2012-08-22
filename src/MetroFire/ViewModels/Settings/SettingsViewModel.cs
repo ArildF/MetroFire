@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reactive.Linq;
+using System.Windows.Input;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.UI.Settings;
@@ -59,5 +60,6 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 		public ReactiveCommand SettingsCommand { get; private set; }
 
 		public ReactiveCommand SaveCommand { get; private set; }
+		ICommand ISettingsViewModel.SettingsCommand { get { return SettingsCommand; } }
 	}
 }

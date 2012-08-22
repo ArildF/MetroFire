@@ -17,11 +17,11 @@
     <WarningLevel>4</WarningLevel>
     <Utf8Output>true</Utf8Output>
     <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <SGenUseProxyTypes>false</SGenUseProxyTypes>
     <PublishUrl>D:\temp\metrofire\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
+    <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -29,9 +29,9 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://metrofire.s3.amazonaws.com/</InstallUrl>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>0.8.0.%2a</ApplicationVersion>
+    <InstallUrl>\\vima\metrofire\</InstallUrl>
+    <ApplicationRevision>29</ApplicationRevision>
+    <ApplicationVersion>0.35.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -114,6 +114,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -160,13 +161,17 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="GlobalCommands.cs" />
     <Compile Include="Infrastructure\ApplicationActivator.cs" />
+    <Compile Include="Infrastructure\AppUpdater.cs" />
     <Compile Include="Infrastructure\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CampfireLog.cs" />
+    <Compile Include="Infrastructure\ClickOnceApplicationDeployment.cs" />
     <Compile Include="Infrastructure\Clipboard.cs" />
     <Compile Include="Infrastructure\ClipboardItem.cs" />
     <Compile Include="Infrastructure\ClipboardService.cs" />
     <Compile Include="Infrastructure\CustomKeyBindingTrigger.cs" />
     <Compile Include="Infrastructure\DesignTime.cs" />
+    <Compile Include="Infrastructure\DisposableCollection.cs" />
+    <Compile Include="Infrastructure\FakeApplicationDeployment.cs" />
     <Compile Include="Infrastructure\FocusBehavior.cs" />
     <Compile Include="Infrastructure\GifSupportingImage.cs" />
     <Compile Include="Infrastructure\IImageEncoder.cs" />
@@ -226,6 +231,7 @@
     <Compile Include="ViewModels\LogViewModel.cs" />
     <Compile Include="ViewModels\MainCampfireViewModel.cs" />
     <Compile Include="ViewModels\ModuleViewModel.cs" />
+    <Compile Include="ViewModels\NavigationContentViewModel.cs" />
     <Compile Include="ViewModels\PasteViewModel.cs" />
     <Compile Include="ViewModels\RoomListViewModel.cs" />
     <Compile Include="ViewModels\RoomModuleViewModel.cs" />
@@ -279,8 +285,8 @@
     <Compile Include="Views\RoomModule.xaml.cs">
       <DependentUpon>RoomModule.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsButtonNavigationContent.xaml.cs">
-      <DependentUpon>SettingsButtonNavigationContent.xaml</DependentUpon>
+    <Compile Include="Views\NavigationContent.xaml.cs">
+      <DependentUpon>NavigationContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsModule.xaml.cs">
       <DependentUpon>SettingsModule.xaml</DependentUpon>
@@ -427,7 +433,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsButtonNavigationContent.xaml">
+    <Page Include="Views\NavigationContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -471,6 +477,68 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="CampfireClient.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="MetroFire.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Newtonsoft.Json.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="ReactiveUI.Blend.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="ReactiveUI.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="ReactiveUI.Xaml.pdb">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <DrawingBrush x:Key="DownloadButton" Stretch="Uniform">
+    <DrawingBrush.Drawing>
+      <DrawingGroup>
+        <DrawingGroup.Children>
+          <GeometryDrawing Brush="#FF000000" Geometry="F1 M 4.0719,-3.05176e-005L 6.91251,-3.05176e-005L 6.91251,10.175L 10.9844,5.71249L 10.9844,9.37497L 5.49689,15.275L 0,9.37497L 0,5.71249L 4.0719,10.175L 4.0719,-3.05176e-005 Z M 10.5844,17.0906C 10.6823,17.0906 10.7589,17.1036 10.8141,17.1297L 10.9359,17.2265C 10.962,17.2651 10.9766,17.3073 10.9797,17.3531C 10.9828,17.399 10.9844,17.4448 10.9844,17.4906L 10.9844,19.5219C 10.9844,19.5802 10.9828,19.6354 10.9797,19.6875C 10.9766,19.7396 10.962,19.787 10.9359,19.8297C 10.9099,19.8724 10.8693,19.9068 10.8141,19.9328C 10.7589,19.9588 10.6823,19.9719 10.5844,19.9719L 0.400024,19.9719C 0.30835,19.9719 0.21875,19.9245 0.131256,19.8297C 0.0437622,19.7349 0,19.6323 0,19.5219L 0,17.4906C 0,17.399 0.0437622,17.3094 0.131256,17.2219C 0.21875,17.1344 0.30835,17.0906 0.400024,17.0906L 10.5844,17.0906 Z " />
+        </DrawingGroup.Children>
+      </DrawingGroup>
+    </DrawingBrush.Drawing>
+  </DrawingBrush>
+</ResourceDictionary>

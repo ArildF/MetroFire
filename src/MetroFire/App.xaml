@@ -14,6 +14,7 @@
 				<ResourceDictionary Source="Assets/check-System.Brush.xaml"/>
 				<ResourceDictionary Source="Assets/error-System.Brush.xaml"/>
 				<ResourceDictionary Source="Assets/DocumentDrawing.xaml"/>
+				<ResourceDictionary Source="Assets/DownloadButton.xaml"/>
 				<ResourceDictionary Source="Views/NotificationViews.xaml"/>
 				<ResourceDictionary Source="Simple Styles.xaml"/>
 				<ResourceDictionary Source="Assets/check-System.Brush.xaml"/>
@@ -633,7 +634,9 @@
 							</VisualStateManager.VisualStateGroups>
 							<StackPanel Orientation="Horizontal" Margin="13,6,3,6">
 								<ContentPresenter Height="Auto"/>
-								<Border BorderBrush="{x:Null}" BorderThickness="1" Height="Auto" Background="{DynamicResource preferencessystem}" Margin="0" Padding="23,0,0,0"/>
+								<Border BorderBrush="{x:Null}" BorderThickness="1" Height="Auto" 
+										Background="{Binding Path=(Infrastructure:Attached.ImageBrush), RelativeSource={RelativeSource Mode=TemplatedParent}}"
+										Margin="0" Padding="23,0,0,0"/>
 							</StackPanel>
 						</Border>
 						<ControlTemplate.Triggers>

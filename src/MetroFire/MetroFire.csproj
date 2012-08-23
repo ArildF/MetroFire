@@ -162,6 +162,7 @@
     <Compile Include="GlobalCommands.cs" />
     <Compile Include="Infrastructure\ApplicationActivator.cs" />
     <Compile Include="Infrastructure\AppUpdater.cs" />
+    <Compile Include="Infrastructure\Attached.cs" />
     <Compile Include="Infrastructure\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CampfireLog.cs" />
     <Compile Include="Infrastructure\ClickOnceApplicationDeployment.cs" />
@@ -353,6 +354,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Resource Include="Assets\DownloadButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
     <Page Include="Assets\error-System.Brush.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

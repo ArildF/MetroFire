@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Reactive;
+using System.ComponentModel;
+using System.Deployment.Application;
 using System.Reactive.Linq;
-using System.Windows;
 using Castle.Core;
 using ReactiveUI;
+using Rogue.MetroFire.CampfireClient;
 
 namespace Rogue.MetroFire.UI.Infrastructure
 {
@@ -27,15 +28,40 @@ namespace Rogue.MetroFire.UI.Infrastructure
 				return;
 			}
 
+			var updateAvailable = Observable.FromEventPattern<CheckForUpdateCompletedEventArgs>(_deployment,
+					"CheckForUpdateCompleted")
+				.Where(e => e.EventArgs.UpdateAvailable)
+				.Select(_ => new AppUpdateAvailableMessage()).Take(1);
+
+			_disposables.Add(_bus.RegisterMessageSource(updateAvailable));
+
+			_disposables.Add(Observable.Interval(TimeSpan.FromSeconds(10))
+				.TakeUntil(updateAvailable)
+				.Subscribe(_ => _deployment.CheckForUpdateAsync()));
+
+			_disposables.Add(_bus.Listen<RequestAppUpdateMessage>()
+				.SkipUntil(updateAvailable)
+				.Take(1)
+				.ObserveOn(RxApp.TaskpoolScheduler).
+				Subscribe(_ => _deployment.UpdateAsync()));
+
+			_disposables.Add(Observable.FromEventPattern<AsyncCompletedEventArgs>(_deployment, "UpdateCompleted")
+				.ObserveOn(RxApp.TaskpoolScheduler).Subscribe(e =>
+					{
+						if (e.EventArgs.Error != null)
+						{
+							_bus.SendMessage(new ExceptionMessage(e.EventArgs.Error));
+						}
+						else
+						{
+							_bus.SendMessage(new RequestApplicationRestartMessage());
+						}
+
+					}));
 
 			_disposables.Add(_bus.RegisterMessageSource(
-				_deployment.UpdateProgress));
-
-			var updateAvailable = _deployment.UpdateAvailable.Select(_ => new AppUpdateAvailableMessage());
-			var d = _bus.RegisterMessageSource(updateAvailable);
-			_disposables.Add(d);
-
-			_bus.Listen<RequestAppUpdateMessage>().ObserveOn(RxApp.TaskpoolScheduler).Subscribe(_ => _deployment.Update());
+				Observable.FromEventPattern<DeploymentProgressChangedEventArgs>(_deployment, "UpdateProgressChanged")
+					.Select(e => new AppUpdateProgressMessage(e.EventArgs.ProgressPercentage))));
 		}
 
 		public void Stop()
@@ -47,6 +73,7 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 			_disposables.Dispose();
 		}
+
 	}
 
 }

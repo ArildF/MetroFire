@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Deployment.Application;
 using System.Reactive;
 using System.Windows;
 using System.Windows.Input;
@@ -246,8 +248,10 @@ namespace Rogue.MetroFire.UI
 	public interface IApplicationDeployment
 	{
 		bool IsNetworkDeployed { get; }
-		IObservable<Unit> UpdateAvailable { get; }
-		IObservable<AppUpdateProgressMessage> UpdateProgress { get; }
-		void Update();
+		void CheckForUpdateAsync();
+		void UpdateAsync();
+		event CheckForUpdateCompletedEventHandler CheckForUpdateCompleted;
+		event AsyncCompletedEventHandler UpdateCompleted;
+		event DeploymentProgressChangedEventHandler UpdateProgressChanged;
 	}
 }

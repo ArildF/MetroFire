@@ -25,6 +25,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.Repeat() 
 				.Subscribe(_ => UnreadCount++);
 
+			bus.Listen<RequestApplicationRestartMessage>().ObserveOnDispatcher().Subscribe(_ =>
+				{
+					System.Windows.Forms.Application.Restart();
+					Environment.Exit(1);
+				});
+
 		}
 
 		public ReactiveCommand NextModuleCommand { get; set; }

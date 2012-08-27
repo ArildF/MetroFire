@@ -1,40 +1,98 @@
 using System;
-using System.Reactive;
-using System.Reactive.Concurrency;
+using System.ComponentModel;
+using System.Deployment.Application;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
+using System.Reflection;
 using ReactiveUI;
 
 namespace Rogue.MetroFire.UI.Infrastructure
 {
 	public class FakeApplicationDeployment : IApplicationDeployment
 	{
-		private readonly Subject<AppUpdateProgressMessage> _progressSubject = 
-			new Subject<AppUpdateProgressMessage>();
-
-		public FakeApplicationDeployment()
-		{
-			UpdateAvailable = Observable.Timer(TimeSpan.FromSeconds(5), RxApp.TaskpoolScheduler).Select(_ => Unit.Default);
-		}
-
 		public bool IsNetworkDeployed
 		{
 			get { return true; }
 		}
 
-		public IObservable<Unit> UpdateAvailable { get; private set; }
-
-		public IObservable<AppUpdateProgressMessage> UpdateProgress
+		public void CheckForUpdateAsync()
 		{
-			get { return _progressSubject; }
+			Observable.Timer(TimeSpan.FromSeconds(2)).ObserveOn(RxApp.TaskpoolScheduler)
+				.Take(1)
+				.Subscribe(_ =>
+				{
+					if (CheckForUpdateCompleted != null)
+					{
+						var args = CreateCheckForUpdateCompletedEventArgs(null);
+						CheckForUpdateCompleted(this, args);
+
+					}
+				});
 		}
+
+		public void UpdateAsync()
+		{
+			int i = 1;
+			Observable.Interval(TimeSpan.FromSeconds(0.1))
+				.Take(100)
+				.Subscribe(
+					t => RaiseUpdateProgress(i++),
+					RaiseUpdateCompleted);
+		}
+
+		private void RaiseUpdateCompleted()
+		{
+			var args = CreateUpdateCompletedEventArgs();
+			if (UpdateCompleted != null)
+			{
+				UpdateCompleted(this, args);
+			}
+		}
+
+		private AsyncCompletedEventArgs CreateUpdateCompletedEventArgs()
+		{
+			var args = new AsyncCompletedEventArgs(null, false, null);
+			return args;
+		}
+
+		private void RaiseUpdateProgress(int percent)
+		{
+			var args = CreateDeploymentProgressChangedEventArgs(percent);
+			if (UpdateProgressChanged != null)
+			{
+				UpdateProgressChanged(this, args);
+			}
+		}
+
+		private DeploymentProgressChangedEventArgs CreateDeploymentProgressChangedEventArgs(int percent)
+		{
+			var ctor =typeof(DeploymentProgressChangedEventArgs).GetConstructor(
+				BindingFlags.Instance | BindingFlags.NonPublic, null, 
+				new []{typeof(int), typeof(object), typeof(long), typeof(long), typeof(DeploymentProgressState), typeof(string)},
+				null);
+
+			var args = ctor.Invoke(new object[] {percent, null, 0L, 0L, DeploymentProgressState.DownloadingApplicationFiles, "Blah"});
+			return (DeploymentProgressChangedEventArgs) args;
+		}
+
+		public event CheckForUpdateCompletedEventHandler CheckForUpdateCompleted;
+
+		private static CheckForUpdateCompletedEventArgs CreateCheckForUpdateCompletedEventArgs(Exception error)
+		{
+			var ctor = typeof (CheckForUpdateCompletedEventArgs).GetConstructor(
+				BindingFlags.NonPublic | BindingFlags.Instance, null, 
+				new[] { typeof (Exception), typeof (bool), typeof (object), typeof (bool), typeof (Version), typeof (bool), typeof (Version), typeof (long) }, 
+				null);
+			var args = ctor.Invoke(new object[] {error, false, null, true, new Version(2, 0), true, new Version(1, 0), 1234L});
+			return (CheckForUpdateCompletedEventArgs) args;
+		}
+
+		public event AsyncCompletedEventHandler UpdateCompleted;
+		public event DeploymentProgressChangedEventHandler UpdateProgressChanged;
+
 
 		public void Update()
 		{
-			var now = DateTimeOffset.Now;
-			Observable.Generate(0, i => i < 100, i => i + 1, i => i, i => now + TimeSpan.FromSeconds(i * 0.1))
-				.ObserveOn(Scheduler.ThreadPool).Select(i => new AppUpdateProgressMessage(i)).Subscribe(
-					i => _progressSubject.OnNext(i), _ => Environment.Exit(0));
+			
 		}
 	}
 }

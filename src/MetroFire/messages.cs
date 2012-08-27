@@ -226,6 +226,9 @@ namespace Rogue.MetroFire.UI
 	{
 	}
 
+	public class RequestApplicationRestartMessage
+	{
+	}
 
 
 }

@@ -208,4 +208,27 @@ namespace Rogue.MetroFire.UI
 		}
 	}
 
+	public class AppUpdateProgressMessage
+	{
+		public int ProgressPercentage { get; private set; }
+
+		public AppUpdateProgressMessage(int progressPercentage)
+		{
+			ProgressPercentage = progressPercentage;
+		}
+	}
+
+	public class AppUpdateAvailableMessage
+	{
+	}
+
+	public class RequestAppUpdateMessage
+	{
+	}
+
+	public class RequestApplicationRestartMessage
+	{
+	}
+
+
 }

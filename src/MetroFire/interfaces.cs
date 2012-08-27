@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Deployment.Application;
 using System.Reactive;
 using System.Windows;
 using System.Windows.Input;
@@ -113,8 +115,13 @@ namespace Rogue.MetroFire.UI
 	
 	public interface ISettingsViewModel
 	{
-		
+		ICommand SettingsCommand { get; }
 	}
+
+	public interface INavigationContentViewModel
+	{
+	}
+
 
 	public interface ICampfireLog
 	{
@@ -236,5 +243,15 @@ namespace Rogue.MetroFire.UI
 	public interface IMimeTypeResolver
 	{
 		string GetMimeType(string path);
+	}
+
+	public interface IApplicationDeployment
+	{
+		bool IsNetworkDeployed { get; }
+		void CheckForUpdateAsync();
+		void UpdateAsync();
+		event CheckForUpdateCompletedEventHandler CheckForUpdateCompleted;
+		event AsyncCompletedEventHandler UpdateCompleted;
+		event DeploymentProgressChangedEventHandler UpdateProgressChanged;
 	}
 }

@@ -67,6 +67,8 @@ namespace Rogue.MetroFire.UI
 				.LifestyleSingleton());
 			_container.Register(Component.For<IPasteViewFactory>().ImplementedBy<PasteViewFactory>());
 			_container.Register(Component.For<IPasteView>().ImplementedBy<PasteView>().LifestyleTransient());
+			_container.Register(Component.For<IApplicationDeployment>().ImplementedBy<ClickOnceApplicationDeployment>());
+			//_container.Register(Component.For<IApplicationDeployment>().ImplementedBy<FakeApplicationDeployment>());
 
 			_container.Register(AllTypes.FromThisAssembly().Where(t => !t.Namespace.EndsWith("Views")).WithServiceAllInterfaces());
 			_container.Register(AllTypes.FromThisAssembly().Where(t => 

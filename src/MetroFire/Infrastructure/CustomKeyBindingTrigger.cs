@@ -79,7 +79,9 @@ namespace Rogue.MetroFire.UI.Infrastructure
 		protected override void OnAttached()
 		{
 			base.OnAttached();
-			if (GetValue(SourceObjectProperty) == DependencyProperty.UnsetValue)
+
+			var sourceObject = SourceObject;
+			if (sourceObject == DependencyProperty.UnsetValue || sourceObject == null)
 			{
 				Subscribe(AssociatedObject);
 			}
@@ -107,17 +109,18 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 		private void AssociatedObjectOnPreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (Keyboard.FocusedElement is TextBoxBase)
-			{
-				e.Handled = false;
-				return;
-			}
 
 			e.Handled = Handle(e.Key);
 		}
 
 		private void AssociatedObjectOnPreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
+			if (Keyboard.FocusedElement is TextBoxBase)
+			{
+				e.Handled = false;
+				return;
+			}
+
 			e.Handled = Handle(e.Text);
 		}
 

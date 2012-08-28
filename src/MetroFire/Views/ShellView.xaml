@@ -10,14 +10,15 @@
     <Window.CommandBindings>
         <CommandBinding Command="Close" Executed="CloseOnExecuted"/>
     </Window.CommandBindings>
+	
     
 	<i:Interaction.Triggers>
-		<!--<Infrastructure:CustomKeyBindingTrigger Key="Tab" Modifier="Ctrl">
+		<Infrastructure:CustomKeyBindingTrigger Key="Tab" Modifier="Ctrl">
 			<i:InvokeCommandAction Command="{x:Static UI:GlobalCommands.NextModuleCommand}"/>
 		</Infrastructure:CustomKeyBindingTrigger>
 		<Infrastructure:CustomKeyBindingTrigger Key="Tab" Modifier="Shift+Ctrl" >
 			<i:InvokeCommandAction Command="{x:Static UI:GlobalCommands.NextModuleCommand}"/>
-		</Infrastructure:CustomKeyBindingTrigger>-->
+		</Infrastructure:CustomKeyBindingTrigger>
 
 	</i:Interaction.Triggers>
     <Grid>

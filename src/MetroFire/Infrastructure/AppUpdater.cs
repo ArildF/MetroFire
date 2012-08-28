@@ -35,7 +35,7 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 			_disposables.Add(_bus.RegisterMessageSource(updateAvailable));
 
-			_disposables.Add(Observable.Interval(TimeSpan.FromSeconds(10))
+			_disposables.Add(Observable.Interval(Properties.Settings.Default.UpdateCheckInterval)
 				.TakeUntil(updateAvailable)
 				.Subscribe(_ => _deployment.CheckForUpdateAsync()));
 

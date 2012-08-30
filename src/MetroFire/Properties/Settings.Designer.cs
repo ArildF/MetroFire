@@ -25,7 +25,7 @@ namespace Rogue.MetroFire.UI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:00:20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:30:00")]
         public global::System.TimeSpan UpdateCheckInterval {
             get {
                 return ((global::System.TimeSpan)(this["UpdateCheckInterval"]));

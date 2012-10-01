@@ -158,7 +158,7 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			if (message.Body.StartsWith("/me", StringComparison.InvariantCultureIgnoreCase))
 			{
-				paragraph.Inlines.Add(RenderUserMessage(user.Name + message.Body.Substring("/me".Length)));
+				paragraph.Inlines.Add(RenderUserMessage(FormatUserName(user) + message.Body.Substring("/me".Length)));
 
 				paragraph.FontStyle = FontStyles.Italic;
 			}

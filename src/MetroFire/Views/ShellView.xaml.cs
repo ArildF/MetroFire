@@ -7,13 +7,9 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using ReactiveUI;
 using Rogue.MetroFire.UI.Behaviors;
-using TriggerAction = System.Windows.TriggerAction;
 
 namespace Rogue.MetroFire.UI.Views
 {
-	/// <summary>
-	/// Interaction logic for ShellView.xaml
-	/// </summary>
 	public partial class ShellView : IShellWindow
 	{
 		private readonly IMessageBus _bus;
@@ -123,19 +119,9 @@ namespace Rogue.MetroFire.UI.Views
 		}
 
 
-		protected override void OnGotFocus(RoutedEventArgs e)
+		private void CloseOnExecuted(object sender, ExecutedRoutedEventArgs e)
 		{
-			base.OnGotFocus(e);
+			Close();
 		}
-
-		protected override void OnLostFocus(RoutedEventArgs e)
-		{
-			base.OnLostFocus(e);
-		}
-
-	    private void CloseOnExecuted(object sender, ExecutedRoutedEventArgs e)
-	    {
-            Close();
-	    }
 	}
 }

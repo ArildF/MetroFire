@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Rogue.MetroFire.UI.Views.CollapsibleTextPasteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid x:Name="_grid">
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition Height="Auto"/>
+			
+		</Grid.RowDefinitions>
+		<Grid x:Name="_innerGrid">
+			<TextBlock x:Name="_block" TextWrapping="Wrap"/>
+		</Grid>
+		<Button x:Name="_button" Content="&#x02c5;" Visibility="Collapsed" Grid.Row="1" 
+				Click="ButtonOnClick"
+				HorizontalAlignment="Right"/>
+	</Grid>
+</UserControl>

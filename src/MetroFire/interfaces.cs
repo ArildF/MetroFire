@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Deployment.Application;
 using System.Reactive;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -198,6 +199,12 @@ namespace Rogue.MetroFire.UI
 	{
 		IPasteView Create(IRoom room, ClipboardItem bitmapSource);
 		void Release(IPasteView view);
+		ICollapsibleTextPasteView CreateTextPasteView(Inline inline);
+	}
+
+	public interface ICollapsibleTextPasteView
+	{
+		FrameworkElement Element { get; }
 	}
 
 	public interface IPasteViewModel

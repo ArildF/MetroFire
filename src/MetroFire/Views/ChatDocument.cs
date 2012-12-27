@@ -133,14 +133,17 @@ namespace Rogue.MetroFire.UI.Views
 
 			var run = RenderUserMessage(message.Body); 
 			run.FontFamily = new FontFamily("Consolas");
-			paragraph.Inlines.Add(run);
 
 			paragraph.BorderThickness = new Thickness(0, 0.5, 0, 0.5);
 			paragraph.BorderBrush = Brushes.Black;
 			paragraph.Margin = new Thickness(0, 1, 0, 6);
 			paragraph.Padding = new Thickness(0, 1, 0, 6);
 			paragraph.Background = Brushes.LightGoldenrodYellow;
+
+			var view = _pasteViewFactory.CreateTextPasteView(run);
+			paragraph.Inlines.Add(view.Element);
 		}
+
 
 		private void FormatLeaveMessage(Message message, User user, Paragraph paragraph)
 		{

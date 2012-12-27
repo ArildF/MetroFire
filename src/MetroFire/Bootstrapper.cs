@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Windows;
+using System.Windows.Documents;
 using Castle.Facilities.Startable;
 using Castle.MicroKernel.ModelBuilder.Inspectors;
 using Castle.MicroKernel.Registration;
@@ -67,6 +69,7 @@ namespace Rogue.MetroFire.UI
 				.LifestyleSingleton());
 			_container.Register(Component.For<IPasteViewFactory>().ImplementedBy<PasteViewFactory>());
 			_container.Register(Component.For<IPasteView>().ImplementedBy<PasteView>().LifestyleTransient());
+			_container.Register(Component.For<ICollapsibleTextPasteView>().ImplementedBy<CollapsibleTextPasteView>().LifestyleTransient());
 			_container.Register(Component.For<IApplicationDeployment>().ImplementedBy<ClickOnceApplicationDeployment>());
 			//_container.Register(Component.For<IApplicationDeployment>().ImplementedBy<FakeApplicationDeployment>());
 
@@ -108,6 +111,13 @@ namespace Rogue.MetroFire.UI
 				var vm = view.Element.DataContext;
 				_container.Release(view);
 				_container.Release(vm);
+			}
+
+			public ICollapsibleTextPasteView CreateTextPasteView(Inline inline)
+			{
+				var view = _container.Resolve<ICollapsibleTextPasteView>(new {inline});
+
+				return view;
 			}
 		}
 

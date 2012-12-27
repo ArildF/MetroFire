@@ -252,6 +252,9 @@
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ChatDocument.cs" />
+    <Compile Include="Views\CollapsibleTextPasteView.xaml.cs">
+      <DependentUpon>CollapsibleTextPasteView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
@@ -388,6 +391,10 @@
     <Page Include="Simple Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CollapsibleTextPasteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImageView.xaml">
       <SubType>Designer</SubType>

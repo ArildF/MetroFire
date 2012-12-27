@@ -116,7 +116,10 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void TopOnMouseDown(object sender, MouseButtonEventArgs e)
 		{
-			DragMove();
+			if (e.ChangedButton == MouseButton.Left)
+			{
+				DragMove();
+			}
 		}
 
 

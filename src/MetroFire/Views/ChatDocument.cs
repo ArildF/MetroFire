@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -56,7 +57,9 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			if (msg.Tweet != null)
 			{
-				var bodyInline = RenderUserMessage(msg.Tweet.Message);
+				var message = StripEntities(msg.Tweet.Message);
+
+				var bodyInline = RenderUserMessage(message);
 
 				var tweetView = new InlineTweetView(bodyInline, msg.Tweet);
 
@@ -67,6 +70,11 @@ namespace Rogue.MetroFire.UI.Views
 
 			// fallback
 			FormatUserMessage(msg, user, paragraph);
+		}
+
+		private string StripEntities(string message)
+		{
+			return HttpUtility.HtmlDecode(message);
 		}
 
 		private void NavigateToLink(object sender, RequestNavigateEventArgs requestNavigateEventArgs)

@@ -56,7 +56,8 @@
 				  Visibility="{Binding ShowProgress, Converter={StaticResource BoolToVisibilityConverter}}" 
 				  Margin="0,0,50,0" Height="{Binding Source={x:Reference button}, Path=ActualHeight}"
 				  Width="{Binding Source={x:Reference button}, Path=ActualWidth}">
-				<ProgressBar Maximum="100" Minimum="0" Value="{Binding ProgressValue}" Width="120" />
+				<ProgressBar Maximum="100" Minimum="0" Value="{Binding ProgressValue}" Width="120"
+							 Style="{StaticResource AppUpdateProgressBar}"/>
 				<TextBlock Text="DOWNLOADING" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 			</Grid>
 		</Grid>

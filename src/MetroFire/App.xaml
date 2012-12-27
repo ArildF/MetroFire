@@ -903,7 +903,7 @@
 				<GradientStop Color="#90FFFFFF" Offset="0.5385"/>
 				<GradientStop Color="#00FFFFFF" Offset="0.5385"/>
 			</LinearGradientBrush>
-			<Style TargetType="{x:Type ProgressBar}">
+			<Style TargetType="{x:Type ProgressBar}" x:Key="AppUpdateProgressBar">
 				<Setter Property="Foreground" Value="#01D328"/>
 				<Setter Property="Background" Value="{StaticResource ProgressBarBackground}"/>
 				<Setter Property="BorderBrush" Value="{StaticResource ProgressBarBorderBrush}"/>

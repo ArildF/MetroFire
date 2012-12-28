@@ -155,6 +155,7 @@
     <Compile Include="Behaviors\BindableFocusBehavior.cs" />
     <Compile Include="Behaviors\BorderlessWindowBehavior.cs" />
     <Compile Include="Behaviors\CustomPasteBehavior.cs" />
+    <Compile Include="Behaviors\RestrictToNumericalInputBehavior.cs" />
     <Compile Include="Behaviors\StayScrolledToEndBehavior.cs" />
     <Compile Include="Behaviors\Transition.cs" />
     <Compile Include="Behaviors\VisualStateBehavior.cs" />

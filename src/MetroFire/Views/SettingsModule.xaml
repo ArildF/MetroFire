@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
              xmlns:Settings="clr-namespace:Rogue.MetroFire.UI.ViewModels.Settings"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
              x:Class="Rogue.MetroFire.UI.Views.SettingsModule" 
              mc:Ignorable="d" 
 		 d:DataContext="{StaticResource SampleSettingsDataSource}"
@@ -197,7 +199,11 @@
 					</Grid.ColumnDefinitions>
 					<Label Content="Max backlog" HorizontalAlignment="Left" d:LayoutOverrides="Height" Width="77"/>
 					<TextBox Margin="0" TextWrapping="Wrap" Text="{Binding MaxBacklog}" d:LayoutOverrides="Height"
-							 Grid.Column="1" VerticalAlignment="Center" Width="50" HorizontalAlignment="Left"/>
+							 Grid.Column="1" VerticalAlignment="Center" Width="50" HorizontalAlignment="Left">
+						<i:Interaction.Behaviors>
+							<behaviors:RestrictToNumericalInputBehavior/>
+						</i:Interaction.Behaviors>
+					</TextBox>
 				</Grid>
 			</StackPanel>
 			

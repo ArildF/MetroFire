@@ -7,11 +7,13 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 	{
 		private readonly GeneralSettings _settings;
 		private bool _useStandardWindowsChrome;
+		private int _maxBackLog;
 
 		public GeneralSettingsViewModel(GeneralSettings settings)
 		{
 			_settings = settings;
 			UseStandardWindowsChrome = _settings.UseStandardWindowsChrome;
+			MaxBacklog = _settings.MaxBackLog;
 		}
 
 		public string Title
@@ -26,9 +28,16 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			set { this.RaiseAndSetIfChanged(vm => vm.UseStandardWindowsChrome, ref _useStandardWindowsChrome, value); }
 		}
 
+		public int MaxBacklog
+		{
+			get { return _maxBackLog; }
+			set { this.RaiseAndSetIfChanged(vm => vm.MaxBacklog, ref _maxBackLog, value); }
+		}
+
 		public void Commit()
 		{
 			_settings.UseStandardWindowsChrome = UseStandardWindowsChrome;
+			_settings.MaxBackLog = MaxBacklog;
 
 		}
 	}

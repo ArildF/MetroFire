@@ -20,6 +20,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private string _userMessage;
 		private readonly IChatDocument _chatDocument;
+		private readonly ISettings _settings;
 		private readonly List<RoomMessage> _messages;
 		private int? _sinceMessageId;
 		private int _notificationCount;
@@ -30,12 +31,13 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _userEditedMessage;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
-			IClipboardService clipboardService , IGlobalCommands commands)
+			IClipboardService clipboardService , IGlobalCommands commands, ISettings settings)
 		{
 			_room = room;
 			_bus = bus;
 			_userCache = userCache;
 			_chatDocument = chatDocument;
+			_settings = settings;
 
 
 			Topic = _room.Topic;
@@ -188,6 +190,24 @@ namespace Rogue.MetroFire.UI.ViewModels
 			{
 				_bus.SendMessage(new RoomBackLogLoadedMessage(_room.Id));
 			}
+
+			PurgeOldMessages();
+		}
+
+		private void PurgeOldMessages()
+		{
+			if (_messages.Count < _settings.General.MaxBackLog)
+			{
+				return;
+			}
+			var toPurge = _messages.Take(_messages.Count - _settings.General.MaxBackLog).ToArray();
+
+			foreach (var roomMessage in toPurge)
+			{
+				_chatDocument.RemoveMessage(roomMessage.TextObject);
+				_messages.Remove(roomMessage);
+			}
+
 		}
 
 		private void HandlePostMessage(object o)

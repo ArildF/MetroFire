@@ -116,6 +116,15 @@ namespace Rogue.MetroFire.UI.Views
 			return paragraph;
 		}
 
+		public void RemoveMessage(object textObject)
+		{
+			var obj = textObject as Paragraph;
+			if (obj != null)
+			{
+				Blocks.Remove(obj);
+			}
+		}
+
 		private void FormatEnterMessage(Message message, User user, Paragraph paragraph)
 		{
 			var name = FormatUserName(user);

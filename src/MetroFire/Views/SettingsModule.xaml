@@ -187,9 +187,18 @@
 		</DataTemplate>
 		
 		<DataTemplate DataType="{x:Type Settings:GeneralSettingsViewModel}">
-			<StackPanel Background="White">
+			<StackPanel Background="White" Width="250" HorizontalAlignment="Left">
 				<TextBlock TextWrapping="Wrap" Style="{DynamicResource SmallMetroHeading}" Text="Appearance" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,6"/>
 				<CheckBox Content="Use standard Windows chrome" IsChecked="{Binding UseStandardWindowsChrome}"/>
+				<Grid Height="Auto">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Label Content="Max backlog" HorizontalAlignment="Left" d:LayoutOverrides="Height" Width="77"/>
+					<TextBox Margin="0" TextWrapping="Wrap" Text="{Binding MaxBacklog}" d:LayoutOverrides="Height"
+							 Grid.Column="1" VerticalAlignment="Center" Width="50" HorizontalAlignment="Left"/>
+				</Grid>
 			</StackPanel>
 			
 		</DataTemplate>

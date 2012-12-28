@@ -149,6 +149,7 @@ namespace Rogue.MetroFire.UI
 		void AddPasteFile(IRoom room, ClipboardItem path);
 		Double FontSize { get; set; }
 
+		void RemoveMessage(object textObject);
 	}
 
 	public interface IUserCache

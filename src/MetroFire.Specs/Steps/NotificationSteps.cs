@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Documents;
 using Moq;
 using Rogue.MetroFire.UI;
+using Rogue.MetroFire.UI.Infrastructure;
 using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.Views;
 using TechTalk.SpecFlow;

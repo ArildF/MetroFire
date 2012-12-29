@@ -179,6 +179,7 @@
     <Compile Include="Infrastructure\FocusBehavior.cs" />
     <Compile Include="Infrastructure\GifSupportingImage.cs" />
     <Compile Include="Infrastructure\IImageEncoder.cs" />
+    <Compile Include="Infrastructure\InlineExtensions.cs" />
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\LogMessageDebugListener.cs" />
     <Compile Include="Infrastructure\MimeTypeResolver.cs" />
@@ -364,6 +365,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
+    <Page Include="Assets\CopyButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Assets\error-System.Brush.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

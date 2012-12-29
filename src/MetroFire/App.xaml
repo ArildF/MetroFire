@@ -15,6 +15,7 @@
 				<ResourceDictionary Source="Assets/error-System.Brush.xaml"/>
 				<ResourceDictionary Source="Assets/DocumentDrawing.xaml"/>
 				<ResourceDictionary Source="Assets/DownloadButton.xaml"/>
+				<ResourceDictionary Source="Assets/CopyButton.xaml"/>
 				<ResourceDictionary Source="Views/NotificationViews.xaml"/>
 				<ResourceDictionary Source="Simple Styles.xaml"/>
 				<ResourceDictionary Source="Assets/check-System.Brush.xaml"/>

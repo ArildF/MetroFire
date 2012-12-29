@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <DrawingBrush x:Key="CopyButtonBrush" Stretch="Uniform">
+    <DrawingBrush.Drawing>
+      <DrawingGroup>
+        <DrawingGroup.Children>
+          <GeometryDrawing Brush="#FF000000" Geometry="F1 M 18.1063,9.53126L 18.1063,20.0219L 4.76563,20.0219L 4.76563,16.2031L 0,16.2031L 0,7.62939e-006L 6.67188,7.62939e-006L 10.4781,3.80936L 12.3844,3.80936L 18.1063,9.53126 Z M 7.61876,3.80936L 5.71251,1.90626L 1.89377,1.90626L 1.89377,14.2969L 4.76563,14.2969L 4.76563,3.80936L 7.61876,3.80936 Z M 16.2031,11.4375L 10.4781,11.4375L 10.4781,5.72501L 6.67188,5.72501L 6.67188,18.1062L 16.2031,18.1062L 16.2031,11.4375 Z M 15.2438,9.53126L 12.3844,6.67188L 12.3844,9.53126L 15.2438,9.53126 Z " />
+        </DrawingGroup.Children>
+      </DrawingGroup>
+    </DrawingBrush.Drawing>
+  </DrawingBrush>
+</ResourceDictionary>

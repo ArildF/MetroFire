@@ -7,6 +7,7 @@ using Moq;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
+using Rogue.MetroFire.UI.Infrastructure;
 using Rogue.MetroFire.UI.ViewModels;
 using Rogue.MetroFire.UI.Views;
 using TechTalk.SpecFlow;

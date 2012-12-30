@@ -45,6 +45,21 @@ namespace Rogue.MetroFire.UI.ViewModels
 		}
 	}
 
+	public class DirectLinkInlineUploadViewModel : ReactiveObject, IDirectLinkInlineUploadViewModel
+	{
+		public DirectLinkInlineUploadViewModel(HeadInfo info, IMessageBus bus, Func<string, IImageView> imageViewCreator)
+		{
+			Data = new InlineImageViewModel(info.MimeType, new Upload {FullUrl = info.FullUrl},
+				bus, imageViewCreator);
+
+		}
+
+		public object Data
+		{
+			get; private set;
+		}
+	}
+
 	public class FileViewModel : ReactiveObject
 	{
 		private readonly Upload _upload;

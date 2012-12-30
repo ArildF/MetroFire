@@ -8,8 +8,13 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using ReactiveUI;
+using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.Infrastructure;
+using System.Linq;
+using System.Reactive.Linq;
+using Rogue.MetroFire.UI.ViewModels;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -18,6 +23,7 @@ namespace Rogue.MetroFire.UI.Views
 		private readonly IInlineUploadViewFactory _factory;
 		private readonly IWebBrowser _browser;
 		private readonly IPasteViewFactory _pasteViewFactory;
+		private readonly IMessageBus _bus;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
 
 		private static readonly Regex UrlDetector = new
@@ -27,11 +33,14 @@ namespace Rogue.MetroFire.UI.Views
 		private static readonly Regex TwitterMessageParser =
 			new Regex(@"@(.*?),\s*(.*)");
 
-		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser, IPasteViewFactory pasteViewFactory)
+		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser, 
+			IPasteViewFactory pasteViewFactory,
+			IMessageBus bus)
 		{
 			_factory = factory;
 			_browser = browser;
 			_pasteViewFactory = pasteViewFactory;
+			_bus = bus;
 			_handlers = new Dictionary<MessageType, Action<Message, User, Paragraph>>
 				{
 					{MessageType.TextMessage, FormatUserMessage},
@@ -195,9 +204,13 @@ namespace Rogue.MetroFire.UI.Views
 
 		private Inline RenderUserMessage(string body)
 		{
-			string[] results = UrlDetector.Split(body);
+			string[] results = UrlDetector.Split(body).Where(r => !String.IsNullOrEmpty(r)).ToArray();
 			if (results.Length == 1)
 			{
+				if (UrlDetector.IsMatch(results.First()))
+				{
+					return PotentiallyShowLinkAsImage(results.First());
+				}
 				return new Run(body);
 			}
 
@@ -206,9 +219,7 @@ namespace Rogue.MetroFire.UI.Views
 			{
 				if (UrlDetector.IsMatch(result))
 				{
-					var hyperlink = new Hyperlink(new Run(result)){NavigateUri = new Uri(result)};
-					ToolTipService.SetToolTip(hyperlink, result);
-					span.Inlines.Add(hyperlink);
+					span.Inlines.Add(CreateHyperLink(result));
 				}
 				else
 				{
@@ -217,6 +228,40 @@ namespace Rogue.MetroFire.UI.Views
 			}
 			return span;
 
+		}
+
+		private static Inline CreateHyperLink(string result)
+		{
+			var hyperlink = new Hyperlink(new Run(result)) {NavigateUri = new Uri(result)};
+			ToolTipService.SetToolTip(hyperlink, result);
+			return hyperlink;
+		}
+
+		private Inline PotentiallyShowLinkAsImage(string uri)
+		{
+			var span = new Span();
+			var link = CreateHyperLink(uri);
+			span.Inlines.Add(link);
+
+			var msg = new RequestHeadMessage(uri);
+			_bus.Listen<RequestHeadReplyMessage>().Where(m => m.CorrelationId == msg.CorrelationId)
+				.Where(m => m.Info.IsOk && m.Info.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
+				.Subscribe(m =>
+					{
+						var vm = _factory.Create(m.Info);
+						var view = _factory.Create(vm);
+
+						var lb = new LineBreak();
+
+						span.Inlines.InsertBefore(link, lb);
+						var newItem = new InlineUIContainer(view.Element);
+						span.Inlines.InsertBefore(lb, newItem);
+						span.Inlines.InsertBefore(newItem, new LineBreak());
+					});
+
+			_bus.SendMessage(msg);
+
+			return span;
 		}
 
 		private static void RenderUserString(User user, Paragraph paragraph)

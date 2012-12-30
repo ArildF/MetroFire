@@ -177,13 +177,21 @@ namespace Rogue.MetroFire.UI
 	public interface IInlineUploadViewFactory
 	{
 		IInlineUploadViewModel Create(Message message);
+		IDirectLinkInlineUploadViewModel Create(HeadInfo info);
 		IInlineUploadView Create(IInlineUploadViewModel vm);
 	}
+
+	public interface IDirectLinkInlineUploadViewModel : IInlineUploadViewModel
+	{
+		
+	}
+
 
 	public interface IWebBrowser
 	{
 		void NavigateTo(Uri uri);
 	}
+
 
 	public interface IImageView
 	{

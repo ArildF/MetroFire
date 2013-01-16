@@ -29,7 +29,9 @@
 
 		</Grid.RowDefinitions>
 		<Grid x:Name="_innerGrid">
-			<RichTextBox IsDocumentEnabled="True" IsReadOnly="True" x:Name="_block" BorderThickness="0" Background="{x:Null}"/>
+			<RichTextBox IsDocumentEnabled="True" IsReadOnly="True" 
+						 VerticalScrollBarVisibility="Auto"
+						 x:Name="_block" BorderThickness="0" Background="{x:Null}"/>
 		</Grid>
 		<DockPanel LastChildFill="False" Grid.Row="1">
 			<Button x:Name="_button" Content="˅" Visibility="Collapsed"

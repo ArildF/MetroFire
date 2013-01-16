@@ -10,7 +10,7 @@ namespace Rogue.MetroFire.UI.Views
 	/// </summary>
 	public partial class CollapsibleTextPasteView : ICollapsibleTextPasteView
 	{
-		public static readonly int CollapsedHeight = 130;
+		public static readonly int CollapsedHeight = 250;
 		private readonly LinearGradientBrush _brush;
 
 		private CollapsibleTextPasteView()

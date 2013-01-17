@@ -634,7 +634,7 @@
 								</VisualStateGroup>
 							</VisualStateManager.VisualStateGroups>
 							<StackPanel Orientation="Horizontal" Margin="13,6,3,6">
-								<ContentPresenter Height="Auto"/>
+								<ContentPresenter Height="Auto" RecognizesAccessKey="True"/>
 								<Border BorderBrush="{x:Null}" BorderThickness="1" Height="Auto" 
 										Background="{Binding Path=(Infrastructure:Attached.ImageBrush), RelativeSource={RelativeSource Mode=TemplatedParent}}"
 										Margin="0" Padding="23,0,0,0"/>

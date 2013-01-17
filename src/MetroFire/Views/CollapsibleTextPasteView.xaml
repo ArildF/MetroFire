@@ -38,7 +38,7 @@
 			<Button x:Name="_button" Content="˅" Visibility="Collapsed"
 					Height="30"
 					Click="ButtonOnClick" d:LayoutOverrides="VerticalAlignment" DockPanel.Dock="Right"/>
-			<Button x:Name="_copyButton" Content="Copy" DockPanel.Dock="Right" 
+			<Button x:Name="_copyButton" Content="C_opy" DockPanel.Dock="Right"
 					Height="30"
 					Style="{StaticResource NavigationButton}"
 					Click="CopyButtonOnClick"

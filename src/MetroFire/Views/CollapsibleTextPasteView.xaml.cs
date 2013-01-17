@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
@@ -42,6 +43,8 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			_button.Visibility = _block.DesiredSize.Height >= _grid.MaxHeight ? Visibility.Visible : Visibility.Collapsed;
 			_innerGrid.OpacityMask = _button.Visibility == Visibility.Visible ? _brush : null;
+
+			Grid.SetRow(_buttonPanel, _button.Visibility == Visibility.Visible ? 1 : 0);
 		}
 
 

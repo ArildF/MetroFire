@@ -33,7 +33,8 @@
 						 VerticalScrollBarVisibility="Auto"
 						 x:Name="_block" BorderThickness="0" Background="{x:Null}"/>
 		</Grid>
-		<DockPanel LastChildFill="False" Grid.Row="1">
+		<DockPanel LastChildFill="False" Grid.Row="1" x:Name="_buttonPanel" HorizontalAlignment="Right"
+				VerticalAlignment="Bottom">
 			<Button x:Name="_button" Content="˅" Visibility="Collapsed"
 					Height="30"
 					Click="ButtonOnClick" d:LayoutOverrides="VerticalAlignment" DockPanel.Dock="Right"/>

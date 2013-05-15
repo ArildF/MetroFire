@@ -421,4 +421,40 @@ namespace Rogue.MetroFire.CampfireClient
 			Result = result;
 		}
 	}
+
+	public class RequestHeadMessage : CorrelatedMessage
+	{
+		public string Url { get; private set; }
+
+		public RequestHeadMessage(string url)
+		{
+			Url = url;
+		}
+	}
+
+	public class RequestHeadReplyMessage : CorrelatedReply
+	{
+		public HeadInfo Info { get; private set; }
+
+		public RequestHeadReplyMessage(HeadInfo info, 
+			Guid correlationId) : base(correlationId)
+		{
+			Info = info;
+		}
+	}
+
+	public class HeadInfo
+	{
+		public string MimeType { get; private set; }
+		public bool IsOk { get; private set; }
+
+		public string FullUrl { get; private set; }
+
+		public HeadInfo(string fullUrl, string mimeType, bool isOk)
+		{
+			FullUrl = fullUrl;
+			MimeType = mimeType;
+			IsOk = isOk;
+		}
+	}
 }

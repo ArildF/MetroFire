@@ -218,6 +218,27 @@ namespace Rogue.MetroFire.CampfireClient
 			}
 		}
 
+		public HeadInfo Head(string url)
+		{
+			var uri = new Uri(url);
+			var request = CreateRequest(uri);
+
+			request.Method = "HEAD";
+
+			try
+			{
+				var response = ((HttpWebResponse) request.GetResponse());
+
+				return new HeadInfo(url, response.ContentType, true);
+
+			}
+			catch (Exception)
+			{
+				return new HeadInfo(url, null, false);
+			}
+			
+		}
+
 		public User GetMe()
 		{
 			var uri = String.Format("users/me.xml");

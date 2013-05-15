@@ -61,6 +61,7 @@ namespace Rogue.MetroFire.CampfireClient
 		ConnectivityState CheckConnectivity();
 
 		bool CheckAccountExists(string account);
+		HeadInfo Head(string url);
 	}
 
 	public interface ISettings

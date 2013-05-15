@@ -43,6 +43,10 @@ namespace MetroFire.Specs.Steps
 			get ;
 		}
 
+		public void RemoveMessage(object textObject)
+		{
+		}
+
 		public IEnumerable<Message> Messages
 		{
 			get { return _messages.Select(m => m.Message); }

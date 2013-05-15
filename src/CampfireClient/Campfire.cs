@@ -68,8 +68,13 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestStopStreamingMessage>().SubscribeThreadPool(RequestStopStreaming);
 			_bus.Listen<RequestCheckAccountName>().SubscribeThreadPool(RequestCheckAccountName);
 			_bus.Listen<RequestConnectivityCheckMessage>().Subscribe(RequestConnectivityCheck);
+			_bus.Listen<RequestHeadMessage>().Subscribe(RequestHead);
 		}
 
+		private void RequestHead(RequestHeadMessage message)
+		{
+			CallApi(() => _api.Head(message.Url), res => _bus.SendMessage(new RequestHeadReplyMessage(res, message.CorrelationId)));
+		}
 		private void RequestCheckAccountName(RequestCheckAccountName obj)
 		{
 			CallApi(() => _api.CheckAccountExists(obj.AccountName),

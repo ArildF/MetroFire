@@ -148,6 +148,12 @@ namespace MetroFire.Specs.Steps
 			return _validAccounts.Contains(account);
 		}
 
+
+		public HeadInfo Head(string url)
+		{
+			throw new NotImplementedException();
+		}
+
 		public void AddRoom(Room room)
 		{
 			if (room.Users == null)

@@ -22,6 +22,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private readonly IDictionary<SerializerEntry, XmlSerializer> _xmlSerializers = new Dictionary<SerializerEntry, XmlSerializer>();
 		private static int _defaultTimeout;
 		private string _cookie;
+		private string UserAgent = "metro fire - https://github.com/ArildF/MetroFire";
 		private const string CampfireBaseUri = "https://{0}.campfirenow.com";
 
 		public CampfireApi(ISettings settings)
@@ -332,6 +333,8 @@ namespace Rogue.MetroFire.CampfireClient
 
 			request.ContentType = "application/xml";
 
+			request.UserAgent = UserAgent;
+
 			if (Cookie != null)
 			{
 				request.Headers.Add("Cookie", Cookie);
@@ -382,6 +385,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private WebClient CreateClient()
 		{
 			var client = new WebClientWithTimeout {Credentials = CreateCredentials(), Timeout = _defaultTimeout};
+			client.Headers.Add(HttpRequestHeader.UserAgent, UserAgent);
 			if (!_settings.Network.UseProxy)
 			{
 				client.Proxy = null;

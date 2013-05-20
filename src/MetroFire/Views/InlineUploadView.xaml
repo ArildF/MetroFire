@@ -57,6 +57,7 @@
 								<Button Height="50" Width="60" HorizontalAlignment="Center"
 										Command="{Binding StartAnimationCommand}"
 										VerticalAlignment="Center"
+										Cursor="Arrow"
 										Visibility="{Binding ShowPlayButton, Converter={StaticResource BoolToVisibilityConverter}}">
 									<Button.Template>
 										<ControlTemplate>

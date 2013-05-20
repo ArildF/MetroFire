@@ -269,6 +269,7 @@
     <Compile Include="Views\InlineUploadView.xaml.cs">
       <DependentUpon>InlineUploadView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\inlineurlhandlers.cs" />
     <Compile Include="Views\LobbyButton.xaml.cs">
       <DependentUpon>LobbyButton.xaml</DependentUpon>
     </Compile>

@@ -270,4 +270,11 @@ namespace Rogue.MetroFire.UI
 		event AsyncCompletedEventHandler UpdateCompleted;
 		event DeploymentProgressChangedEventHandler UpdateProgressChanged;
 	}
+
+	public interface IInlineUrlHandler
+	{
+		bool CanHandle(string url);
+		Inline Render(string url);
+		int Priority { get; }
+	}
 }

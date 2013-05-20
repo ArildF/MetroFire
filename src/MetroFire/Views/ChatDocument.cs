@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows;
@@ -8,14 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using Microsoft.Windows.Themes;
-using ReactiveUI;
-using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.Infrastructure;
 using System.Linq;
-using System.Reactive.Linq;
-using Rogue.MetroFire.UI.ViewModels;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -24,24 +18,20 @@ namespace Rogue.MetroFire.UI.Views
 		private readonly IInlineUploadViewFactory _factory;
 		private readonly IWebBrowser _browser;
 		private readonly IPasteViewFactory _pasteViewFactory;
-		private readonly IMessageBus _bus;
+		private readonly IEnumerable<IInlineUrlHandler> _urlHandlers;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
 
 		private static readonly Regex UrlDetector = new
 			Regex(@"((?:http|https|ftp)\://(?:[a-zA-Z0-9\.\-]+(?:\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?(?:(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(?:[a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(?:\:[0-9]+)?(?:/[^/][a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$#\=~_\-@]*)*)");
-			
 
-		private static readonly Regex TwitterMessageParser =
-			new Regex(@"@(.*?),\s*(.*)");
 
 		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser, 
-			IPasteViewFactory pasteViewFactory,
-			IMessageBus bus)
+			IPasteViewFactory pasteViewFactory, IEnumerable<IInlineUrlHandler> urlHandlers)
 		{
 			_factory = factory;
 			_browser = browser;
 			_pasteViewFactory = pasteViewFactory;
-			_bus = bus;
+			_urlHandlers = urlHandlers;
 			_handlers = new Dictionary<MessageType, Action<Message, User, Paragraph>>
 				{
 					{MessageType.TextMessage, FormatUserMessage},
@@ -232,57 +222,7 @@ namespace Rogue.MetroFire.UI.Views
 
 		}
 
-		private Inline PotentiallyRenderYoutubeVideo(string uriString)
-		{
-			var uri = new Uri(uriString);
-
-			var id = ParseFullYoutubeUrl(uri) ?? ParseShortYoutubeUrl(uri);
-			if (id == null)
-			{
-				return null;
-			}
-
-			var embedHtml = String.Format(@"
-<body scroll='no'>
-		<iframe width='300' height='150'
-				src='http://www.youtube.com/embed/{0}' frameborder='0' allowfullscreen></iframe>
-</body>
-", id);
-
-			var span = new Span();
-			span.Inlines.Add(CreateHyperLink(uriString));
-
-			var browser = new System.Windows.Controls.WebBrowser {MinHeight = 170};
-			ScrollViewer.SetVerticalScrollBarVisibility(browser, ScrollBarVisibility.Hidden);
-			browser.NavigateToString(embedHtml);
-			span.Inlines.Add(new InlineUIContainer(browser));
-
-			return span;
-		}
-
-		private string ParseShortYoutubeUrl(Uri uri)
-		{
-			if (!uri.Host.EndsWith("youtu.be", StringComparison.InvariantCultureIgnoreCase))
-			{
-				return null;
-			}
-			var path = uri.LocalPath;
-			return path.Length > 0 ? path.Substring(1) : null;
-		}
-
-		private static string ParseFullYoutubeUrl(Uri uri)
-		{
-			if (!uri.Host.EndsWith("youtube.com", StringComparison.InvariantCultureIgnoreCase))
-			{
-				return null;
-			}
-
-			var parameters = HttpUtility.ParseQueryString(uri.Query);
-			string id = parameters["v"];
-			return id;
-		}
-
-		private static Inline CreateHyperLink(string result)
+		public static Inline CreateHyperLink(string result)
 		{
 			var hyperlink = new Hyperlink(new Run(result)) {NavigateUri = new Uri(result)};
 			ToolTipService.SetToolTip(hyperlink, result);
@@ -291,42 +231,23 @@ namespace Rogue.MetroFire.UI.Views
 
 		private Inline RenderLink(string uri)
 		{
-			var inlineYoutubeVideo = PotentiallyRenderYoutubeVideo(uri);
-			if (inlineYoutubeVideo != null)
+			foreach (var handler in _urlHandlers.OrderBy(h => h.Priority))
 			{
-				return inlineYoutubeVideo;
+				if (handler.CanHandle(uri))
+				{
+					return handler.Render(uri);
+				}
 			}
 
-			var span = new Span();
-			var link = CreateHyperLink(uri);
-			span.Inlines.Add(link);
+			return new Run(uri);
 
-			var msg = new RequestHeadMessage(uri);
-			_bus.Listen<RequestHeadReplyMessage>().Where(m => m.CorrelationId == msg.CorrelationId)
-				.Where(m => m.Info.IsOk && m.Info.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
-				.Subscribe(m =>
-					{
-						var vm = _factory.Create(m.Info);
-						var view = _factory.Create(vm);
-
-						var lb = new LineBreak();
-
-						span.Inlines.InsertBefore(link, lb);
-						var newItem = new InlineUIContainer(view.Element);
-						span.Inlines.InsertBefore(lb, newItem);
-						span.Inlines.InsertBefore(newItem, new LineBreak());
-					});
-
-			_bus.SendMessage(msg);
-
-			return span;
 		}
 
 		private static void RenderUserString(User user, Paragraph paragraph)
 		{
 			var name = FormatUserName(user);
 
-			var item = new Run("<" + name + "> "){};
+			var item = new Run("<" + name + "> ");
 			paragraph.Inlines.Add(item);
 		}
 

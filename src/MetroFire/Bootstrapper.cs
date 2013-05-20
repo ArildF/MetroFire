@@ -4,6 +4,7 @@ using System.Windows.Documents;
 using Castle.Facilities.Startable;
 using Castle.MicroKernel.ModelBuilder.Inspectors;
 using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using ReactiveUI;
@@ -39,13 +40,16 @@ namespace Rogue.MetroFire.UI
 
 			_container.AddFacility<StartableFacility>();
 			_container.AddFacility<TypedFactoryFacility>();
-
+			
+			_container.Kernel.Resolver.AddSubResolver(new CollectionResolver(_container.Kernel));
 
 			if (!TestMode)
 			{
 				_container.Register(Component.For<Func<NotificationAction, INotificationAction>>().Instance(Create));
 				_container.Install(FromAssembly.This());
 			}
+
+			_container.Register(AllTypes.FromThisAssembly().BasedOn<IInlineUrlHandler>().WithService.AllInterfaces());
 
 			_container.Install(FromAssembly.Containing<RequestLoginMessage>());
 

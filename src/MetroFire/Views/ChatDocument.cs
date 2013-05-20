@@ -110,7 +110,7 @@ namespace Rogue.MetroFire.UI.Views
 			{
 				return null;
 			}
-			var paragraph = new Paragraph {Margin = new Thickness(0)};
+			var paragraph = new Paragraph {Margin = new Thickness(0), TextAlignment = TextAlignment.Left};
 			handler(message, user, paragraph);
 
 			var after = textObject as Paragraph;

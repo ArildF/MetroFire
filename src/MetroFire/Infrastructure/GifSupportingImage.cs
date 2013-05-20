@@ -29,6 +29,24 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			typeof(string), typeof(GifSupportingImage), new UIPropertyMetadata(null, UriPropertyChanged));
 
 
+		public static readonly DependencyProperty ShowAnimatedProperty = DependencyProperty.Register("ShowAnimated",
+			typeof (bool), typeof (GifSupportingImage), new UIPropertyMetadata(false, ShowAnimatedPropertyChanged));
+
+
+
+		public bool ShowAnimated
+		{
+			get { return (bool) GetValue(ShowAnimatedProperty); }
+			set { SetValue(ShowAnimatedProperty, value); }
+		}
+
+
+		private static void ShowAnimatedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			var owner = (GifSupportingImage) d;
+
+			owner.InitFromUri(owner.Uri != null ? new Uri(owner.Uri) : null);
+		}
 
 		public string Uri
 		{
@@ -56,18 +74,15 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 		private void InitFromUri(Uri uri)
 		{
+			StopExistingAnimation();
 			if (uri == null)
 			{
-				_gifDecoder = null;
-				_animation = null;
-				_animationIsWorking = false;
-
 				return;
 			}
 
 			var decoder = BitmapDecoder.Create(uri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
 			_gifDecoder = decoder as GifBitmapDecoder;
-			if (_gifDecoder != null)
+			if (_gifDecoder != null && ShowAnimated)
 			{
 				_animation = new Int32Animation(0, _gifDecoder.Frames.Count - 1,
 			                                new Duration(new TimeSpan(0, 0, 0, _gifDecoder.Frames.Count/10,
@@ -86,10 +101,21 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			Source = decoder.Frames[0];
 		}
 
+		private void StopExistingAnimation()
+		{
+			if (_animationIsWorking)
+			{
+				BeginAnimation(FrameIndexProperty, null);
+			}
+			_animation = null;
+			_animationIsWorking = false;
+			_gifDecoder = null;
+		}
+
 		protected override void OnRender(DrawingContext dc)
 		{
 			base.OnRender(dc);
-			if (!_animationIsWorking && _animation != null && _gifDecoder != null)
+			if (!_animationIsWorking && ShowAnimated && _animation != null && _gifDecoder != null)
 			{
 				BeginAnimation(FrameIndexProperty, _animation);
 				_animationIsWorking = true;

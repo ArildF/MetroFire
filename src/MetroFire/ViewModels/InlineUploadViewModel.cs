@@ -104,6 +104,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 						File = msg.File;
 						ShowAnimated = contentType.Equals("image/gif", StringComparison.OrdinalIgnoreCase);
 						ShowUnanimated = !ShowAnimated;
+
+						if (ShowAnimated)
+						{
+							Observable.Timer(TimeSpan.FromSeconds(60)).Subscribe(_ => ShowAnimated = false);
+						}
 					});
 
 			bus.SendMessage(new RequestDownloadFileMessage(Upload.FullUrl));

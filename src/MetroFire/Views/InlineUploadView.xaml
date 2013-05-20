@@ -20,7 +20,9 @@
 					<Button.Template>
 						<ControlTemplate>
 							<Grid>
-								<Infrastructure:GifSupportingImage Uri="{Binding Path=File, IsAsync=True}" MaxHeight="200"/>
+								<Infrastructure:GifSupportingImage Uri="{Binding Path=File, IsAsync=True}"
+									MaxHeight="200"
+									ShowAnimated="{Binding ShowAnimated}"/>
 							</Grid>
 						</ControlTemplate>
 					</Button.Template>

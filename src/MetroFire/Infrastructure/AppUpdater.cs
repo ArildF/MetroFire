@@ -35,7 +35,11 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 			_disposables.Add(_bus.RegisterMessageSource(updateAvailable));
 
+
+			var initialCheck = Observable.Timer(TimeSpan.FromSeconds(15));
+
 			_disposables.Add(Observable.Interval(Properties.Settings.Default.UpdateCheckInterval)
+				.Merge(initialCheck)
 				.TakeUntil(updateAvailable)
 				.Subscribe(_ => _deployment.CheckForUpdateAsync()));
 

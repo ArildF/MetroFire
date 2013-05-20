@@ -30,7 +30,7 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 
 		public static readonly DependencyProperty ShowAnimatedProperty = DependencyProperty.Register("ShowAnimated",
-			typeof (bool), typeof (GifSupportingImage), new UIPropertyMetadata(false, ShowAnimatedPropertyChanged));
+			typeof (bool), typeof (GifSupportingImage), new UIPropertyMetadata(true, ShowAnimatedPropertyChanged));
 
 
 

@@ -189,14 +189,19 @@
 		</DataTemplate>
 		
 		<DataTemplate DataType="{x:Type Settings:GeneralSettingsViewModel}">
-			<StackPanel Background="White" Width="250" HorizontalAlignment="Left">
+			<StackPanel Background="White" Width="264" HorizontalAlignment="Left">
 				<TextBlock TextWrapping="Wrap" Style="{DynamicResource SmallMetroHeading}" Text="Appearance" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,6"/>
 				<CheckBox Content="Use standard Windows chrome" IsChecked="{Binding UseStandardWindowsChrome}"/>
 				<Grid Height="Auto">
 					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
 						<ColumnDefinition/>
 						<ColumnDefinition/>
 					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition></RowDefinition>
+						<RowDefinition></RowDefinition>
+					</Grid.RowDefinitions>
 					<Label Content="Max backlog" HorizontalAlignment="Left" d:LayoutOverrides="Height" Width="77"/>
 					<TextBox Margin="0" TextWrapping="Wrap" Text="{Binding MaxBacklog}" d:LayoutOverrides="Height"
 							 Grid.Column="1" VerticalAlignment="Center" Width="50" HorizontalAlignment="Left">
@@ -204,6 +209,14 @@
 							<behaviors:RestrictToNumericalInputBehavior/>
 						</i:Interaction.Behaviors>
 					</TextBox>
+					
+					<Label Content="Show animated images for" HorizontalAlignment="Left" Grid.Row="1" Width="155"></Label>
+					<TextBox Text="{Binding ShowAnimatedGifsForSeconds}" Grid.Row="1" Grid.Column="1" Width="50" VerticalAlignment="Center" HorizontalAlignment="Left">
+						<i:Interaction.Behaviors>
+							<behaviors:RestrictToNumericalInputBehavior/>
+						</i:Interaction.Behaviors>
+					</TextBox>
+					<Label Grid.Row="1" Grid.Column="3">seconds</Label>
 				</Grid>
 			</StackPanel>
 			

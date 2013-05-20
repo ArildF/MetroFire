@@ -4,7 +4,6 @@ using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using System.Reactive.Linq;
-using Rogue.MetroFire.UI.Views;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
@@ -12,12 +11,15 @@ namespace Rogue.MetroFire.UI.ViewModels
 	{
 		private readonly IMessageBus _bus;
 		private readonly Func<string, IImageView> _imageViewCreator;
+		private readonly ISettings _settings;
 		private object _data;
 
-		public InlineUploadViewModel(IMessageBus bus, Message message, Func<string, IImageView> imageViewCreator)
+		public InlineUploadViewModel(IMessageBus bus, Message message, Func<string, IImageView> imageViewCreator,
+			ISettings settings)
 		{
 			_bus = bus;
 			_imageViewCreator = imageViewCreator;
+			_settings = settings;
 
 			var requestUploadMessage = new RequestUploadMessage(message.RoomId, message.Id);
 			_bus.Listen<UploadReceivedMessage>().Where(msg => msg.Correlation == requestUploadMessage.Correlation)
@@ -36,7 +38,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			var upload = uploadReceivedMessage.Upload;
 			if (upload.ContentType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
 			{
-				Data = new InlineImageViewModel(upload.ContentType, uploadReceivedMessage.Upload, _bus, _imageViewCreator);
+				Data = new InlineImageViewModel(upload.ContentType, uploadReceivedMessage.Upload, _bus, _imageViewCreator, _settings);
 			}
 			else
 			{
@@ -47,10 +49,10 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 	public class DirectLinkInlineUploadViewModel : ReactiveObject, IDirectLinkInlineUploadViewModel
 	{
-		public DirectLinkInlineUploadViewModel(HeadInfo info, IMessageBus bus, Func<string, IImageView> imageViewCreator)
+		public DirectLinkInlineUploadViewModel(HeadInfo info, IMessageBus bus, Func<string, IImageView> imageViewCreator, ISettings settings)
 		{
 			Data = new InlineImageViewModel(info.MimeType, new Upload {FullUrl = info.FullUrl},
-				bus, imageViewCreator);
+				bus, imageViewCreator, settings);
 
 		}
 
@@ -92,7 +94,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _showAnimated;
 		private bool _showUnanimated;
 
-		public InlineImageViewModel(string contentType, Upload upload, IMessageBus bus, Func<string, IImageView> imageViewCreator) : base(upload)
+		public InlineImageViewModel(string contentType, Upload upload, IMessageBus bus, 
+			Func<string, IImageView> imageViewCreator, ISettings settings) : base(upload)
 		{
 			_imageViewCreator = imageViewCreator;
 			ShowFullSizeImageCommand = new ReactiveCommand(
@@ -107,7 +110,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 						if (ShowAnimated)
 						{
-							Observable.Timer(TimeSpan.FromSeconds(60)).Subscribe(_ => ShowAnimated = false);
+							Observable.Timer(
+									TimeSpan.FromSeconds(settings.General.ShowAnimatedGifsForSeconds))
+								.Subscribe(_ => ShowAnimated = false);
 						}
 					});
 

@@ -1,4 +1,4 @@
-﻿
+﻿<!-- adapted from http://www.xamalot.com/asset/83214fb8-d9cb-4457-a81b-51217cc71f81 -->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
   <SolidColorBrush x:Key="Brush1" Color="White" />
   <SolidColorBrush x:Key="Brush2" Color="#80F7F7F7" />

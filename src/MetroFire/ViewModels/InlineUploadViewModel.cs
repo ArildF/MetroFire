@@ -109,7 +109,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 					{
 						File = msg.File;
 						ShowAnimated = _isGif = contentType.Equals("image/gif", StringComparison.OrdinalIgnoreCase);
-						ShowUnanimated = !ShowAnimated;
 
 						if (ShowAnimated)
 						{
@@ -148,12 +147,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 				ShowPauseButton = value;
 				ShowPlayButton = !value && _isGif;
 			}
-		}
-
-		public bool ShowUnanimated
-		{
-			get { return _showUnanimated; }
-			private set { this.RaiseAndSetIfChanged(vm => vm.ShowUnanimated, ref _showUnanimated, value); }
 		}
 
 		public bool ShowPauseButton

@@ -19,6 +19,8 @@
 				<ResourceDictionary Source="Views/NotificationViews.xaml"/>
 				<ResourceDictionary Source="Simple Styles.xaml"/>
 				<ResourceDictionary Source="Assets/check-System.Brush.xaml"/>
+				<ResourceDictionary Source="Assets/media-playback-pause.Brush.xaml"/>
+				<ResourceDictionary Source="Assets/media-playback-play.Brush.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 
     		<SampleData5:SamplePasteViewModel x:Key="SamplePasteViewModel1" d:IsDataSource="True"/>

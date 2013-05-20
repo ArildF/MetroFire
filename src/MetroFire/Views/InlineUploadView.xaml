@@ -19,10 +19,51 @@
 				<Button Command="{Binding ShowFullSizeImageCommand}" Cursor="Hand">
 					<Button.Template>
 						<ControlTemplate>
+							<ControlTemplate.Resources>
+								<Storyboard x:Key="OnMouseEnter1">
+									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" 
+																   Storyboard.TargetName="PauseGrid">
+										<DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+									</ObjectAnimationUsingKeyFrames>
+								</Storyboard>
+							</ControlTemplate.Resources>
+							
+							<ControlTemplate.Triggers>
+								<EventTrigger RoutedEvent="Mouse.MouseEnter">
+									<BeginStoryboard x:Name="OnMouseEnter1_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter1}"/>
+								</EventTrigger>
+								<EventTrigger RoutedEvent="Mouse.MouseLeave">
+									<StopStoryboard BeginStoryboardName="OnMouseEnter1_BeginStoryboard"/>
+								</EventTrigger>
+							</ControlTemplate.Triggers>
 							<Grid>
 								<Infrastructure:GifSupportingImage Uri="{Binding Path=File, IsAsync=True}"
 									MaxHeight="200"
 									ShowAnimated="{Binding ShowAnimated}"/>
+								<Grid x:Name="PauseGrid" Visibility="Hidden">
+									<Button Height="50" Width="60" HorizontalAlignment="Center" 
+											Cursor="Arrow"
+											VerticalAlignment="Center"
+											Visibility="{Binding ShowPauseButton, Converter={StaticResource BoolToVisibilityConverter}}"
+											Command="{Binding StopAnimationCommand}">
+										<Button.Template>
+											<ControlTemplate>
+												<Border Background="{StaticResource Mediaplaybackpause}"/>
+											</ControlTemplate>
+										</Button.Template>
+									</Button>
+								</Grid>
+								
+								<Button Height="50" Width="60" HorizontalAlignment="Center"
+										Command="{Binding StartAnimationCommand}"
+										VerticalAlignment="Center"
+										Visibility="{Binding ShowPlayButton, Converter={StaticResource BoolToVisibilityConverter}}">
+									<Button.Template>
+										<ControlTemplate>
+											<Border Background="{StaticResource MediaPlaybackPlay}"/>
+										</ControlTemplate>
+									</Button.Template>
+								</Button>
 							</Grid>
 						</ControlTemplate>
 					</Button.Template>

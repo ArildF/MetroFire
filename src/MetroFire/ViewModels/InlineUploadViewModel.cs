@@ -93,6 +93,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _file;
 		private bool _showAnimated;
 		private bool _showUnanimated;
+		private bool _showPauseButton;
+		private bool _isGif;
+		private bool _showPlayButton;
 
 		public InlineImageViewModel(string contentType, Upload upload, IMessageBus bus, 
 			Func<string, IImageView> imageViewCreator, ISettings settings) : base(upload)
@@ -105,7 +108,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.SubscribeUI(msg =>
 					{
 						File = msg.File;
-						ShowAnimated = contentType.Equals("image/gif", StringComparison.OrdinalIgnoreCase);
+						ShowAnimated = _isGif = contentType.Equals("image/gif", StringComparison.OrdinalIgnoreCase);
 						ShowUnanimated = !ShowAnimated;
 
 						if (ShowAnimated)
@@ -118,7 +121,14 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			bus.SendMessage(new RequestDownloadFileMessage(Upload.FullUrl));
 
+			StopAnimationCommand = new ReactiveCommand();
+			StopAnimationCommand.Subscribe(_ => ShowAnimated = false);
+
+			StartAnimationCommand = new ReactiveCommand();
+			StartAnimationCommand.Subscribe(_ => ShowAnimated = true);
 		}
+
+		public ReactiveCommand StartAnimationCommand { get; private set; }
 
 		private void ViewImage(object o)
 		{
@@ -132,13 +142,30 @@ namespace Rogue.MetroFire.UI.ViewModels
 		public bool ShowAnimated
 		{
 			get { return _showAnimated; }
-			private set { this.RaiseAndSetIfChanged(vm => vm.ShowAnimated, ref _showAnimated, value); }
+			private set 
+			{ 
+				this.RaiseAndSetIfChanged(vm => vm.ShowAnimated, ref _showAnimated, value);
+				ShowPauseButton = value;
+				ShowPlayButton = !value && _isGif;
+			}
 		}
 
 		public bool ShowUnanimated
 		{
 			get { return _showUnanimated; }
 			private set { this.RaiseAndSetIfChanged(vm => vm.ShowUnanimated, ref _showUnanimated, value); }
+		}
+
+		public bool ShowPauseButton
+		{
+			get { return _showPauseButton;  }
+			private set { this.RaiseAndSetIfChanged(vm => vm.ShowPauseButton, ref _showPauseButton, value); }
+		}
+
+		public bool ShowPlayButton
+		{
+			get { return _showPlayButton; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.ShowPlayButton, ref _showPlayButton, value); }
 		}
 
 		public string File
@@ -149,6 +176,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 				this.RaiseAndSetIfChanged(vm => vm.File, ref _file, value);
 			}
 		}
+
+		public ReactiveCommand StopAnimationCommand { get; private set; }
 	}
 
 	public class ShowFullSizeImageMessage

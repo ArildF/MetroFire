@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using Microsoft.Windows.Themes;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
@@ -209,8 +210,9 @@ namespace Rogue.MetroFire.UI.Views
 			{
 				if (UrlDetector.IsMatch(results.First()))
 				{
-					return PotentiallyShowLinkAsImage(results.First());
+					return RenderLink(results.First());
 				}
+				
 				return new Run(body);
 			}
 
@@ -230,6 +232,56 @@ namespace Rogue.MetroFire.UI.Views
 
 		}
 
+		private Inline PotentiallyRenderYoutubeVideo(string uriString)
+		{
+			var uri = new Uri(uriString);
+
+			var id = ParseFullYoutubeUrl(uri) ?? ParseShortYoutubeUrl(uri);
+			if (id == null)
+			{
+				return null;
+			}
+
+			var embedHtml = String.Format(@"
+<body scroll='no'>
+		<iframe width='300' height='150'
+				src='http://www.youtube.com/embed/{0}' frameborder='0' allowfullscreen></iframe>
+</body>
+", id);
+
+			var span = new Span();
+			span.Inlines.Add(CreateHyperLink(uriString));
+
+			var browser = new System.Windows.Controls.WebBrowser {MinHeight = 170};
+			ScrollViewer.SetVerticalScrollBarVisibility(browser, ScrollBarVisibility.Hidden);
+			browser.NavigateToString(embedHtml);
+			span.Inlines.Add(new InlineUIContainer(browser));
+
+			return span;
+		}
+
+		private string ParseShortYoutubeUrl(Uri uri)
+		{
+			if (!uri.Host.EndsWith("youtu.be", StringComparison.InvariantCultureIgnoreCase))
+			{
+				return null;
+			}
+			var path = uri.LocalPath;
+			return path.Length > 0 ? path.Substring(1) : null;
+		}
+
+		private static string ParseFullYoutubeUrl(Uri uri)
+		{
+			if (!uri.Host.EndsWith("youtube.com", StringComparison.InvariantCultureIgnoreCase))
+			{
+				return null;
+			}
+
+			var parameters = HttpUtility.ParseQueryString(uri.Query);
+			string id = parameters["v"];
+			return id;
+		}
+
 		private static Inline CreateHyperLink(string result)
 		{
 			var hyperlink = new Hyperlink(new Run(result)) {NavigateUri = new Uri(result)};
@@ -237,8 +289,14 @@ namespace Rogue.MetroFire.UI.Views
 			return hyperlink;
 		}
 
-		private Inline PotentiallyShowLinkAsImage(string uri)
+		private Inline RenderLink(string uri)
 		{
+			var inlineYoutubeVideo = PotentiallyRenderYoutubeVideo(uri);
+			if (inlineYoutubeVideo != null)
+			{
+				return inlineYoutubeVideo;
+			}
+
 			var span = new Span();
 			var link = CreateHyperLink(uri);
 			span.Inlines.Add(link);
@@ -268,7 +326,7 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			var name = FormatUserName(user);
 
-			var item = new Run("<" + name + "> ");
+			var item = new Run("<" + name + "> "){};
 			paragraph.Inlines.Add(item);
 		}
 

@@ -1,36 +1,61 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient;
+using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.ViewModels;
 
 namespace Rogue.MetroFire.UI.Views
 {
-	public class PotentialImageUrlHandler : IInlineUrlHandler
+
+	public class SingleLinkMessageFormatter 
+	{
+		public virtual bool ShouldHandle(Message message, User user)
+		{
+			if (message.Type != MessageType.TextMessage)
+			{
+				return false;
+			}
+			return GetSingleUrl(message) != null;
+		}
+
+		private static string GetSingleUrl(Message message)
+		{
+			string[] results = ChatDocument.UrlDetector.Split(message.Body.Trim()).Where(r => !String.IsNullOrEmpty(r)).ToArray();
+			if (results.Length == 1)
+			{
+				if (ChatDocument.UrlDetector.IsMatch(results.First()))
+				{
+					return results.First();
+				}
+			}
+			return null;
+		}
+	}
+	public class PotentialImageUrlMessageFormatter : SingleLinkMessageFormatter, IMessageFormatter
 	{
 		private readonly IMessageBus _bus;
 		private readonly IInlineUploadViewFactory _factory;
 
-		public PotentialImageUrlHandler(IMessageBus bus, IInlineUploadViewFactory factory)
+		public PotentialImageUrlMessageFormatter(IMessageBus bus, IInlineUploadViewFactory factory)
 		{
 			_bus = bus;
 			_factory = factory;
 		}
 
-		public bool CanHandle(string url)
+		public void Render(Paragraph paragraph, Message message, User user)
 		{
-			return true;
-		}
+			ChatDocument.RenderUserString(user, paragraph);
 
-		public Inline Render(string url)
-		{
 			var span = new Span();
-			var link = ChatDocument.CreateHyperLink(url);
+			var link = ChatDocument.CreateHyperLink(message.Body);
 			span.Inlines.Add(link);
 
-			var msg = new RequestHeadMessage(url);
+			var msg = new RequestHeadMessage(message.Body);
 			_bus.Listen<RequestHeadReplyMessage>().Where(m => m.CorrelationId == msg.CorrelationId)
 				.Where(m => m.Info.IsOk && m.Info.MimeType.StartsWith("image/", StringComparison.InvariantCultureIgnoreCase))
 				.Subscribe(m =>
@@ -48,40 +73,36 @@ namespace Rogue.MetroFire.UI.Views
 
 			_bus.SendMessage(msg);
 
-			return span;
+			paragraph.Inlines.Add(span);
 		}
 
 		public int Priority { get { return 1000; } }
 	}
 
-	public abstract class YoutubeUrlHandlerBase : IInlineUrlHandler
+	public abstract class YoutubeUrlHandlerBase : SingleLinkMessageFormatter, IMessageFormatter
 	{
-		public bool CanHandle(string url)
+		public override bool ShouldHandle(Message message, User user)
 		{
-			var id = GetId(url);
-			return id != null;
+			return base.ShouldHandle(message, user) && GetId(message.Body) != null;
 		}
 
-		public Inline Render(string url)
+		public void Render(Paragraph paragraph, Message message, User user)
 		{
-			var id = GetId(url);
+			ChatDocument.RenderUserString(user, paragraph);
 
-			var embedHtml = String.Format(@"
-<body scroll='no'>
-		<iframe width='300' height='150'
-				src='http://www.youtube.com/embed/{0}' frameborder='0' allowfullscreen></iframe>
-</body>
-", id);
+			var id = GetId(message.Body);
 
 			var span = new Span();
-			span.Inlines.Add(ChatDocument.CreateHyperLink(url));
+			span.Inlines.Add(ChatDocument.CreateHyperLink(message.Body));
+			span.Inlines.Add(Environment.NewLine);
 
-			var browser = new System.Windows.Controls.WebBrowser { MinHeight = 170 };
-			ScrollViewer.SetVerticalScrollBarVisibility(browser, ScrollBarVisibility.Hidden);
-			browser.NavigateToString(embedHtml);
-			span.Inlines.Add(new InlineUIContainer(browser));
+			var vm = new InlineYoutubeViewModel(id);
 
-			return span;
+			var container = new InlineUIContainer(
+				new GenericInlineContainer{DataContext = vm});
+			span.Inlines.Add(container);
+
+			paragraph.Inlines.Add(span);
 		}
 
 		protected abstract string GetId(string url);

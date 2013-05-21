@@ -18,20 +18,20 @@ namespace Rogue.MetroFire.UI.Views
 		private readonly IInlineUploadViewFactory _factory;
 		private readonly IWebBrowser _browser;
 		private readonly IPasteViewFactory _pasteViewFactory;
-		private readonly IEnumerable<IInlineUrlHandler> _urlHandlers;
+		private readonly IEnumerable<IMessageFormatter> _formatters;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
 
-		private static readonly Regex UrlDetector = new
+		public static readonly Regex UrlDetector = new
 			Regex(@"((?:http|https|ftp)\://(?:[a-zA-Z0-9\.\-]+(?:\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?(?:(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(?:[a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(?:\:[0-9]+)?(?:/[^/][a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$#\=~_\-@]*)*)");
 
 
 		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser, 
-			IPasteViewFactory pasteViewFactory, IEnumerable<IInlineUrlHandler> urlHandlers)
+			IPasteViewFactory pasteViewFactory, IEnumerable<IMessageFormatter> formatters)
 		{
 			_factory = factory;
 			_browser = browser;
 			_pasteViewFactory = pasteViewFactory;
-			_urlHandlers = urlHandlers;
+			_formatters = formatters;
 			_handlers = new Dictionary<MessageType, Action<Message, User, Paragraph>>
 				{
 					{MessageType.TextMessage, FormatUserMessage},
@@ -101,7 +101,10 @@ namespace Rogue.MetroFire.UI.Views
 				return null;
 			}
 			var paragraph = new Paragraph {Margin = new Thickness(0), TextAlignment = TextAlignment.Left};
-			handler(message, user, paragraph);
+			if (!RenderByCustomFormatter(message, user, paragraph))
+			{
+				handler(message, user, paragraph);
+			}
 
 			var after = textObject as Paragraph;
 			if (after != null)
@@ -114,6 +117,20 @@ namespace Rogue.MetroFire.UI.Views
 			}
 
 			return paragraph;
+		}
+
+		private bool RenderByCustomFormatter(Message message, User user, Paragraph paragraph)
+		{
+			foreach (var messageFormatter in _formatters.OrderBy(f => f.Priority))
+			{
+				if (messageFormatter.ShouldHandle(message, user))
+				{
+					messageFormatter.Render(paragraph, message, user);
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		public void RemoveMessage(object textObject)
@@ -195,17 +212,7 @@ namespace Rogue.MetroFire.UI.Views
 
 		private Inline RenderUserMessage(string body)
 		{
-			string[] results = UrlDetector.Split(body).Where(r => !String.IsNullOrEmpty(r)).ToArray();
-			if (results.Length == 1)
-			{
-				if (UrlDetector.IsMatch(results.First()))
-				{
-					return RenderLink(results.First());
-				}
-				
-				return new Run(body);
-			}
-
+			var results = UrlDetector.Split(body);
 			var span = new Span();
 			foreach (var result in results)
 			{
@@ -229,21 +236,9 @@ namespace Rogue.MetroFire.UI.Views
 			return hyperlink;
 		}
 
-		private Inline RenderLink(string uri)
-		{
-			foreach (var handler in _urlHandlers.OrderBy(h => h.Priority))
-			{
-				if (handler.CanHandle(uri))
-				{
-					return handler.Render(uri);
-				}
-			}
+		
 
-			return new Run(uri);
-
-		}
-
-		private static void RenderUserString(User user, Paragraph paragraph)
+		public static void RenderUserString(User user, Paragraph paragraph)
 		{
 			var name = FormatUserName(user);
 

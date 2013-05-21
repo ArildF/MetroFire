@@ -13,7 +13,7 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			Visibility visibility;
 			if (parameter == null || !Enum.TryParse(parameter.ToString(), out visibility))
 			{
-				visibility = Visibility.Hidden;
+				visibility = Visibility.Collapsed;
 			}
 
 			return b ? Visibility.Visible : visibility;

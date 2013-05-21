@@ -271,10 +271,10 @@ namespace Rogue.MetroFire.UI
 		event DeploymentProgressChangedEventHandler UpdateProgressChanged;
 	}
 
-	public interface IInlineUrlHandler
+	public interface IMessageFormatter
 	{
-		bool CanHandle(string url);
-		Inline Render(string url);
+		bool ShouldHandle(Message message, User user);
+		void Render(Paragraph paragraph, Message message, User user);
 		int Priority { get; }
 	}
 }

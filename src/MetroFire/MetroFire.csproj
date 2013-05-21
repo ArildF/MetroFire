@@ -231,6 +231,7 @@
     <Compile Include="Settings\TriggerType.cs" />
     <Compile Include="ViewModels\Direction.cs" />
     <Compile Include="ViewModels\InlineUploadViewModel.cs" />
+    <Compile Include="ViewModels\InlineYoutubeViewModel.cs" />
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\LogViewModel.cs" />
@@ -260,6 +261,9 @@
     <Compile Include="Views\CollapsibleTextPasteView.xaml.cs">
       <DependentUpon>CollapsibleTextPasteView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GenericInlineContainer.xaml.cs">
+      <DependentUpon>GenericInlineContainer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
@@ -269,7 +273,7 @@
     <Compile Include="Views\InlineUploadView.xaml.cs">
       <DependentUpon>InlineUploadView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\inlineurlhandlers.cs" />
+    <Compile Include="Views\messageformatters.cs" />
     <Compile Include="Views\LobbyButton.xaml.cs">
       <DependentUpon>LobbyButton.xaml</DependentUpon>
     </Compile>
@@ -414,6 +418,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\GenericInlineContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -423,6 +431,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\InlineUploadView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InlineYoutubeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

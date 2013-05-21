@@ -49,7 +49,7 @@ namespace Rogue.MetroFire.UI
 				_container.Install(FromAssembly.This());
 			}
 
-			_container.Register(AllTypes.FromThisAssembly().BasedOn<IInlineUrlHandler>().WithService.AllInterfaces());
+			_container.Register(AllTypes.FromThisAssembly().BasedOn<IMessageFormatter>().WithService.AllInterfaces());
 
 			_container.Install(FromAssembly.Containing<RequestLoginMessage>());
 

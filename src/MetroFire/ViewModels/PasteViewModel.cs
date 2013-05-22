@@ -21,11 +21,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _isErrored;
 		private Exception _lastException;
 
-		public PasteViewModel(ClipboardItem clipboardItem, IRoom room, IMessageBus bus)
+		public PasteViewModel(FileItem fileItem, IRoom room, IMessageBus bus)
 		{
-			if (clipboardItem.IsImage)
+			if (fileItem.IsImage)
 			{
-				_imageSource = clipboardItem.LocalPath;
+				_imageSource = fileItem.LocalPath;
 			}
 			else
 			{
@@ -33,11 +33,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			}
 			
 
-			Caption = "Upload this " + (clipboardItem.IsImage ? "image" : "file") + "?";
-			LocalPath = clipboardItem.LocalPath;
-			ShowLocalPath = !clipboardItem.IsImage;
-			ContentType = clipboardItem.ContentType;
-			Size = clipboardItem.Size;
+			Caption = "Upload this " + (fileItem.IsImage ? "image" : "file") + "?";
+			LocalPath = fileItem.LocalPath;
+			ShowLocalPath = !fileItem.IsImage;
+			ContentType = fileItem.ContentType;
+			Size = fileItem.Size;
 
 			PasteCommand = new ReactiveCommand();
 
@@ -70,7 +70,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 						IsUploading = true;
 						IsErrored = false;
 					})
-				.Select(_ => new RequestUploadFileMessage(room.Id, clipboardItem.LocalPath, clipboardItem.ContentType))
+				.Select(_ => new RequestUploadFileMessage(room.Id, fileItem.LocalPath, fileItem.ContentType))
 				.Do(msg => _currentCorrelation = msg.CorrelationId)));
 
 			CancelCommand = new ReactiveCommand();

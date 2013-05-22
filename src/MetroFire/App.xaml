@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SampleMainViewModel" xmlns:SampleData1="clr-namespace:Expression.Blend.SampleData.SampleLobbyViewModel" xmlns:SampleData2="clr-namespace:Expression.Blend.SampleData.SampleRoomViewModel" xmlns:SampleData3="clr-namespace:Expression.Blend.SampleData.SampleSettingsDataSource" xmlns:SampleData4="clr-namespace:Expression.Blend.SampleData.SampleNotificationSettingsViewModel"
              xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
              xmlns:UI="clr-namespace:Rogue.MetroFire.UI" 
-		xmlns:SampleData5="clr-namespace:Expression.Blend.SampleData.SamplePasteViewModel" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.App"
+		xmlns:SampleData5="clr-namespace:Expression.Blend.SampleData.SamplePasteViewModel" mc:Ignorable="d" x:Class="Rogue.MetroFire.UI.App" 
              >
     <Application.Resources>
          
@@ -21,7 +21,6 @@
 				<ResourceDictionary Source="Assets/check-System.Brush.xaml"/>
 				<ResourceDictionary Source="Assets/media-playback-pause.Brush.xaml"/>
 				<ResourceDictionary Source="Assets/media-playback-play.Brush.xaml"/>
-				
 				<ResourceDictionary Source="Views/InlineYoutubeView.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 

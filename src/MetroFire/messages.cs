@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media.Imaging;
+using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.Infrastructure;
 using Rogue.MetroFire.UI.Settings;
 
 namespace Rogue.MetroFire.UI
@@ -230,5 +233,18 @@ namespace Rogue.MetroFire.UI
 	{
 	}
 
+	public class RequestUploadFilePickerMessage : CorrelatedMessage
+	{
+		
+	}
 
+	public class UploadFilePickedMessage : CorrelatedReply
+	{
+		public FileItem FileItem { get; set; }
+
+		public UploadFilePickedMessage(FileItem item, Guid correlationId) : base(correlationId)
+		{
+			FileItem = item;
+		}
+	}
 }

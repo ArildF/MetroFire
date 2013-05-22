@@ -133,6 +133,7 @@
 						Command="{x:Static UI:GlobalCommands.LeaveRoomCommand}" CommandParameter="{Binding RoomId}" Template="{DynamicResource CloseButtonTemplate}" HorizontalAlignment="Right"/>
 				<TextBlock TextWrapping="WrapWithOverflow" Style="{DynamicResource MetroBlueCaption}" Text="{Binding RoomName}"/>
 				<TextBlock TextWrapping="Wrap" Text="{Binding Topic}" HorizontalAlignment="Left" Style="{DynamicResource MetroBodyText}"/>
+				<Button Content="UPLOAD FILE..." Style="{DynamicResource NavigationButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0" Command="{Binding UploadFileCommand}"/>
 			</StackPanel>
 		</Grid>
 		<GridSplitter HorizontalAlignment="Left" Width="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,1,0,-1" d:LayoutOverrides="GridBox"/>

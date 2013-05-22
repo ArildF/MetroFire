@@ -170,12 +170,13 @@
     <Compile Include="Infrastructure\CampfireLog.cs" />
     <Compile Include="Infrastructure\ClickOnceApplicationDeployment.cs" />
     <Compile Include="Infrastructure\Clipboard.cs" />
-    <Compile Include="Infrastructure\ClipboardItem.cs" />
+    <Compile Include="Infrastructure\FileItem.cs" />
     <Compile Include="Infrastructure\ClipboardService.cs" />
     <Compile Include="Infrastructure\CustomKeyBindingTrigger.cs" />
     <Compile Include="Infrastructure\DesignTime.cs" />
     <Compile Include="Infrastructure\DisposableCollection.cs" />
     <Compile Include="Infrastructure\FakeApplicationDeployment.cs" />
+    <Compile Include="Infrastructure\FilePickerDisplayer.cs" />
     <Compile Include="Infrastructure\FocusBehavior.cs" />
     <Compile Include="Infrastructure\GifSupportingImage.cs" />
     <Compile Include="Infrastructure\IImageEncoder.cs" />

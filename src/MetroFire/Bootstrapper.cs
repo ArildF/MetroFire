@@ -102,9 +102,9 @@ namespace Rogue.MetroFire.UI
 				_container = container;
 			}
 
-			public IPasteView Create(IRoom room, ClipboardItem clipboardItem)
+			public IPasteView Create(IRoom room, FileItem fileItem)
 			{
-				var vm = _container.Resolve<IPasteViewModel>(new {room, clipboardItem});
+				var vm = _container.Resolve<IPasteViewModel>(new {room, fileItem});
 				var view = _container.Resolve<IPasteView>(new {vm});
 
 				return view;

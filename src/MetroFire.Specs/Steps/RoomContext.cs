@@ -316,16 +316,16 @@ namespace MetroFire.Specs.Steps
 
 	public class FakeClipBoardService : IClipboardService
 	{
-		private ClipboardItem _currentItem;
+		private FileItem _currentItem;
 
-		public ClipboardItem GetClipboardItem()
+		public FileItem GetFileItem()
 		{
 			return _currentItem;
 		}
 
 		public void SetImage()
 		{
-			_currentItem = new ClipboardItem("Test.png", "image/png");
+			_currentItem = new FileItem("Test.png", "image/png");
 		}
 	}
 

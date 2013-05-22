@@ -2,9 +2,9 @@ using System.IO;
 
 namespace Rogue.MetroFire.UI.Infrastructure
 {
-	public class ClipboardItem
+	public class FileItem
 	{
-		public ClipboardItem(string localPath, string contentType)
+		public FileItem(string localPath, string contentType)
 		{
 			LocalPath = localPath;
 			ContentType = contentType;

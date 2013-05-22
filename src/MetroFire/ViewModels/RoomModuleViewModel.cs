@@ -77,9 +77,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			PasteCommand = new ReactiveCommand();
 
-			Subscribe(() => PasteCommand.Select(pc => clipboardService.GetClipboardItem())
+			Subscribe(() => PasteCommand.Select(pc => clipboardService.GetFileItem())
 								.Where(ci => ci != null)
-			                	.Subscribe(ci => _chatDocument.AddPasteFile(_room, ci)));
+			                	.Subscribe(ci => _chatDocument.AddUploadFile(_room, ci)));
 
 			var leaveRoomCommand = commands.LeaveRoomCommand.OfType<int>().Where(id => id == _room.Id);
 			Subscribe(_bus.RegisterMessageSource(leaveRoomCommand.Select(_ => new RequestStopStreamingMessage(_room.Id))));
@@ -87,7 +87,15 @@ namespace Rogue.MetroFire.UI.ViewModels
 			Subscribe(
 				_bus.RegisterMessageSource(
 					leaveRoomCommand.Select(_ => new ActivateModuleByIdMessage(ModuleNames.MainCampfireView, ModuleIds.Lobby))));
+
+			UploadFileCommand = new ReactiveCommand();
+
+			Subscribe(_bus.RegisterSourceAndHandleReply<RequestUploadFilePickerMessage, UploadFilePickedMessage>(
+				UploadFileCommand.Select(_ => new RequestUploadFilePickerMessage()), 
+				response => _chatDocument.AddUploadFile(_room, response.FileItem)));
 		}
+
+		public ReactiveCommand UploadFileCommand { get; private set; }
 
 
 		public ReactiveCommand PasteCommand { get; private set; }

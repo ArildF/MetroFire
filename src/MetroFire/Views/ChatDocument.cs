@@ -280,9 +280,9 @@ namespace Rogue.MetroFire.UI.Views
 			handler(message, user, paragraph);
 		}
 
-		public void AddPasteFile(IRoom room, ClipboardItem clipboardItem)
+		public void AddUploadFile(IRoom room, FileItem fileItem)
 		{
-			var view = _pasteViewFactory.Create(room, clipboardItem);
+			var view = _pasteViewFactory.Create(room, fileItem);
 			var paragraph = new Paragraph();
 			paragraph.Inlines.Add(view.Element);
 

@@ -32,7 +32,7 @@ namespace MetroFire.Specs.Steps
 			throw new System.NotImplementedException();
 		}
 
-		public void AddPasteFile(IRoom room, ClipboardItem path)
+		public void AddUploadFile(IRoom room, FileItem fileItem)
 		{
 			throw new System.NotImplementedException();
 		}

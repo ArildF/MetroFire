@@ -146,7 +146,7 @@ namespace Rogue.MetroFire.UI
 	{
 		object AddMessage(Message message, User user, object textObject);
 		void UpdateMessage(object textObject, Message message, User user);
-		void AddPasteFile(IRoom room, ClipboardItem path);
+		void AddUploadFile(IRoom room, FileItem fileItem);
 		Double FontSize { get; set; }
 
 		void RemoveMessage(object textObject);
@@ -206,7 +206,7 @@ namespace Rogue.MetroFire.UI
 
 	public interface IPasteViewFactory
 	{
-		IPasteView Create(IRoom room, ClipboardItem bitmapSource);
+		IPasteView Create(IRoom room, FileItem fileItem);
 		void Release(IPasteView view);
 		ICollapsibleTextPasteView CreateTextPasteView(Inline inline);
 	}
@@ -253,7 +253,7 @@ namespace Rogue.MetroFire.UI
 
 	public interface IClipboardService
 	{
-		ClipboardItem GetClipboardItem();
+		FileItem GetFileItem();
 	}
 
 	public interface IMimeTypeResolver

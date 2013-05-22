@@ -14,21 +14,21 @@
 			_mimeTypeResolver = mimeTypeResolver;
 		}
 
-		public ClipboardItem GetClipboardItem()
+		public FileItem GetFileItem()
 		{
 			var image = _clipboard.GetImage();
 			if (image != null)
 			{
 				string path = _encoder.EncodeToTempPng(image);
 
-				return new ClipboardItem(path, "image/png");
+				return new FileItem(path, "image/png");
 			}
 
 			string filePath = _clipboard.GetFilePath();
 			if (filePath != null)
 			{
 				string contentType = _mimeTypeResolver.GetMimeType(filePath);
-				return new ClipboardItem(filePath, contentType);
+				return new FileItem(filePath, contentType);
 			}
 
 			return null;

@@ -90,7 +90,7 @@
     		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountStorage}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" Grid.Row="2" d:LayoutOverrides="Height"/>
     		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountSubdomain}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" Grid.Row="3" d:LayoutOverrides="Height"/>
     	</Grid>
-    	<ListBox Margin="0" Grid.Row="2" Grid.ColumnSpan="2" Background="{x:Null}" Padding="10,0" ItemsPanel="{DynamicResource _wrapPanelTemplate}" ItemsSource="{Binding Rooms}" ItemTemplate="{DynamicResource _lobbyButtonTemplate}" Style="{DynamicResource _listBoxStyle}"/>
+    	<ListBox Margin="0" Background="{x:Null}" Padding="10,0" ItemsPanel="{DynamicResource _wrapPanelTemplate}" ItemsSource="{Binding Rooms}" ItemTemplate="{DynamicResource _lobbyButtonTemplate}" Style="{DynamicResource _listBoxStyle}" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             
     </Grid>
 </UserControl>

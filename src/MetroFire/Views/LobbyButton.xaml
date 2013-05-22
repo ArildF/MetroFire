@@ -3,7 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:local="clr-namespace:Rogue.MetroFire.UI"
+	xmlns:local="clr-namespace:Rogue.MetroFire.UI" xmlns:converters="clr-namespace:Rogue.MetroFire.UI.Converters"
 	mc:Ignorable="d"
 	x:Class="Rogue.MetroFire.UI.Views.LobbyButton"
 	x:Name="UserControl"
@@ -23,7 +23,7 @@
 	<Grid d:LayoutOverrides="Width, Height" x:Name="LayoutRoot">
 		<Button Command="{Binding JoinCommand}">
 			<Button.Resources>
-				
+				<converters:StringToSchemeColorConverter x:Key="SchemeColorConverter"/>
 			</Button.Resources>
 			<Button.Template>
 				<ControlTemplate>
@@ -72,7 +72,7 @@
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
 						<Border.Background>
-							<SolidColorBrush Color="{DynamicResource MetroBlue}"/>
+							<SolidColorBrush Color="{Binding Name, Converter={StaticResource SchemeColorConverter}}"/>
 						</Border.Background>
 						<Border.RenderTransform>
 							<TransformGroup>

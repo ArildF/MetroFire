@@ -161,6 +161,7 @@
     <Compile Include="Behaviors\VisualStateBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Converters\SizeValueConverter.cs" />
+    <Compile Include="Converters\StringToSchemeColorConverter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GlobalCommands.cs" />
     <Compile Include="Infrastructure\ApplicationActivator.cs" />

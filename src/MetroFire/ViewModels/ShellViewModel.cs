@@ -37,13 +37,14 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		public ReactiveCommand SettingsCommand { get; private set; }
 
-		protected int UnreadCount
+		public int UnreadCount
 		{
 			get {
 				return _unreadCount;
 			}
-			set {
-				_unreadCount = value;
+			set
+			{
+				this.RaiseAndSetIfChanged(vm => vm.UnreadCount, ref _unreadCount, value);
 
 				Title = _unreadCount > 0 ? string.Format("({0}) {1}", _unreadCount, DefaultTitle) : DefaultTitle;
 			}

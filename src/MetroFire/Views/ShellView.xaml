@@ -3,13 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
-        xmlns:UI="clr-namespace:Rogue.MetroFire.UI" x:Class="Rogue.MetroFire.UI.Views.ShellView"
+        xmlns:UI="clr-namespace:Rogue.MetroFire.UI" xmlns:converters="clr-namespace:Rogue.MetroFire.UI.Converters"
+        x:Class="Rogue.MetroFire.UI.Views.ShellView"
 		TextOptions.TextFormattingMode="Display"
 		Icon="..\Assets\Main.ico"
         Title="{Binding Title}" Height="628" Width="919">
     <Window.CommandBindings>
         <CommandBinding Command="Close" Executed="CloseOnExecuted"/>
     </Window.CommandBindings>
+	
+	<Window.Resources>
+		<converters:NumberToOverlayConverter x:Key="NumberToOverlayConverter"/>
+	</Window.Resources>
+	
+	<Window.TaskbarItemInfo>
+		<TaskbarItemInfo Overlay="{Binding UnreadCount, Converter={StaticResource NumberToOverlayConverter}}"/>
+	</Window.TaskbarItemInfo>
 	
     
 	<i:Interaction.Triggers>

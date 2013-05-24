@@ -14,7 +14,7 @@
 			<Setter Property="FontWeight" Value="ExtraLight"/>
 		</Style>
 		<ItemsPanelTemplate x:Key="_wrapPanelTemplate">
-			<WrapPanel/>
+			<WrapPanel Margin="20"/>
 		</ItemsPanelTemplate>
 		
 		

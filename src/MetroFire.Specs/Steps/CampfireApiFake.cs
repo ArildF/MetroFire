@@ -54,12 +54,12 @@ namespace MetroFire.Specs.Steps
 
 		public Room[] ListPresence()
 		{
-			return _joinedRooms.ToArray();
+			return JoinedRooms.ToArray();
 		}
 
 		public Unit Join(int id)
 		{
-			_joinedRooms.Add(_rooms.First(r => r.Id == id));
+			JoinedRooms.Add(_rooms.First(r => r.Id == id));
 			return Unit.Default;
 		}
 
@@ -122,7 +122,7 @@ namespace MetroFire.Specs.Steps
 
 		public Unit LeaveRoom(int id)
 		{
-			_rooms.RemoveAll(r => r.Id == id);
+			JoinedRooms.RemoveAll(r => r.Id == id);
 
 			return Unit.Default;
 		}
@@ -133,6 +133,11 @@ namespace MetroFire.Specs.Steps
 		}
 
 		public string CorrectToken { get; set; }
+
+		public List<Room> JoinedRooms
+		{
+			get { return _joinedRooms; }
+		}
 
 		public ConnectivityState CheckConnectivity()
 		{

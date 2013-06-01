@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -41,19 +40,7 @@ namespace Rogue.MetroFire.UI.Behaviors
 			_originalBinding = AssociatedObject.CommandBindings.Cast<CommandBinding>().FirstOrDefault(
 				cb => cb.Command == ApplicationCommands.Paste);
 			var commandBinding = new CommandBinding(ApplicationCommands.Paste, Executed);
-			//commandBinding.PreviewCanExecute += CommandBindingOnPreviewCanExecute;
-			//commandBinding.PreviewExecuted += CommandBindingOnPreviewExecuted;
 			AssociatedObject.CommandBindings.Add(commandBinding);
-		}
-
-		private void CommandBindingOnPreviewExecuted(object sender, ExecutedRoutedEventArgs executedRoutedEventArgs)
-		{
-			
-		}
-
-		private void CommandBindingOnPreviewCanExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.CanExecute = true;
 		}
 
 

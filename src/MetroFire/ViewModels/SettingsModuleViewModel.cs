@@ -4,14 +4,15 @@ using System.Windows.Input;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.UI.Settings;
+using Rogue.MetroFire.UI.ViewModels.Settings;
 
-namespace Rogue.MetroFire.UI.ViewModels.Settings
+namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class SettingsViewModel : ReactiveObject, ISettingsViewModel
+	public class SettingsModuleViewModel : ReactiveObject, ISettingsViewModel, IMainModule
 	{
 		private ISettingsSubPage _selectedPage;
 
-		public SettingsViewModel(IMessageBus bus, ISettingsLoader loader, ISettingsSaver saver)
+		public SettingsModuleViewModel(IMessageBus bus, ISettingsLoader loader, ISettingsSaver saver)
 		{
 			SettingsCommand = new ReactiveCommand();
 			bus.RegisterMessageSource(SettingsCommand.Select(_ => new NavigateMainModuleMessage(ModuleNames.SettingsModule)));
@@ -37,6 +38,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			SaveCommand = new ReactiveCommand();
 			bus.RegisterMessageSource(
 				SaveCommand.Do(_ => CommitViewModels()).Do(_ => saver.Save(settings)).Select(_ => new NavigateBackMainModuleMessage()));
+			NavigationContent = null;
 		}
 
 		private void CommitViewModels()
@@ -61,5 +63,6 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 		public ReactiveCommand SaveCommand { get; private set; }
 		ICommand ISettingsViewModel.SettingsCommand { get { return SettingsCommand; } }
+		public object NavigationContent { get; private set; }
 	}
 }

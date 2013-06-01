@@ -45,15 +45,18 @@ namespace Rogue.MetroFire.UI
 
 			if (!TestMode)
 			{
+				_container.AddFacility(new ViewModelRegistrationFacility(Application.Current));
 				_container.Register(Component.For<Func<NotificationAction, INotificationAction>>().Instance(Create));
-				_container.Install(FromAssembly.This());
 			}
+			_container.Install(FromAssembly.This());
 
 			_container.Register(AllTypes.FromThisAssembly().BasedOn<IMessageFormatter>().WithService.AllInterfaces());
 
 			_container.Install(FromAssembly.Containing<RequestLoginMessage>());
 
 			_container.Register(Component.For<IInlineUploadView>().LifestyleTransient().ImplementedBy<InlineUploadView>());
+			_container.Register(
+				Component.For<INavigationContentViewModel>().ImplementedBy<NavigationContentViewModel>().LifeStyle.Singleton);
 			_container.Register(
 				AllTypes.FromThisAssembly().Where(t => t.Namespace == typeof (RoomModuleViewModel).Namespace).
 					WithServiceAllInterfaces().LifestyleTransient());
@@ -78,6 +81,7 @@ namespace Rogue.MetroFire.UI
 			//_container.Register(Component.For<IApplicationDeployment>().ImplementedBy<FakeApplicationDeployment>());
 
 			_container.Register(AllTypes.FromThisAssembly().Where(t => !t.Namespace.EndsWith("Views")).WithServiceAllInterfaces());
+
 			_container.Register(AllTypes.FromThisAssembly().Where(t => 
 				t.Namespace.EndsWith("Views") && !t.Name.In(ModuleNames.RoomModule)).WithServiceAllInterfaces());
 

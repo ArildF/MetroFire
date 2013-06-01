@@ -28,9 +28,6 @@ namespace Rogue.MetroFire.UI
 	public interface IShellViewModel 
 	{}
 
-	public interface ILoginViewModel
-	{
-	}
 
 	public interface IToastWindow
 	{
@@ -53,18 +50,6 @@ namespace Rogue.MetroFire.UI
 		Direction ModuleDirectionRelativeTo(IModule current, IModule module);
 	}
 
-	public interface ILobbyModuleViewModel
-	{
-		bool IsActive { get; set; }
-	}
-
-	public interface IRoomModuleViewModel
-	{
-		string RoomName { get; }
-		bool IsActive { get; set; }
-		int Id { get; }
-		string Notifications { get; }
-	}
 
 	public interface IModuleCreator
 	{
@@ -75,21 +60,15 @@ namespace Rogue.MetroFire.UI
 	public interface IModule
 	{
 		string Caption { get; }
-		DependencyObject Visual { get; }
 		bool IsActive { get; set; }
 		int Id { get; }
 		string Notifications { get; }
 		bool Closable { get; }
 	}
 
-	public interface INavigationContent
+	public interface IMainModule
 	{
-		DependencyObject Visual { get; }
-	}
-
-	public interface IMainModule : IModule
-	{
-		DependencyObject NavigationContent { get; }
+		object NavigationContent { get; }
 	}
 
 	public interface ICampfireModule : IModule
@@ -106,11 +85,6 @@ namespace Rogue.MetroFire.UI
 
 	public interface IInlineUploadViewModel
 	{
-	}
-
-	public interface ILogViewModel
-	{
-		bool IsActive { get; set; }
 	}
 
 	
@@ -134,6 +108,8 @@ namespace Rogue.MetroFire.UI
 	{
 		IModule ResolveModule(string name);
 		void ReleaseModule(IModule module);
+		IMainModule ResolveMainModule(string name);
+		void ReleaseModule(IMainModule module);
 	}
 
 	public interface ILoginInfoStorage

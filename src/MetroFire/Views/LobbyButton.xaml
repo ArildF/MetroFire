@@ -4,18 +4,12 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:local="clr-namespace:Rogue.MetroFire.UI" xmlns:converters="clr-namespace:Rogue.MetroFire.UI.Converters"
+	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+	xmlns:behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
 	mc:Ignorable="d"
 	x:Class="Rogue.MetroFire.UI.Views.LobbyButton"
 	x:Name="UserControl"
 	d:DesignWidth="150" d:DesignHeight="150">
-	<UserControl.Resources>
-		
-		
-		
-		
-		
-		
-	</UserControl.Resources>
 	<d:DataContext>
 		<Binding Path="Rooms[0]" Source="{StaticResource SampleLobbyViewModel}"/>
 	</d:DataContext>
@@ -71,6 +65,12 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
+						<i:Interaction.Behaviors>
+							<behaviors:VisualStateBehavior>
+								<behaviors:Transition Source="{Binding IsJoiningRoom}" Value="False" VisualState="NormalState"/>
+								<behaviors:Transition Source="{Binding IsJoiningRoom}" Value="True" VisualState="JoiningRoomState"/>
+							</behaviors:VisualStateBehavior>
+						</i:Interaction.Behaviors>
 						<Border.Background>
 							<SolidColorBrush Color="{Binding Name, Converter={StaticResource SchemeColorConverter}}"/>
 						</Border.Background>

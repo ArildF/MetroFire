@@ -136,6 +136,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Transitionals">
+      <HintPath>..\lib\Transitionals.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -187,6 +190,7 @@
     <Compile Include="Infrastructure\LogMessageDebugListener.cs" />
     <Compile Include="Infrastructure\MimeTypeResolver.cs" />
     <Compile Include="Infrastructure\UserCache.cs" />
+    <Compile Include="Infrastructure\ViewModelRegistrationFacility.cs" />
     <Compile Include="Infrastructure\WebBrowser.cs" />
     <Compile Include="Infrastructure\WpfExtensions.cs" />
     <Compile Include="interfaces.cs" />
@@ -232,14 +236,15 @@
     <Compile Include="Settings\NotificationSettings.cs" />
     <Compile Include="Settings\SettingsPersistence.cs" />
     <Compile Include="Settings\TriggerType.cs" />
+    <Compile Include="Transitions\HorizontalSlideTransitionSelector.cs" />
+    <Compile Include="Transitions\HorizontalSlideTransition.cs" />
     <Compile Include="ViewModels\Direction.cs" />
     <Compile Include="ViewModels\InlineUploadViewModel.cs" />
     <Compile Include="ViewModels\InlineYoutubeViewModel.cs" />
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\LogViewModel.cs" />
+    <Compile Include="ViewModels\LogModuleViewModel.cs" />
     <Compile Include="ViewModels\MainCampfireViewModel.cs" />
-    <Compile Include="ViewModels\ModuleViewModel.cs" />
     <Compile Include="ViewModels\NavigationContentViewModel.cs" />
     <Compile Include="ViewModels\PasteViewModel.cs" />
     <Compile Include="ViewModels\RoomListViewModel.cs" />
@@ -253,7 +258,7 @@
     <Compile Include="ViewModels\Settings\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\NotificationViewModel.cs" />
     <Compile Include="ViewModels\Settings\PlaySoundViewModel.cs" />
-    <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsModuleViewModel.cs" />
     <Compile Include="ViewModels\Settings\TriggerViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\ToastViewModel.cs" />
@@ -280,14 +285,14 @@
     <Compile Include="Views\LobbyButton.xaml.cs">
       <DependentUpon>LobbyButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LobbyModule.xaml.cs">
-      <DependentUpon>LobbyModule.xaml</DependentUpon>
+    <Compile Include="Views\LobbyModuleView.xaml.cs">
+      <DependentUpon>LobbyModuleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LogModule.xaml.cs">
-      <DependentUpon>LogModule.xaml</DependentUpon>
+    <Compile Include="Views\LogModuleView.xaml.cs">
+      <DependentUpon>LogModuleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainCampfireView.xaml.cs">
       <DependentUpon>MainCampfireView.xaml</DependentUpon>
@@ -298,14 +303,14 @@
     <Compile Include="Views\ProgressIndicator.xaml.cs">
       <DependentUpon>ProgressIndicator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RoomModule.xaml.cs">
-      <DependentUpon>RoomModule.xaml</DependentUpon>
+    <Compile Include="Views\RoomModuleView.xaml.cs">
+      <DependentUpon>RoomModuleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NavigationContent.xaml.cs">
-      <DependentUpon>NavigationContent.xaml</DependentUpon>
+    <Compile Include="Views\NavigationContentView.xaml.cs">
+      <DependentUpon>NavigationContentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsModule.xaml.cs">
-      <DependentUpon>SettingsModule.xaml</DependentUpon>
+    <Compile Include="Views\SettingsModuleView.xaml.cs">
+      <DependentUpon>SettingsModuleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -445,7 +450,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\LobbyModule.xaml">
+    <Page Include="Views\LobbyModuleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -453,7 +458,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LogModule.xaml">
+    <Page Include="Views\LogModuleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -473,15 +478,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\RoomModule.xaml">
+    <Page Include="Views\RoomModuleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NavigationContent.xaml">
+    <Page Include="Views\NavigationContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SettingsModule.xaml">
+    <Page Include="Views\SettingsModuleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

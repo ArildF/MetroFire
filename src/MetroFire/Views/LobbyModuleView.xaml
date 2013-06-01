@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Rogue.MetroFire.UI.Views.LobbyModule"
+﻿<UserControl x:Class="Rogue.MetroFire.UI.Views.LobbyModuleView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Views="clr-namespace:Rogue.MetroFire.UI.Views" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="478.463" Width="Auto" Background="#FFFEFFFF"
+             xmlns:views="clr-namespace:Rogue.MetroFire.UI.Views" mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="478.463" Width="Auto" Background="#FFFEFFFF"
 			 >
 	<UserControl.Resources>
 		<Style x:Key="MetroWhiteCaption" TargetType="{x:Type TextBlock}">
@@ -13,21 +13,21 @@
 			<Setter Property="Foreground" Value="Black"/>
 			<Setter Property="FontWeight" Value="ExtraLight"/>
 		</Style>
-		<ItemsPanelTemplate x:Key="_wrapPanelTemplate">
+		<ItemsPanelTemplate x:Key="WrapPanelTemplate">
 			<WrapPanel Margin="20"/>
 		</ItemsPanelTemplate>
 		
 		
-		<DataTemplate x:Key="_lobbyButtonTemplate">
-			<Views:LobbyButton>
-				<Views:LobbyButton.Effect>
+		<DataTemplate x:Key="LobbyButtonTemplate">
+			<views:LobbyButton>
+				<views:LobbyButton.Effect>
 					<DropShadowEffect BlurRadius="19" ShadowDepth="17"/>
-				</Views:LobbyButton.Effect>
-			</Views:LobbyButton>
+				</views:LobbyButton.Effect>
+			</views:LobbyButton>
 		</DataTemplate>
 		
 		<SolidColorBrush x:Key="ListBorder" Color="#828790"/>
-		<Style x:Key="_listBoxStyle" TargetType="{x:Type ListBox}">
+		<Style x:Key="ListBoxStyle" TargetType="{x:Type ListBox}">
 			<Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
 			<Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
 			<Setter Property="BorderThickness" Value="1"/>
@@ -90,7 +90,7 @@
     		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountStorage}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" Grid.Row="2" d:LayoutOverrides="Height"/>
     		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountSubdomain}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" Grid.Row="3" d:LayoutOverrides="Height"/>
     	</Grid>
-    	<ListBox Margin="0" Background="{x:Null}" Padding="10,0" ItemsPanel="{DynamicResource _wrapPanelTemplate}" ItemsSource="{Binding Rooms}" ItemTemplate="{DynamicResource _lobbyButtonTemplate}" Style="{DynamicResource _listBoxStyle}" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    	<ListBox Margin="0" Background="{x:Null}" Padding="10,0" ItemsPanel="{DynamicResource WrapPanelTemplate}" ItemsSource="{Binding Rooms}" ItemTemplate="{DynamicResource LobbyButtonTemplate}" Style="{DynamicResource ListBoxStyle}" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             
     </Grid>
 </UserControl>

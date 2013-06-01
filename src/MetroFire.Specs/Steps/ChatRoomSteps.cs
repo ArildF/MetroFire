@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
-using System.Threading;
 using FluentAssertions;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
-using Rogue.MetroFire.UI.Views;
+using Rogue.MetroFire.UI.ViewModels;
 using TechTalk.SpecFlow;
 
 namespace MetroFire.Specs.Steps
@@ -83,7 +83,7 @@ namespace MetroFire.Specs.Steps
 			var user = _roomContext.GetUser(userName);
 
 			var messages = table.Rows.Select(r => new Message {Id =int.Parse(r["Id"]), 
-				UserIdString =  user.Id.ToString(),
+				UserIdString =  user.Id.ToString(CultureInfo.InvariantCulture),
 				Body = r["Message"], Type = MessageType.TextMessage}).ToArray();
 			_roomContext.SendRoomMessages(roomName, messages);
 
@@ -125,7 +125,7 @@ namespace MetroFire.Specs.Steps
 		[Then(@"I should leave room ""(.*)""")]
 		public void ThenIShouldLeaveRoomTest(string roomName)
 		{
-			_roomContext.ApiFake.ListRooms().Should().NotContain(r => r.Name == roomName);
+			_roomContext.ApiFake.JoinedRooms.Should().NotContain(r => r.Name == roomName);
 		}
 
 		[Then(@"the topic should be ""(.*)"" for room ""(.*)""")]
@@ -152,7 +152,7 @@ namespace MetroFire.Specs.Steps
 		[Then(@"the lobby should be active")]
 		public void ThenTheLobbyShouldBeActive()
 		{
-			_roomContext.MainViewModel.ActiveModule.Should().BeOfType<LobbyModule>();
+			_roomContext.MainViewModel.ActiveModule.Should().BeOfType<LobbyModuleViewModel>();
 		}
 
 

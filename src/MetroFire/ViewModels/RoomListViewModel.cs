@@ -1,4 +1,3 @@
-using System;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;

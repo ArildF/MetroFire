@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
+using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Documents;
-using System.Windows.Media.Imaging;
 using Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using Castle.Windsor.Installer;
 using Moq;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient;
@@ -22,7 +20,6 @@ using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 using System;
 using System.Linq;
-using Rogue.MetroFire.UI.ViewModels.Settings;
 using Rogue.MetroFire.UI.Views;
 using Component = Castle.MicroKernel.Registration.Component;
 
@@ -42,7 +39,7 @@ namespace MetroFire.Specs.Steps
 
 		private Mock<INotificationAction> _mockFlashTaskBarAction;
 		private readonly Dictionary<Type, int> _componentCounts;
-		private FakeClipBoardService _fakeClipboardService;
+		private readonly FakeClipBoardService _fakeClipboardService;
 
 		public RoomContext(CampfireApiFake campfireApiFake)
 		{
@@ -71,24 +68,26 @@ namespace MetroFire.Specs.Steps
 
 
 
-			_container.Install(FromAssembly.This());
+			//_container.Install(FromAssembly.This());
 
 			_bus = _container.Resolve<IMessageBus>();
 
 
 			Listen<RequestRecentMessagesMessage>();
 
+			//object dummy = _container.Resolve<IShellViewModel>();
+
 			_bus.SendMessage(new ApplicationLoadedMessage());
 
-			object dummy = _container.Resolve<IToastWindow>();
-			dummy = _container.Resolve<ISettingsViewModel>();
+			_container.Resolve<IToastWindow>();
+			_container.Resolve<ISettingsViewModel>();
 			
 
 
 			_componentCounts = new Dictionary<Type, int>();
 			_container.Kernel.ComponentCreated += (model, instance) =>
 				{
-					int count = 0;
+					int count;
 					_componentCounts.TryGetValue(instance.GetType(), out count);
 					count++;
 					_componentCounts[instance.GetType()] = count;
@@ -99,12 +98,9 @@ namespace MetroFire.Specs.Steps
 					count--;
 					_componentCounts[instance.GetType()] = count;
 				};
+
 		}
 
-		private void CountCreatedComponents(ComponentModel model, object instance)
-		{
-			throw new NotImplementedException();
-		}
 
 		private INotificationAction CreateNotificationAction(NotificationAction arg)
 		{
@@ -120,12 +116,11 @@ namespace MetroFire.Specs.Steps
 
 		private void KernelOnComponentCreated(ComponentModel model, object instance)
 		{
-			var roomModule = model.Services.FirstOrDefault(t => t == typeof (IRoomModuleViewModel));
-			if (roomModule != null)
+			if (model.ComponentName.Name == ModuleNames.RoomModule)
 			{
-				_roomViewModels.Add((RoomModuleViewModel) instance);
+				_roomViewModels.Add((RoomModuleViewModel)instance);
 			}
-
+			Debug.WriteLine(model);
 			if (instance is LobbyModuleViewModel)
 			{
 				_lobbyModuleViewModel = (LobbyModuleViewModel) instance;
@@ -142,13 +137,13 @@ namespace MetroFire.Specs.Steps
 			{
 				ToastWindowViewModel = (ToastWindowViewModel) instance;
 			}
-			if (instance is SettingsViewModel)
+			if (instance is SettingsModuleViewModel)
 			{
-				SettingsViewModel = (SettingsViewModel) instance;
+				SettingsViewModel = (SettingsModuleViewModel) instance;
 			}
 		}
 
-		public SettingsViewModel SettingsViewModel { get; private set; }
+		public SettingsModuleViewModel SettingsViewModel { get; private set; }
 
 		public ToastWindowViewModel ToastWindowViewModel { get; set; }
 
@@ -221,7 +216,7 @@ namespace MetroFire.Specs.Steps
 		public void SendRoomMessage(string username, string message, string roomName)
 		{
 			var user = _campfireApiFake.Users().First(u => u.Name == username);
-			_campfireApiFake.NewRoomMessage(message, roomName, userId: user.Id);
+			_campfireApiFake.NewRoomMessage(message, roomName, user.Id);
 		}
 
 		public void SendRoomMessages(string roomName, params Message[] messages)
@@ -231,8 +226,8 @@ namespace MetroFire.Specs.Steps
 
 		public void ActivateModule(string roomName)
 		{
-			var vm = _mainCampfireViewModel.CurrentModules.Single(m => m.Module.Caption == roomName);
-			_mainCampfireViewModel.ActivateModuleCommand.Execute(vm);
+			var vm = _mainCampfireViewModel.Modules.Single(m => m.Caption == roomName);
+			_mainCampfireViewModel.ActiveModule = vm;
 		}
 
 		public void ChangeSettings(MetroFireSettings settings)
@@ -281,7 +276,7 @@ namespace MetroFire.Specs.Steps
 
 		public int NumComponentsOfType<T>()
 		{
-			int num = 0;
+			int num;
 			_componentCounts.TryGetValue(typeof (T), out num);
 			return num;
 
@@ -335,13 +330,12 @@ namespace MetroFire.Specs.Steps
 		{
 			container.Register(Component.For<IMainModule>().Named(ModuleNames.Login).LifestyleTransient().UsingFactoryMethod(k =>
 				{
-					var ignored = k.Resolve<ILoginViewModel>();
 					return new Mock<IMainModule>().Object;
 				}));
 			container.Register(Component.For<IMainModule>().Named(ModuleNames.SettingsModule).LifestyleTransient().UsingFactoryMethod(_ => new Mock<IMainModule>().Object));
 			container.Register(Component.For<IMainModule>().Named(ModuleNames.MainCampfireView).LifestyleTransient().UsingFactoryMethod(k =>
 				{
-					var ignored = k.Resolve<IMainCampfireViewModel>();
+					k.Resolve<IMainCampfireViewModel>();
 					return new Mock<IMainModule>().Object;
 				}));
 			container.Register(
@@ -350,32 +344,26 @@ namespace MetroFire.Specs.Steps
 
 		private class FakeRoomModule : IModule
 		{
-			private IRoomModuleViewModel _vm;
+			private readonly Room _room;
 
-			public FakeRoomModule(IRoomModuleViewModel vm)
+			public FakeRoomModule(Room room)
 			{
-				_vm = vm;
+				_room = room;
 			}
 
 			public string Caption
 			{
-				get { return _vm.RoomName; }
-			}
-
-			public DependencyObject Visual
-			{
-				get { return null; }
+				get { return _room.Name; }
 			}
 
 			public bool IsActive
 			{
-				get { return _vm.IsActive; }
-				set { _vm.IsActive = value; }
+				get; set;
 			}
 
 			public int Id
 			{
-				get { return _vm.Id; }
+				get { return _room.Id; }
 			}
 
 			public string Notifications

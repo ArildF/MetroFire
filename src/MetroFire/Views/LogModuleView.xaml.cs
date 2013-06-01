@@ -1,11 +1,11 @@
 ﻿namespace Rogue.MetroFire.UI.Views
 {
 	/// <summary>
-	/// Interaction logic for LoginView.xaml
+	/// Interaction logic for LogModuleView.xaml
 	/// </summary>
-	public partial class LoginView 
+	public partial class LogModuleView 
 	{
-		public LoginView()
+		public LogModuleView()
 		{
 			InitializeComponent();
 		}

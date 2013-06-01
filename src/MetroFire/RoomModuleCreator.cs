@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Configuration;
 using Castle.Windsor;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient.Serialization;
@@ -19,10 +20,7 @@ namespace Rogue.MetroFire.UI
 
 		public IModule CreateRoomModule(Room room)
 		{
-			var vm = _container.Resolve<IRoomModuleViewModel>(new {room});
-			var module = _container.Resolve<IModule>(ModuleNames.RoomModule, new {vm});
-
-			_roomModules[module] = vm;
+			var module = _container.Resolve<IModule>(ModuleNames.RoomModule, new {room});
 
 			_bus.SendMessage(new RoomModuleCreatedMessage(module));
 			return module;
@@ -31,7 +29,6 @@ namespace Rogue.MetroFire.UI
 		public void ReleaseModule(IModule module)
 		{
 			_container.Release(module);
-			_container.Release(_roomModules[module]);
 
 			_roomModules.Remove(module);
 		}

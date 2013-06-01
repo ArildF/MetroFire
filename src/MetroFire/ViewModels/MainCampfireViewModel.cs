@@ -7,22 +7,23 @@ using Rogue.MetroFire.CampfireClient;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class MainCampfireViewModel : ReactiveObject, IMainCampfireViewModel
+	public class MainCampfireViewModel : ReactiveObject, IMainCampfireViewModel, IMainModule
 	{
 		private readonly ILobbyModule _lobbyModule;
 		private readonly IMessageBus _bus;
 		private readonly IModuleCreator _creator;
 		private IModule _activeModule;
-		private ReactiveCollection<ModuleViewModel> _currentModules;
 		private readonly IModule _logModule;
 
 		public MainCampfireViewModel(ILobbyModule lobbyModule, ILogModule logModule, IMessageBus bus, 
-			IModuleCreator creator, IGlobalCommands globalCommands)
+			IModuleCreator creator, IGlobalCommands globalCommands, INavigationContentViewModel navigationContentViewModel)
 		{
 			_lobbyModule = lobbyModule;
 			_logModule = logModule;
 			_bus = bus;
 			_creator = creator;
+
+			NavigationContent = navigationContentViewModel;
 
 			Modules = new ReactiveCollection<IModule>{_lobbyModule, _logModule};
 
@@ -30,7 +31,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_bus.Listen<ActivateModuleMessage>().Where(msg => msg.ParentModule == ModuleNames.MainCampfireView)
 				.SubscribeUI(msg =>
 					{
-						CurrentModules = Modules.CreateDerivedCollection(module => new ModuleViewModel(module, bus));
+						ActiveModule = msg.Module;
 					});
 			
 			bus.RegisterMessageSource(bus.Listen<ModuleLoaded>().Where(msg => msg.ModuleName == ModuleNames.MainCampfireView)
@@ -43,12 +44,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.SubscribeUI(HandleActivateModuleById);
 
 			_bus.Listen<ModuleActivatedMessage>().Where(msg => msg.ParentModule == ModuleNames.MainCampfireView)
-				.SubscribeUI(msg => ActiveModule = msg.Module);
+				.SubscribeUI(msg => 
+				{ 
+					ActiveModule = msg.Module;
+				});
 
 			_bus.Listen<RequestLeaveRoomMessage>().SubscribeUI(OnRequestLeaveRoomMessage);
-
-			ActivateModuleCommand = new ReactiveCommand();
-			ActivateModuleCommand.OfType<ModuleViewModel>().Subscribe(HandleActivateModule);
 
 			globalCommands.NextModuleCommand.Subscribe(OnNextModuleCommand);
 			globalCommands.PreviousModuleCommand.Subscribe(OnPreviousModuleCommand);
@@ -99,30 +100,31 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private IModule FindModuleById(int id)
 		{
-			return CurrentModules.Select(m => m.Module).Where(m => m.Id == id).FirstOrDefault();
+			return Modules.FirstOrDefault(m => m.Id == id);
 		}
 
 		public IModule  ActiveModule
 		{
 			get { return _activeModule; }
-			private set
+			set
 			{
 				if (_activeModule == value)
 				{
 					return;
 				}
 
-				_activeModule = value;
-				_bus.SendMessage(new ActivateModuleMessage(ModuleNames.MainCampfireView, _activeModule));
+				if (_activeModule != null)
+				{
+					_activeModule.IsActive = false;
+				}
+				
+				this.RaiseAndSetIfChanged(vm => vm.ActiveModule, ref _activeModule, value);
+				if (_activeModule != null)
+				{
+					_activeModule.IsActive = true;
+				}
+				_bus.SendMessage(new ModuleActivatedMessage(_activeModule, ModuleNames.MainCampfireView));
 			}
-		}
-
-		public ReactiveCommand ActivateModuleCommand { get; set; }
-
-
-		private void HandleActivateModule(ModuleViewModel viewModel)
-		{
-			ActiveModule = viewModel.Module;
 		}
 
 		private void SyncModuleList(RoomPresenceMessage roomPresenceMessage)
@@ -145,7 +147,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 			}
 			foreach (var room in toAdd)
 			{
-
 				var newModule = _creator.CreateRoomModule(room);
 
 				int index = Modules.IndexOf(_logModule);
@@ -154,12 +155,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		}
 
 
-		public ReactiveCollection<ModuleViewModel> CurrentModules
-		{
-			get { return _currentModules; }
-			set { this.RaiseAndSetIfChanged(vm => vm.CurrentModules, ref _currentModules, value); }
-		}
-
-		private ReactiveCollection<IModule> Modules { get;  set; }
+		public ReactiveCollection<IModule> Modules { get;  private set; }
+		public object NavigationContent { get; private set; }
 	}
 }

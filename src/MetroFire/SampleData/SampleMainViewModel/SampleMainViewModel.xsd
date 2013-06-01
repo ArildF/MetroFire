@@ -8,15 +8,15 @@
   <xs:element name="SampleMainViewModel" type="tns:SampleMainViewModel" />
   <xs:complexType name="SampleMainViewModel">
     <xs:sequence>
-      <xs:element name="CurrentModules" type="tns:CurrentModules" />
+      <xs:element name="Modules" type="tns:Modules" />
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="CurrentModules">
+  <xs:complexType name="Modules">
     <xs:sequence>
-      <xs:element maxOccurs="unbounded" name="CurrentModulesItem" type="tns:CurrentModulesItem" />
+      <xs:element maxOccurs="unbounded" name="ModulesItem" type="tns:ModulesItem" />
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="CurrentModulesItem">
+  <xs:complexType name="ModulesItem">
     <xs:attribute name="Caption" type="xs:string" />
     <xs:attribute name="IsSelected" type="xs:boolean" />
     <xs:attribute name="Notifications" type="xs:string" />

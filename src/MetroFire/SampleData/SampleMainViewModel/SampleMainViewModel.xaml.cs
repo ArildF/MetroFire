@@ -38,22 +38,22 @@ namespace Expression.Blend.SampleData.SampleMainViewModel
 			}
 		}
 
-		private CurrentModules _CurrentModules = new CurrentModules();
+		private Modules _Modules = new Modules();
 
-		public CurrentModules CurrentModules
+		public Modules Modules
 		{
 			get
 			{
-				return this._CurrentModules;
+				return this._Modules;
 			}
 		}
 	}
 
-	public class CurrentModules : System.Collections.ObjectModel.ObservableCollection<CurrentModulesItem>
+	public class Modules : System.Collections.ObjectModel.ObservableCollection<ModulesItem>
 	{ 
 	}
 
-	public class CurrentModulesItem : System.ComponentModel.INotifyPropertyChanged
+	public class ModulesItem : System.ComponentModel.INotifyPropertyChanged
 	{
 		public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 

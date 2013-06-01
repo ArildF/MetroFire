@@ -1,11 +1,10 @@
 ﻿using ReactiveUI;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
-using System.Reactive.Linq;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class LobbyModuleViewModel : ReactiveObject, ILobbyModuleViewModel
+	public class LobbyModuleViewModel : ReactiveObject, ILobbyModule
 	{
 		private readonly IMessageBus _messageBus;
 		private IAccount _account;
@@ -32,6 +31,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.SubscribeUI(UpdateRooms);
 
 			_messageBus.SendMessage(new RequestRoomListMessage());
+
+			IsActive = true; // default 
 		}
 
 		public ReactiveCollection<RoomListViewModel> Rooms { get; private set; }
@@ -65,10 +66,16 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _account.Storage; }
 		}
 
+		public string Caption { get { return "Lobby"; } }
+
 		public bool IsActive
 		{
 			get { return _isActive; }
 			set { this.RaiseAndSetIfChanged(vm => vm.IsActive, ref _isActive, value); }
 		}
+
+		public int Id { get { return ModuleIds.Lobby; } }
+		public string Notifications { get { return ""; } }
+		public bool Closable { get { return false; } }
 	}
 }

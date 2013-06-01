@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Media.Imaging;
+using System.Globalization;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
@@ -10,13 +10,12 @@ using System.Linq;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class RoomModuleViewModel : ViewModelBase, IRoomModuleViewModel
+	public class RoomModuleViewModel : ViewModelBase, IModule
 	{
 		private IRoom _room;
 		private readonly IMessageBus _bus;
 		private readonly IUserCache _userCache;
 		private bool _isActive;
-		private bool _userEditingMessage;
 
 		private string _userMessage;
 		private readonly IChatDocument _chatDocument;
@@ -61,7 +60,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 					.Delay(TimeSpan.FromSeconds(10), RxApp.TaskpoolScheduler)
 					.Where(_ => _streamingStarted && IsConnected)
 					.Select(_ => new RequestRecentMessagesMessage(_room.Id))));
-				;
 			Subscribe(
 				() => _bus.Listen<MessagesReceivedMessage>().Where(msg => msg.RoomId == room.Id).SubscribeUI(HandleMessagesReceived));
 			Subscribe(
@@ -249,6 +247,10 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			get { return _room.Name; }
 		}
+		public string Caption
+		{
+			get { return RoomName; }
+		}
 
 		public int RoomId
 		{
@@ -266,6 +268,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _isConnected; }
 			private set { this.RaiseAndSetIfChanged(vm => vm.IsConnected, ref _isConnected, value); }
 		}
+
 
 		public bool IsActive
 		{
@@ -299,22 +302,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 			}
 		}
 
-		//public bool UserEditingMessage
-		//{
-		//    get { return _userEditingMessage; }
-		//    set
-		//    {
-		//        if (value && UserMessage == DefaultMessage)
-		//        {
-		//            UserMessage = string.Empty;
-		//        }
-		//        if (!value && String.IsNullOrEmpty(UserMessage))
-		//        {
-		//            UserMessage = DefaultMessage;
-		//        }
-		//        this.RaiseAndSetIfChanged(vm => vm.UserEditingMessage, ref _userEditingMessage, value);
-		//    }
-		//}
 
 		public bool UserEditedMessage
 		{
@@ -329,8 +316,10 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		public string Notifications
 		{
-			get { return _notificationCount > 0 ? _notificationCount.ToString() : ""; }
+			get { return _notificationCount > 0 ? _notificationCount.ToString(CultureInfo.InvariantCulture) : ""; }
 		}
+
+		public bool Closable { get { return true; }}
 
 		private class RoomMessage
 		{
@@ -360,14 +349,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 			{
 				return obj.Id.GetHashCode();
 			}
-		}
-	}
-
-	public class PasteItem
-	{
-		public PasteItem(BitmapSource bitmapSource)
-		{
-			
 		}
 	}
 }

@@ -4,16 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing"
-             xmlns:Settings="clr-namespace:Rogue.MetroFire.UI.ViewModels.Settings"
+             xmlns:settings="clr-namespace:Rogue.MetroFire.UI.ViewModels.Settings"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
-             x:Class="Rogue.MetroFire.UI.Views.SettingsModule" 
+             x:Class="Rogue.MetroFire.UI.Views.SettingsModuleView" 
              mc:Ignorable="d" 
 		 d:DataContext="{StaticResource SampleSettingsDataSource}"
              d:DesignHeight="503" d:DesignWidth="752" Background="White">
 	<UserControl.Resources>
 		<SolidColorBrush x:Key="TabControlNormalBorderBrush" Color="#8C8E94"/>
-		<Style x:Key="_settingsTabControlStyle" TargetType="{x:Type TabControl}">
+		<Style x:Key="SettingsTabControlStyle" TargetType="{x:Type TabControl}">
 			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
 			<Setter Property="Padding" Value="4,4,4,4"/>
 			<Setter Property="BorderThickness" Value="1"/>
@@ -68,16 +68,6 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-		<LinearGradientBrush x:Key="TabItemHotBackground" EndPoint="0,1" StartPoint="0,0">
-			<GradientStop Color="#EAF6FD" Offset="0.15"/>
-			<GradientStop Color="#D9F0FC" Offset=".5"/>
-			<GradientStop Color="#BEE6FD" Offset=".5"/>
-			<GradientStop Color="#A7D9F5" Offset="1"/>
-		</LinearGradientBrush>
-		<SolidColorBrush x:Key="TabItemSelectedBackground" Color="#F9F9F9"/>
-		<SolidColorBrush x:Key="TabItemHotBorderBrush" Color="#3C7FB1"/>
-		<SolidColorBrush x:Key="TabItemDisabledBackground" Color="#F4F4F4"/>
-		<SolidColorBrush x:Key="TabItemDisabledBorderBrush" Color="#FFC9C7BA"/>
 		<Style x:Key="TabItemStyle1" TargetType="{x:Type TabItem}">
 			<Setter Property="FocusVisualStyle" Value="{StaticResource TabItemFocusVisual}"/>
 			<Setter Property="Foreground" Value="Black"/>
@@ -174,13 +164,13 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-		<DataTemplate x:Key="_tabControlTemplate">
+		<DataTemplate x:Key="TabControlTemplate">
 			<Grid>
 				<ContentControl Margin="20 0 0 0" Content="{Binding}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
 			</Grid>
 		</DataTemplate>
 		
-		<DataTemplate DataType="{x:Type Settings:NetworkSettingsViewModel}">
+		<DataTemplate DataType="{x:Type settings:NetworkSettingsViewModel}">
 			<StackPanel Background="White">
 				<TextBlock TextWrapping="Wrap" Style="{DynamicResource SmallMetroHeading}" VerticalAlignment="Center" Text="Connections" HorizontalAlignment="Left" Margin="0,0,0,6"/>
 				<CheckBox Content="Use proxy" Style="{DynamicResource MetroCheckBox}" IsChecked="{Binding UseProxy}"/>
@@ -188,7 +178,7 @@
 			
 		</DataTemplate>
 		
-		<DataTemplate DataType="{x:Type Settings:GeneralSettingsViewModel}">
+		<DataTemplate DataType="{x:Type settings:GeneralSettingsViewModel}">
 			<StackPanel Background="White" Width="264" HorizontalAlignment="Left">
 				<TextBlock TextWrapping="Wrap" Style="{DynamicResource SmallMetroHeading}" Text="Appearance" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,6"/>
 				<CheckBox Content="Use standard Windows chrome" IsChecked="{Binding UseStandardWindowsChrome}"/>
@@ -222,7 +212,7 @@
 			
 		</DataTemplate>
 		
-		<DataTemplate DataType="{x:Type Settings:AboutViewModel}">
+		<DataTemplate DataType="{x:Type settings:AboutViewModel}">
 			<Grid d:DesignWidth="517" d:DesignHeight="371">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="0.272*"/>
@@ -238,11 +228,7 @@
 			</Grid>
 			
 		</DataTemplate>
-		
-		
-		<Button Style="{StaticResource NavigationButton}" Content="BACK" x:Key="BackButton" 
-				Visibility="{Binding CanGoBack}"
-				Command="{Binding BackCommand}"/>
+
 
 	</UserControl.Resources>
     <Grid Margin="18,0,0,0">
@@ -252,11 +238,11 @@
     		<RowDefinition Height="0.093*"/>
     	</Grid.RowDefinitions>
     	<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBlueCaption}" Text="settings"/>
-    	<TabControl Grid.Row="1" Style="{DynamicResource _settingsTabControlStyle}" TabStripPlacement="Left" 
+    	<TabControl Grid.Row="1" Style="{DynamicResource SettingsTabControlStyle}" TabStripPlacement="Left" 
 					FocusVisualStyle="{x:Null}"
 					HorizontalContentAlignment="Stretch"
 					SelectedItem="{Binding SelectedPage}"
-					ItemContainerStyle="{DynamicResource TabItemStyle1}" ItemsSource="{Binding SettingsViewModels}" DisplayMemberPath="Title" ContentTemplate="{DynamicResource _tabControlTemplate}"/>
+					ItemContainerStyle="{DynamicResource TabItemStyle1}" ItemsSource="{Binding SettingsViewModels}" DisplayMemberPath="Title" ContentTemplate="{DynamicResource TabControlTemplate}"/>
     	<Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
 				Command="{Binding SaveCommand}"
 				Width="75" Grid.Row="2" Style="{DynamicResource MetroBigButton}"/>

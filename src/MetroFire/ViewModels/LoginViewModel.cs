@@ -7,7 +7,7 @@ using Rogue.MetroFire.CampfireClient;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
-	public class LoginViewModel : ReactiveObject, ILoginViewModel
+	public class LoginViewModel : ReactiveObject, IMainModule
 	{
 		private readonly IMessageBus _bus;
 		private string _account;
@@ -21,9 +21,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _connectionErrorMessage;
 		private bool _isTokenInError;
 
-		public LoginViewModel(IMessageBus bus, ILoginInfoStorage storage)
+		public LoginViewModel(IMessageBus bus, ILoginInfoStorage storage, INavigationContentViewModel navigationContent)
 		{
 			_bus = bus;
+
+			NavigationContent = navigationContent;
 
 			_isTokenValid = this.ObservableToProperty(
 				this.ObservableForProperty(vm => vm.Token).Select(t => !String.IsNullOrEmpty(t.Value)), 
@@ -169,5 +171,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 		}
 
 
+		public string Caption { get { return ""; } }
+		public bool IsActive { get; set; }
+		public int Id { get { return -1; } }
+		public string Notifications { get { return ""; } }
+		public bool Closable { get { return false; } }
+		public object NavigationContent { get; private set; }
 	}
 }

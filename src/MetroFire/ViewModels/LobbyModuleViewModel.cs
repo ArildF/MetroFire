@@ -10,8 +10,9 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private IAccount _account;
 		private bool _isActive;
 
-		public LobbyModuleViewModel(ICampfire campfire, IMessageBus messageBus)
+		public LobbyModuleViewModel(ICampfire campfire, IMessageBus messageBus, GitHubCommitsViewModel gitHubCommitsViewModel)
 		{
+			GitHubCommits = gitHubCommitsViewModel;
 			_messageBus = messageBus;
 			_account = campfire.Account;
 
@@ -34,6 +35,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			IsActive = true; // default 
 		}
+
+		public GitHubCommitsViewModel GitHubCommits { get; set; }
 
 		public ReactiveCollection<RoomListViewModel> Rooms { get; private set; }
 

@@ -61,8 +61,8 @@
 	</UserControl.Resources>
     <Grid d:DataContext="{Binding Source={StaticResource SampleLobbyViewModel}}">
     	<Grid.ColumnDefinitions>
-    		<ColumnDefinition Width="0.684*"/>
-    		<ColumnDefinition Width="Auto"/>
+    		<ColumnDefinition Width="2.5*"/>
+    		<ColumnDefinition/>
     	</Grid.ColumnDefinitions>
     	<Grid.RowDefinitions>
     		<RowDefinition Height="0.259*"/>
@@ -91,6 +91,8 @@
     		<TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="{Binding AccountSubdomain}" Style="{DynamicResource MetroWhiteCaption}" Grid.Column="1" Grid.Row="3" d:LayoutOverrides="Height"/>
     	</Grid>
     	<ListBox Margin="0" Background="{x:Null}" Padding="10,0" ItemsPanel="{DynamicResource WrapPanelTemplate}" ItemsSource="{Binding Rooms}" ItemTemplate="{DynamicResource LobbyButtonTemplate}" Style="{DynamicResource ListBoxStyle}" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    	<ContentControl Content="{Binding GitHubCommits}" Grid.Row="2" Grid.Column="6"/>
+    	<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="WHAT'S NEW" VerticalAlignment="Center" Grid.Row="1" Grid.Column="5" Style="{DynamicResource SmallMetroHeading}"/>
             
     </Grid>
 </UserControl>

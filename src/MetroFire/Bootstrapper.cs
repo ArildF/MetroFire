@@ -59,7 +59,7 @@ namespace Rogue.MetroFire.UI
 				Component.For<INavigationContentViewModel>().ImplementedBy<NavigationContentViewModel>().LifeStyle.Singleton);
 			_container.Register(
 				AllTypes.FromThisAssembly().Where(t => t.Namespace == typeof (RoomModuleViewModel).Namespace).
-					WithServiceAllInterfaces().LifestyleTransient());
+					WithServiceAllInterfaces().WithServiceSelf().LifestyleTransient());
 
 			_container.Register(Component.For<ISettingsLoader>().ImplementedBy<SettingsPersistence>().Forward<ISettingsSaver>().LifestyleTransient());
 

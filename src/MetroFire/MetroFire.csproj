@@ -95,6 +95,9 @@
       <HintPath>..\packages\Rx_Experimental-Testing.1.1.11011\lib\Net4-Full\Microsoft.Reactive.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=4.0.3.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="ReactiveUI, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -168,6 +171,8 @@
     <Compile Include="Converters\SizeValueConverter.cs" />
     <Compile Include="Converters\StringToSchemeColorConverter.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="GitHub\GitHubClient.cs" />
+    <Compile Include="GitHub\serialization.cs" />
     <Compile Include="GlobalCommands.cs" />
     <Compile Include="Infrastructure\ApplicationActivator.cs" />
     <Compile Include="Infrastructure\AppUpdater.cs" />
@@ -209,6 +214,7 @@
     <Compile Include="Notifications\TaskBar.cs" />
     <Compile Include="Notifications\Trigger.cs" />
     <Compile Include="RoomModuleCreator.cs" />
+    <Compile Include="SampleData\SampleGitHubCommitsViewModel.cs" />
     <Compile Include="SampleData\SampleLobbyViewModel\SampleLobbyViewModel.xaml.cs">
       <DependentUpon>SampleLobbyViewModel.xaml</DependentUpon>
     </Compile>
@@ -240,6 +246,7 @@
     <Compile Include="Transitions\HorizontalSlideTransitionSelector.cs" />
     <Compile Include="Transitions\HorizontalSlideTransition.cs" />
     <Compile Include="ViewModels\Direction.cs" />
+    <Compile Include="ViewModels\GitHubCommitsViewModel.cs" />
     <Compile Include="ViewModels\InlineUploadViewModel.cs" />
     <Compile Include="ViewModels\InlineYoutubeViewModel.cs" />
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
@@ -319,6 +326,9 @@
     <Compile Include="Views\ToastWindow.xaml.cs">
       <DependentUpon>ToastWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GitHubCommitsView.xaml.cs">
+      <DependentUpon>GitHubCommitsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -367,6 +377,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignTimeOnly>
+    <Page Include="Views\GitHubCommitsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Resource Include="Assets\DocumentDrawing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

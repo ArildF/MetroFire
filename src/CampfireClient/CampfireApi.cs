@@ -22,7 +22,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private readonly IDictionary<SerializerEntry, XmlSerializer> _xmlSerializers = new Dictionary<SerializerEntry, XmlSerializer>();
 		private static int _defaultTimeout;
 		private string _cookie;
-		private string UserAgent = "metro fire - https://github.com/ArildF/MetroFire";
+		public const string UserAgent = "metro fire - https://github.com/ArildF/MetroFire";
 		private const string CampfireBaseUri = "https://{0}.campfirenow.com";
 
 		public CampfireApi(ISettings settings)

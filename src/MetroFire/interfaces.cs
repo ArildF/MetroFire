@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.GitHub;
 using Rogue.MetroFire.UI.Infrastructure;
 using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
@@ -252,5 +253,10 @@ namespace Rogue.MetroFire.UI
 		bool ShouldHandle(Message message, User user);
 		void Render(Paragraph paragraph, Message message, User user);
 		int Priority { get; }
+	}
+
+	public interface IGitHubClient
+	{
+		Commit[] GetLatestCommits();
 	}
 }

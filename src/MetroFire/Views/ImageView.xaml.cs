@@ -19,7 +19,7 @@ namespace Rogue.MetroFire.UI.Views
 
 		public ImageView(string file) : this()
 		{
-			_image.Uri = file;
+			Image.Uri = file;
 		}
 
 		protected override void OnMouseDown(MouseButtonEventArgs e)

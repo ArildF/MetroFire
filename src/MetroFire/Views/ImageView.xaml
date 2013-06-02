@@ -1,7 +1,9 @@
 ﻿<Window x:Class="Rogue.MetroFire.UI.Views.ImageView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure" Title="Image" Height="671" Width="935" WindowStyle="None" Background="#65000000" ResizeMode="NoResize" 
+        xmlns:infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors" Title="Image" Height="671" Width="935" WindowStyle="None" Background="#65000000" ResizeMode="NoResize" 
 		AllowsTransparency="True" WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False"
 		UseLayoutRounding="True">
     <Grid>
@@ -13,7 +15,12 @@
     		<ColumnDefinition/>
     		<ColumnDefinition Width="24.992"/>
     	</Grid.ColumnDefinitions>
-    	<Infrastructure:GifSupportingImage x:Name="_image" Margin="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Stretch="None"/>
-        
-    </Grid>
+		<infrastructure:GifSupportingImage x:Name="Image" Margin="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Stretch="None">
+			<i:Interaction.Behaviors>
+				<behaviors:GrabPanBehavior></behaviors:GrabPanBehavior>
+			</i:Interaction.Behaviors>
+		</infrastructure:GifSupportingImage>
+
+
+	</Grid>
 </Window>

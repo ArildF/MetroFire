@@ -130,9 +130,17 @@ namespace MetroFire.Specs.Steps
 			_context.NumComponentsOfType<PasteViewModel>().Should().Be(0);
 		}
 
+		[Then(@"the message should be displayed as an inline youtube video")]
+		public void ThenTheMessageShouldBeDisplayedAsAnInlineYoutubeVideo()
+		{
+			var block = (Paragraph) _chatDocument.Blocks.FirstBlock;
+			var inlines = block.Inlines.Flatten();
 
-
-
+			var youtube = inlines.FirstOrDefault(i => i is InlineUIContainer);
+			youtube.Should().NotBeNull();
+			var child = LogicalTreeHelper.GetChildren(youtube).OfType<GenericInlineContainer>().First();
+			child.DataContext.Should().BeOfType<InlineYoutubeViewModel>();
+		}
 	}
 
 	

@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Markup;
 using Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
@@ -63,6 +65,9 @@ namespace MetroFire.Specs.Steps
 			_container.Register(Component.For<IClipboardService>().Instance(_fakeClipboardService));
 
 			_container.Register(Component.For<IPasteView>().ImplementedBy<FakePasteView>().LifestyleTransient());
+
+			var resources = (ResourceDictionary)XamlReader.Load(File.OpenRead("Emoticons.xaml"));
+			_container.Register(Component.For<ResourceDictionary>().Instance(resources));
 
 			bootstrapper.Bootstrap();
 

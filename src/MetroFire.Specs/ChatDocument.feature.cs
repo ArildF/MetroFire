@@ -232,6 +232,31 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Emoticons")]
+        [NUnit.Framework.TestCaseAttribute("That\'s good :-)", ":-)", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("That\'s good :)", ":)", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Yay! :D", ":D", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Yay! :-D", ":-D", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Oh no... :-(", ":-(", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Oh no... :(", ":(", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Hmm... :-S", ":-S", new string[0])]
+        [NUnit.Framework.TestCaseAttribute("Hmm... :S", ":S", new string[0])]
+        public virtual void Emoticons(string message, string emoticon, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Emoticons", exampleTags);
+#line 56
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 57
+ testRunner.When(string.Format("I add the message \"{0}\" from user \'Testuser\'", message));
+#line 58
+ testRunner.Then(string.Format("the message \'{0}\' should have the \'{1}\' replaced by a graphic", message, emoticon));
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

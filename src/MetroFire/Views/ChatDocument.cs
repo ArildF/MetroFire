@@ -19,6 +19,7 @@ namespace Rogue.MetroFire.UI.Views
 		private readonly IWebBrowser _browser;
 		private readonly IPasteViewFactory _pasteViewFactory;
 		private readonly IEnumerable<IMessageFormatter> _formatters;
+		private readonly IEnumerable<IMessagePostProcessor> _postProcessors;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
 
 		public static readonly Regex UrlDetector = new
@@ -26,12 +27,14 @@ namespace Rogue.MetroFire.UI.Views
 
 
 		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser, 
-			IPasteViewFactory pasteViewFactory, IEnumerable<IMessageFormatter> formatters)
+			IPasteViewFactory pasteViewFactory, IEnumerable<IMessageFormatter> formatters, 
+			IEnumerable<IMessagePostProcessor> postProcessors)
 		{
 			_factory = factory;
 			_browser = browser;
 			_pasteViewFactory = pasteViewFactory;
 			_formatters = formatters;
+			_postProcessors = postProcessors;
 			_handlers = new Dictionary<MessageType, Action<Message, User, Paragraph>>
 				{
 					{MessageType.TextMessage, FormatUserMessage},
@@ -114,6 +117,11 @@ namespace Rogue.MetroFire.UI.Views
 			else
 			{
 				Blocks.Add(paragraph);
+			}
+
+			foreach (var postProcessor in _postProcessors.OrderBy(p => p.Priority))
+			{
+				postProcessor.Process(paragraph, message, user);
 			}
 
 			return paragraph;

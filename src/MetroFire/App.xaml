@@ -13,6 +13,7 @@
 				<ResourceDictionary Source="Assets/preferences-system.Brush.xaml"/>
 				<ResourceDictionary Source="Assets/check-System.Brush.xaml"/>
 				<ResourceDictionary Source="Assets/error-System.Brush.xaml"/>
+				<ResourceDictionary Source="Assets/Emoticons.xaml"/>
 				<ResourceDictionary Source="Assets/DocumentDrawing.xaml"/>
 				<ResourceDictionary Source="Assets/DownloadButton.xaml"/>
 				<ResourceDictionary Source="Assets/CopyButton.xaml"/>
@@ -23,7 +24,6 @@
 				<ResourceDictionary Source="Assets/media-playback-play.Brush.xaml"/>
 				<ResourceDictionary Source="Views/InlineYoutubeView.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
-    		<XmlDataProvider x:Key="CommitsDataSource" Source="\SampleData\Commits.xml" d:IsDataSource="True"/>
 
     		<SampleData5:SamplePasteViewModel x:Key="SamplePasteViewModel1" d:IsDataSource="True"/>
     		<SampleData3:SampleSettingsDataSource x:Key="SampleSettingsDataSource" d:IsDataSource="True"/>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Documents;
+using System.Linq;
 
 namespace Rogue.MetroFire.UI.Infrastructure
 {
@@ -12,7 +13,7 @@ namespace Rogue.MetroFire.UI.Infrastructure
 				{typeof(Run), i => ((Run)i).Text}
 			};
 
-		public static string GetText(this IEnumerable<Inline> inlines)
+		public static string GetText(this InlineCollection inlines)
 		{
 			var sb = new StringBuilder();
 
@@ -42,20 +43,28 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			return null;
 		}
 
-		public static IEnumerable<Inline> Flatten(this IEnumerable<Inline> inlines)
+		public static IEnumerable<Inline> Flatten(this InlineCollection inlines)
+		{
+			return inlines.FlattenWithParents().Select(t => t.Item2);
+		}
+
+	
+
+		public static IEnumerable<Tuple<InlineCollection, Inline>> 
+			FlattenWithParents(this InlineCollection inlines)
 		{
 			foreach (var inline in inlines)
 			{
 				if (inline is Span)
 				{
-					foreach (var inner in ((Span)inline).Inlines.Flatten())
+					foreach (var inner in ((Span)inline).Inlines.FlattenWithParents())
 					{
 						yield return inner;
 					}
 				}
 				else
 				{
-					yield return inline;
+					yield return Tuple.Create(inlines, inline);
 				}
 			}
 		}

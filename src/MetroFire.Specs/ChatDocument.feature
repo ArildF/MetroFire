@@ -53,5 +53,20 @@ Scenario Outline: Post youtube links
 	|http://www.youtube.com/watch?feature=player_embedded&v=o-50GjySwew#!|
 	|http://www.youtube.com/watch?feature=player_embedded&v=o-50GjySwew|
 
+Scenario Outline: Emoticons
+	When I add the message "<Message>" from user 'Testuser'
+	Then the message '<Message>' should have the '<Emoticon>' replaced by a graphic
+	Examples:
+	| Message         | Emoticon |
+	| That's good :-) | :-)      |
+	| That's good :)  | :)       |
+	| Yay! :D         | :D       |
+	| Yay! :-D        | :-D      |
+	| Oh no... :-(    | :-(      |
+	| Oh no... :(     | :(       |
+	| Hmm... :-S      | :-S      |
+	| Hmm... :S       | :S       |
+
+
 
 

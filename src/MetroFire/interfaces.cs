@@ -255,6 +255,12 @@ namespace Rogue.MetroFire.UI
 		int Priority { get; }
 	}
 
+	public interface IMessagePostProcessor
+	{
+		void Process(Paragraph paragraph, Message message, User user);
+		int Priority { get; }
+	}
+
 	public interface IGitHubClient
 	{
 		Commit[] GetLatestCommits();

@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.ViewModels;
+using Rogue.MetroFire.UI.Infrastructure;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -141,5 +146,115 @@ namespace Rogue.MetroFire.UI.Views
 			var path = uri.LocalPath;
 			return path.Length > 0 ? path.Substring(1) : null;
 		}
+	}
+
+
+	public class EmoticonMessageFormatter : IMessagePostProcessor
+	{
+		private readonly ResourceDictionary _resources;
+		private static readonly string[] Emoticons = new[]
+			{
+				":-)",
+				":)",
+				";-)",
+				";)",
+				":(",
+				":-(",
+				":D",
+				":-D",
+				":S",
+				":-S",
+				":O",
+				":-O",
+				"'-(",
+				"'(",
+				">:)",
+				">:D",
+			};
+		private readonly Regex _regex;
+
+		public EmoticonMessageFormatter(ResourceDictionary resources)
+		{
+			_resources = resources;
+
+			_regex = new Regex(String.Join("|", Emoticons.Select(Escape).Select(s => "(" + s + ")")),
+				RegexOptions.IgnoreCase);
+		}
+
+		private string Escape(string arg)
+		{
+			return arg.Replace("(", @"\(").Replace(")", @"\)").Replace("-", @"\-")
+			          .Replace("|", @"\|");
+		}
+
+		public void Process(Paragraph paragraph, Message message, User user)
+		{
+			if (message.Type != MessageType.TextMessage)
+			{
+				return;
+			}
+
+			var runs = paragraph.Inlines.FlattenWithParents().Where(t => t.Item2 is Run).ToList();
+			foreach (var run in runs)
+			{
+				Emotify(((Run)run.Item2), run.Item1);
+			}
+		}
+
+		private void Emotify(Run run, InlineCollection inlines)
+		{
+			if (!_regex.IsMatch(run.Text))
+			{
+				return;
+			}
+
+			var splits = _regex.Split(run.Text);
+
+			var prev = run.PreviousInline;
+			var span = new Span();
+
+			inlines.Remove(run);
+			if (prev != null)
+			{
+				inlines.InsertAfter(prev, span);
+			}
+			else if (inlines.FirstInline != null)
+			{
+				inlines.InsertBefore(inlines.FirstInline, span);
+			}
+			else
+			{
+				inlines.Add(span);
+			}
+
+			foreach(var result in splits)
+			{
+				if (_regex.IsMatch(result))
+				{
+					var style = _resources["Emoticon " + result.ToUpperInvariant()] as Style;
+					if (style == null)
+					{
+						throw new InvalidOperationException("Missing emoticon");
+					}
+
+					span.Inlines.Add(new Border
+					{
+						Style = style,
+						VerticalAlignment = VerticalAlignment.Center,
+						HorizontalAlignment = HorizontalAlignment.Stretch,
+						Height = 20,
+						Width = 20,
+						RenderTransform = new TranslateTransform(0, 1),
+						ToolTip = result,
+					});
+				}
+				else if (result != String.Empty)
+				{
+					span.Inlines.Add(result);
+				}
+			}
+		}
+
+		public int Priority { get { return 10; } }
 	}
 }

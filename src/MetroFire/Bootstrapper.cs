@@ -40,6 +40,8 @@ namespace Rogue.MetroFire.UI
 
 			_container.AddFacility<StartableFacility>();
 			_container.AddFacility<TypedFactoryFacility>();
+			_container.Register(Component.For<IMessageBus>().ImplementedBy<MessageBus>());
+			_container.Register(Component.For<IMimeTypeResolver>().ImplementedBy<MimeTypeResolver>());
 			
 			_container.Kernel.Resolver.AddSubResolver(new CollectionResolver(_container.Kernel));
 
@@ -47,8 +49,11 @@ namespace Rogue.MetroFire.UI
 			{
 				_container.AddFacility(new ViewModelRegistrationFacility(Application.Current));
 				_container.Register(Component.For<Func<NotificationAction, INotificationAction>>().Instance(Create));
+
+				_container.Register(Component.For<ResourceDictionary>().Instance(Application.Current.Resources));
 			}
 			_container.Install(FromAssembly.This());
+
 
 			_container.Register(AllTypes.FromThisAssembly().BasedOn<IMessageFormatter>().WithService.AllInterfaces());
 
@@ -64,7 +69,6 @@ namespace Rogue.MetroFire.UI
 			_container.Register(Component.For<ISettingsLoader>().ImplementedBy<SettingsPersistence>().Forward<ISettingsSaver>().LifestyleTransient());
 
 			_container.Register(Component.For<IChatDocument>().ImplementedBy<ChatDocument>().LifestyleTransient());
-			_container.Register(Component.For<IMessageBus>().ImplementedBy<MessageBus>());
 			_container.Register(Component.For<IInlineUploadViewFactory>().AsFactory());
 			_container.Register(Component.For<INotification>().ImplementedBy<Notification>().LifestyleTransient());
 			_container.Register(Component.For<FlashTaskBarAction>().ImplementedBy<FlashTaskBarAction>().LifestyleTransient());

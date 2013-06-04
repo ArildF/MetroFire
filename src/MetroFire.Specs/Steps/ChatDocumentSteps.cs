@@ -141,6 +141,20 @@ namespace MetroFire.Specs.Steps
 			var child = LogicalTreeHelper.GetChildren(youtube).OfType<GenericInlineContainer>().First();
 			child.DataContext.Should().BeOfType<InlineYoutubeViewModel>();
 		}
+
+		[Then(@"the message '(.*)' should have the '(.*)' replaced by a graphic")]
+		public void ThenTheMessageShouldHaveTheReplacedByAGraphic(string msg, string emoticon)
+		{
+			var block = (Paragraph) _chatDocument.Blocks.FirstBlock;
+			var inlines = block.Inlines.Flatten();
+
+			int index = msg.IndexOf(emoticon);
+			var first = inlines.OfType<Run>().Skip(1).First();
+			first.Text.Should().Be(msg.Substring(0, index));
+
+			first.NextInline.Should().BeOfType<InlineUIContainer>();
+		}
+
 	}
 
 	

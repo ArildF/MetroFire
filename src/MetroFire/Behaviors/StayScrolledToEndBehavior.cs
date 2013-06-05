@@ -41,9 +41,12 @@ namespace Rogue.MetroFire.UI.Behaviors
 			}
 			else if (Math.Abs(e.VerticalChange) > 0)
 			{
-				_wasScrolledToEnd = 
-					_scrollViewer.VerticalOffset + _scrollViewer.ViewportHeight >= _scrollViewer.ExtentHeight;
-	
+				var bottomOffset = _scrollViewer.VerticalOffset + _scrollViewer.ViewportHeight;
+				var totalHeight = _scrollViewer.ExtentHeight;
+				var deltaFromBottom = Math.Abs(bottomOffset - totalHeight);
+
+				// allow for about half a line of stickiness at the bottom
+				_wasScrolledToEnd = deltaFromBottom < (Math.Abs(e.VerticalChange) /2);
 			}
 		}
 	}

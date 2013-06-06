@@ -21,6 +21,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 			var obs = cmd.RegisterAsyncFunction(_ => client.GetLatestCommits());
 			obs.Subscribe(commits => Commits = commits);
 
+			Observable.Interval(TimeSpan.FromHours(3)).Subscribe(_ => cmd.Execute(null));
+
 			cmd.Execute(null);
 		}
 

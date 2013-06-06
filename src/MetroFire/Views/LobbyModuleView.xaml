@@ -68,7 +68,7 @@
     		<RowDefinition Height="0.259*"/>
     		<RowDefinition Height="0.103*"/>
     		<RowDefinition Height="0.561*"/>
-    		<RowDefinition Height="0.1*"/>
+    		<RowDefinition Height="Auto"/>
     	</Grid.RowDefinitions>
     	<Grid Margin="10" Grid.Column="1">
     		<Grid.ColumnDefinitions>
@@ -93,8 +93,9 @@
     	<ListBox Margin="0" Background="{x:Null}" Padding="10,0" ItemsPanel="{DynamicResource WrapPanelTemplate}" ItemsSource="{Binding Rooms}" ItemTemplate="{DynamicResource LobbyButtonTemplate}" Style="{DynamicResource ListBoxStyle}" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     	<ContentControl Content="{Binding GitHubCommits}" Grid.Row="2" Grid.Column="6"/>
     	<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="WHAT'S NEW" VerticalAlignment="Center" Grid.Row="1" Grid.Column="5" Style="{DynamicResource SmallMetroHeading}"/>
-    	<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" Style="{DynamicResource MetroBodyText}" Margin="2">
-			<Hyperlink CommandParameter="http://metrofire.uservoice.com/" Command="{Binding NavigateCommand}">Suggest a new feature or submit a bug report</Hyperlink>
-		</TextBlock>
+    	<StackPanel Margin="0" Grid.Row="3" Grid.Column="1">
+    		<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBodyText}" Margin="0,2,4,2"><Hyperlink CommandParameter="http://metrofire.uservoice.com/" Command="{Binding NavigateCommand}"><Run Text="Suggest a new feature or submit a bug report"/></Hyperlink></TextBlock>
+    		<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBodyText}" Margin="0,2,4,2"><Hyperlink CommandParameter="https://github.com/ArildF/MetroFire/fork" Command="{Binding NavigateCommand}"><Run Text="Fork on GitHub"/></Hyperlink></TextBlock>
+    	</StackPanel>
     </Grid>
 </UserControl>

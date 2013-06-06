@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:gitHub="clr-namespace:Rogue.MetroFire.UI.GitHub"
              xmlns:infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
+             xmlns:converters="clr-namespace:Rogue.MetroFire.UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="344" d:DesignWidth="484"
 			 infrastructure:DesignTime.Background="White"
@@ -14,7 +15,11 @@
 	<ItemsControl ItemsSource ="{Binding Commits}">
 		<ItemsControl.ItemTemplate>
 			<DataTemplate DataType="gitHub:Commit">
-				<Border Padding="5" BorderBrush="Black">
+				<DataTemplate.Resources>
+					<converters:GitHubCommitToColorConverter x:Key="GithubConverter"/>
+				</DataTemplate.Resources>
+				<Border Padding="5" BorderBrush="Black" 
+						Background="{Binding Path='', Converter={StaticResource GithubConverter}}">
 				<Grid Height="Auto">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="0.262*"/>

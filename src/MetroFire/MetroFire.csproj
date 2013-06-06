@@ -167,6 +167,7 @@
     <Compile Include="Behaviors\Transition.cs" />
     <Compile Include="Behaviors\VisualStateBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Converters\GitHubCommitToColorConverter.cs" />
     <Compile Include="Converters\NumberToOverlayConverter.cs" />
     <Compile Include="Converters\SizeValueConverter.cs" />
     <Compile Include="Converters\StringToSchemeColorConverter.cs" />

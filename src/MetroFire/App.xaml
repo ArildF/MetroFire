@@ -842,6 +842,36 @@
 					</Setter.Value>
 				</Setter>
 			</Style>
+			<ControlTemplate x:Key="MinimizeButtonTemplate" TargetType="{x:Type Button}">
+				<Grid x:Name="grid" RenderTransformOrigin="0.5,0.5" Height="Auto" Background="#00000000">
+					<Grid.RenderTransform>
+						<TransformGroup>
+							<ScaleTransform/>
+							<SkewTransform/>
+							<RotateTransform/>
+							<TranslateTransform/>
+						</TransformGroup>
+					</Grid.RenderTransform>
+					<VisualStateManager.VisualStateGroups>
+						<VisualStateGroup x:Name="CommonStates">
+							<VisualState x:Name="Normal"/>
+							<VisualState x:Name="MouseOver">
+								<Storyboard>
+									<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="grid">
+										<EasingDoubleKeyFrame KeyTime="0" Value="1.2"/>
+									</DoubleAnimationUsingKeyFrames>
+									<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="grid">
+										<EasingDoubleKeyFrame KeyTime="0" Value="1.2"/>
+									</DoubleAnimationUsingKeyFrames>
+								</Storyboard>
+							</VisualState>
+							<VisualState x:Name="Pressed"/>
+							<VisualState x:Name="Disabled"/>
+						</VisualStateGroup>
+					</VisualStateManager.VisualStateGroups>
+					<Rectangle Fill="Black" Margin="0" Stroke="Black" Width="10" Height="5"/>
+				</Grid>
+			</ControlTemplate>
 			
 
     	</ResourceDictionary>

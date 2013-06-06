@@ -75,5 +75,10 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			Close();
 		}
+
+		private void MinimizeButtonOnClick(object sender, RoutedEventArgs e)
+		{
+			this.WindowState = WindowState.Minimized;
+		}
 	}
 }

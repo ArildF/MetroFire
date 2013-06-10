@@ -16,7 +16,6 @@ namespace Rogue.MetroFire.UI.Views
 	public class ChatDocument : FlowDocument, IChatDocument
 	{
 		private readonly IInlineUploadViewFactory _factory;
-		private readonly IWebBrowser _browser;
 		private readonly IPasteViewFactory _pasteViewFactory;
 		private readonly IEnumerable<IMessageFormatter> _formatters;
 		private readonly IEnumerable<IMessagePostProcessor> _postProcessors;
@@ -26,12 +25,11 @@ namespace Rogue.MetroFire.UI.Views
 			Regex(@"((?:http|https|ftp)\://(?:[a-zA-Z0-9\.\-]+(?:\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?(?:(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(?:[a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(?:\:[0-9]+)?(?:/[^/][a-zA-Z0-9\.\,\?\'\\/\+&amp;%\$#!\=~_\-@]*)*)");
 
 
-		public ChatDocument(IInlineUploadViewFactory factory, IWebBrowser browser, 
+		public ChatDocument(IInlineUploadViewFactory factory,
 			IPasteViewFactory pasteViewFactory, IEnumerable<IMessageFormatter> formatters, 
 			IEnumerable<IMessagePostProcessor> postProcessors)
 		{
 			_factory = factory;
-			_browser = browser;
 			_pasteViewFactory = pasteViewFactory;
 			_formatters = formatters;
 			_postProcessors = postProcessors;
@@ -52,8 +50,6 @@ namespace Rogue.MetroFire.UI.Views
 
 			FontSize = 14;
 			FontFamily = new FontFamily("Segoe UI");
-
-			AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(NavigateToLink));
 		}
 
 		private void FormatTweetMessage(Message msg, User user, Paragraph paragraph)
@@ -78,11 +74,6 @@ namespace Rogue.MetroFire.UI.Views
 		private string StripEntities(string message)
 		{
 			return HttpUtility.HtmlDecode(message);
-		}
-
-		private void NavigateToLink(object sender, RequestNavigateEventArgs requestNavigateEventArgs)
-		{
-			_browser.NavigateTo(requestNavigateEventArgs.Uri);
 		}
 
 		private void FormatUploadMessage(Message msg, User user, Paragraph paragraph)

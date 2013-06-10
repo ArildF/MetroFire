@@ -94,8 +94,8 @@
     	<ContentControl Content="{Binding GitHubCommits}" Grid.Row="2" Grid.Column="6"/>
     	<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="WHAT'S NEW" VerticalAlignment="Center" Grid.Row="1" Grid.Column="5" Style="{DynamicResource SmallMetroHeading}"/>
     	<StackPanel Margin="0" Grid.Row="3" Grid.Column="1">
-    		<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBodyText}" Margin="0,2,4,2"><Hyperlink CommandParameter="http://metrofire.uservoice.com/" Command="{Binding NavigateCommand}"><Run Text="Suggest a new feature or submit a bug report"/></Hyperlink></TextBlock>
-    		<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBodyText}" Margin="0,2,4,2"><Hyperlink CommandParameter="https://github.com/ArildF/MetroFire/fork" Command="{Binding NavigateCommand}"><Run Text="Fork on GitHub"/></Hyperlink></TextBlock>
+    		<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBodyText}" Margin="0,2,4,2"><Hyperlink NavigateUri="http://metrofire.uservoice.com/"><Run Text="Suggest a new feature or submit a bug report"/></Hyperlink></TextBlock>
+    		<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBodyText}" Margin="0,2,4,2"><Hyperlink NavigateUri="https://github.com/ArildF/MetroFire/fork"><Run Text="Fork on GitHub"/></Hyperlink></TextBlock>
     	</StackPanel>
     </Grid>
 </UserControl>

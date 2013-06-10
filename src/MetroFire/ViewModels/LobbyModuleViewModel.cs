@@ -1,9 +1,7 @@
-﻿using System;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
-using System.Reactive.Linq;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
@@ -14,7 +12,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _isActive;
 
 		public LobbyModuleViewModel(ICampfire campfire, IMessageBus messageBus, 
-			GitHubCommitsViewModel gitHubCommitsViewModel, IWebBrowser browser)
+			GitHubCommitsViewModel gitHubCommitsViewModel)
 		{
 			GitHubCommits = gitHubCommitsViewModel;
 			_messageBus = messageBus;
@@ -38,9 +36,6 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_messageBus.SendMessage(new RequestRoomListMessage());
 
 			IsActive = true; // default 
-
-			NavigateCommand = new ReactiveCommand();
-			NavigateCommand.OfType<string>().Subscribe(uri => browser.NavigateTo(new Uri(uri)));
 		}
 
 		public ReactiveCommand NavigateCommand

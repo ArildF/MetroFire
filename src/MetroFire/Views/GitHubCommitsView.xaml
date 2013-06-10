@@ -34,7 +34,7 @@
 					<TextBlock TextWrapping="Wrap" Text="{Binding CommitDetails.Author.Name}" d:LayoutOverrides="Width, Height, GridBox" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Bottom" Style="{DynamicResource SmallMetroHeading}" FontSize="13.333"/>
 					<TextBlock TextWrapping="Wrap" Text="{Binding CommitDetails.Message}" d:LayoutOverrides="Width, Height" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Style="{DynamicResource MetroBodyText}"/>
 					<TextBlock TextWrapping="Wrap" TextAlignment="Right" d:LayoutOverrides="Width, Height" Grid.Column="2" Grid.Row="2" VerticalAlignment="Bottom" Style="{DynamicResource SmallMetroHeading}" FontSize="13.333">
-						<Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}, Path=DataContext.NavigateCommand}" CommandParameter="{Binding HtmlUrl}"><Run Text="{Binding CommitDetails.Author.Date}"/></Hyperlink> 
+						<Hyperlink NavigateUri="{Binding HtmlUrl}"><Run Text="{Binding CommitDetails.Author.Date}"/></Hyperlink> 
 						</TextBlock>
 				</Grid>
 					</Border>

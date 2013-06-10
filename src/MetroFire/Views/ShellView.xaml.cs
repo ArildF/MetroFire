@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using System.Windows.Navigation;
 using ReactiveUI;
 using Rogue.MetroFire.UI.Behaviors;
 
@@ -12,12 +14,20 @@ namespace Rogue.MetroFire.UI.Views
 	{
 		private readonly IMessageBus _bus;
 		private readonly ISettings _settings;
+		private readonly IWebBrowser _browser;
 
 		protected ShellView()
 		{
 			InitializeComponent();
 
 			Loaded += OnLoaded;
+
+			AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(RequestNavigateToLink));
+		}
+
+		private void RequestNavigateToLink(object sender, RequestNavigateEventArgs requestNavigateEventArgs)
+		{
+			_browser.NavigateTo(requestNavigateEventArgs.Uri);
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -31,11 +41,13 @@ namespace Rogue.MetroFire.UI.Views
 			_bus.SendMessage<ApplicationLoadedMessage>(null);
 		}
 
-		public ShellView(IShellViewModel vm, IMessageBus bus,  ISettings settings) : this()
+		public ShellView(IShellViewModel vm, IMessageBus bus,  ISettings settings, IWebBrowser browser) : this()
 		{
 			_bus = bus;
 			_settings = settings;
+			_browser = browser;
 			DataContext = vm;
+
 
 			
 

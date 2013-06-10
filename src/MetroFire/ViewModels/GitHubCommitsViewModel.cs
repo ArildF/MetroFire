@@ -10,13 +10,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 	{
 		private Commit[] _commits;
 
-		public GitHubCommitsViewModel(IGitHubClient client, IWebBrowser browser)
+		public GitHubCommitsViewModel(IGitHubClient client)
 		{
-
-			NavigateCommand = new ReactiveCommand();
-			NavigateCommand.OfType<string>().Subscribe(url => browser.NavigateTo(new Uri(url)));
-
-
 			var cmd = new ReactiveAsyncCommand();
 			var obs = cmd.RegisterAsyncFunction(_ => client.GetLatestCommits());
 			obs.Subscribe(commits => Commits = commits);
@@ -26,16 +21,10 @@ namespace Rogue.MetroFire.UI.ViewModels
 			cmd.Execute(null);
 		}
 
-		public ReactiveCommand NavigateCommand
-		{
-			get; private set; 
-		}
-
 		public Commit[] Commits
 		{
 			get { return _commits; }
 			private set { this.RaiseAndSetIfChanged(vm => vm.Commits, ref _commits, value); }
 		}
-		
 	}
 }

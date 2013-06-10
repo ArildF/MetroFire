@@ -7,10 +7,10 @@
 		AllowsTransparency="True" WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False"
 		UseLayoutRounding="True">
    
-	<ScrollViewer Grid.RowSpan="2" Grid.ColumnSpan="2"
+	<ScrollViewer
 				  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Background="{x:Null}">
 		<Grid MouseDown="GridOnMouseDown" Background="Transparent">
-			<infrastructure:GifSupportingImage x:Name="Image" Margin="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Stretch="None">
+			<infrastructure:GifSupportingImage x:Name="Image" Margin="0" Stretch="None">
 				<i:Interaction.Behaviors>
 					<behaviors:GrabPanBehavior></behaviors:GrabPanBehavior>
 				</i:Interaction.Behaviors>

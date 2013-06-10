@@ -172,7 +172,7 @@ namespace Rogue.MetroFire.UI
 
 	public interface IImageView
 	{
-		bool? ShowDialog();
+		void Show();
 	}
 
 	public interface IPasteView

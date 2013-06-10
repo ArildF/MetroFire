@@ -132,7 +132,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private void ViewImage(object o)
 		{
 			var imageView = _imageViewCreator(File);
-			imageView.ShowDialog();
+			imageView.Show();
 		}
 
 		public ReactiveCommand ShowFullSizeImageCommand { get; private set; }

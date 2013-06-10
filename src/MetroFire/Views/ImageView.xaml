@@ -6,21 +6,15 @@
         xmlns:behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors" Title="Image" Height="671" Width="935" WindowStyle="None" Background="#65000000" ResizeMode="NoResize" 
 		AllowsTransparency="True" WindowStartupLocation="CenterScreen" Topmost="True" ShowInTaskbar="False"
 		UseLayoutRounding="True">
-    <Grid>
-    	<Grid.RowDefinitions>
-    		<RowDefinition Height="28.116"/>
-    		<RowDefinition/>
-    	</Grid.RowDefinitions>
-    	<Grid.ColumnDefinitions>
-    		<ColumnDefinition/>
-    		<ColumnDefinition Width="24.992"/>
-    	</Grid.ColumnDefinitions>
-		<infrastructure:GifSupportingImage x:Name="Image" Margin="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Stretch="None">
-			<i:Interaction.Behaviors>
-				<behaviors:GrabPanBehavior></behaviors:GrabPanBehavior>
-			</i:Interaction.Behaviors>
-		</infrastructure:GifSupportingImage>
-
-
-	</Grid>
+   
+	<ScrollViewer Grid.RowSpan="2" Grid.ColumnSpan="2"
+				  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Background="{x:Null}">
+		<Grid MouseDown="GridOnMouseDown" Background="Transparent">
+			<infrastructure:GifSupportingImage x:Name="Image" Margin="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Stretch="None">
+				<i:Interaction.Behaviors>
+					<behaviors:GrabPanBehavior></behaviors:GrabPanBehavior>
+				</i:Interaction.Behaviors>
+			</infrastructure:GifSupportingImage>
+		</Grid>
+	</ScrollViewer>
 </Window>

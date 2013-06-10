@@ -22,12 +22,6 @@ namespace Rogue.MetroFire.UI.Views
 			Image.Uri = file;
 		}
 
-		protected override void OnMouseDown(MouseButtonEventArgs e)
-		{
-			base.OnMouseDown(e);
-			Close();
-		}
-
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
 			base.OnKeyDown(e);
@@ -35,6 +29,11 @@ namespace Rogue.MetroFire.UI.Views
 			{
 				Close();
 			}
+		}
+
+		private void GridOnMouseDown(object sender, MouseButtonEventArgs e)
+		{
+			Close();
 		}
 	}
 

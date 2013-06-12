@@ -140,7 +140,11 @@
 				<Button Style="{DynamicResource MetroBigButton}" Margin="3,0" FontSize="14.667"
 						Command="{x:Static ui:GlobalCommands.LeaveRoomCommand}" CommandParameter="{Binding RoomId}" Template="{DynamicResource CloseButtonTemplate}" HorizontalAlignment="Right"/>
 				<TextBlock TextWrapping="WrapWithOverflow" Style="{DynamicResource MetroBlueCaption}" Text="{Binding RoomName}"/>
-				<TextBlock TextWrapping="Wrap" Text="{Binding Topic}" HorizontalAlignment="Left" Style="{DynamicResource MetroBodyText}"/>
+				<TextBlock TextWrapping="Wrap" Text="{Binding Topic}" HorizontalAlignment="Left" Style="{DynamicResource MetroBodyText}">
+					<i:Interaction.Behaviors>
+						<behaviors:UrlifyBehavior/>
+					</i:Interaction.Behaviors>
+				</TextBlock>
 				<Button Content="UPLOAD FILE..." Style="{DynamicResource NavigationButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0" Command="{Binding UploadFileCommand}"/>
 			</StackPanel>
 		</Grid>

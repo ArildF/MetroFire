@@ -165,6 +165,7 @@
     <Compile Include="Behaviors\RestrictToNumericalInputBehavior.cs" />
     <Compile Include="Behaviors\StayScrolledToEndBehavior.cs" />
     <Compile Include="Behaviors\Transition.cs" />
+    <Compile Include="Behaviors\UrlifyBehavior.cs" />
     <Compile Include="Behaviors\VisualStateBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Converters\GitHubCommitToColorConverter.cs" />

@@ -148,6 +148,49 @@ namespace Rogue.MetroFire.UI.Views
 		}
 	}
 
+	public class InlineVisitor
+	{
+		public void Visit(InlineCollection inlines)
+		{
+			foreach (dynamic inline in inlines.ToArray())
+			{
+				Visit(inline, inlines);
+			}
+		}
+
+		protected virtual void Visit(Run run, InlineCollection inlines)
+		{
+			
+		}
+
+		protected virtual void Visit(Hyperlink link, InlineCollection inlines)
+		{
+			Visit(link as dynamic, inlines);
+		}
+
+		protected virtual void Visit(Span span, InlineCollection inlines)
+		{
+			VisitSpan(span);
+		}
+
+		protected virtual void Visit(LineBreak lineBreak, InlineCollection inlines)
+		{
+		}
+
+		private void VisitSpan(Span span)
+		{
+			foreach (dynamic inline in span.Inlines.ToArray())
+			{
+				Visit(inline, span.Inlines);
+			}
+		}
+
+		protected virtual void Visit(InlineUIContainer container, InlineCollection inlines)
+		{
+			
+		}
+	}
+
 
 	public class EmoticonMessageFormatter : IMessagePostProcessor
 	{
@@ -210,22 +253,7 @@ namespace Rogue.MetroFire.UI.Views
 
 			var splits = _regex.Split(run.Text);
 
-			var prev = run.PreviousInline;
-			var span = new Span();
-
-			inlines.Remove(run);
-			if (prev != null)
-			{
-				inlines.InsertAfter(prev, span);
-			}
-			else if (inlines.FirstInline != null)
-			{
-				inlines.InsertBefore(inlines.FirstInline, span);
-			}
-			else
-			{
-				inlines.Add(span);
-			}
+			var span = inlines.ReplaceInlineWithSpan(run);
 
 			foreach(var result in splits)
 			{
@@ -256,5 +284,54 @@ namespace Rogue.MetroFire.UI.Views
 		}
 
 		public int Priority { get { return 10; } }
+	}
+
+	public class HyperLinkMessagePostProcessor : IMessagePostProcessor
+	{
+		public void Process(Paragraph paragraph, Message message, User user)
+		{
+			new HyperLinkVisitor().Visit(paragraph.Inlines);
+		}
+
+
+		public int Priority { get { return 7; } }
+
+		
+	}
+
+	public class HyperLinkVisitor : InlineVisitor
+	{
+		protected override void Visit(Hyperlink link, InlineCollection inlines)
+		{
+			// we don't want to go into the children of existing hyperlinks
+		}
+
+		protected override void Visit(Run run, InlineCollection inlines)
+		{
+			Linkify(run, inlines);
+		}
+
+		private void Linkify(Run run, InlineCollection inlines)
+		{
+			if (!ChatDocument.UrlDetector.IsMatch(run.Text))
+			{
+				return;
+			}
+
+			var results = ChatDocument.UrlDetector.Split(run.Text);
+
+			var span = inlines.ReplaceInlineWithSpan(run);
+			foreach (var result in results)
+			{
+				if (ChatDocument.UrlDetector.IsMatch(result))
+				{
+					span.Inlines.Add(ChatDocument.CreateHyperLink(result));
+				}
+				else if (result != String.Empty)
+				{
+					span.Inlines.Add(result);
+				}
+			}
+		}
 	}
 }

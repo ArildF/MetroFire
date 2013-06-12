@@ -211,21 +211,7 @@ namespace Rogue.MetroFire.UI.Views
 
 		private Inline RenderUserMessage(string body)
 		{
-			var results = UrlDetector.Split(body);
-			var span = new Span();
-			foreach (var result in results)
-			{
-				if (UrlDetector.IsMatch(result))
-				{
-					span.Inlines.Add(CreateHyperLink(result));
-				}
-				else
-				{
-					span.Inlines.Add(result);
-				}
-			}
-			return span;
-
+			return new Run(body);
 		}
 
 		public static Inline CreateHyperLink(string result)

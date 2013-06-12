@@ -50,8 +50,7 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 	
 
-		public static IEnumerable<Tuple<InlineCollection, Inline>> 
-			FlattenWithParents(this InlineCollection inlines)
+		public static IEnumerable<Tuple<InlineCollection, Inline>> FlattenWithParents(this InlineCollection inlines)
 		{
 			foreach (var inline in inlines)
 			{
@@ -67,6 +66,27 @@ namespace Rogue.MetroFire.UI.Infrastructure
 					yield return Tuple.Create(inlines, inline);
 				}
 			}
+		}
+
+		public static Span ReplaceInlineWithSpan(this InlineCollection inlines, Inline inline)
+		{
+			var prev = inline.PreviousInline;
+			var span = new Span();
+
+			inlines.Remove(inline);
+			if (prev != null)
+			{
+				inlines.InsertAfter(prev, span);
+			}
+			else if (inlines.FirstInline != null)
+			{
+				inlines.InsertBefore(inlines.FirstInline, span);
+			}
+			else
+			{
+				inlines.Add(span);
+			}
+			return span;
 		}
 	}
 }

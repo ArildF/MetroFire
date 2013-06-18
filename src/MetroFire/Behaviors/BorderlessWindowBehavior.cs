@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace Rogue.MetroFire.UI.Behaviors
 {
@@ -174,6 +176,9 @@ namespace Rogue.MetroFire.UI.Behaviors
 		[DllImport("user32")]
 		internal static extern bool GetMonitorInfo(IntPtr hMonitor, MONITORINFO   lpmi);
 
+		[DllImport("dwmapi.dll")]
+		private static extern int DwmIsCompositionEnabled(out bool enabled);
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -231,8 +236,21 @@ namespace Rogue.MetroFire.UI.Behaviors
 			_originalResizeMode = AssociatedObject.ResizeMode;
 			AssociatedObject.WindowStyle = WindowStyle.None;
 			AssociatedObject.ResizeMode = ResizeMode.CanResizeWithGrip;
+
+			bool isCompositionEnabled;
+			DwmIsCompositionEnabled(out isCompositionEnabled);
+			if (!isCompositionEnabled || Environment.OSVersion.Version >= new Version(6,2) /* win8 */)
+			{
+				var border = new Border {BorderThickness = new Thickness(0.4), BorderBrush = Brushes.Black};
+				var content = AssociatedObject.Content;
+				AssociatedObject.Content = null;
+
+				border.Child = (UIElement) content;
+				AssociatedObject.Content = border;
+			}
 			base.OnAttached();
 		}
+
 
 		protected override void OnDetaching()
 		{

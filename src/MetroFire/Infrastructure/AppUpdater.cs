@@ -28,8 +28,17 @@ namespace Rogue.MetroFire.UI.Infrastructure
 				return;
 			}
 
-			var updateAvailable = Observable.FromEventPattern<CheckForUpdateCompletedEventArgs>(_deployment,
-					"CheckForUpdateCompleted")
+			
+			var updateCheckCompleted = Observable.FromEventPattern<CheckForUpdateCompletedEventArgs>(_deployment,
+					"CheckForUpdateCompleted");
+
+			_disposables.Add(
+				_bus.RegisterMessageSource(
+					updateCheckCompleted.Where(e => e.EventArgs.Error != null)
+					.Select(e => new ExceptionMessage(e.EventArgs.Error))));
+
+			var updateAvailable = updateCheckCompleted
+				.Where(e => e.EventArgs.Error == null)
 				.Where(e => e.EventArgs.UpdateAvailable)
 				.Select(_ => new AppUpdateAvailableMessage()).Take(1);
 

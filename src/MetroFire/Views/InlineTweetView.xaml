@@ -3,6 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Rogue_MetroFire_UI_Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
 	mc:Ignorable="d"
 	x:Class="Rogue.MetroFire.UI.Views.InlineTweetView"
 	x:Name="UserControl"
@@ -24,10 +25,14 @@
 				<ColumnDefinition Width="0.862*"/>
 			</Grid.ColumnDefinitions>
 			<TextBlock Margin="0" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" 
-				Style="{DynamicResource MetroMediumLightHeader}" Grid.Column="1" VerticalAlignment="Center"><Hyperlink NavigateUri="{Binding TwitterProfileUrl}">@<Run Text="{Binding TwitterUserName, Mode=OneWay}"/></Hyperlink></TextBlock>
+				Style="{DynamicResource MetroMediumLightHeader}" Grid.Column="1" VerticalAlignment="Center"><Hyperlink NavigateUri="{Binding TwitterProfileUrl}"><Run Text="@"/><Run Text="{Binding TwitterUserName, Mode=OneWay}"/></Hyperlink></TextBlock>
 			<Image Margin="0" Width="48" Height="48" Source="{Binding AvatarUrl, Mode=OneWay}"/>
 			<TextBlock Margin="0" TextWrapping="Wrap" x:Name="_body" d:LayoutOverrides="Width" Grid.Row="1" 
-				Grid.ColumnSpan="2" Style="{DynamicResource MetroBodyText}"/>
+				Grid.ColumnSpan="2" Style="{DynamicResource MetroBodyText}">
+				<i:Interaction.Behaviors>
+					<Rogue_MetroFire_UI_Behaviors:UrlifyBehavior/>
+				</i:Interaction.Behaviors>
+			</TextBlock>
 			<TextBlock Margin="0" TextWrapping="Wrap" VerticalAlignment="Top" 
 				d:LayoutOverrides="Width" Style="{DynamicResource MetroBodyText}" Grid.Row="2" HorizontalAlignment="Right" 
 				Grid.ColumnSpan="2" FontSize="12"><Hyperlink NavigateUri="{Binding TweetUrl}"><Run Text="Source"/></Hyperlink></TextBlock>

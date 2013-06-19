@@ -25,7 +25,7 @@
 				<ColumnDefinition Width="0.862*"/>
 			</Grid.ColumnDefinitions>
 			<TextBlock Margin="0" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" 
-				Style="{DynamicResource MetroMediumLightHeader}" Grid.Column="1" VerticalAlignment="Center"><Hyperlink NavigateUri="{Binding TwitterProfileUrl}"><Run Text="@"/><Run Text="{Binding TwitterUserName, Mode=OneWay}"/></Hyperlink></TextBlock>
+				Style="{DynamicResource MetroSmallLightHeader}" Grid.Column="1" VerticalAlignment="Center"><Hyperlink NavigateUri="{Binding TwitterProfileUrl}"><Run Text="{Binding TwitterUserName, Mode=OneWay}"/></Hyperlink></TextBlock>
 			<Image Margin="0" Width="48" Height="48" Source="{Binding AvatarUrl, Mode=OneWay}"/>
 			<TextBlock Margin="0" TextWrapping="Wrap" x:Name="_body" d:LayoutOverrides="Width" Grid.Row="1" 
 				Grid.ColumnSpan="2" Style="{DynamicResource MetroBodyText}">

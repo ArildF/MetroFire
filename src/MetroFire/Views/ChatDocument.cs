@@ -89,16 +89,8 @@ namespace Rogue.MetroFire.UI.Views
 
 		public object AddMessage(Message message, User user, object textObject)
 		{
-			Action<Message, User, Paragraph> handler;
-			if (!_handlers.TryGetValue(message.Type, out handler))
-			{
-				return null;
-			}
 			var paragraph = new Paragraph {Margin = new Thickness(0), TextAlignment = TextAlignment.Left};
-			if (!RenderByCustomFormatter(message, user, paragraph))
-			{
-				handler(message, user, paragraph);
-			}
+			RenderParagraph(paragraph, message, user);
 
 			var after = textObject as Paragraph;
 			if (after != null)
@@ -110,12 +102,39 @@ namespace Rogue.MetroFire.UI.Views
 				Blocks.Add(paragraph);
 			}
 
+			return paragraph;
+
+		}
+
+		public void UpdateMessage(object textObject, Message message, User user)
+		{
+			var paragraph = textObject as Paragraph;
+			if (paragraph == null)
+			{
+				throw new InvalidOperationException("Invalid object passed in");
+			}
+			paragraph.Inlines.Clear();
+
+			RenderParagraph(paragraph, message, user);
+		}
+
+		private void RenderParagraph(Paragraph paragraph, Message message, User user)
+		{
+			Action<Message, User, Paragraph> handler;
+			if (!_handlers.TryGetValue(message.Type, out handler))
+			{
+				return;
+			}
+			if (!RenderByCustomFormatter(message, user, paragraph))
+			{
+				handler(message, user, paragraph);
+			}
+
+			
 			foreach (var postProcessor in _postProcessors.OrderBy(p => p.Priority))
 			{
 				postProcessor.Process(paragraph, message, user);
 			}
-
-			return paragraph;
 		}
 
 		private bool RenderByCustomFormatter(Message message, User user, Paragraph paragraph)
@@ -221,7 +240,6 @@ namespace Rogue.MetroFire.UI.Views
 			return hyperlink;
 		}
 
-		
 
 		public static void RenderUserString(User user, Paragraph paragraph)
 		{
@@ -246,23 +264,6 @@ namespace Rogue.MetroFire.UI.Views
 		private static Run CreateMetaRun(string message)
 		{
 			return new Run(message) {FontStyle = FontStyles.Italic, Foreground = Brushes.Gray};
-		}
-
-		public void UpdateMessage(object textObject, Message message, User user)
-		{
-			var paragraph = textObject as Paragraph;
-			if (paragraph == null)
-			{
-				throw new InvalidOperationException("Invalid object passed in");
-			}
-
-			Action<Message, User, Paragraph> handler;
-			if (!_handlers.TryGetValue(message.Type, out handler))
-			{
-				return;
-			}
-			paragraph.Inlines.Clear(); 
-			handler(message, user, paragraph);
 		}
 
 		public void AddUploadFile(IRoom room, FileItem fileItem)

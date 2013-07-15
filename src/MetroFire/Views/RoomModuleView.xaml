@@ -125,7 +125,7 @@
 			</TextBox.Triggers>
 
 		</TextBox>
-		<FlowDocumentScrollViewer Background="White" BorderThickness="0" x:Name="_chatViewer" Document="{Binding ChatDocument}">
+		<FlowDocumentScrollViewer Background="White" BorderThickness="0" x:Name="_chatViewer" >
 			<i:Interaction.Behaviors>
 				<behaviors:StayScrolledToEndBehavior/>
 			</i:Interaction.Behaviors>

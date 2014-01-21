@@ -215,6 +215,8 @@ namespace Rogue.MetroFire.UI.Views
 				">:D",
 				":-P",
 				":P",
+				"(Y)",
+				"(N)",
 			};
 		private readonly Regex _regex;
 

@@ -51,6 +51,126 @@
 			</DrawingGroup>
 		</DrawingBrush.Drawing>
 	</DrawingBrush>
+	<DrawingBrush x:Key="TongueBrush" Stretch="Uniform">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<!--<DrawingGroup.Transform>
+					<MatrixTransform Matrix="1,0,0,1,0,-1.5"/>
+				</DrawingGroup.Transform>-->
+				<GeometryDrawing Geometry="F1M44.429,38.571A19.714,6.571,0,1,1,5,38.571A19.714,6.571,0,1,1,44.429,38.571z">
+					<GeometryDrawing.Brush>
+						<RadialGradientBrush Center="24.714,38.571" GradientOrigin="24.714,38.571" MappingMode="Absolute" RadiusY="19.714" RadiusX="19.714">
+							<RadialGradientBrush.Transform>
+								<MatrixTransform Matrix="1,0,0,0.333332985639572,0,25.7142906188965"/>
+							</RadialGradientBrush.Transform>
+							<GradientStop Color="Black" Offset="0"/>
+							<GradientStop Color="#00000000" Offset="1"/>
+						</RadialGradientBrush>
+					</GeometryDrawing.Brush>
+				</GeometryDrawing>
+				<DrawingGroup>
+					<DrawingGroup.Transform>
+						<MatrixTransform Matrix="2.08314204216003,0,0,2.08314204216003,-40.5471496582031,-16.4922409057617"/>
+					</DrawingGroup.Transform>
+					<GeometryDrawing Geometry="M39.775,19.009A8.662,8.662,0,1,1,22.451,19.009A8.662,8.662,0,1,1,39.775,19.009z">
+						<GeometryDrawing.Brush>
+							<RadialGradientBrush Center="29.288,15.721" GradientOrigin="29.288,15.721" MappingMode="Absolute" RadiusY="8.902" RadiusX="8.902">
+								<GradientStop Color="#FFFFFCDE" Offset="0"/>
+								<GradientStop Color="#FFF6E76A" Offset="0.645"/>
+								<GradientStop Color="#FFFFB738" Offset="1"/>
+							</RadialGradientBrush>
+						</GeometryDrawing.Brush>
+						<GeometryDrawing.Pen>
+							<Pen Brush="#FF9C8C0A" DashCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="4" StartLineCap="Round" Thickness="0.48">
+								<Pen.DashStyle>
+									<DashStyle/>
+								</Pen.DashStyle>
+							</Pen>
+						</GeometryDrawing.Pen>
+					</GeometryDrawing>
+				</DrawingGroup>
+				<DrawingGroup>
+					<DrawingGroup.Transform>
+						<MatrixTransform Matrix="1.9797819852829,0,0,1.9797819852829,-37.3312797546387,-14.5274600982666"/>
+					</DrawingGroup.Transform>
+					<GeometryDrawing Geometry="M39.775,19.009A8.662,8.662,0,1,1,22.451,19.009A8.662,8.662,0,1,1,39.775,19.009z">
+						<GeometryDrawing.Pen>
+							<Pen Brush="#ADFFFFFF" DashCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="4" StartLineCap="Round" Thickness="0.505">
+								<Pen.DashStyle>
+									<DashStyle/>
+								</Pen.DashStyle>
+							</Pen>
+						</GeometryDrawing.Pen>
+					</GeometryDrawing>
+				</DrawingGroup>
+				<GeometryDrawing Brush="#5CFFFFFF" Geometry="F1M37.285,24.72C34.268,29.945 30.741,33.71 24.462,33.71 18.362,33.71 13.897,29.37 11.11,24.543 13.659,27.599 17.393,31.11 24.197,31.11 32.328,31.11 33.749,28.203 37.285,24.72z"/>
+				<GeometryDrawing Geometry="F1M37.285,24.013C34.268,29.238 30.741,33.003 24.462,33.003 18.362,33.003 13.897,28.663 11.11,23.836 13.659,26.892 17.393,30.402 24.197,30.402 32.328,30.402 33.749,27.496 37.285,24.013z">
+					<GeometryDrawing.Brush>
+						<RadialGradientBrush Center="25.053,39.593" GradientOrigin="25.053,39.593" MappingMode="Absolute" RadiusY="15.757" RadiusX="15.757">
+							<RadialGradientBrush.Transform>
+								<MatrixTransform Matrix="1.25,0,0,1.25,-6.47944593429565,-13.3721103668213"/>
+							</RadialGradientBrush.Transform>
+							<GradientStop Color="#FF777777" Offset="0"/>
+							<GradientStop Color="Black" Offset="1"/>
+						</RadialGradientBrush>
+					</GeometryDrawing.Brush>
+				</GeometryDrawing>
+				<DrawingGroup>
+					<DrawingGroup.Transform>
+						<MatrixTransform Matrix="1,0,0,1,0.353552997112274,2.3927059173584"/>
+					</DrawingGroup.Transform>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="-0.965925991535187,-0.258819013834,0.258819013834,-0.965925991535187,24.929,16.83"/>
+						</DrawingGroup.Transform>
+						<GeometryDrawing Geometry="F1M-0.875,1.875A2.938,2.875,0,0,1,-6.356,3.312">
+							<GeometryDrawing.Pen>
+								<Pen Brush="#FF555753" DashCap="Square" EndLineCap="Flat" LineJoin="Miter" MiterLimit="4" StartLineCap="Flat" Thickness="1">
+									<Pen.DashStyle>
+										<DashStyle/>
+									</Pen.DashStyle>
+								</Pen>
+							</GeometryDrawing.Pen>
+						</GeometryDrawing>
+					</DrawingGroup>
+					<DrawingGroup>
+						<DrawingGroup.Transform>
+							<MatrixTransform Matrix="-0.965925991535187,-0.258819013834,0.258819013834,-0.965925991535187,13.783,16.83"/>
+						</DrawingGroup.Transform>
+						<GeometryDrawing Geometry="F1M-0.875,1.875A2.938,2.875,0,0,1,-6.356,3.312">
+							<GeometryDrawing.Pen>
+								<Pen Brush="#FF555753" DashCap="Square" EndLineCap="Flat" LineJoin="Miter" MiterLimit="4" StartLineCap="Flat" Thickness="1">
+									<Pen.DashStyle>
+										<DashStyle/>
+									</Pen.DashStyle>
+								</Pen>
+							</GeometryDrawing.Pen>
+						</GeometryDrawing>
+					</DrawingGroup>
+				</DrawingGroup>
+				<DrawingGroup>
+					<DrawingGroup.Transform>
+						<MatrixTransform Matrix="1,0,0,1,18.417,29.499"/>
+					</DrawingGroup.Transform>
+					<GeometryDrawing Brush="#FFE41717">
+						<GeometryDrawing.Geometry>
+							<PathGeometry Figures="M37.285,24.013 C34.268,29.238 30.741,33.003 24.462,33.003 18.362,33.003 13.897,28.663 11.11,23.836 13.659,26.892 16.602102,25.68272 23.406102,25.68272 31.537102,25.68272 33.749,27.496 37.285,24.013 z" FillRule="Nonzero">
+								<PathGeometry.Transform>
+									<MatrixTransform Matrix="0.497115564667917,0,0,0.927566481840859,-5.52295375278947,-22.1094750716114"/>
+								</PathGeometry.Transform>
+							</PathGeometry>
+						</GeometryDrawing.Geometry>
+					</GeometryDrawing>
+				</DrawingGroup>
+				<DrawingGroup>
+					<DrawingGroup.Transform>
+						<MatrixTransform Matrix="1,0,0,1,22.037,31"/>
+					</DrawingGroup.Transform>
+					<GeometryDrawing Brush="#FFC80F0F" Geometry="M6.045,0.11585007 C5.3482373,3.5357265 4.5336923,6.0000011 3.0835852,6.0000011 1.6748173,6.0000011 0.64364535,3.1593765 7.9288864E-08,-2.8962909E-07 0.5886803,2.0002183 1.2683766,1.2087182 2.8397302,1.2087182 4.7175485,1.2087182 5.2283765,2.3955495 6.045,0.11585007 z"/>
+				</DrawingGroup>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
 
 	<DrawingBrush Stretch="Uniform" x:Key="SadBrush">
 		<DrawingBrush.Drawing>
@@ -706,5 +826,11 @@
 	</Style>
 	<Style x:Key="Emoticon :S" TargetType="Border">
 		<Setter Property="Background" Value="{StaticResource DubiousBrush}"></Setter>
+	</Style>
+	<Style x:Key="Emoticon :-P" TargetType="Border">
+		<Setter Property="Background" Value="{StaticResource TongueBrush}"></Setter>
+	</Style>
+	<Style x:Key="Emoticon :P" TargetType="Border">
+		<Setter Property="Background" Value="{StaticResource TongueBrush}"></Setter>
 	</Style>
 </ResourceDictionary>

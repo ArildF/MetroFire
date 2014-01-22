@@ -51,12 +51,12 @@
 			</DrawingGroup>
 		</DrawingBrush.Drawing>
 	</DrawingBrush>
-	<DrawingBrush x:Key="TongueBrush" Stretch="Uniform">
+	<DrawingBrush x:Key="TongueBrush" Viewbox="0,0,39.429,40.58" ViewboxUnits="Absolute" Stretch="Uniform">
 		<DrawingBrush.Drawing>
 			<DrawingGroup>
-				<!--<DrawingGroup.Transform>
-					<MatrixTransform Matrix="1,0,0,1,0,-1.5"/>
-				</DrawingGroup.Transform>-->
+				<DrawingGroup.Transform>
+					<MatrixTransform Matrix="1,0,0,1,-5,-3"/>
+				</DrawingGroup.Transform>
 				<GeometryDrawing Geometry="F1M44.429,38.571A19.714,6.571,0,1,1,5,38.571A19.714,6.571,0,1,1,44.429,38.571z">
 					<GeometryDrawing.Brush>
 						<RadialGradientBrush Center="24.714,38.571" GradientOrigin="24.714,38.571" MappingMode="Absolute" RadiusY="19.714" RadiusX="19.714">
@@ -83,7 +83,7 @@
 						<GeometryDrawing.Pen>
 							<Pen Brush="#FF9C8C0A" DashCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="4" StartLineCap="Round" Thickness="0.48">
 								<Pen.DashStyle>
-									<DashStyle/>
+									<DashStyle Dashes="1 0" Offset="0"/>
 								</Pen.DashStyle>
 							</Pen>
 						</GeometryDrawing.Pen>
@@ -97,7 +97,7 @@
 						<GeometryDrawing.Pen>
 							<Pen Brush="#ADFFFFFF" DashCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="4" StartLineCap="Round" Thickness="0.505">
 								<Pen.DashStyle>
-									<DashStyle/>
+									<DashStyle Dashes="1 0" Offset="0"/>
 								</Pen.DashStyle>
 							</Pen>
 						</GeometryDrawing.Pen>
@@ -125,9 +125,9 @@
 						</DrawingGroup.Transform>
 						<GeometryDrawing Geometry="F1M-0.875,1.875A2.938,2.875,0,0,1,-6.356,3.312">
 							<GeometryDrawing.Pen>
-								<Pen Brush="#FF555753" DashCap="Square" EndLineCap="Flat" LineJoin="Miter" MiterLimit="4" StartLineCap="Flat" Thickness="1">
+								<Pen Brush="#FF3F413E" DashCap="Square" EndLineCap="Flat" LineJoin="Miter" MiterLimit="4" StartLineCap="Flat" Thickness="3">
 									<Pen.DashStyle>
-										<DashStyle/>
+										<DashStyle Dashes="1 0" Offset="0"/>
 									</Pen.DashStyle>
 								</Pen>
 							</GeometryDrawing.Pen>
@@ -139,9 +139,9 @@
 						</DrawingGroup.Transform>
 						<GeometryDrawing Geometry="F1M-0.875,1.875A2.938,2.875,0,0,1,-6.356,3.312">
 							<GeometryDrawing.Pen>
-								<Pen Brush="#FF555753" DashCap="Square" EndLineCap="Flat" LineJoin="Miter" MiterLimit="4" StartLineCap="Flat" Thickness="1">
+								<Pen Brush="#FF3F413E" DashCap="Square" EndLineCap="Flat" LineJoin="Miter" MiterLimit="4" StartLineCap="Flat" Thickness="3">
 									<Pen.DashStyle>
-										<DashStyle/>
+										<DashStyle Dashes="1 0" Offset="0"/>
 									</Pen.DashStyle>
 								</Pen>
 							</GeometryDrawing.Pen>
@@ -166,7 +166,7 @@
 					<DrawingGroup.Transform>
 						<MatrixTransform Matrix="1,0,0,1,22.037,31"/>
 					</DrawingGroup.Transform>
-					<GeometryDrawing Brush="#FFC80F0F" Geometry="M6.045,0.11585007 C5.3482373,3.5357265 4.5336923,6.0000011 3.0835852,6.0000011 1.6748173,6.0000011 0.64364535,3.1593765 7.9288864E-08,-2.8962909E-07 0.5886803,2.0002183 1.2683766,1.2087182 2.8397302,1.2087182 4.7175485,1.2087182 5.2283765,2.3955495 6.045,0.11585007 z"/>
+					<GeometryDrawing Brush="#FFC80F0F" Geometry="M6.045,0.11585007C5.3482373,3.5357265 4.5336923,6.0000011 3.0835852,6.0000011 1.6748173,6.0000011 0.64364535,3.1593765 7.9288864E-08,-2.8962909E-07 0.5886803,2.0002183 1.2683766,1.2087182 2.8397302,1.2087182 4.7175485,1.2087182 5.2283765,2.3955495 6.045,0.11585007z"/>
 				</DrawingGroup>
 			</DrawingGroup>
 		</DrawingBrush.Drawing>

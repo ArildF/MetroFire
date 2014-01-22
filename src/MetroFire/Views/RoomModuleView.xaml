@@ -146,6 +146,10 @@
 					</i:Interaction.Behaviors>
 				</TextBlock>
 				<Button Content="UPLOAD FILE..." Style="{DynamicResource NavigationButton}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20,0,0" Command="{Binding UploadFileCommand}"/>
+				<TextBlock 
+					VerticalAlignment="Bottom"
+					HorizontalAlignment="Center"
+					Style="{DynamicResource MetroBodyText}" Margin="0,30,0,0"><Hyperlink NavigateUri="{Binding RoomTranscriptsUri}">room transcripts</Hyperlink></TextBlock>
 			</StackPanel>
 		</Grid>
 		<GridSplitter HorizontalAlignment="Left" Width="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,1,0,-1" d:LayoutOverrides="GridBox"/>

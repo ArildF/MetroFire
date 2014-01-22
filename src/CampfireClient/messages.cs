@@ -169,10 +169,12 @@ namespace Rogue.MetroFire.CampfireClient
 	public class RoomInfoReceivedMessage
 	{
 		public Room Room { get; private set; }
+		public string AccountName { get; private set; }
 
-		public RoomInfoReceivedMessage(Room room)
+		public RoomInfoReceivedMessage(Room room, string accountName)
 		{
 			Room = room;
+			AccountName = accountName;
 		}
 	}
 

@@ -200,7 +200,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private void GetRoomInfo(RequestRoomInfoMessage requestRoomInfoMessage)
 		{
 			CallApi(() => _api.GetRoom(requestRoomInfoMessage.Id),
-				room => _bus.SendMessage(new RoomInfoReceivedMessage(room)));
+				room => _bus.SendMessage(new RoomInfoReceivedMessage(room, _api.AccountName)));
 		}
 
 		private void GetRecentMessages(RequestRecentMessagesMessage obj)

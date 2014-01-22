@@ -28,6 +28,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _isConnected;
 		private string _topic;
 		private bool _userEditedMessage;
+		private string _roomTranscriptsUri;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
 			IClipboardService clipboardService , IGlobalCommands commands, ISettings settings)
@@ -123,6 +124,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 			{
 				PopulateUsers(_room.Users);
 			}
+			RoomTranscriptsUri = String.Format(@"http://{0}.campfirenow.com/files+transcripts?room_id={1}",
+				obj.AccountName, obj.Room.Id);
 		}
 
 		private void PopulateUsers(IEnumerable<User> users)
@@ -267,6 +270,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			get { return _isConnected; }
 			private set { this.RaiseAndSetIfChanged(vm => vm.IsConnected, ref _isConnected, value); }
+		}
+
+		public string RoomTranscriptsUri
+		{
+			get { return _roomTranscriptsUri; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.RoomTranscriptsUri, ref _roomTranscriptsUri, value); }
 		}
 
 

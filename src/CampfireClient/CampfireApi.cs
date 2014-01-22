@@ -239,6 +239,11 @@ namespace Rogue.MetroFire.CampfireClient
 			
 		}
 
+		public string AccountName
+		{
+			get { return _loginInfo != null ? _loginInfo.Account : string.Empty; }
+		}
+
 		public User GetMe()
 		{
 			var uri = String.Format("users/me.xml");

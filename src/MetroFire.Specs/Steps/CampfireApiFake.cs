@@ -159,6 +159,8 @@ namespace MetroFire.Specs.Steps
 			throw new NotImplementedException();
 		}
 
+		public string AccountName { get; private set; }
+
 		public void AddRoom(Room room)
 		{
 			if (room.Users == null)

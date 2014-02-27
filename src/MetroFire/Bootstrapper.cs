@@ -74,6 +74,7 @@ namespace Rogue.MetroFire.UI
 			_container.Register(Component.For<FlashTaskBarAction>().ImplementedBy<FlashTaskBarAction>().LifestyleTransient());
 			_container.Register(Component.For<ShowToastAction>().ImplementedBy<ShowToastAction>().LifestyleTransient());
 			_container.Register(Component.For<PlaySoundAction>().ImplementedBy<PlaySoundAction>().LifestyleTransient());
+			_container.Register(Component.For<HighlightTextAction>().ImplementedBy<HighlightTextAction>().LifestyleTransient());
 			_container.Register(Component.For<ITaskBar>().ImplementedBy<TaskBar>().LifestyleSingleton());
 			_container.Register(Component.For<IImageView>().LifestyleTransient().ImplementedBy<ImageView>());
 			_container.Register(Component.For<ISettings>().ImplementedBy<CurrentSettings>().Forward<CampfireClient.ISettings>()
@@ -144,6 +145,8 @@ namespace Rogue.MetroFire.UI
 					return _container.Resolve<PlaySoundAction>(new {data = notificationAction});
 					case ActionType.ShowToast:
 					return _container.Resolve<ShowToastAction>(new {data = notificationAction});
+					case ActionType.HighlightText:
+					return _container.Resolve<HighlightTextAction>(new {data = notificationAction});
 					default:
 					return null;
 			}

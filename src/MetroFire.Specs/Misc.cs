@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Windows.Media;
 using FluentAssertions;
 using Microsoft.Reactive.Testing;
 using NUnit.Framework;
+using Rogue.MetroFire.UI.Settings;
 
 namespace MetroFire.Specs
 {
@@ -41,6 +43,14 @@ namespace MetroFire.Specs
 			disposable.Dispose();
 
 			disposed.Should().BeTrue();
+		}
+
+		[Test]
+		public void HighlightTextAction_ColorValue_should_roundtrip()
+		{
+			var action = new HighlightTextNotificationAction {Color = Colors.Peru};
+			action.ColorValue = action.ColorValue;
+			action.Color.Should().Be(Colors.Peru);
 		}
 	}
 }

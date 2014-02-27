@@ -4,9 +4,11 @@
                     xmlns:Infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
-                    xmlns:System="clr-namespace:System;assembly=mscorlib" mc:Ignorable="d">
+                    xmlns:System="clr-namespace:System;assembly=mscorlib"
+                    xmlns:converters="clr-namespace:Rogue.MetroFire.UI.Converters" mc:Ignorable="d">
 
 	<Infrastructure:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+	<converters:ColorToBrushConverter x:Key="colorToBrushConverter"/>
 
 	<DataTemplate x:Key="_notificationsItemTemplate">
 		<Border BorderBrush="Black" BorderThickness="0,0,0,0.5" Height="Auto" Width="Auto" x:Name="rootBorder" Margin="0 0 0 10" Padding="0 0 0 10" >
@@ -98,7 +100,8 @@
 			</VisualStateManager.VisualStateGroups>
 			<Grid x:Name="grid">
 				<TextBlock Margin="0,0,0,4.04" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" Style="{DynamicResource MetroSmallLightHeader}">
-						<Run Text="{Binding DisplayText, Mode=OneWay, StringFormat=&#x2022;  {0}}"/>
+						<Run Text="{Binding DisplayText, Mode=OneWay, StringFormat=&#x2022;  {0}}" 
+							 Foreground="{Binding DisplayColor, Converter={StaticResource colorToBrushConverter}}"/>
 				</TextBlock>
 			</Grid>
 			<Grid x:Name="contentPresenter" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -211,7 +214,7 @@
 			</Grid.RowDefinitions>
 			<ComboBox d:LayoutOverrides="Height" DisplayMemberPath="Text" ItemsSource="{Binding ActionTypes}" 
 					  x:Name="actionTypeCheckBox"
-					  SelectedItem="{Binding SelectedActionType}" Grid.ColumnSpan="3"/>
+					  SelectedItem="{Binding SelectedAction}" Grid.ColumnSpan="3"/>
 			<ComboBox HorizontalAlignment="Stretch" Margin="0" Width="Auto" d:LayoutOverrides="Height, GridBox" Grid.Row="2"
 					  Visibility="Collapsed"
 					  DisplayMemberPath="Text"
@@ -249,6 +252,28 @@
 			<Button Content="..." d:LayoutOverrides="Height" Grid.Column="2" Style="{DynamicResource MetroBigButton}" Margin="2" FontSize="13.333"/>
 		</Grid>
 		
+	</DataTemplate>
+	
+	<DataTemplate DataType="{x:Type Settings:HighlightTextViewModel}">
+		<Grid d:DesignWidth="393.857" d:DesignHeight="161.92">
+			<Grid.Resources>
+			</Grid.Resources>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<Label Margin="0,0,10,0">Highlight with this color</Label>
+			<ComboBox SelectedItem="{Binding SelectedColor}" MaxWidth="100"
+					  ItemsSource="{Binding AvailableColors}" Grid.Row="1" 
+					  VerticalAlignment="Top" MaxHeight="22" Grid.Column="1" HorizontalAlignment="Left" MinWidth="100" Margin="0,1,0,0">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock TextWrapping="Wrap" Text="{Binding Text, Mode=OneWay}" 
+							Foreground="{Binding Data, Converter={StaticResource colorToBrushConverter}}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+		</Grid>
 	</DataTemplate>
 
 		

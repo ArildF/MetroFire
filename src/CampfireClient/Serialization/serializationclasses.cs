@@ -91,6 +91,10 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 	[XmlType("user")]
 	public class User
 	{
+		static User()
+		{
+			NullUser = new User {Name = ""};
+		}
 		[XmlElement("id")]
 		public int Id { get; set; }
 
@@ -111,6 +115,9 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 
 		[XmlElement("admin")]
 		public bool Admin { get; set; }
+
+		[XmlIgnore]
+		public static User NullUser { get; private set; }
 	}
 
 	[XmlType("upload")]
@@ -216,6 +223,17 @@ namespace Rogue.MetroFire.CampfireClient.Serialization
 
 		[JsonProperty("tweet")]
 		public Tweet Tweet { get; set; }
+
+		public override bool Equals(object obj)
+		{
+			var other = obj as Message;
+			return other != null && Id == other.Id;
+		}
+
+		public override int GetHashCode()
+		{
+			return Id;
+		}
 
 	}
 

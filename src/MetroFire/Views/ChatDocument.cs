@@ -87,10 +87,13 @@ namespace Rogue.MetroFire.UI.Views
 			paragraph.Inlines.Add(view.Element);
 		}
 
-		public object AddMessage(Message message, User user, object textObject)
+		public object AddMessage(Message message, User user, IRoom room, object textObject)
 		{
-			var paragraph = new Paragraph {Margin = new Thickness(0), TextAlignment = TextAlignment.Left};
-			RenderParagraph(paragraph, message, user);
+			var paragraph = new Paragraph
+			{
+				Margin = new Thickness(0), TextAlignment = TextAlignment.Left, Tag = message
+			};
+			RenderParagraph(paragraph, message, user, room);
 
 			var after = textObject as Paragraph;
 			if (after != null)
@@ -106,7 +109,7 @@ namespace Rogue.MetroFire.UI.Views
 
 		}
 
-		public void UpdateMessage(object textObject, Message message, User user)
+		public void UpdateMessage(object textObject, Message message, User user, IRoom room)
 		{
 			var paragraph = textObject as Paragraph;
 			if (paragraph == null)
@@ -115,17 +118,17 @@ namespace Rogue.MetroFire.UI.Views
 			}
 			paragraph.Inlines.Clear();
 
-			RenderParagraph(paragraph, message, user);
+			RenderParagraph(paragraph, message, user, room);
 		}
 
-		private void RenderParagraph(Paragraph paragraph, Message message, User user)
+		private void RenderParagraph(Paragraph paragraph, Message message, User user, IRoom room)
 		{
 			Action<Message, User, Paragraph> handler;
 			if (!_handlers.TryGetValue(message.Type, out handler))
 			{
 				return;
 			}
-			if (!RenderByCustomFormatter(message, user, paragraph))
+			if (!RenderByCustomFormatter(message, user, paragraph, room))
 			{
 				handler(message, user, paragraph);
 			}
@@ -133,17 +136,17 @@ namespace Rogue.MetroFire.UI.Views
 			
 			foreach (var postProcessor in _postProcessors.OrderBy(p => p.Priority))
 			{
-				postProcessor.Process(paragraph, message, user);
+				postProcessor.Process(paragraph, message, user ?? User.NullUser, room);
 			}
 		}
 
-		private bool RenderByCustomFormatter(Message message, User user, Paragraph paragraph)
+		private bool RenderByCustomFormatter(Message message, User user, Paragraph paragraph, IRoom room)
 		{
 			foreach (var messageFormatter in _formatters.OrderBy(f => f.Priority))
 			{
 				if (messageFormatter.ShouldHandle(message, user))
 				{
-					messageFormatter.Render(paragraph, message, user);
+					messageFormatter.Render(paragraph, message, user, room);
 					return true;
 				}
 			}
@@ -278,6 +281,16 @@ namespace Rogue.MetroFire.UI.Views
 					Blocks.Remove(paragraph);
 					_pasteViewFactory.Release(view);
 				});
+		}
+
+		public void HighlightMessage(Message message, Color color)
+		{
+			var paragraph = Blocks.OfType<Paragraph>().FirstOrDefault(b => b.Tag.Equals(message));
+			if (paragraph == null)
+			{
+				return;
+			}
+			
 		}
 	}
 

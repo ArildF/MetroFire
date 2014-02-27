@@ -2,11 +2,12 @@
 using Castle.Core;
 using ReactiveUI;
 using System;
+using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.Settings;
 
 namespace Rogue.MetroFire.UI.Notifications
 {
-	public class NotificationListener : IStartable
+	public class NotificationListener : IStartable, IFormatter
 	{
 		private readonly IMessageBus _bus;
 		private readonly ISettings _settings;
@@ -51,6 +52,14 @@ namespace Rogue.MetroFire.UI.Notifications
 		public void Stop()
 		{
 			
+		}
+
+		public void Format(NotificationMessage message, IMessageRenderer renderer)
+		{
+			foreach (var notification in _notifications)
+			{
+				notification.OnRender(message, renderer);
+			}
 		}
 	}
 

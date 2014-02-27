@@ -51,7 +51,7 @@ namespace Rogue.MetroFire.UI.Views
 			_factory = factory;
 		}
 
-		public void Render(Paragraph paragraph, Message message, User user)
+		public void Render(Paragraph paragraph, Message message, User user, IRoom room)
 		{
 			ChatDocument.RenderUserString(user, paragraph);
 
@@ -90,7 +90,7 @@ namespace Rogue.MetroFire.UI.Views
 			return base.ShouldHandle(message, user) && GetId(message.Body) != null;
 		}
 
-		public void Render(Paragraph paragraph, Message message, User user)
+		public void Render(Paragraph paragraph, Message message, User user, IRoom room)
 		{
 			ChatDocument.RenderUserString(user, paragraph);
 
@@ -145,6 +145,48 @@ namespace Rogue.MetroFire.UI.Views
 			}
 			var path = uri.LocalPath;
 			return path.Length > 0 ? path.Substring(1) : null;
+		}
+	}
+
+
+	public class TriggerFormatter : IMessagePostProcessor
+	{
+		private readonly IFormatter _formatter;
+
+		public TriggerFormatter(IFormatter formatter)
+		{
+			_formatter = formatter;
+		}
+
+		public bool ShouldHandle(Message message, User user)
+		{
+			return true;
+		}
+
+		public void Process(Paragraph paragraph, Message message, User user, IRoom room)
+		{
+			_formatter.Format(new NotificationMessage(room, user, message, false),
+				new MessageRenderer(paragraph));
+		}
+
+		public int Priority { get { return 9999; } }
+	}
+
+	public class MessageRenderer : IMessageRenderer
+	{
+		private readonly Paragraph _paragraph;
+
+		public MessageRenderer(Paragraph paragraph)
+		{
+			_paragraph = paragraph;
+		}
+
+		public void Highlight(Color color)
+		{
+			new Span(_paragraph.ContentStart, _paragraph.ContentEnd)
+			{
+				Foreground = new SolidColorBrush(color)
+			};
 		}
 	}
 
@@ -234,7 +276,7 @@ namespace Rogue.MetroFire.UI.Views
 			          .Replace("|", @"\|");
 		}
 
-		public void Process(Paragraph paragraph, Message message, User user)
+		public void Process(Paragraph paragraph, Message message, User user, IRoom room)
 		{
 			if (message.Type != MessageType.TextMessage)
 			{
@@ -292,7 +334,7 @@ namespace Rogue.MetroFire.UI.Views
 
 	public class HyperLinkMessagePostProcessor : IMessagePostProcessor
 	{
-		public void Process(Paragraph paragraph, Message message, User user)
+		public void Process(Paragraph paragraph, Message message, User user, IRoom room)
 		{
 			new HyperLinkVisitor().Visit(paragraph.Inlines);
 		}

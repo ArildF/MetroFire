@@ -68,5 +68,15 @@ Scenario Outline: Emoticons
 	| Hmm... :S       | :S       |
 
 
+Scenario Outline: Custom highlighting
+	Given that there is a setting to render messages with the word '<Triggerword>' in '<Color>'
+	When I add the message "<Message>" from user 'Testuser'
+	Then the message '<ExpectedMessage>' should be displayed rendered in '<Color>'
+	Examples: 
+	| Triggerword | Color | Message             | ExpectedMessage                |
+	| arkbuilder  | Red   | Jeg tar arkbuilder! | <Testuser> Jeg tar arkbuilder! |
+
+
+
 
 

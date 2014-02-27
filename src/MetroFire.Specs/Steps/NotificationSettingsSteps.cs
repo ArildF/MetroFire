@@ -53,6 +53,9 @@ namespace MetroFire.Specs.Steps
 			_currentNotification.CollapseAll();
 		}
 
+		
+
+
 		[Given(@"the notification has the following actions")]
 		public void GivenTheNotificationHasTheFollowingActions(Table table)
 		{
@@ -61,7 +64,7 @@ namespace MetroFire.Specs.Steps
 			{
 				_currentNotification.AddNewActionCommand.Execute(null);
 				var action = _currentNotification.Actions.Last();
-				action.SelectedActionType = action.ActionTypes.First(at => at.Data == notificationAction.ActionType);
+				action.SelectedAction = action.ActionTypes.First(at => at.Data.ActionType == notificationAction.ActionType);
 			}
 		}
 

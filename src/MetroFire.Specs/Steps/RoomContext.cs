@@ -112,8 +112,11 @@ namespace MetroFire.Specs.Steps
 			switch (arg.ActionType)
 			{
 					case ActionType.FlashTaskbar:
-					return (_mockFlashTaskBarAction = new Mock<INotificationAction>()).Object;
-					case ActionType.ShowToast: return new ShowToastAction((ShowToastNotificationAction)arg, _bus);
+						return (_mockFlashTaskBarAction = new Mock<INotificationAction>()).Object;
+					case ActionType.ShowToast: 
+						return new ShowToastAction((ShowToastNotificationAction)arg, _bus);
+					case ActionType.HighlightText:
+						return new HighlightTextAction((HighlightTextNotificationAction)arg);
 			}
 
 			throw new InvalidOperationException();

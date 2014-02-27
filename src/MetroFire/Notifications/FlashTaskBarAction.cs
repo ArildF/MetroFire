@@ -17,5 +17,8 @@ namespace Rogue.MetroFire.UI.Notifications
 		{
 			_taskbar.Flash();
 		}
+
+		public bool ShouldTriggerOnSelfMessage { get { return false; } }
+		public bool IsRenderTime { get { return false; } }
 	}
 }

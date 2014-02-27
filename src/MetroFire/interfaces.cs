@@ -119,10 +119,10 @@ namespace Rogue.MetroFire.UI
 		void PersistLoginInfo(LoginInfo info);
 	}
 
-	public interface IChatDocument
+	public interface IChatDocument 
 	{
-		object AddMessage(Message message, User user, object textObject);
-		void UpdateMessage(object textObject, Message message, User user);
+		object AddMessage(Message message, User user, IRoom room, object textObject);
+		void UpdateMessage(object textObject, Message message, User user, IRoom room);
 		void AddUploadFile(IRoom room, FileItem fileItem);
 		Double FontSize { get; set; }
 
@@ -139,11 +139,14 @@ namespace Rogue.MetroFire.UI
 	public interface INotificationAction
 	{
 		void Execute(NotificationMessage notificationMessage);
+		bool ShouldTriggerOnSelfMessage { get; }
+		bool IsRenderTime { get; }
 	}
 
 	public interface INotification
 	{
 		void Process(NotificationMessage notificationMessage);
+		void OnRender(NotificationMessage message, IMessageRenderer renderer);
 	}
 	public interface IInlineUploadView
 	{
@@ -251,18 +254,33 @@ namespace Rogue.MetroFire.UI
 	public interface IMessageFormatter
 	{
 		bool ShouldHandle(Message message, User user);
-		void Render(Paragraph paragraph, Message message, User user);
+		void Render(Paragraph paragraph, Message message, User user, IRoom room);
 		int Priority { get; }
 	}
 
 	public interface IMessagePostProcessor
 	{
-		void Process(Paragraph paragraph, Message message, User user);
+		void Process(Paragraph paragraph, Message message, User user, IRoom room);
 		int Priority { get; }
 	}
 
 	public interface IGitHubClient
 	{
 		Commit[] GetLatestCommits();
+	}
+
+	public interface IMessageRenderer
+	{
+		void Highlight(Color color);
+	}
+
+	public interface IFormatter
+	{
+		void Format(NotificationMessage message, IMessageRenderer renderer);
+	}
+
+	public interface IRenderAction
+	{
+		void Format(NotificationMessage message, IMessageRenderer renderer);
 	}
 }

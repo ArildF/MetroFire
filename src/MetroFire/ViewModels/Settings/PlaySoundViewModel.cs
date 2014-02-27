@@ -1,3 +1,4 @@
+using System.Windows.Media;
 using ReactiveUI;
 using Rogue.MetroFire.UI.Settings;
 
@@ -24,5 +25,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 		{
 			_notificationAction.SoundFile = SoundFile;
 		}
+
+		public Color Color { get { return Colors.Black; } }
 	}
 }

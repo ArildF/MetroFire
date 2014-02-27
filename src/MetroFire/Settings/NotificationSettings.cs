@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Windows.Media;
+using System.Xml.Serialization;
 
 namespace Rogue.MetroFire.UI.Settings
 {
@@ -17,9 +19,10 @@ namespace Rogue.MetroFire.UI.Settings
 	[XmlInclude(typeof(FlashTaskBarNotificationAction))]
 	[XmlInclude(typeof(PlaySoundNotificationAction))]
 	[XmlInclude(typeof(ShowToastNotificationAction))]
-	public class NotificationAction
+	[XmlInclude(typeof(HighlightTextNotificationAction))]
+	public abstract class NotificationAction
 	{
-		public NotificationAction()
+		protected NotificationAction()
 		{
 			Interval = 60;
 		}
@@ -59,11 +62,39 @@ namespace Rogue.MetroFire.UI.Settings
 		public string SoundFile { get; set; }
 	}
 
+	public class HighlightTextNotificationAction : NotificationAction
+	{
+		public HighlightTextNotificationAction()
+		{
+			ActionType = ActionType.HighlightText;
+		}
+
+		[XmlIgnore]
+		public Color Color { get; set; }
+
+		public int ColorValue
+		{
+			get
+			{
+				return BitConverter.ToInt32(new[] {Color.A, Color.R, Color.G, Color.B}, 0);
+			}
+			set
+			{
+				var bytes = BitConverter.GetBytes(value);
+				Color = Color.FromArgb(bytes[0], bytes[1], bytes[2], bytes[3]);
+			}
+		}
+
+		public string SoundFile { get; set; }
+	}
+
 	public class NotificationTrigger
 	{
 		public TriggerType TriggerType { get; set; }
 		public string MatchText { get; set; }
 		public string MatchRoom { get; set; }
 		public string MatchUser { get; set; }
+
+		
 	}
 }

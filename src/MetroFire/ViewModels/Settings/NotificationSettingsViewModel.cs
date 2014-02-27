@@ -35,7 +35,10 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 					                  	new NotificationEntry
 					                  		{
 					                  			Triggers = new[] {new NotificationTrigger()},
-					                  			Actions = new[] {new NotificationAction()}
+					                  			Actions = new NotificationAction[]
+					                  			{
+					                  				new FlashTaskBarNotificationAction()
+					                  			}
 					                  		},
 					                  	this));
 					Notifications.Last().Actions.First().IsEditing = true;

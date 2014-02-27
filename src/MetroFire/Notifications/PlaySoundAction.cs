@@ -15,5 +15,12 @@ namespace Rogue.MetroFire.UI.Notifications
 		{
 			
 		}
+
+		public bool ShouldTriggerOnSelfMessage { get { return false; } }
+
+		public bool IsRenderTime
+		{
+			get { return false; }
+		}
 	}
 }

@@ -30,7 +30,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private bool _userEditedMessage;
 		private string _roomTranscriptsUri;
 
-		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, IChatDocument chatDocument,
+		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, 
+			IChatDocument chatDocument,
 			IClipboardService clipboardService , IGlobalCommands commands, ISettings settings)
 		{
 			_room = room;
@@ -108,7 +109,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 					if (msg.UserId == user.Id)
 					{
 						msg.User = user;
-						_chatDocument.UpdateMessage(msg.TextObject, msg.Message, user);
+						_chatDocument.UpdateMessage(msg.TextObject, msg.Message, user, _room);
 					}
 				}
 			}
@@ -148,7 +149,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 				User user = message.UserId != null ? _userCache.GetUser(message.UserId.GetValueOrDefault(), existingUser) : null;
 				var after = _messages.LastOrDefault(m => m.Message.Id < message.Id);
 
-				var textObject = _chatDocument.AddMessage(message, user, after != null ? after.TextObject : null);
+				var textObject = _chatDocument.AddMessage(message, user, _room, after != null ? after.TextObject : null);
 
 				var roomMessage = new RoomMessage(message, user, textObject);
 				if (after != null)

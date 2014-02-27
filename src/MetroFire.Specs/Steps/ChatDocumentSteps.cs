@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
 using Moq;
 using ReactiveUI;
 using Rogue.MetroFire.CampfireClient.Serialization;
@@ -133,8 +134,7 @@ namespace MetroFire.Specs.Steps
 		[Then(@"the message should be displayed as an inline youtube video")]
 		public void ThenTheMessageShouldBeDisplayedAsAnInlineYoutubeVideo()
 		{
-			var block = (Paragraph) _chatDocument.Blocks.FirstBlock;
-			var inlines = block.Inlines.Flatten();
+			var inlines = Flattened();
 
 			var youtube = inlines.FirstOrDefault(i => i is InlineUIContainer);
 			youtube.Should().NotBeNull();
@@ -145,8 +145,7 @@ namespace MetroFire.Specs.Steps
 		[Then(@"the message '(.*)' should have the '(.*)' replaced by a graphic")]
 		public void ThenTheMessageShouldHaveTheReplacedByAGraphic(string msg, string emoticon)
 		{
-			var block = (Paragraph) _chatDocument.Blocks.FirstBlock;
-			var inlines = block.Inlines.Flatten();
+			var inlines = Flattened();
 
 			int index = msg.IndexOf(emoticon);
 			var first = inlines.OfType<Run>().Skip(1).First();
@@ -155,6 +154,26 @@ namespace MetroFire.Specs.Steps
 			first.NextInline.Should().BeOfType<InlineUIContainer>();
 		}
 
+		[Then(@"the message '(.*)' should be displayed rendered in '(.*)'")]
+		public void ThenTheMessageShouldBeDisplayedRenderedInRed(string message, string color)
+		{
+			var first = ((Paragraph)_chatDocument.Blocks.FirstBlock).Inlines.First();
+			first.Should().BeOfType<Span>();
+			var span = (Span) first;
+			var brush = (SolidColorBrush) span.Foreground;
+			brush.Color.Should().Be(ColorConverter.ConvertFromString(color));
+
+			var block = (Paragraph)_chatDocument.Blocks.FirstBlock;
+			var msg = string.Join("", block.Inlines.GetText());
+			msg.Should().Be(message);
+		}
+
+		private IEnumerable<Inline> Flattened()
+		{
+			var block = (Paragraph) _chatDocument.Blocks.FirstBlock;
+			var inlines = block.Inlines.Flatten();
+			return inlines;
+		}
 	}
 
 	

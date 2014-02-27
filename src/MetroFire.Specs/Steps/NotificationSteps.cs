@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Documents;
+using System.Windows.Media;
 using Moq;
 using Rogue.MetroFire.UI;
 using Rogue.MetroFire.UI.Infrastructure;
@@ -66,6 +67,35 @@ namespace MetroFire.Specs.Steps
 								}
 						}
 				};
+
+			_context.PulseSettingsChanged();
+		}
+
+		[Given(@"that there is a setting to render messages with the word '(.*)' in '(.*)'")]
+		public void GivenThatThereIsASettingToRenderMessagesWithTheWordIn(string triggerWord, 
+			string color)
+		{
+			_context.MetroFireSettings.Notification.Notifications = new[]
+			{
+				new NotificationEntry
+				{
+					Triggers = new[]
+					{
+						new NotificationTrigger
+						{
+							MatchText = triggerWord,
+							TriggerType = TriggerType.UserMessage
+						}
+					},
+					Actions = new NotificationAction[]
+					{
+						new HighlightTextNotificationAction
+						{
+							Color = (Color) ColorConverter.ConvertFromString(color)
+						}
+					}
+				}
+			};
 
 			_context.PulseSettingsChanged();
 		}

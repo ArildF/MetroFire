@@ -20,7 +20,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			_document.FontSize = 14;
 			IsVisible = true;
 			RoomName = showToastMessage.Message.Room.Name;
-			_document.AddMessage(showToastMessage.Message.Message, showToastMessage.Message.User, null);
+			_document.AddMessage(showToastMessage.Message.Message, showToastMessage.Message.User, showToastMessage.Message.Room, null);
 
 			CloseCommand = new ReactiveCommand();
 			ActivateCommand = new ReactiveCommand();

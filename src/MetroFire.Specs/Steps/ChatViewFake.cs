@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows.Media;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace MetroFire.Specs.Steps
 	{
 		private readonly List<MessageEntry> _messages = new List<MessageEntry>();
 
-		public object AddMessage(Message message, User user, object textObject)
+		public object AddMessage(Message message, User user, IRoom room, object textObject)
 		{
 			var entry = new MessageEntry(message, user);
 
@@ -27,7 +28,7 @@ namespace MetroFire.Specs.Steps
 			return entry;
 		}
 
-		public void UpdateMessage(object textObject, Message message, User user)
+		public void UpdateMessage(object textObject, Message message, User user, IRoom room)
 		{
 			throw new System.NotImplementedException();
 		}
@@ -63,6 +64,11 @@ namespace MetroFire.Specs.Steps
 			public User User { get; private set; }
 
 			public Message Message { get; private set; }
+		}
+
+		public void HighlightMessage(Message message, Color color)
+		{
+			throw new System.NotImplementedException();
 		}
 	}
 }

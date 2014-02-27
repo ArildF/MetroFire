@@ -168,12 +168,14 @@ namespace Rogue.MetroFire.UI
 		public IRoom Room { get; private set; }
 		public User User { get; private set; }
 		public Message Message { get; private set; }
+		public bool IsSelfMessage { get; private set; }
 
-		public NotificationMessage(IRoom room, User user, Message message)
+		public NotificationMessage(IRoom room, User user, Message message, bool isSelfMessage)
 		{
 			Room = room;
 			User = user;
 			Message = message;
+			IsSelfMessage = isSelfMessage;
 		}
 	}
 

@@ -46,11 +46,11 @@ namespace Rogue.MetroFire.UI.Notifications
 			foreach (var message in messagesReceivedMessage.Messages)
 			{
 				var user = _userCache.GetUser(message.UserId ?? -1);
-				if (user == null || user.Id == _currentUserId)
+				if (user == null)
 				{
 					continue;
 				}
-				_bus.SendMessage(new NotificationMessage(room, user, message));
+				_bus.SendMessage(new NotificationMessage(room, user, message, user.Id == _currentUserId));
 			}
 		}
 

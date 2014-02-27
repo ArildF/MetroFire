@@ -168,6 +168,7 @@
     <Compile Include="Behaviors\UrlifyBehavior.cs" />
     <Compile Include="Behaviors\VisualStateBehavior.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\GitHubCommitToColorConverter.cs" />
     <Compile Include="Converters\NumberToOverlayConverter.cs" />
     <Compile Include="Converters\SizeValueConverter.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="ModuleResolver.cs" />
     <Compile Include="ModulesInstaller.cs" />
     <Compile Include="Notifications\FlashTaskBarAction.cs" />
+    <Compile Include="Notifications\HighlightTextAction.cs" />
     <Compile Include="Notifications\Notification.cs" />
     <Compile Include="Notifications\NotificationListener.cs" />
     <Compile Include="Notifications\NotificationTransformer.cs" />
@@ -263,6 +265,7 @@
     <Compile Include="ViewModels\Settings\ActionViewModel.cs" />
     <Compile Include="ViewModels\Settings\ComboViewModel.cs" />
     <Compile Include="ViewModels\Settings\GeneralSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\HighlightTextViewModel.cs" />
     <Compile Include="ViewModels\Settings\ISettingsSubPage.cs" />
     <Compile Include="ViewModels\Settings\NetworkSettingsViewModel.cs" />
     <Compile Include="ViewModels\Settings\NotificationSettingsViewModel.cs" />

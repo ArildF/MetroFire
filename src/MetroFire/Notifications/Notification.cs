@@ -30,15 +30,33 @@ namespace Rogue.MetroFire.UI.Notifications
 
 		public void Process(NotificationMessage notificationMessage)
 		{
-			if (_triggers.Any(t => t.Matches(notificationMessage)))
+			if (IsTriggerMatch(notificationMessage))
 			{
-				ExecuteNotifications(notificationMessage);
+				ExecuteNotificationsOnTrigger(notificationMessage);
 			}
 		}
 
-		private void ExecuteNotifications(NotificationMessage notificationMessage)
+		private bool IsTriggerMatch(NotificationMessage notificationMessage)
 		{
-			foreach (var action in _actions)
+			return _triggers.Any(t => t.Matches(notificationMessage));
+		}
+
+		public void OnRender(NotificationMessage message, IMessageRenderer renderer)
+		{
+			if (!IsTriggerMatch(message))
+			{
+				return;
+			}
+			foreach (var action in _actions.OfType<IRenderAction>())
+			{
+				action.Format(message, renderer);
+			}
+		}
+
+		private void ExecuteNotificationsOnTrigger(NotificationMessage notificationMessage)
+		{
+			foreach (var action in _actions.Where(a => !a.IsRenderTime && 
+				(!notificationMessage.IsSelfMessage || a.ShouldTriggerOnSelfMessage)))
 			{
 				action.Execute(notificationMessage);
 			}

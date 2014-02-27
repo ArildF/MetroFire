@@ -1,20 +1,20 @@
 using System.Linq;
+using System.Windows.Media;
 using ReactiveUI;
-using ReactiveUI.Xaml;
 using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.UI.Settings;
-using System;
 
 namespace Rogue.MetroFire.UI.ViewModels.Settings
 {
 	public interface IActionSubViewModel
 	{
 		void Commit();
+		Color Color { get; }
 	}
 	public class ActionViewModel : ReactiveObject, IToggleEdit
 	{
 		private NotificationAction _notificationAction;
-		private ComboViewModel<ActionType> _selectedActionType;
+		private ComboViewModel<NotificationAction> _selectedAction;
 		private ComboViewModel<ActionCondition> _selectedActionCondition;
 		private int _interval;
 		private bool _showInterval;
@@ -28,8 +28,12 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 			ActionTypes = new[]
 				{
-					new ComboViewModel<ActionType>("flash the task bar", ActionType.FlashTaskbar),
-					new ComboViewModel<ActionType>("show a toast", ActionType.ShowToast),
+					new ComboViewModel<NotificationAction>(Description(ActionType.FlashTaskbar), 
+						new FlashTaskBarNotificationAction {ActionType = ActionType.FlashTaskbar}),
+					new ComboViewModel<NotificationAction>(Description(ActionType.ShowToast), 
+						new ShowToastNotificationAction{ActionType = ActionType.ShowToast}),
+					new ComboViewModel<NotificationAction>(Description(ActionType.HighlightText), 
+						new HighlightTextNotificationAction{ActionType = ActionType.HighlightText}), 
 					//new ComboViewModel<ActionType>("play a sound", ActionType.PlaySound),
 				};
 
@@ -41,13 +45,30 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 					                                    ActionCondition.MinimumTimeSinceLastNotification),
 				};
 
-
-			SelectedActionType = ActionTypes.FirstOrDefault(at => at.Data == notificationAction.ActionType);
+			SelectedAction = new ComboViewModel<NotificationAction>(
+				Description(_notificationAction.ActionType), _notificationAction);
+			ActionTypes = ActionTypes.Select(
+				at => at.Data.ActionType == SelectedAction.Data.ActionType ? SelectedAction : at)
+				.ToArray();
 			SelectedActionCondition = ActionConditions.FirstOrDefault(ac => ac.Data == notificationAction.ActionCondition);
 			Interval = notificationAction.Interval;
 
 		}
 
+		private static string Description(ActionType flashTaskbar)
+		{
+			switch (flashTaskbar)
+			{
+				case ActionType.FlashTaskbar:
+					return "flash the task bar";
+				case ActionType.HighlightText:
+					return "highlight text";
+				case ActionType.ShowToast:
+					return "show a toast";
+				default:
+					return "";
+			}
+		}
 
 
 		public bool IsEditing
@@ -64,6 +85,11 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			}
 		}
 
+		public Color DisplayColor
+		{
+			get { return SubViewModel != null ? SubViewModel.Color : Colors.Black; }
+		}
+
 
 		public string DisplayText
 		{
@@ -72,32 +98,42 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 		private string FormatDisplayText()
 		{
-			return SelectedActionType.Text;
+			return SelectedAction.Text;
 		}
 
 		public ComboViewModel<ActionCondition>[] ActionConditions { get; private set; }
 
 
-		public ComboViewModel<ActionType> SelectedActionType
+		public ComboViewModel<NotificationAction> SelectedAction
 		{
-			get { return _selectedActionType; }
+			get { return _selectedAction; }
 			set
 			{
-				if (value == _selectedActionType)
+				if (_selectedAction == value)
 				{
 					return;
 				}
-				this.RaiseAndSetIfChanged(vm => vm.SelectedActionType, ref _selectedActionType, value);
+				this.RaiseAndSetIfChanged(vm => vm.SelectedAction, ref _selectedAction, value);
 
-				_notificationAction = CreateNotificationAction(_selectedActionType.Data);
-				SubViewModel = CreateSubViewModel(_selectedActionType.Data);
+				_notificationAction = value.Data;
+				SubViewModel = CreateSubViewModel(value.Data);
 				raisePropertyChanged(null);
 			}
 		}
 
-		private IActionSubViewModel CreateSubViewModel(ActionType data)
+		private IActionSubViewModel CreateSubViewModel(NotificationAction data)
 		{
-			return data == ActionType.PlaySound ? new PlaySoundViewModel((PlaySoundNotificationAction)_notificationAction) : null;
+			switch (data.ActionType)
+			{
+				case ActionType.PlaySound:
+					return new PlaySoundViewModel(
+						data as PlaySoundNotificationAction ?? new PlaySoundNotificationAction());
+				case ActionType.HighlightText:
+					return new HighlightTextViewModel(
+						data as HighlightTextNotificationAction ?? new HighlightTextNotificationAction());
+				default:
+					return null;
+			}
 		}
 
 		public IActionSubViewModel SubViewModel
@@ -148,12 +184,14 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 					return new PlaySoundNotificationAction();
 				case ActionType.ShowToast:
 					return new ShowToastNotificationAction();
+				case ActionType.HighlightText:
+					return new HighlightTextNotificationAction();
 				default:
 					return new FlashTaskBarNotificationAction();
 			}
 		}
 
-		public ComboViewModel<ActionType>[] ActionTypes { get; private set; }
+		public ComboViewModel<NotificationAction>[] ActionTypes { get; private set; }
 
 		public NotificationAction Action
 		{

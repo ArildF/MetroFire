@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Rogue.MetroFire.UI.ViewModels.Settings
 {
 	public class ComboViewModel<T>
@@ -10,5 +12,6 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 			Text = text;
 			Data = data;
 		}
+
 	}
 }

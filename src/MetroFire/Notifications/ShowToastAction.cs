@@ -18,5 +18,8 @@ namespace Rogue.MetroFire.UI.Notifications
 		{
 			_bus.SendMessage(new ShowToastMessage(notificationMessage, _data));
 		}
+
+		public bool ShouldTriggerOnSelfMessage { get { return false; } }
+		public bool IsRenderTime { get { return false; } }
 	}
 }

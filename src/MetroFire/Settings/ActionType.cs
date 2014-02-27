@@ -4,6 +4,7 @@
 	{
 		FlashTaskbar,
 		ShowToast,
-		PlaySound
+		PlaySound,
+		HighlightText
 	}
 }

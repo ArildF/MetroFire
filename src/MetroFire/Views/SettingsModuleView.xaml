@@ -13,6 +13,15 @@
              d:DesignHeight="503" d:DesignWidth="752" Background="White">
 	<UserControl.Resources>
 		<SolidColorBrush x:Key="TabControlNormalBorderBrush" Color="#8C8E94"/>
+
+		<Style x:Key="{x:Static SystemParameters.FocusVisualStyleKey}">
+			<Setter Property="Control.Template">
+				<Setter.Value>
+					<ControlTemplate>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
 		<Style x:Key="SettingsTabControlStyle" TargetType="{x:Type TabControl}">
 			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
 			<Setter Property="Padding" Value="4,4,4,4"/>

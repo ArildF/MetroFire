@@ -59,17 +59,8 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
-		<Style x:Key="TabItemFocusVisual">
-			<Setter Property="Control.Template">
-				<Setter.Value>
-					<ControlTemplate>
-						<Rectangle Margin="3,3,3,1" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
+		
 		<Style x:Key="TabItemStyle1" TargetType="{x:Type TabItem}">
-			<Setter Property="FocusVisualStyle" Value="{StaticResource TabItemFocusVisual}"/>
 			<Setter Property="Foreground" Value="Black"/>
 			<Setter Property="Padding" Value="6,1,6,1"/>
 			<Setter Property="BorderBrush" Value="{StaticResource TabControlNormalBorderBrush}"/>

@@ -67,8 +67,8 @@ namespace Rogue.MetroFire.CampfireClient
 			_bus.Listen<RequestUploadFileMessage>().SubscribeThreadPool(RequestUploadFile);
 			_bus.Listen<RequestStopStreamingMessage>().SubscribeThreadPool(RequestStopStreaming);
 			_bus.Listen<RequestCheckAccountName>().SubscribeThreadPool(RequestCheckAccountName);
-			_bus.Listen<RequestConnectivityCheckMessage>().Subscribe(RequestConnectivityCheck);
-			_bus.Listen<RequestHeadMessage>().Subscribe(RequestHead);
+			_bus.Listen<RequestConnectivityCheckMessage>().SubscribeThreadPool(RequestConnectivityCheck);
+			_bus.Listen<RequestHeadMessage>().SubscribeThreadPool(RequestHead);
 		}
 
 		private void RequestHead(RequestHeadMessage message)

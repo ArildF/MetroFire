@@ -163,6 +163,21 @@ namespace Rogue.MetroFire.UI.Views
 			}
 		}
 
+		public void AddNotificationMessage(string message, bool isError)
+		{
+			var paragraph = new Paragraph(
+				new Run(message)
+				{
+					Foreground = isError ? Brushes.Red : Brushes.Black
+				})
+			{
+				Margin = new Thickness(0),
+				TextAlignment = TextAlignment.Left
+			};
+
+			Blocks.Add(paragraph);
+		}
+
 		private void FormatEnterMessage(Message message, User user, Paragraph paragraph)
 		{
 			var name = FormatUserName(user);

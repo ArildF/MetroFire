@@ -48,6 +48,11 @@ namespace MetroFire.Specs.Steps
 		{
 		}
 
+		public void AddNotificationMessage(string message, bool isError)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public IEnumerable<Message> Messages
 		{
 			get { return _messages.Select(m => m.Message); }

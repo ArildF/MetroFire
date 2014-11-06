@@ -249,4 +249,16 @@ namespace Rogue.MetroFire.UI
 			FileItem = item;
 		}
 	}
+
+	public class SystemNotificationMessage
+	{
+		public string Message { get; private set; }
+		public bool IsError { get; private set; }
+
+		public SystemNotificationMessage(string message, bool isError)
+		{
+			Message = message;
+			IsError = isError;
+		}
+	}
 }

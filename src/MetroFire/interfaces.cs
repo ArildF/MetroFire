@@ -127,6 +127,7 @@ namespace Rogue.MetroFire.UI
 		Double FontSize { get; set; }
 
 		void RemoveMessage(object textObject);
+		void AddNotificationMessage(string message, bool isError);
 	}
 
 	public interface IUserCache

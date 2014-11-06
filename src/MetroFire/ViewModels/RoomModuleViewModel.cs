@@ -93,6 +93,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 			Subscribe(_bus.RegisterSourceAndHandleReply<RequestUploadFilePickerMessage, UploadFilePickedMessage>(
 				UploadFileCommand.Select(_ => new RequestUploadFilePickerMessage()), 
 				response => _chatDocument.AddUploadFile(_room, response.FileItem)));
+
+			Subscribe(_bus.Listen<SystemNotificationMessage>().SubscribeUI(OnSystemNotificationMessage));
 		}
 
 		public ReactiveCommand UploadFileCommand { get; private set; }
@@ -136,6 +138,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			{
 				Users.Add(vm);
 			}
+		}
+
+		private void OnSystemNotificationMessage(SystemNotificationMessage msg)
+		{
+			_chatDocument.AddNotificationMessage(msg.Message, msg.IsError);
 		}
 
 		private void HandleMessagesReceived(MessagesReceivedMessage obj)
@@ -251,6 +258,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			get { return _room.Name; }
 		}
+
 		public string Caption
 		{
 			get { return RoomName; }

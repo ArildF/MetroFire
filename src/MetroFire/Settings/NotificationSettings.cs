@@ -20,9 +20,9 @@ namespace Rogue.MetroFire.UI.Settings
 	[XmlInclude(typeof(PlaySoundNotificationAction))]
 	[XmlInclude(typeof(ShowToastNotificationAction))]
 	[XmlInclude(typeof(HighlightTextNotificationAction))]
-	public abstract class NotificationAction
+	public class NotificationAction
 	{
-		protected NotificationAction()
+		public NotificationAction()
 		{
 			Interval = 60;
 		}

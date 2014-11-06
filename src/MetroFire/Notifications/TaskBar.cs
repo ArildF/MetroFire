@@ -39,7 +39,8 @@ namespace Rogue.MetroFire.UI.Notifications
 					cbSize = (uint) Marshal.SizeOf(typeof (FLASHWINFO)),
 					hwnd = new WindowInteropHelper(Application.Current.MainWindow).Handle,
 					dwFlags = (int) (FLASHWINFOFLAGS.FLASHW_ALL | FLASHWINFOFLAGS.FLASHW_TIMERNOFG),
-					dwTimeout = 0
+					dwTimeout = 0,
+					uCount = 1,
 				};
 			FlashWindowEx(ref info);
 		}

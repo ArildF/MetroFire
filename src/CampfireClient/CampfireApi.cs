@@ -137,7 +137,7 @@ namespace Rogue.MetroFire.CampfireClient
 
 		public Unit DownloadFile(string uri, string destination)
 		{
-			var client = CreateClient();
+			var client = CreateClient(new Uri(uri));
 			client.DownloadFile(uri, destination);
 
 			return Unit.Default;
@@ -346,7 +346,7 @@ namespace Rogue.MetroFire.CampfireClient
 		private HttpWebRequest CreateRequest(Uri uri)
 		{
 			var request = (HttpWebRequest)WebRequest.Create(uri);
-			request.Credentials = CreateCredentials();
+			request.Credentials = CreateCredentials(uri);
 			request.Method = "POST";
 			if (!_settings.Network.UseProxy)
 			{
@@ -361,7 +361,7 @@ namespace Rogue.MetroFire.CampfireClient
 
 			request.UserAgent = UserAgent;
 
-			if (Cookie != null)
+			if (Cookie != null && UriIsCampfire(uri))
 			{
 				request.Headers.Add("Cookie", Cookie);
 			}
@@ -387,9 +387,9 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private T DoGet<T>(string relativeUri, string root)
 		{
-			using (var client = CreateClient())
+			var uri = FormatUri(relativeUri);
+			using (var client = CreateClient(uri))
 			{
-				var uri = FormatUri(relativeUri);
 
 				var xml = client.DownloadString(uri);
 
@@ -408,28 +408,33 @@ namespace Rogue.MetroFire.CampfireClient
 			return uri;
 		}
 
-		private WebClient CreateClient()
+		private WebClient CreateClient(Uri uri)
 		{
-			var client = new WebClientWithTimeout {Credentials = CreateCredentials(), Timeout = _defaultTimeout};
+			var client = new WebClientWithTimeout {Credentials = CreateCredentials(uri), Timeout = _defaultTimeout};
 			client.Headers.Add(HttpRequestHeader.UserAgent, UserAgent);
 			if (!_settings.Network.UseProxy)
 			{
 				client.Proxy = null;
 			}
-			if (Cookie != null)
+			if (Cookie != null && UriIsCampfire(uri))
 			{
 				client.Headers.Add("Cookie", Cookie);
 			}
 			return client;
 		}
 
-		private NetworkCredential CreateCredentials()
+		private NetworkCredential CreateCredentials(Uri uri)
 		{
-			if (_loginInfo != null)
+			if (_loginInfo != null && UriIsCampfire(uri))
 			{
 				return new NetworkCredential(_loginInfo.Token, "X");
 			}
 			return null;
+		}
+
+		private bool UriIsCampfire(Uri uri)
+		{
+			return uri.Host.EndsWith("campfirenow.com", StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		private class NoResponse{}

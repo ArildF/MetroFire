@@ -148,8 +148,11 @@ namespace Rogue.MetroFire.CampfireClient
 			string relativeUri = String.Format("room/{0}/uploads.xml", roomId);
 			var uri = FormatUri(relativeUri);
 			var request = CreateRequest(uri);
-			request.Headers["Authorization"] = Convert.ToBase64String(
-				Encoding.UTF8.GetBytes( _loginInfo.Token + ":X"));
+			if (UriIsCampfire(uri))
+			{
+				request.Headers["Authorization"] = Convert.ToBase64String(
+					Encoding.UTF8.GetBytes(_loginInfo.Token + ":X"));
+			}
 			request.AllowWriteStreamBuffering = false;
 			var builder = new MultipartFormDataBuilder();
 			request.ContentType = "multipart/form-data; boundary=" + builder.Boundary;
@@ -393,7 +396,10 @@ namespace Rogue.MetroFire.CampfireClient
 
 				var xml = client.DownloadString(uri);
 
-				_cookie = client.ResponseHeaders["set-cookie"];
+				if (UriIsCampfire(uri))
+				{
+					_cookie = client.ResponseHeaders["set-cookie"];
+				}
 
 				var serializer = GetSerializer<T>(root);
 
@@ -416,6 +422,7 @@ namespace Rogue.MetroFire.CampfireClient
 			{
 				client.Proxy = null;
 			}
+			//client.Proxy = new WebProxy("http://127.0.0.1:8888");
 			if (Cookie != null && UriIsCampfire(uri))
 			{
 				client.Headers.Add("Cookie", Cookie);
@@ -434,7 +441,17 @@ namespace Rogue.MetroFire.CampfireClient
 
 		private bool UriIsCampfire(Uri uri)
 		{
-			return uri.Host.EndsWith("campfirenow.com", StringComparison.InvariantCultureIgnoreCase);
+			if (_loginInfo == null)
+			{
+				return false;
+			}
+			Uri campfireUri;
+			if (!Uri.TryCreate(String.Format(CampfireBaseUri, _loginInfo.Account), UriKind.Absolute, 
+				out campfireUri))
+			{
+				return false;
+			}
+			return String.Equals(uri.Host, campfireUri.Host, StringComparison.OrdinalIgnoreCase);
 		}
 
 		private class NoResponse{}

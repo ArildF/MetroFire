@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Navigation;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.Infrastructure;
-using System.Linq;
+using Clipboard = System.Windows.Clipboard;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -24,7 +25,7 @@ namespace Rogue.MetroFire.UI.Views
 		public static readonly Regex UrlDetector = new Regex(@"(https?://\S+)");
 
 
-		public ChatDocument(IInlineUploadViewFactory factory,
+	    public ChatDocument(IInlineUploadViewFactory factory,
 			IPasteViewFactory pasteViewFactory, IEnumerable<IMessageFormatter> formatters, 
 			IEnumerable<IMessagePostProcessor> postProcessors)
 		{
@@ -254,11 +255,20 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			var hyperlink = new Hyperlink(new Run(result)) {NavigateUri = new Uri(result)};
 			ToolTipService.SetToolTip(hyperlink, result);
+
+		    var menu = new ContextMenu();
+            var item = new MenuItem
+            {
+                Header = "Copy link"
+            };
+		    item.Click += (sender, args) => Clipboard.SetText(result);
+		    menu.Items.Add(item);
+            hyperlink.ContextMenu = menu;
 			return hyperlink;
 		}
 
 
-		public static void RenderUserString(User user, Paragraph paragraph)
+	    public static void RenderUserString(User user, Paragraph paragraph)
 		{
 			var name = FormatUserName(user);
 

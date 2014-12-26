@@ -35,10 +35,21 @@ Scenario: Room kicks
 	Then the message should be displayed like "Testuser was kicked from the room"
 	And the message should be displayed in italics
 
-Scenario: Hyperlinks
-	When I add the message "This is a hyperlink: http://www.test.com" from user 'Testuser'
-	Then the message should be displayed like "<Testuser> This is a hyperlink: http://www.test.com"
-	And "http://www.test.com" should be a hyperlink
+Scenario Outline: Hyperlinks
+	When I add the message "This is a hyperlink: <hyperlink> This is text following a hyperlink" from user 'Testuser'
+	Then the message should be displayed like "<Testuser> This is a hyperlink: <hyperlink> This is text following a hyperlink"
+	And "<hyperlink>" should be a hyperlink
+	Examples:
+	| hyperlink                                                   |
+	| http://www.test.com                                         |
+	| http://www.vg.no                                            |
+	| https://www.ikke.no                                         |
+	| http://intranett.local                                      |
+	| http://nb.wikipedia.org/Jordstråler                         |
+	| http://no.wikipedia.org/wiki/Portal:Forside                 |
+	| http://en.wikipedia.org/wiki/Decembrist_revolt#cite_note-11 |
+
+
 
 Scenario: Image pastes without memory leaks
 	When I add 40 image pastes to the room

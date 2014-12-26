@@ -21,8 +21,7 @@ namespace Rogue.MetroFire.UI.Views
 		private readonly IEnumerable<IMessagePostProcessor> _postProcessors;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
 
-		public static readonly Regex UrlDetector = new
-			Regex(@"((?:http|https|ftp)\://(?:[a-zA-Z0-9\.\-]+(?:\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)?(?:(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|(?:[a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(?:\:[0-9]+)?(?:/[^/][a-zA-Z0-9\(\)\:\.\,\?\'\\/\+&amp;%\$#!\=~_\-@]*)*)");
+		public static readonly Regex UrlDetector = new Regex(@"(https?://\S+)");
 
 
 		public ChatDocument(IInlineUploadViewFactory factory,

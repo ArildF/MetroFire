@@ -107,8 +107,27 @@
 			<ColumnDefinition Width="0.722*"/>
 			<ColumnDefinition Width="0.278*"/>
 		</Grid.ColumnDefinitions>
-		<Button Content="Post" Grid.Column="1" Style="{DynamicResource MetroBigButton}" 
-				Command="{Binding PostMessageCommand}" Margin="0" Grid.Row="1" Padding="0"/>
+        <DockPanel LastChildFill="True" 
+			Grid.Column="1" Grid.Row="1" Margin="0" VerticalAlignment="Stretch"
+					HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+			<Grid DockPanel.Dock="Bottom"
+				  HorizontalAlignment="Stretch"
+				  VerticalAlignment="Stretch"
+						Visibility="{Binding PostAsLanguageVisible, Converter={StaticResource _boolToVisibilityConverter}}">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="0.7*"/>
+					<ColumnDefinition Width="1*"/>
+				</Grid.ColumnDefinitions>
+				<Label Grid.Column="0">Post as</Label>
+				<ComboBox Grid.Column="1" Margin="10,0,0,0" MinWidth="60"
+						  ItemsSource="{Binding PostAsLanguageViewModel.LanguageOptions}"
+						  DisplayMemberPath="DisplayText"
+						  SelectedItem ="{Binding PostAsLanguageViewModel.SelectedLanguageOption}"></ComboBox>
+			</Grid>
+			<Button Content="Post" Style="{DynamicResource MetroBigButton}" HorizontalAlignment="Stretch"
+				Command="{Binding PostMessageCommand}" Margin="0" Padding="0" VerticalContentAlignment="Center" />
+		</DockPanel>
+		
 		<TextBox x:Name="_textBox" TextWrapping="Wrap" Margin="0" d:LayoutOverrides="GridBox" Grid.Row="2" Padding="0" 
 				 SelectionOpacity="3.4" Text="{Binding UserMessage, UpdateSourceTrigger=PropertyChanged}" 
 				 Style="{DynamicResource _userMessageTextBoxStyle}"

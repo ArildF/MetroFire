@@ -29,6 +29,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _topic;
 		private bool _userEditedMessage;
 		private string _roomTranscriptsUri;
+		private ObservableAsPropertyHelper<bool> _postAsLanguageVisiblePropertyHelper; 
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, 
 			IChatDocument chatDocument,
@@ -95,9 +96,26 @@ namespace Rogue.MetroFire.UI.ViewModels
 				response => _chatDocument.AddUploadFile(_room, response.FileItem)));
 
 			Subscribe(_bus.Listen<SystemNotificationMessage>().SubscribeUI(OnSystemNotificationMessage));
+
+			var userMessageHasMultipleLines =
+				this.ObservableForProperty(vm => vm.UserMessage)
+					.Select(msg => msg.Value != null && 
+						msg.Value.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries).Length > 1);
+
+			_postAsLanguageVisiblePropertyHelper = this.ObservableToProperty(
+				userMessageHasMultipleLines, vm => vm.PostAsLanguageVisible);
+
+			PostAsLanguageViewModel = new PostAsLanguageViewModel();
 		}
 
+		public PostAsLanguageViewModel PostAsLanguageViewModel { get; private set; }
+
 		public ReactiveCommand UploadFileCommand { get; private set; }
+
+		public bool PostAsLanguageVisible
+		{
+			get { return _postAsLanguageVisiblePropertyHelper.Value; }
+		}
 
 
 		public ReactiveCommand PasteCommand { get; private set; }
@@ -229,7 +247,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private void HandlePostMessage(object o)
 		{
-			_bus.SendMessage(new RequestSpeakInRoomMessage(Id, UserMessage));
+			var message = PostAsLanguageVisible
+				? PostAsLanguageViewModel.Process(UserMessage)
+				: UserMessage;
+
+			_bus.SendMessage(new RequestSpeakInRoomMessage(Id, message));
 			UserMessage = String.Empty;
 		}
 

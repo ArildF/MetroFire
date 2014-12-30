@@ -260,6 +260,7 @@
     <Compile Include="ViewModels\MainCampfireViewModel.cs" />
     <Compile Include="ViewModels\NavigationContentViewModel.cs" />
     <Compile Include="ViewModels\PasteViewModel.cs" />
+    <Compile Include="ViewModels\PostAsLanguageViewModel.cs" />
     <Compile Include="ViewModels\RoomListViewModel.cs" />
     <Compile Include="ViewModels\RoomModuleViewModel.cs" />
     <Compile Include="ViewModels\Settings\AboutViewModel.cs" />

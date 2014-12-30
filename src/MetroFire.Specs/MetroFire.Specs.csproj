@@ -150,6 +150,7 @@
     <Compile Include="Steps\NotificationSettingsSteps.cs" />
     <Compile Include="Steps\NotificationSteps.cs" />
     <Compile Include="Steps\RoomContext.cs" />
+    <Compile Include="UnicodeConvertTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

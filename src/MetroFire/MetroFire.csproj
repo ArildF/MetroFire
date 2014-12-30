@@ -76,7 +76,7 @@
     <ManifestKeyFile>MetroFire_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Assets\Main.ico</ApplicationIcon>
@@ -198,6 +198,7 @@
     <Compile Include="Infrastructure\LoginInfoStorage.cs" />
     <Compile Include="Infrastructure\LogMessageDebugListener.cs" />
     <Compile Include="Infrastructure\MimeTypeResolver.cs" />
+    <Compile Include="Infrastructure\UnicodeConvert.cs" />
     <Compile Include="Infrastructure\UserCache.cs" />
     <Compile Include="Infrastructure\ViewModelRegistrationFacility.cs" />
     <Compile Include="Infrastructure\WebBrowser.cs" />

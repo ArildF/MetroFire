@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Rogue.MetroFire.UI.Infrastructure;
@@ -10,8 +11,10 @@ namespace MetroFire.Specs
 		[Test]
 		public void Converting_produces_only_nonprintable_characters()
 		{
-			const string str = "abcdf";
+			const string str = "!!L=";
 			var converted = UnicodeConvert.ToNonPrintableString(str);
+			var formatted = String.Join("", 
+				converted.Select(c => "\\u" + ((int)c).ToString("X4")));
 			converted.All(c => c >= '\u200b' && c <= '\u200d').Should().BeTrue();
 		}
 

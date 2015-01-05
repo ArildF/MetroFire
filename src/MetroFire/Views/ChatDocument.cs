@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -8,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media;
+using ColorCode;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.Infrastructure;
 using Clipboard = System.Windows.Clipboard;
@@ -24,8 +26,11 @@ namespace Rogue.MetroFire.UI.Views
 
 		public static readonly Regex UrlDetector = new Regex(@"(https?://\S+)");
 
+		private const string MagicString = 
+			"\u200B\u200D\u200B\u200C\u200B\u200B\u200D\u200B\u200C\u200B\u200C\u200C\u200D\u200D\u200B\u200C\u200D\u200B\u200D\u200B";
 
-	    public ChatDocument(IInlineUploadViewFactory factory,
+
+		public ChatDocument(IInlineUploadViewFactory factory,
 			IPasteViewFactory pasteViewFactory, IEnumerable<IMessageFormatter> formatters, 
 			IEnumerable<IMessagePostProcessor> postProcessors)
 		{
@@ -201,7 +206,16 @@ namespace Rogue.MetroFire.UI.Views
 			var name = FormatUserName(user);
 			paragraph.Inlines.Add(name + ": " + Environment.NewLine);
 
-			var run = RenderUserMessage(message.Body); 
+			Inline run;
+			if (message.Body.StartsWith(MagicString))
+			{
+				run = FormatWithSyntaxHighlighting(message.Body);
+
+			}
+			else
+			{
+				run = RenderUserMessage(message.Body); 
+			}
 			run.FontFamily = new FontFamily("Consolas");
 
 			paragraph.BorderThickness = new Thickness(0, 0.5, 0, 0.5);
@@ -212,6 +226,30 @@ namespace Rogue.MetroFire.UI.Views
 
 			var view = _pasteViewFactory.CreateTextPasteView(run);
 			paragraph.Inlines.Add(view.Element);
+		}
+
+		private Inline FormatWithSyntaxHighlighting(string body)
+		{
+			var languageString = UnicodeConvert.FromNonPrintableString(body);
+			if (languageString.Length <= 4)
+			{
+				return RenderUserMessage(body);
+			}
+
+			var languageDefString = languageString.Substring(4);
+			var languageDef = Languages.FindById(languageDefString);
+			if (languageDef == null)
+			{
+				return RenderUserMessage(body);
+			}
+
+			var formatter = new WpfFormatter();
+			var colorizer = new CodeColorizer();
+			colorizer.Colorize(body, languageDef, formatter, StyleSheets.Default, 
+				new StreamWriter(Stream.Null));
+
+			return formatter.Inline;
+
 		}
 
 

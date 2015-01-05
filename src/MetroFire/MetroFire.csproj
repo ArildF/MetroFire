@@ -88,6 +88,9 @@
     <Reference Include="Castle.Windsor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Windsor.3.0.0.3001\lib\net40-client\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="ColorCode">
+      <HintPath>..\packages\ColorCode.1.0.1\lib\ColorCode.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="Microsoft.Expression.Effects" />
     <Reference Include="Microsoft.Expression.Interactions" />
@@ -118,6 +121,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx_Experimental-Main.1.1.11011\lib\Net4\System.Reactive.dll</HintPath>
@@ -203,6 +207,7 @@
     <Compile Include="Infrastructure\ViewModelRegistrationFacility.cs" />
     <Compile Include="Infrastructure\WebBrowser.cs" />
     <Compile Include="Infrastructure\WpfExtensions.cs" />
+    <Compile Include="Infrastructure\WpfFormatter.cs" />
     <Compile Include="interfaces.cs" />
     <Compile Include="messages.cs" />
     <Compile Include="ModuleIds.cs" />

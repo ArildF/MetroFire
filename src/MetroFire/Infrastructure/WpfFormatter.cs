@@ -20,7 +20,11 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			if (scopes.Any())
 			{
 				var firstScope = scopes.First();
-				var color = styleSheet.Styles[firstScope.Name].Foreground;
+
+				// dynamic here to work around a bug in the XAML compiler
+				// XAML compilation will fail if I add a reference to System.Drawing
+				dynamic style = styleSheet.Styles[firstScope.Name];
+				dynamic color = style.Foreground;
 				item.Foreground = new SolidColorBrush(Color.FromRgb(color.R, color.G, color.B));
 			}
 		}

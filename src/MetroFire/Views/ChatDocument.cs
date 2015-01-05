@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media;
 using ColorCode;
@@ -26,7 +25,7 @@ namespace Rogue.MetroFire.UI.Views
 
 		public static readonly Regex UrlDetector = new Regex(@"(https?://\S+)");
 
-		private const string MagicString = 
+		private const string SyntaxHighlightSpecifierPrefix = 
 			"\u200B\u200D\u200B\u200C\u200B\u200B\u200D\u200B\u200C\u200B\u200C\u200C\u200D\u200D\u200B\u200C\u200D\u200B\u200D\u200B";
 
 
@@ -207,7 +206,7 @@ namespace Rogue.MetroFire.UI.Views
 			paragraph.Inlines.Add(name + ": " + Environment.NewLine);
 
 			Inline run;
-			if (message.Body.StartsWith(MagicString))
+			if (message.Body.StartsWith(SyntaxHighlightSpecifierPrefix))
 			{
 				run = FormatWithSyntaxHighlighting(message.Body);
 

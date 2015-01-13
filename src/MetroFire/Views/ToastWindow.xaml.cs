@@ -18,7 +18,7 @@ namespace Rogue.MetroFire.UI.Views
 		private void OnSizeChanged(object sender, SizeChangedEventArgs sizeChangedEventArgs)
 		{
 			Top = 0;
-			Height = SystemParameters.PrimaryScreenHeight;
+			Height = SystemParameters.MaximizedPrimaryScreenHeight - SystemParameters.CaptionHeight;
 			Left = SystemParameters.PrimaryScreenWidth - ActualWidth;
 		}
 

@@ -14,6 +14,7 @@ namespace MetroFire.Specs.Steps
 	public class ChatRoomSteps
 	{
 		private readonly RoomContext _roomContext;
+		private string _currentUser;
 
 		public ChatRoomSteps(RoomContext roomContext)
 		{
@@ -38,8 +39,14 @@ namespace MetroFire.Specs.Steps
 		public void GivenAUserTestuser(string user)
 		{
 			_roomContext.AddUser(user);
+			
 		}
 
+		[Given(@"that I am user '(.*)'")]
+		public void GivenThatIAmUser(string user)
+		{
+			_currentUser = user;
+		}
 
 
 		[Given(@"that room ""(.*)"" is the active module")]
@@ -52,6 +59,7 @@ namespace MetroFire.Specs.Steps
 		public void GivenThatIHaveJoinedRoom(string roomName)
 		{
 			_roomContext.JoinRoom(roomName);
+			
 		}
 
 		[When(@"I click the leave room button in room ""(.*)""")]
@@ -93,6 +101,23 @@ namespace MetroFire.Specs.Steps
 		{
 			var id = _roomContext.IdForRoom(roomName);
 			_roomContext.SendMessage(new MessagesReceivedMessage(id, new []{new Message{Body = topic, RoomId = id, MessageTypeString = "TopicChangeMessage"}}, null));
+		}
+
+		[When(@"the room ""(.*)"" receives a (.*) message")]
+		public void WhenTheRoomReceivesAMessage(string roomName, MessageType type)
+		{
+			var id = _roomContext.IdForRoom(roomName);
+			var userId = _roomContext.GetUser(_currentUser).Id.ToString();
+			_roomContext.SendMessage(new MessagesReceivedMessage(id, new[]
+			{
+				new Message
+				{
+					Body = null, 
+					RoomId = id, 
+					Type = type,
+					UserIdString = userId 
+				}
+			}, null));
 		}
 
 		[When(@"we wait (\d+) seconds")]

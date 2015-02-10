@@ -41,20 +41,29 @@ namespace Rogue.MetroFire.UI.Views
 				{
 					{MessageType.TextMessage, FormatUserMessage},
 					{MessageType.TimestampMessage, FormatTimestampMessage},
-					{MessageType.LeaveMessage, FormatLeaveMessage},
-					{MessageType.KickMessage, FormatKickMessage},
+					{MessageType.LeaveMessage, (m, u, p) => FormatUserMetaMessage(m,u, p, "left the room")},
+					{MessageType.KickMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "was kicked from the room")},
 					{MessageType.PasteMessage, FormatPasteMessage},
-					{MessageType.EnterMessage, FormatEnterMessage},
+					{MessageType.EnterMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "entered the room")},
 					{MessageType.UploadMessage, FormatUploadMessage},
 					{MessageType.TweetMessage, FormatTweetMessage},
 					{MessageType.AdvertisementMessage, FormatAdvertisementMessage},
-					{MessageType.TopicChangeMessage, FormatTopicChangeMessage}
-
+					{MessageType.TopicChangeMessage, FormatTopicChangeMessage},
+					{MessageType.LockMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "locked the room")},
+					{MessageType.UnlockMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "unlocked the room")},
+					{MessageType.AllowGuestsMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "turned on guest access")},
+					{MessageType.DisallowGuestsMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "turned off guest access")},
+					{MessageType.ConferenceCreatedMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "started a conference call")},
+					{MessageType.ConferenceFinishedMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "ended a conference call")},
+					{MessageType.IdleMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "is idle")},
+					{MessageType.UnidleMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "is back")},
+					{MessageType.SoundMessage, (m, u, p) => FormatUserMetaMessage(m, u, p, "played a sound")},
 				};
 
 			FontSize = 14;
 			FontFamily = new FontFamily("Segoe UI");
 		}
+
 
 		private void FormatTweetMessage(Message msg, User user, Paragraph paragraph)
 		{
@@ -182,12 +191,6 @@ namespace Rogue.MetroFire.UI.Views
 			Blocks.Add(paragraph);
 		}
 
-		private void FormatEnterMessage(Message message, User user, Paragraph paragraph)
-		{
-			var name = FormatUserName(user);
-			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} entered the room", name)));
-		}
-
 		private void FormatAdvertisementMessage(Message message, User user, Paragraph paragraph)
 		{
 			user = new User {Name = "Advertisement"};
@@ -196,9 +199,17 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void FormatTopicChangeMessage(Message message, User user, Paragraph paragraph)
 		{
-			var name = FormatUserName(user);
-			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} changed the topic to '{1}'", name, message.Body)));
+			FormatUserMetaMessage(message, user, paragraph, 
+				String.Format("changed the topic to '{0}'", message.Body));
 		}
+
+		private static void FormatUserMetaMessage(Message message, User user, Paragraph paragraph, string text)
+		{
+			var name = FormatUserName(user);
+			paragraph.Inlines.Add(CreateMetaRun(name + " " + text));
+		}
+
+		
 
 		private void FormatPasteMessage(Message message, User user, Paragraph paragraph)
 		{
@@ -251,18 +262,6 @@ namespace Rogue.MetroFire.UI.Views
 
 		}
 
-
-		private void FormatLeaveMessage(Message message, User user, Paragraph paragraph)
-		{
-			var name = FormatUserName(user);
-			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} left the room", name)));
-		}
-
-		private void FormatKickMessage(Message message, User user, Paragraph paragraph)
-		{
-			var name = FormatUserName(user);
-			paragraph.Inlines.Add(CreateMetaRun(String.Format("{0} was kicked from the room", name)));
-		}
 
 		private void FormatUserMessage(Message message, User user, Paragraph paragraph)
 		{

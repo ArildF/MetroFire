@@ -7,6 +7,7 @@ Background:
 	Given that I am logged in
 	And a room called "Test"
 	And a user 'Testuser'
+	And that I am user 'Testuser'
 	And that I have joined the room "Test"
 
 
@@ -102,4 +103,19 @@ Scenario: Show old messages sent while disconnected
 Scenario: Change topic
 	When the topic is changed to "To pic" for room "Test"
 	Then the topic should be "To pic" for room "Test"
+
+Scenario Outline: Meta messages
+	When the room "Test" receives a <MessageType> message
+	Then the message "<MessageBody>" should be displayed in room "Test"
+	Examples:
+	| MessageType               | MessageBody                        |
+	| LockMessage               | Testuser locked the room           |
+	| UnlockMessage             | Testuser unlocked the room         |
+	| AllowGuestsMessage        | Testuser turned on guest access    |
+	| DisallowGuestsMessage     | Testuser turned off guest access   |
+	| ConferenceCreatedMessage  | Testuser started a conference call |
+	| ConferenceFinishedMessage | Testuser ended a conference call   |
+	| IdleMessage               | Testuser is idle                 |
+	| UnidleMessage             | Testuser is back                   |
+	| SoundMessage              | Testuser played a sound            |
 		

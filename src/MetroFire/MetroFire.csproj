@@ -161,6 +161,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Assets\Emoji.cs" />
     <Compile Include="Behaviors\BindableFocusBehavior.cs" />
     <Compile Include="Behaviors\BorderlessWindowBehavior.cs" />
     <Compile Include="Behaviors\CustomPasteBehavior.cs" />
@@ -187,6 +188,8 @@
     <Compile Include="Infrastructure\CampfireLog.cs" />
     <Compile Include="Infrastructure\ClickOnceApplicationDeployment.cs" />
     <Compile Include="Infrastructure\Clipboard.cs" />
+    <Compile Include="Infrastructure\EmojiAsset.cs" />
+    <Compile Include="Infrastructure\EmojiLoader.cs" />
     <Compile Include="Infrastructure\FileItem.cs" />
     <Compile Include="Infrastructure\ClipboardService.cs" />
     <Compile Include="Infrastructure\CustomKeyBindingTrigger.cs" />
@@ -376,6 +379,7 @@
     <DesignTimeOnly Include="SampleData\SampleSettingsDataSource\SampleSettingsDataSource.xsd" />
     <DesignTimeOnly Include="SampleData\SampleNotificationSettingsViewModel\SampleNotificationSettingsViewModel.xsd" />
     <DesignTimeOnly Include="SampleData\SamplePasteViewModel\SamplePasteViewModel.xsd" />
+    <None Include="Resources\emoji.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CampfireClient\CampfireClient.csproj">
@@ -388,6 +392,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignTimeOnly>
+    <Page Include="Assets\EmojiResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Assets\Emoticons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

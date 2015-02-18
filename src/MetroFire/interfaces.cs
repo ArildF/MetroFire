@@ -284,4 +284,9 @@ namespace Rogue.MetroFire.UI
 	{
 		void Format(NotificationMessage message, IMessageRenderer renderer);
 	}
+
+	public interface IEmojiProvider
+	{
+		EmojiAsset[] Emojis { get; }
+	}
 }

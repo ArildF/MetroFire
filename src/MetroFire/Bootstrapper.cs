@@ -42,6 +42,7 @@ namespace Rogue.MetroFire.UI
 			_container.AddFacility<TypedFactoryFacility>();
 			_container.Register(Component.For<IMessageBus>().ImplementedBy<MessageBus>());
 			_container.Register(Component.For<IMimeTypeResolver>().ImplementedBy<MimeTypeResolver>());
+			_container.Register(Component.For<IEmojiProvider>().ImplementedBy<EmojiLoader>());
 			
 			_container.Kernel.Resolver.AddSubResolver(new CollectionResolver(_container.Kernel));
 

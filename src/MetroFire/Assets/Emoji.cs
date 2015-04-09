@@ -8,7 +8,7 @@
 		public string Name;
 		public string Shortname;
 		public string Category;
-		public string CategoryOrder;
+		public int CategoryOrder;
 		public string[] Aliases;
 		public string[] AliasesAscii;
 		public string[] Keywords;

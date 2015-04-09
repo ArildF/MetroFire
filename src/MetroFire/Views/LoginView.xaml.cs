@@ -1,4 +1,9 @@
-﻿namespace Rogue.MetroFire.UI.Views
+﻿using System;
+using System.Windows;
+using ReactiveUI;
+using Rogue.MetroFire.UI.ViewModels;
+
+namespace Rogue.MetroFire.UI.Views
 {
 	/// <summary>
 	/// Interaction logic for LoginView.xaml
@@ -8,6 +13,7 @@
 		public LoginView()
 		{
 			InitializeComponent();
+
 		}
 	}
 }

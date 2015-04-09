@@ -12,6 +12,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 {
 	public class RoomModuleViewModel : ViewModelBase, IModule
 	{
+		public IEmojiPickerViewModel EmojiPickerViewModel { get; set; }
 		private IRoom _room;
 		private readonly IMessageBus _bus;
 		private readonly IUserCache _userCache;
@@ -29,12 +30,15 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _topic;
 		private bool _userEditedMessage;
 		private string _roomTranscriptsUri;
-		private ObservableAsPropertyHelper<bool> _postAsLanguageVisiblePropertyHelper; 
+		private ObservableAsPropertyHelper<bool> _postAsLanguageVisiblePropertyHelper;
+		private bool _showEmojiPicker;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, 
 			IChatDocument chatDocument,
-			IClipboardService clipboardService , IGlobalCommands commands, ISettings settings)
+			IClipboardService clipboardService , IGlobalCommands commands, ISettings settings, 
+			IEmojiPickerViewModel emojiPickerViewModel)
 		{
+			EmojiPickerViewModel = emojiPickerViewModel;
 			_room = room;
 			_bus = bus;
 			_userCache = userCache;
@@ -106,7 +110,14 @@ namespace Rogue.MetroFire.UI.ViewModels
 				userMessageHasMultipleLines, vm => vm.PostAsLanguageVisible);
 
 			PostAsLanguageViewModel = new PostAsLanguageViewModel();
+
+			ToggleEmojiPickerCommand = new ReactiveCommand();
+			ToggleEmojiPickerCommand.Subscribe(_ => ShowEmojiPicker = !ShowEmojiPicker);
+
+			EmojiPickerViewModel.InsertEmoji.Subscribe(InsertEmoji);
 		}
+
+		public ReactiveCommand ToggleEmojiPickerCommand { get; private set; }
 
 		public PostAsLanguageViewModel PostAsLanguageViewModel { get; private set; }
 
@@ -117,6 +128,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _postAsLanguageVisiblePropertyHelper.Value; }
 		}
 
+		public bool ShowEmojiPicker
+		{
+			get { return _showEmojiPicker; }
+			private set { this.RaiseAndSetIfChanged(vm => vm.ShowEmojiPicker, ref _showEmojiPicker, value); }
+		}
 
 		public ReactiveCommand PasteCommand { get; private set; }
 
@@ -133,6 +149,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 					}
 				}
 			}
+		}
+
+		private void InsertEmoji(string emoji)
+		{
+			UserMessage += emoji;
+			ShowEmojiPicker = false;
 		}
 
 		public ReactiveCollection<UserViewModel> Users { get; private set; }

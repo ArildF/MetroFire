@@ -6,12 +6,12 @@ namespace Rogue.MetroFire.UI.Infrastructure
 	public class EmojiAsset
 	{
 		public Emoji Emoji { get; private set; }
-		public DrawingBrush Brush { get; private set; }
+		public DrawingGroup DrawingGroup { get; private set; }
 
-		public EmojiAsset(Emoji emoji, DrawingBrush brush)
+		public EmojiAsset(Emoji emoji, DrawingGroup drawingGroup)
 		{
 			Emoji = emoji;
-			Brush = brush;
+			DrawingGroup = drawingGroup;
 		}
 	}
 }

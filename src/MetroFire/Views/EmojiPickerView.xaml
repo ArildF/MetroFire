@@ -1,0 +1,75 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
+	mc:Ignorable="d"
+	x:Class="Rogue.MetroFire.UI.Views.EmojiPickerView"
+	x:Name="UserControl"
+	d:DesignWidth="355" d:DesignHeight="269" Background="White" BorderThickness="0.2">
+	<UserControl.Resources>
+		<DataTemplate x:Key="EmojiListTemplate">
+			<Grid d:DesignWidth="243" d:DesignHeight="192">
+				<ListBox HorizontalAlignment="Stretch" Margin="0" Background="{x:Null}" 
+		
+						ItemsPanel="{DynamicResource WrapPanelItemsPanel}" 
+						ItemsSource="{Binding Emojis}"
+						ItemTemplate="{DynamicResource EmojiItemTemplate}" 
+						ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+			</Grid>
+		</DataTemplate>
+		<ItemsPanelTemplate x:Key="WrapPanelItemsPanel">
+			<WrapPanel IsItemsHost="True" Orientation="Horizontal" />
+		</ItemsPanelTemplate>
+		<DataTemplate x:Key="EmojiItemTemplate">
+			<Grid>
+				<Image Width="40" Height="40">
+					<i:Interaction.Behaviors>
+						<behaviors:DoubleClickToCommandBehavior 
+							Command="{Binding 
+								RelativeSource={RelativeSource FindAncestor, AncestorType=TabControl},
+								Path=DataContext.EmojiPickedCommand}"
+							CommandParameter="{Binding}"/>
+					</i:Interaction.Behaviors>
+					<Image.Source>
+						<DrawingImage Drawing="{Binding Visual}"/>
+					</Image.Source>
+					<Image.ToolTip>
+						<ToolTip>
+							<StackPanel>
+								<TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"
+										   Text="{Binding Name}" Margin="0 0 0 10"/>
+								<TextBlock>
+									<Run FontWeight="Bold">shortname</Run>   <Run Text="{Binding ShortName, Mode=OneWay}"/><LineBreak/>
+									<Run FontWeight="Bold">keywords</Run>   <Run Text="{Binding Keywords, Mode=OneWay}"/><LineBreak/>
+									<Run FontWeight="Bold">order</Run>   <Run Text="{Binding Order, Mode=OneWay}"/><LineBreak/>
+									<Run FontWeight="Bold">unicode</Run>   <Run Text="{Binding Unicode, Mode=OneWay}"/><LineBreak/>
+								</TextBlock>
+							</StackPanel>
+						</ToolTip>
+					</Image.ToolTip>
+				</Image>
+			</Grid>
+		</DataTemplate>
+	
+	</UserControl.Resources>
+	
+
+
+	<Grid x:Name="LayoutRoot">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="0.829*"/>
+			<RowDefinition Height="0.171*"/>
+		</Grid.RowDefinitions>
+		<TabControl Style="{DynamicResource SettingsTabControlStyle}" 
+					TabStripPlacement="Left" 
+					ItemsSource ="{Binding EmojiCategories}"
+					DisplayMemberPath="CategoryTitle"
+					SelectedItem="{Binding SelectedCategory}"
+					ItemContainerStyle="{DynamicResource TabItemStyle1}" ContentTemplate="{DynamicResource EmojiListTemplate}">
+		
+		</TabControl>
+	</Grid>
+</UserControl>

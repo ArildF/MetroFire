@@ -287,6 +287,11 @@ namespace Rogue.MetroFire.UI
 
 	public interface IEmojiProvider
 	{
-		EmojiAsset[] Emojis { get; }
+		EmojiAsset[] GetEmojis();
+	}
+
+	public interface IEmojiPickerViewModel
+	{
+		IObservable<string> InsertEmoji { get; }
 	}
 }

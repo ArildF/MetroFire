@@ -21,7 +21,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _connectionErrorMessage;
 		private bool _isTokenInError;
 
-		public LoginViewModel(IMessageBus bus, ILoginInfoStorage storage, INavigationContentViewModel navigationContent)
+		public LoginViewModel(IMessageBus bus, ILoginInfoStorage storage, 
+			INavigationContentViewModel navigationContent)
 		{
 			_bus = bus;
 

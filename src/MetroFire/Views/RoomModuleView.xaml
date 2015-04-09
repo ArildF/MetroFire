@@ -1,12 +1,14 @@
-﻿<UserControl x:Name="UserControl" x:Class="Rogue.MetroFire.UI.Views.RoomModuleView"
+﻿<UserControl
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors" mc:Ignorable="d" 
+             xmlns:behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors" 
 			 xmlns:infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure" xmlns:ui="clr-namespace:Rogue.MetroFire.UI"
-             d:DesignHeight="539" d:DesignWidth="700" d:DataContext="{Binding Source={StaticResource SampleRoomViewModel}}" Padding="5" Background="White">
+             xmlns:local="clr-namespace:Rogue.MetroFire.UI.Views" x:Name="UserControl" x:Class="Rogue.MetroFire.UI.Views.RoomModuleView"
+			 mc:Ignorable="d"
+             d:DesignHeight="539" d:DesignWidth="700" Padding="5" Background="White">
 	<UserControl.Resources>
 		
 		<Style x:Key="UserToolTipStyle" TargetType="{x:Type ToolTip}">
@@ -27,7 +29,7 @@
 								<TextBlock Grid.Row="0" Text="{Binding Name}" Style="{DynamicResource MetroMediumLightHeader}"/>
 								<TextBlock Grid.Row="1" Text="{Binding EmailAddress}"/>
 								<Image Grid.Row="2" Source="{Binding AvatarUrl}" Margin="0 10 0 10"/>
-								<TextBlock Grid.Row="3" FontSize="9">Created <Run Text="{Binding CreatedDate, Mode=OneWay, StringFormat=F}"/></TextBlock>
+								<TextBlock Grid.Row="3" FontSize="9"><Run Text="Created "/><Run Text="{Binding CreatedDate, Mode=OneWay, StringFormat=F}"/></TextBlock>
 							</Grid>
 						</Border>
 					</ControlTemplate>
@@ -36,15 +38,15 @@
 		</Style>
 		<DataTemplate x:Key="_userListBoxItemsTemplate">
 			<Grid>
-				<TextBlock TextWrapping="Wrap" d:LayoutOverrides="Width, Height" 
-						   FontSize="16" FontWeight="ExtraLight" Text="{Binding Name}"/>
 				<ToolTipService.ToolTip>
 					<ToolTip Style="{DynamicResource UserToolTipStyle}"/>
 				</ToolTipService.ToolTip>
+				<TextBlock TextWrapping="Wrap" d:LayoutOverrides="Width, Height" 
+						   FontSize="16" FontWeight="ExtraLight" Text="{Binding Name}"/>
 			</Grid>
 		</DataTemplate>
 		
-		<Style x:Key="_userMessageTextBoxStyle" BasedOn="{StaticResource LargeTextBoxStyle}" TargetType="TextBox">
+		<Style x:Key="_userMessageTextBoxStyle" BasedOn="{StaticResource LargeTextBoxStyle}" TargetType="{x:Type TextBox}">
 			<Setter Property="FontSize" Value="18.667"/>
 
 			<Setter Property="Background">
@@ -66,12 +68,25 @@
 			</Setter>
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding UserEditedMessage}" Value="true">
-					<Setter Property="TextBox.Background" Value="{x:Null}"/>
+					<Setter Property="Background" Value="{x:Null}"/>
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
+		<ControlTemplate x:Key="EmojiButtonTemplate" TargetType="{x:Type Button}">
+			<Grid>
+				<Image Height="40" VerticalAlignment="Top" Width="40">
+					<Image.Source>
+						<DrawingImage Drawing="{StaticResource EmojiSmile}"/>
+					</Image.Source>
+				</Image>
+			</Grid>
+		</ControlTemplate>
 		
 	</UserControl.Resources>
+	
+	<d:DataContext>
+		<Binding Source="{StaticResource SampleRoomViewModel}"/>
+	</d:DataContext>
 	
 	<i:Interaction.Triggers>
 		<infrastructure:CustomKeyBindingTrigger Key="Enter"  Modifier="">
@@ -119,11 +134,11 @@
 					<ColumnDefinition Width="0.7*"/>
 					<ColumnDefinition Width="1*"/>
 				</Grid.ColumnDefinitions>
-				<Label Grid.Column="0">Post as</Label>
+				<Label Grid.Column="0" Content="Post as"/>
 				<ComboBox Grid.Column="1" Margin="10,0,0,0" MinWidth="60"
 						  ItemsSource="{Binding PostAsLanguageViewModel.LanguageOptions}"
 						  DisplayMemberPath="DisplayText"
-						  SelectedItem ="{Binding PostAsLanguageViewModel.SelectedLanguageOption}"></ComboBox>
+						  SelectedItem ="{Binding PostAsLanguageViewModel.SelectedLanguageOption}"/>
 			</Grid>
 			<Button Content="Post" Style="{DynamicResource MetroBigButton}" HorizontalAlignment="Stretch"
 				Command="{Binding PostMessageCommand}" Margin="0" Padding="0" VerticalContentAlignment="Center" />
@@ -140,9 +155,6 @@
 				<!--<Behaviors:BindableFocusBehavior BindableIsFocused="{Binding UserEditingMessage, Mode=OneWayToSource}"/>-->
 				<behaviors:CustomPasteBehavior Command="{Binding PasteCommand}"/>
 			</i:Interaction.Behaviors>
-			<TextBox.Triggers>
-				
-			</TextBox.Triggers>
 
 		</TextBox>
 		<FlowDocumentScrollViewer Background="White" BorderThickness="0" x:Name="_chatViewer" >
@@ -169,9 +181,22 @@
 				<TextBlock 
 					VerticalAlignment="Bottom"
 					HorizontalAlignment="Center"
-					Style="{DynamicResource MetroBodyText}" Margin="0,30,0,0"><Hyperlink NavigateUri="{Binding RoomTranscriptsUri}">room transcripts</Hyperlink></TextBlock>
+					Style="{DynamicResource MetroBodyText}" Margin="0,30,0,0"><Hyperlink NavigateUri="{Binding RoomTranscriptsUri}"><Run Text="room transcripts"/></Hyperlink></TextBlock>
 			</StackPanel>
 		</Grid>
 		<GridSplitter HorizontalAlignment="Left" Width="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,1,0,-1" d:LayoutOverrides="GridBox"/>
+		<Button Content="Button" HorizontalAlignment="Right" VerticalAlignment="Center" 
+				Width="40" Grid.Row="2" Template="{DynamicResource EmojiButtonTemplate}" 
+				Command="{Binding ToggleEmojiPickerCommand}"
+				Height="40" Margin="0,0,9,0" Background="{x:Null}" Opacity="0.52"/>
+		<Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" MaxWidth="460" 
+			  Visibility="{Binding ShowEmojiPicker, Converter={StaticResource BoolToVisibilityConverter}}"
+			  MaxHeight="300" MinWidth="160" MinHeight="100" Margin="0,0,5,5">
+			<Border BorderBrush="Black" BorderThickness="0.2" Margin="0">
+				<ContentControl 
+					Content="{Binding EmojiPickerViewModel}"/>
+			</Border>
+		</Grid>
+		
 	</Grid>
 </UserControl>

@@ -165,6 +165,7 @@
     <Compile Include="Behaviors\BindableFocusBehavior.cs" />
     <Compile Include="Behaviors\BorderlessWindowBehavior.cs" />
     <Compile Include="Behaviors\CustomPasteBehavior.cs" />
+    <Compile Include="Behaviors\DoubleClickToCommandBehavior.cs" />
     <Compile Include="Behaviors\GrabPanBehavior.cs" />
     <Compile Include="Behaviors\RestrictToNumericalInputBehavior.cs" />
     <Compile Include="Behaviors\StayScrolledToEndBehavior.cs" />
@@ -291,6 +292,10 @@
     <Compile Include="Views\CollapsibleTextPasteView.xaml.cs">
       <DependentUpon>CollapsibleTextPasteView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EmojiPickerView.xaml.cs">
+      <DependentUpon>EmojiPickerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\EmojiPickerViewModel.cs" />
     <Compile Include="Views\GenericInlineContainer.xaml.cs">
       <DependentUpon>GenericInlineContainer.xaml</DependentUpon>
     </Compile>
@@ -399,6 +404,10 @@
     <Page Include="Assets\Emoticons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EmojiPickerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\GitHubCommitsView.xaml">
       <SubType>Designer</SubType>

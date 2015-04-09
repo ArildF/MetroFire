@@ -28,18 +28,16 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			_bus = bus;
 		}
 
-		public EmojiAsset[] Emojis
+		private void SetEmojis(EmojiAsset[] value)
 		{
-			get
-			{
-				_waitEvent.WaitOne();
-				return _emojis;
-			}
-			private set
-			{
-				_waitEvent.Set();
-				_emojis = value;
-			}
+			_waitEvent.Set();
+			_emojis = value;
+		}
+
+		public EmojiAsset[] GetEmojis()
+		{
+			_waitEvent.WaitOne();
+			return _emojis;
 		}
 
 		public void Start()
@@ -49,7 +47,7 @@ namespace Rogue.MetroFire.UI.Infrastructure
 				try
 				{
 					var emojis = LoadEmojiFromResources();
-					Emojis = JoinWithGraphicsFromResourceDictionary(emojis);
+					SetEmojis(JoinWithGraphicsFromResourceDictionary(emojis));
 				}
 				catch (Exception e)
 				{
@@ -64,12 +62,18 @@ namespace Rogue.MetroFire.UI.Infrastructure
 			{
 				Source = new Uri(@"pack://application:,,,/Assets/EmojiResourceDictionary.xaml")
 			};
-			var joinedEmojis = from e in emojis
-							   let brushName = "emoji_" + e.Key
-			                   where resources.Contains(brushName)
-			                   let brush = resources[brushName] as DrawingBrush
-			                   select new EmojiAsset(e, brush);
-			return joinedEmojis.ToArray();
+			var joinedEmojis = (from e in emojis
+			                    let drawingName = "emoji_" + e.Key
+			                    where resources.Contains(drawingName)
+			                    let drawing = resources[drawingName] as DrawingGroup
+			                    select new EmojiAsset(e, drawing)).ToArray();
+
+			foreach (var joinedEmoji in joinedEmojis)
+			{
+				joinedEmoji.DrawingGroup.Freeze();
+			}
+
+			return joinedEmojis;
 		}
 
 		private IEnumerable<Emoji> LoadEmojiFromResources()

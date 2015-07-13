@@ -17,12 +17,13 @@ using Rogue.MetroFire.UI.Settings;
 using Rogue.MetroFire.UI.ViewModels;
 using Rogue.MetroFire.UI.Views;
 using Castle.Facilities.TypedFactory;
+using CefSharp;
 
 namespace Rogue.MetroFire.UI
 {
 	public class Bootstrapper
 	{
-		private readonly WindsorContainer _container;
+		private static WindsorContainer _container;
 
 		public Bootstrapper()
 		{
@@ -70,6 +71,7 @@ namespace Rogue.MetroFire.UI
 
 			_container.Register(Component.For<IChatDocument>().ImplementedBy<ChatDocument>().LifestyleTransient());
 			_container.Register(Component.For<IInlineUploadViewFactory>().AsFactory());
+			_container.Register(Component.For<ITweetViewFactory>().ImplementedBy<TweetViewFactory>());
 			_container.Register(Component.For<INotification>().ImplementedBy<Notification>().LifestyleTransient());
 			_container.Register(Component.For<FlashTaskBarAction>().ImplementedBy<FlashTaskBarAction>().LifestyleTransient());
 			_container.Register(Component.For<ShowToastAction>().ImplementedBy<ShowToastAction>().LifestyleTransient());
@@ -81,6 +83,7 @@ namespace Rogue.MetroFire.UI
 				.LifestyleSingleton());
 			_container.Register(Component.For<IPasteViewFactory>().ImplementedBy<PasteViewFactory>());
 			_container.Register(Component.For<IPasteView>().ImplementedBy<PasteView>().LifestyleTransient());
+			_container.Register(Component.For<ITweetView>().ImplementedBy<InlineTweetView>().LifestyleTransient());
 			_container.Register(Component.For<ICollapsibleTextPasteView>().ImplementedBy<CollapsibleTextPasteView>().LifestyleTransient());
 			_container.Register(Component.For<IApplicationDeployment>().ImplementedBy<ClickOnceApplicationDeployment>());
 			//_container.Register(Component.For<IApplicationDeployment>().ImplementedBy<FakeApplicationDeployment>());
@@ -98,6 +101,10 @@ namespace Rogue.MetroFire.UI
 
 			messageBus.Listen<ApplicationLoadedMessage>().Subscribe(
 				msg => messageBus.SendMessage(new ActivateMainModuleMessage(ModuleNames.Login)));
+
+			CefSettings settings = new CefSettings {WindowlessRenderingEnabled = true};
+			CefSharp.Cef.Initialize(settings);
+
 
 			return _container.Resolve<IShellWindow>();
 		}
@@ -130,6 +137,23 @@ namespace Rogue.MetroFire.UI
 			{
 				var view = _container.Resolve<ICollapsibleTextPasteView>(new {inline});
 
+				return view;
+			}
+		}
+
+		public class TweetViewFactory : ITweetViewFactory
+		{
+			public readonly IWindsorContainer _container;
+
+			public TweetViewFactory(IWindsorContainer container)
+			{
+				_container = container;
+			}
+
+			public ITweetView Create(Tweet tweet)
+			{
+				var vm = _container.Resolve<InlineTweetViewModel>(new {tweet});
+				var view = _container.Resolve<ITweetView>(new {vm});
 				return view;
 			}
 		}

@@ -14,6 +14,7 @@ using Rogue.MetroFire.CampfireClient.Serialization;
 using Rogue.MetroFire.UI.GitHub;
 using Rogue.MetroFire.UI.Infrastructure;
 using Rogue.MetroFire.UI.Settings;
+using Rogue.MetroFire.UI.Twitter;
 using Rogue.MetroFire.UI.ViewModels;
 
 namespace Rogue.MetroFire.UI
@@ -192,6 +193,16 @@ namespace Rogue.MetroFire.UI
 		ICollapsibleTextPasteView CreateTextPasteView(Inline inline);
 	}
 
+	public interface ITweetViewFactory
+	{
+		ITweetView Create(Tweet tweet);
+	}
+
+	public interface ITweetView
+	{
+		FrameworkElement Element { get; }
+	}
+
 	public interface ICollapsibleTextPasteView
 	{
 		FrameworkElement Element { get; }
@@ -283,5 +294,11 @@ namespace Rogue.MetroFire.UI
 	public interface IRenderAction
 	{
 		void Format(NotificationMessage message, IMessageRenderer renderer);
+	}
+
+
+	public interface ITwitterClient
+	{
+		OEmbed GetTweet(string id);
 	}
 }

@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\CefSharp.Wpf.39.0.0\build\CefSharp.Wpf.props" Condition="Exists('..\packages\CefSharp.Wpf.39.0.0\build\CefSharp.Wpf.props')" />
+  <Import Project="..\packages\CefSharp.Common.39.0.0\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.39.0.0\build\CefSharp.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -254,8 +256,11 @@
     <Compile Include="Settings\TriggerType.cs" />
     <Compile Include="Transitions\HorizontalSlideTransitionSelector.cs" />
     <Compile Include="Transitions\HorizontalSlideTransition.cs" />
+    <Compile Include="Twitter\OEmbed.cs" />
+    <Compile Include="Twitter\TwitterClient.cs" />
     <Compile Include="ViewModels\Direction.cs" />
     <Compile Include="ViewModels\GitHubCommitsViewModel.cs" />
+    <Compile Include="ViewModels\InlineTweetViewModel.cs" />
     <Compile Include="ViewModels\InlineUploadViewModel.cs" />
     <Compile Include="ViewModels\InlineYoutubeViewModel.cs" />
     <Compile Include="ViewModels\LobbyModuleViewModel.cs" />
@@ -620,6 +625,9 @@
     </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\cef.redist.x86.3.2171.2069\build\cef.redist.x86.targets" Condition="Exists('..\packages\cef.redist.x86.3.2171.2069\build\cef.redist.x86.targets')" />
+  <Import Project="..\packages\cef.redist.x64.3.2171.2069\build\cef.redist.x64.targets" Condition="Exists('..\packages\cef.redist.x64.3.2171.2069\build\cef.redist.x64.targets')" />
+  <Import Project="..\packages\CefSharp.Common.39.0.0\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.39.0.0\build\CefSharp.Common.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -19,6 +19,7 @@ namespace Rogue.MetroFire.UI.Views
 	{
 		private readonly IInlineUploadViewFactory _factory;
 		private readonly IPasteViewFactory _pasteViewFactory;
+		private readonly ITweetViewFactory _tweetViewFactory;
 		private readonly IEnumerable<IMessageFormatter> _formatters;
 		private readonly IEnumerable<IMessagePostProcessor> _postProcessors;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
@@ -30,11 +31,12 @@ namespace Rogue.MetroFire.UI.Views
 
 
 		public ChatDocument(IInlineUploadViewFactory factory,
-			IPasteViewFactory pasteViewFactory, IEnumerable<IMessageFormatter> formatters, 
+			IPasteViewFactory pasteViewFactory, ITweetViewFactory tweetViewFactory, IEnumerable<IMessageFormatter> formatters, 
 			IEnumerable<IMessagePostProcessor> postProcessors)
 		{
 			_factory = factory;
 			_pasteViewFactory = pasteViewFactory;
+			_tweetViewFactory = tweetViewFactory;
 			_formatters = formatters;
 			_postProcessors = postProcessors;
 			_handlers = new Dictionary<MessageType, Action<Message, User, Paragraph>>
@@ -69,14 +71,10 @@ namespace Rogue.MetroFire.UI.Views
 		{
 			if (msg.Tweet != null)
 			{
-				var message = StripEntities(msg.Tweet.Message);
-
-				var bodyInline = RenderUserMessage(message);
-
-				var tweetView = new InlineTweetView(bodyInline, msg.Tweet);
+				var tweetView = _tweetViewFactory.Create(msg.Tweet);
 
 				paragraph.Inlines.Add(FormatUserName(user) + ":" + Environment.NewLine);
-				paragraph.Inlines.Add(tweetView);
+				paragraph.Inlines.Add(tweetView.Element);
 				return;
 			}
 

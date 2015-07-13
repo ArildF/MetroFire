@@ -3,39 +3,19 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Rogue_MetroFire_UI_Behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
+	xmlns:infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
+	xmlns:cef="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
 	mc:Ignorable="d"
 	x:Class="Rogue.MetroFire.UI.Views.InlineTweetView"
 	x:Name="UserControl"
 	d:DesignWidth="523">
 
 	<Border Padding="3" BorderThickness="0,0.3">
-		<Border.BorderBrush>
-			<SolidColorBrush Color="{DynamicResource FadedOutTextBoxTextColor}"/>
-		</Border.BorderBrush>
-
-		<Grid x:Name="LayoutRoot" Margin="0">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="60"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="60"/>
-				<ColumnDefinition Width="0.862*"/>
-			</Grid.ColumnDefinitions>
-			<TextBlock Margin="0" TextWrapping="Wrap" d:LayoutOverrides="Width, Height" 
-				Style="{DynamicResource MetroSmallLightHeader}" Grid.Column="1" VerticalAlignment="Center"><Hyperlink NavigateUri="{Binding TwitterProfileUrl}"><Run Text="{Binding TwitterUserName, Mode=OneWay}"/></Hyperlink></TextBlock>
-			<Image Margin="0" Width="48" Height="48" Source="{Binding AvatarUrl, Mode=OneWay}"/>
-			<TextBlock Margin="0" TextWrapping="Wrap" x:Name="_body" d:LayoutOverrides="Width" Grid.Row="1" 
-				Grid.ColumnSpan="2" Style="{DynamicResource MetroBodyText}">
-				<i:Interaction.Behaviors>
-					<Rogue_MetroFire_UI_Behaviors:UrlifyBehavior/>
-				</i:Interaction.Behaviors>
-			</TextBlock>
-			<TextBlock Margin="0" TextWrapping="Wrap" VerticalAlignment="Top" 
-				d:LayoutOverrides="Width" Style="{DynamicResource MetroBodyText}" Grid.Row="2" HorizontalAlignment="Right" 
-				Grid.ColumnSpan="2" FontSize="12"><Hyperlink NavigateUri="{Binding TweetUrl}"><Run Text="Source"/></Hyperlink></TextBlock>
-		</Grid>
+		<!--<WebBrowser infrastructure:Attached.HtmlDocument="{Binding Document}"/>-->
+		<!--<WebBrowser Source="file:///d:/temp/baz.html"/>-->
+		<cef:ChromiumWebBrowser infrastructure:Attached.HtmlDocument="{Binding Document}" 
+								HorizontalAlignment="Stretch"
+								VerticalAlignment="Stretch"
+								MinHeight="100" MinWidth="400"/>
 	</Border>
 </UserControl>

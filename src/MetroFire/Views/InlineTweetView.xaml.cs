@@ -1,49 +1,31 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using Rogue.MetroFire.CampfireClient.Serialization;
+using Rogue.MetroFire.UI.ViewModels;
 
 namespace Rogue.MetroFire.UI.Views
 {
 	/// <summary>
 	/// Interaction logic for InlineTweetView.xaml
 	/// </summary>
-	public partial class InlineTweetView
+	public partial class InlineTweetView : ITweetView
 	{
-		private Tweet _tweet;
-
 		private InlineTweetView()
 		{
 			InitializeComponent();
 		}
 
-		
-
-		public InlineTweetView(Inline body, Tweet tweet) : this()
+		public InlineTweetView(InlineTweetViewModel vm) : this()
 		{
-			_tweet = tweet;
-			_body.Inlines.Add(body);
-
-			DataContext = this;
+			DataContext = vm;
 		}
 
-		public string AvatarUrl
-		{
-			get { return _tweet.AuthorAvatarUrl; }
-		}
 
-		public string TwitterUserName
+		public FrameworkElement Element
 		{
-			get { return _tweet.AuthorUsername; }
-		}
-
-		public string TwitterProfileUrl
-		{
-			get { return string.Format("https://twitter.com/#!/{0}", _tweet.AuthorUsername); }
-		}
-
-		public string TweetUrl
-		{
-			get { return string.Format("https://twitter.com/#!/{0}/status/{1}", _tweet.AuthorUsername, _tweet.Id); }
+			get { return this; }
 		}
 	}
 }

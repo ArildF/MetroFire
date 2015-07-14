@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
@@ -344,6 +345,71 @@ namespace Rogue.MetroFire.UI.Views
 
 		
 	}
+
+	public class EmojiMessageFormatter : IMessagePostProcessor
+	{
+		
+		private readonly Regex _regex;
+		private readonly Dictionary<string, EmojiAsset> _emoji;
+
+		public EmojiMessageFormatter(IEmojiProvider provider)
+		{
+			_emoji = provider.GetEmojis().ToDictionary(e => e.Emoji.Shortname);
+			_regex = new Regex(@"(\:[\w_]+\:)");
+		}
+
+		public void Process(Paragraph paragraph, Message message, User user, IRoom room)
+		{
+			if (message.Type != MessageType.TextMessage)
+			{
+				return;
+			}
+
+			var runs = paragraph.Inlines.FlattenWithParents().Where(t => t.Item2 is Run).ToList();
+			foreach (var run in runs)
+			{
+				Emojify(((Run)run.Item2), run.Item1);
+			}
+		}
+
+		private void Emojify(Run run, InlineCollection inlines)
+		{
+			if (!_regex.IsMatch(run.Text))
+			{
+				return;
+			}
+
+			var splits = _regex.Split(run.Text);
+
+			var span = inlines.ReplaceInlineWithSpan(run);
+
+			foreach (var result in splits)
+			{
+				if (_regex.IsMatch(result) && _emoji.ContainsKey(result))
+				{
+					var asset = _emoji[result];
+
+					span.Inlines.Add(new Image
+					{
+						Source = new DrawingImage{Drawing = asset.DrawingGroup},
+						VerticalAlignment = VerticalAlignment.Center,
+						HorizontalAlignment = HorizontalAlignment.Stretch,
+						Height = 40,
+						Width = 40,
+						RenderTransform = new TranslateTransform(0, 1),
+						ToolTip = result,
+					});
+				}
+				else if (result != String.Empty)
+				{
+					span.Inlines.Add(result);
+				}
+			}
+		}
+
+		public int Priority { get { return 6; } }
+	}
+
 
 	public class HyperLinkVisitor : InlineVisitor
 	{

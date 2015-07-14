@@ -7,6 +7,7 @@ using Rogue.MetroFire.CampfireClient;
 using Rogue.MetroFire.CampfireClient.Serialization;
 using System.Reactive.Linq;
 using System.Linq;
+using System.Reactive;
 
 namespace Rogue.MetroFire.UI.ViewModels
 {
@@ -32,6 +33,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 		private string _roomTranscriptsUri;
 		private ObservableAsPropertyHelper<bool> _postAsLanguageVisiblePropertyHelper;
 		private bool _showEmojiPicker;
+		private int _caretPosition;
 
 		public RoomModuleViewModel(IRoom room, IMessageBus bus,IUserCache userCache, 
 			IChatDocument chatDocument,
@@ -115,6 +117,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 			ToggleEmojiPickerCommand.Subscribe(_ => ShowEmojiPicker = !ShowEmojiPicker);
 
 			EmojiPickerViewModel.InsertEmoji.Subscribe(InsertEmoji);
+			UserMessageFocus = EmojiPickerViewModel.InsertEmoji.Select(_ => Unit.Default);
 		}
 
 		public ReactiveCommand ToggleEmojiPickerCommand { get; private set; }
@@ -132,6 +135,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 		{
 			get { return _showEmojiPicker; }
 			private set { this.RaiseAndSetIfChanged(vm => vm.ShowEmojiPicker, ref _showEmojiPicker, value); }
+		}
+
+		public int CaretPosition
+		{
+			get { return _caretPosition; }
+			set { this.RaiseAndSetIfChanged(vm => vm.CaretPosition, ref _caretPosition, value); }
 		}
 
 		public ReactiveCommand PasteCommand { get; private set; }
@@ -153,8 +162,11 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 		private void InsertEmoji(string emoji)
 		{
-			UserMessage += emoji;
+			int oldCaretPosition = CaretPosition;
+			UserMessage = UserMessage.Insert(CaretPosition, emoji);
 			ShowEmojiPicker = false;
+
+			CaretPosition = oldCaretPosition + emoji.Length;
 		}
 
 		public ReactiveCollection<UserViewModel> Users { get; private set; }
@@ -330,6 +342,8 @@ namespace Rogue.MetroFire.UI.ViewModels
 			get { return _roomTranscriptsUri; }
 			private set { this.RaiseAndSetIfChanged(vm => vm.RoomTranscriptsUri, ref _roomTranscriptsUri, value); }
 		}
+
+		public IObservable<Unit> UserMessageFocus { get; private set; }
 
 
 		public bool IsActive

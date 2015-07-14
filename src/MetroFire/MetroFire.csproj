@@ -168,6 +168,7 @@
     <Compile Include="Behaviors\DoubleClickToCommandBehavior.cs" />
     <Compile Include="Behaviors\GrabPanBehavior.cs" />
     <Compile Include="Behaviors\RestrictToNumericalInputBehavior.cs" />
+    <Compile Include="Behaviors\SelectionBehavior.cs" />
     <Compile Include="Behaviors\StayScrolledToEndBehavior.cs" />
     <Compile Include="Behaviors\Transition.cs" />
     <Compile Include="Behaviors\UrlifyBehavior.cs" />

@@ -152,8 +152,9 @@
 			
 			
 			<i:Interaction.Behaviors>
-				<!--<Behaviors:BindableFocusBehavior BindableIsFocused="{Binding UserEditingMessage, Mode=OneWayToSource}"/>-->
+				<behaviors:BindableFocusBehavior FocusOnObservable="{Binding UserMessageFocus}"/>
 				<behaviors:CustomPasteBehavior Command="{Binding PasteCommand}"/>
+				<behaviors:SelectionBehavior BindableSelectionStart="{Binding CaretPosition, Mode=TwoWay}"/>
 			</i:Interaction.Behaviors>
 
 		</TextBox>

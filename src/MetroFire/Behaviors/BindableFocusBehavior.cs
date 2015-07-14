@@ -48,7 +48,10 @@ namespace Rogue.MetroFire.UI.Behaviors
 				_subscription.Dispose();
 			}
 
-			_subscription = newValue.Subscribe(_ => Keyboard.Focus(AssociatedObject));
+			if (newValue != null)
+			{
+				_subscription = newValue.Subscribe(_ => Keyboard.Focus(AssociatedObject));
+			}
 		}
 
 

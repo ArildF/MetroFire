@@ -89,9 +89,10 @@
 	</d:DataContext>
 	
 	<i:Interaction.Triggers>
-		<infrastructure:CustomKeyBindingTrigger Key="Enter"  Modifier="">
-			<i:InvokeCommandAction Command="{Binding PostMessageCommand}"/>
+		<infrastructure:CustomKeyBindingTrigger Key="E"  Modifier="Control">
+			<i:InvokeCommandAction Command="{Binding ToggleEmojiPickerCommand}"/>
 		</infrastructure:CustomKeyBindingTrigger>
+
 	</i:Interaction.Triggers>
 	
 	<Grid x:Name="Grid">
@@ -149,9 +150,15 @@
 				 Style="{DynamicResource _userMessageTextBoxStyle}"
 				 AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Auto" SelectionBrush="#7E3399FF"
 				 >
-			
-			
-			<i:Interaction.Behaviors>
+
+			<i:Interaction.Triggers>
+				<infrastructure:CustomKeyBindingTrigger Key="Enter"  Modifier="">
+					<i:InvokeCommandAction Command="{Binding PostMessageCommand}"/>
+				</infrastructure:CustomKeyBindingTrigger>
+			</i:Interaction.Triggers>
+
+
+				<i:Interaction.Behaviors>
 				<behaviors:BindableFocusBehavior FocusOnObservable="{Binding UserMessageFocus}"/>
 				<behaviors:CustomPasteBehavior Command="{Binding PasteCommand}"/>
 				<behaviors:SelectionBehavior BindableSelectionStart="{Binding CaretPosition, Mode=TwoWay}"/>
@@ -187,15 +194,18 @@
 		</Grid>
 		<GridSplitter HorizontalAlignment="Left" Width="1" Grid.Column="1" Grid.RowSpan="2" Margin="0,1,0,-1" d:LayoutOverrides="GridBox"/>
 		<Button Content="Button" HorizontalAlignment="Right" VerticalAlignment="Center" 
-				Width="40" Grid.Row="2" Template="{DynamicResource EmojiButtonTemplate}" 
+				Width="40" Grid.Row="1" Template="{DynamicResource EmojiButtonTemplate}" 
 				Command="{Binding ToggleEmojiPickerCommand}"
+				ToolTip="Ctrl+E"
 				Height="40" Margin="0,0,9,0" Background="{x:Null}" Opacity="0.52"/>
 		<Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" MaxWidth="460" 
 			  Visibility="{Binding ShowEmojiPicker, Converter={StaticResource BoolToVisibilityConverter}}"
 			  MaxHeight="300" MinWidth="160" MinHeight="100" Margin="0,0,5,5">
 			<Border BorderBrush="Black" BorderThickness="0.2" Margin="0">
 				<ContentControl 
-					Content="{Binding EmojiPickerViewModel}"/>
+					Content="{Binding EmojiPickerViewModel}">
+					
+				</ContentControl>
 			</Border>
 		</Grid>
 		

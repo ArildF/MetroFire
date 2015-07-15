@@ -56,7 +56,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			PostMessageCommand = new ReactiveCommand(this.ObservableForProperty(vm => vm.UserEditedMessage)
 				.Select(c => c.Value).StartWith(false));
-			Subscribe(() => PostMessageCommand.Subscribe(HandlePostMessage));
+			Subscribe(() => PostMessageCommand.Where(_ => !ShowEmojiPicker).Subscribe(HandlePostMessage));
 
 			_messages = new List<RoomMessage>();
 
@@ -114,11 +114,23 @@ namespace Rogue.MetroFire.UI.ViewModels
 			PostAsLanguageViewModel = new PostAsLanguageViewModel();
 
 			ToggleEmojiPickerCommand = new ReactiveCommand();
-			ToggleEmojiPickerCommand.Subscribe(_ => ShowEmojiPicker = !ShowEmojiPicker);
+			ToggleEmojiPickerCommand.Subscribe(_ =>
+			{
+				ShowEmojiPicker = !ShowEmojiPicker;
+				if (ShowEmojiPicker)
+				{
+					EmojiPickerViewModel.Focus();
+				}
+			});
 
 			EmojiPickerViewModel.InsertEmoji.Subscribe(InsertEmoji);
-			UserMessageFocus = EmojiPickerViewModel.InsertEmoji.Select(_ => Unit.Default);
+			UserMessageFocus = EmojiPickerViewModel.InsertEmoji.Select(_ => Unit.Default).Merge(
+				this.ObservableForProperty(vm => vm.ShowEmojiPicker).Distinct().Where(pc => !pc.Value)
+				.Select(_ => Unit.Default));
+
 		}
+
+		public IObservable<Unit> EmojiPickerFocus { get; set; }
 
 		public ReactiveCommand ToggleEmojiPickerCommand { get; private set; }
 

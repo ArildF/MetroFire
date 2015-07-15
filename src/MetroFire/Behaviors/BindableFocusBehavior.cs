@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
@@ -50,8 +51,23 @@ namespace Rogue.MetroFire.UI.Behaviors
 
 			if (newValue != null)
 			{
-				_subscription = newValue.Subscribe(_ => Keyboard.Focus(AssociatedObject));
+				_subscription = newValue.Subscribe(_ => Focus());
 			}
+		}
+
+		private void Focus()
+		{
+			var selector = AssociatedObject as Selector;
+			if (selector != null && selector.SelectedItem != null)
+			{
+				var element = selector.ItemContainerGenerator.ContainerFromItem(selector.SelectedItem) as IInputElement;
+				if (element != null)
+				{
+					var retval = element.Focus();
+					return;
+				}
+			}
+			Keyboard.Focus(AssociatedObject);
 		}
 
 

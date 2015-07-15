@@ -293,5 +293,6 @@ namespace Rogue.MetroFire.UI
 	public interface IEmojiPickerViewModel
 	{
 		IObservable<string> InsertEmoji { get; }
+		void Focus();
 	}
 }

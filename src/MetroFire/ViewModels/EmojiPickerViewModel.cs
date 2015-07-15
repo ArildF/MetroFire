@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using ReactiveUI;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using ReactiveUI.Xaml;
 using Rogue.MetroFire.UI.Infrastructure;
 
@@ -24,10 +26,20 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 			EmojiPickedCommand = new ReactiveCommand();
 
-			InsertEmoji = EmojiPickedCommand.OfType<EmojiViewModel>().Select(vm => vm.ShortName);
+			InsertEmoji = EmojiPickedCommand.Select(_ => SelectedCategory)
+				.Where(c => c != null)
+				.Select(c =>c.SelectedEmoji)
+				.Where(e => e != null).Select(vm => vm.ShortName);
 		}
 
 		public IObservable<string> InsertEmoji { get; set; }
+		public void Focus()
+		{
+			if (SelectedCategory != null)
+			{
+				SelectedCategory.Focus();
+			}
+		}
 
 		public ReactiveCommand EmojiPickedCommand { get; private set; }
 
@@ -43,14 +55,18 @@ namespace Rogue.MetroFire.UI.ViewModels
 			var grouped = assets.ToLookup(g => g.Emoji.Category);
 			var vms = new[]
 			{
-				new EmojiCategoryViewModel("emoticons", grouped["emoticons"]),
-				new EmojiCategoryViewModel("objects", grouped["objects"]),
-				new EmojiCategoryViewModel("nature", grouped["nature"]),
-				new EmojiCategoryViewModel("places", grouped["places"]), 
-				new EmojiCategoryViewModel("other", grouped["other"]), 
+				new EmojiCategoryViewModel("_emoticons", grouped["emoticons"]),
+				new EmojiCategoryViewModel("_objects", grouped["objects"]),
+				new EmojiCategoryViewModel("_nature", grouped["nature"]),
+				new EmojiCategoryViewModel("_places", grouped["places"]), 
+				new EmojiCategoryViewModel("o_ther", grouped["other"]), 
 
 			};
 			SelectedCategory = vms.FirstOrDefault();
+			if (SelectedCategory != null)
+			{
+				SelectedCategory.SelectedEmoji = SelectedCategory.Emojis.FirstOrDefault();
+			}
 			return vms;
 		}
 
@@ -62,9 +78,12 @@ namespace Rogue.MetroFire.UI.ViewModels
 
 	}
 
-	public class EmojiCategoryViewModel
+	public class EmojiCategoryViewModel : ReactiveObject
 	{
+		private EmojiViewModel _selectedEmoji;
 		public string CategoryTitle { get; private set; }
+
+		private readonly Subject<Unit> _focus = new Subject<Unit>();
 
 		public EmojiCategoryViewModel(string categoryTitle, IEnumerable<EmojiAsset> emojiAssets)
 		{
@@ -73,10 +92,26 @@ namespace Rogue.MetroFire.UI.ViewModels
 				.Select(a => new EmojiViewModel(a)).ToArray();
 		}
 
+		public EmojiViewModel SelectedEmoji
+		{
+			get { return _selectedEmoji; }
+			set { this.RaiseAndSetIfChanged(vm => vm.SelectedEmoji, ref _selectedEmoji, value); }
+		}
+
+		public IObservable<Unit> FocusTo
+		{
+			get { return _focus; }
+		}
+
 		public EmojiViewModel[] Emojis
 		{
 			get; 
 			private set; 
+		}
+
+		public void Focus()
+		{
+			_focus.OnNext(Unit.Default);
 		}
 	}
 

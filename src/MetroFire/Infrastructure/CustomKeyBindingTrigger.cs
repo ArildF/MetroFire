@@ -109,19 +109,17 @@ namespace Rogue.MetroFire.UI.Infrastructure
 
 		private void AssociatedObjectOnPreviewKeyDown(object sender, KeyEventArgs e)
 		{
-
-			e.Handled = Handle(e.Key);
+			e.Handled = e.Handled || Handle(e.Key);
 		}
 
 		private void AssociatedObjectOnPreviewTextInput(object sender, TextCompositionEventArgs e)
 		{
 			if (Keyboard.FocusedElement is TextBoxBase)
 			{
-				e.Handled = false;
 				return;
 			}
 
-			e.Handled = Handle(e.Text);
+			e.Handled = e.Handled || Handle(e.Text);
 		}
 
 		/// <summary>

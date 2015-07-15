@@ -5,19 +5,26 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 	xmlns:behaviors="clr-namespace:Rogue.MetroFire.UI.Behaviors"
+	xmlns:infrastructure="clr-namespace:Rogue.MetroFire.UI.Infrastructure"
 	mc:Ignorable="d"
 	x:Class="Rogue.MetroFire.UI.Views.EmojiPickerView"
 	x:Name="UserControl"
 	d:DesignWidth="355" d:DesignHeight="269" Background="White" BorderThickness="0.2">
 	<UserControl.Resources>
 		<DataTemplate x:Key="EmojiListTemplate">
-			<Grid d:DesignWidth="243" d:DesignHeight="192">
+			<Grid d:DesignWidth="243" d:DesignHeight="192" 
+				infrastructure:FocusBehavior.FocusFirstElementOnLoaded="True">
 				<ListBox HorizontalAlignment="Stretch" Margin="0" Background="{x:Null}" 
 		
 						ItemsPanel="{DynamicResource WrapPanelItemsPanel}" 
 						ItemsSource="{Binding Emojis}"
-						ItemTemplate="{DynamicResource EmojiItemTemplate}" 
-						ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+						ItemTemplate="{DynamicResource EmojiItemTemplate}"
+						SelectedItem="{Binding SelectedEmoji}"
+						ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+					<i:Interaction.Behaviors>
+						<behaviors:BindableFocusBehavior FocusOnObservable="{Binding FocusTo}"/>
+					</i:Interaction.Behaviors>
+					</ListBox>
 			</Grid>
 		</DataTemplate>
 		<ItemsPanelTemplate x:Key="WrapPanelItemsPanel">
@@ -63,12 +70,19 @@
 			<RowDefinition Height="0.829*"/>
 			<RowDefinition Height="0.171*"/>
 		</Grid.RowDefinitions>
-		<TabControl Style="{DynamicResource SettingsTabControlStyle}" 
+		<TabControl Style="{DynamicResource SettingsTabControlStyle}"
+					x:Name="TabControl"
 					TabStripPlacement="Left" 
 					ItemsSource ="{Binding EmojiCategories}"
 					DisplayMemberPath="CategoryTitle"
 					SelectedItem="{Binding SelectedCategory}"
-					ItemContainerStyle="{DynamicResource TabItemStyle1}" ContentTemplate="{DynamicResource EmojiListTemplate}">
+					ItemContainerStyle="{DynamicResource TabItemStyle1}" 
+					ContentTemplate="{DynamicResource EmojiListTemplate}">
+			<i:Interaction.Triggers>
+				<infrastructure:CustomKeyBindingTrigger Key="Enter"  Modifier="">
+					<i:InvokeCommandAction Command="{Binding EmojiPickedCommand}"/>
+				</infrastructure:CustomKeyBindingTrigger>
+			</i:Interaction.Triggers>
 		
 		</TabControl>
 	</Grid>

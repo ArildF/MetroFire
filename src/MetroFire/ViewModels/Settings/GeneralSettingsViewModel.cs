@@ -20,7 +20,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 		public string Title
 		{
-			get { return "General"; }
+			get { return "_General"; }
 		}
 
 

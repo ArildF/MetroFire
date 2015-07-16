@@ -11,7 +11,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 		public string Title
 		{
-			get { return "About"; }
+			get { return "A_bout"; }
 		}
 
 		public void Commit()

@@ -22,7 +22,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 		public string Title
 		{
-			get { return "Network"; }
+			get { return "Ne_twork"; }
 		}
 
 		public void Commit()

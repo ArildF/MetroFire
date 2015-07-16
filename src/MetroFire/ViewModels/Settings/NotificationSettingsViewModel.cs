@@ -71,7 +71,7 @@ namespace Rogue.MetroFire.UI.ViewModels.Settings
 
 		public string Title
 		{
-			get { return "Notifications"; }
+			get { return "_Notifications"; }
 		}
 
 		

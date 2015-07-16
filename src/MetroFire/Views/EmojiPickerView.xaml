@@ -74,10 +74,15 @@
 					x:Name="TabControl"
 					TabStripPlacement="Left" 
 					ItemsSource ="{Binding EmojiCategories}"
-					DisplayMemberPath="CategoryTitle"
 					SelectedItem="{Binding SelectedCategory}"
-					ItemContainerStyle="{DynamicResource TabItemStyle1}" 
+					
 					ContentTemplate="{DynamicResource EmojiListTemplate}">
+			<TabControl.Resources>
+				<Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle1}">
+					<Setter Property="Header" Value="{Binding CategoryTitle}"/>
+					<Setter Property="MinWidth" Value="50"></Setter>
+				</Style>
+			</TabControl.Resources>
 			<i:Interaction.Triggers>
 				<infrastructure:CustomKeyBindingTrigger Key="Enter"  Modifier="">
 					<i:InvokeCommandAction Command="{Binding EmojiPickedCommand}"/>

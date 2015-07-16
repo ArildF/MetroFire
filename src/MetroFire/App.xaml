@@ -961,8 +961,11 @@
 									</VisualStateGroup>
 								</VisualStateManager.VisualStateGroups>
 
-								<ContentPresenter x:Name="Content" ContentSource="Header" HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Grid.Column="1"/>
-								<ed:RegularPolygon x:Name="regularPolygon" Fill="#FF000A00" Height="5" InnerRadius="1" PointCount="3" Stretch="Fill" Stroke="Black" Width="5">
+								<AccessText Text="{TemplateBinding Header}" Grid.Column="1"/>
+								<ed:RegularPolygon x:Name="regularPolygon" Fill="#FF000A00" Height="5" 
+												   InnerRadius="1" PointCount="3" Stretch="Fill" 
+												   Stroke="Black" Width="5"
+												   Grid.Column="0">
 									<ed:RegularPolygon.LayoutTransform>
 										<TransformGroup>
 											<ScaleTransform/>

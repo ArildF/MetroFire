@@ -82,12 +82,19 @@
     		<RowDefinition Height="0.093*"/>
     	</Grid.RowDefinitions>
     	<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Style="{DynamicResource MetroBlueCaption}" Text="settings"/>
-    	<TabControl Grid.Row="1" Style="{DynamicResource SettingsTabControlStyle}" TabStripPlacement="Left" 
+		<TabControl Grid.Row="1" Style="{DynamicResource SettingsTabControlStyle}" TabStripPlacement="Left" 
 					FocusVisualStyle="{x:Null}"
 					HorizontalContentAlignment="Stretch"
 					SelectedItem="{Binding SelectedPage}"
-					ItemContainerStyle="{DynamicResource TabItemStyle1}" ItemsSource="{Binding SettingsViewModels}" DisplayMemberPath="Title" ContentTemplate="{DynamicResource TabControlTemplate}"/>
-    	<Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
+					ItemsSource="{Binding SettingsViewModels}" 
+					ContentTemplate="{DynamicResource TabControlTemplate}">
+			<TabControl.Resources>
+				<Style TargetType="TabItem" BasedOn="{StaticResource TabItemStyle1}">
+					<Setter Property="Header" Value="{Binding Title}"/>
+				</Style>
+			</TabControl.Resources>
+		</TabControl>
+			<Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
 				Command="{Binding SaveCommand}"
 				Width="75" Grid.Row="2" Style="{DynamicResource MetroBigButton}"/>
             

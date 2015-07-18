@@ -27,6 +27,32 @@
 					</ListBox>
 			</Grid>
 		</DataTemplate>
+		<Style TargetType="TextBox" x:Key="SearchTextBoxStyle">
+			<Setter Property="FontSize" Value="12"/>
+
+			<Setter Property="Background">
+				<Setter.Value>
+					<VisualBrush TileMode="None" Stretch="None">
+						<VisualBrush.Visual>
+							<Grid>
+								<TextBlock Text="Search" 
+										   FontSize="14"
+										   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+									<TextBlock.Foreground>
+										<SolidColorBrush Color="{DynamicResource FadedOutTextBoxTextColor}"/>
+									</TextBlock.Foreground>
+								</TextBlock>
+							</Grid>
+						</VisualBrush.Visual>
+					</VisualBrush>
+				</Setter.Value>
+			</Setter>
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding UserTypedSearch}" Value="true">
+					<Setter Property="Background" Value="{x:Null}"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
 		<ItemsPanelTemplate x:Key="WrapPanelItemsPanel">
 			<WrapPanel IsItemsHost="True" Orientation="Horizontal" />
 		</ItemsPanelTemplate>
@@ -67,8 +93,8 @@
 
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="0.829*"/>
-			<RowDefinition Height="0.171*"/>
+			<RowDefinition/>
+			<RowDefinition Height="25"/>
 		</Grid.RowDefinitions>
 		<TabControl Style="{DynamicResource SettingsTabControlStyle}"
 					x:Name="TabControl"
@@ -90,5 +116,9 @@
 			</i:Interaction.Triggers>
 		
 		</TabControl>
+		<TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+				 x:Name="SearchTextBox"
+				 Grid.Row="1" Style="{StaticResource SearchTextBoxStyle}" 
+				 Margin="0,0,4,0"/>
 	</Grid>
 </UserControl>

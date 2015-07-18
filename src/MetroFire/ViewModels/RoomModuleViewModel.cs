@@ -119,7 +119,7 @@ namespace Rogue.MetroFire.UI.ViewModels
 				ShowEmojiPicker = !ShowEmojiPicker;
 				if (ShowEmojiPicker)
 				{
-					EmojiPickerViewModel.Focus();
+					EmojiPickerViewModel.FocusSelected();
 				}
 			});
 

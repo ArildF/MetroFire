@@ -36,7 +36,10 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void OnPreviewTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
 		{
-			_textBox.Focus();
+			if (!EmojiPicker.IsKeyboardFocusWithin)
+			{
+				_textBox.Focus();
+			}
 		}
 
 

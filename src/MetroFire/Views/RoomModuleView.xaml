@@ -199,8 +199,9 @@
 				ToolTip="Ctrl+E"
 				Height="40" Margin="0,0,9,0" Background="{x:Null}" Opacity="0.52"/>
 		<Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" MaxWidth="460" 
+			  x:Name="EmojiPicker"
 			  Visibility="{Binding ShowEmojiPicker, Converter={StaticResource BoolToVisibilityConverter}}"
-			  MaxHeight="300" MinWidth="160" MinHeight="100" Margin="0,0,5,5">
+			  MaxHeight="300" MinWidth="465" MinHeight="265" Margin="0,0,5,5">
 			<Border BorderBrush="Black" BorderThickness="0.2" Margin="0">
 				<ContentControl 
 					Content="{Binding EmojiPickerViewModel}">

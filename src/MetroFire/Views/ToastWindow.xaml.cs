@@ -1,5 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Navigation;
 
 namespace Rogue.MetroFire.UI.Views
 {
@@ -8,11 +9,20 @@ namespace Rogue.MetroFire.UI.Views
 	/// </summary>
 	public partial class ToastWindow : IToastWindow
 	{
+		private IWebBrowser _browser;
+
 		private ToastWindow()
 		{
 			InitializeComponent();
 
 			SizeChanged += OnSizeChanged;
+
+			AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(RequestNavigateToLink));
+		}
+
+		private void RequestNavigateToLink(object sender, RequestNavigateEventArgs requestNavigateEventArgs)
+		{
+			_browser.NavigateTo(requestNavigateEventArgs.Uri);
 		}
 
 		private void OnSizeChanged(object sender, SizeChangedEventArgs sizeChangedEventArgs)
@@ -22,9 +32,10 @@ namespace Rogue.MetroFire.UI.Views
 			Left = SystemParameters.PrimaryScreenWidth - ActualWidth;
 		}
 
-		public ToastWindow(IToastWindowViewModel vm) : this()
+		public ToastWindow(IToastWindowViewModel vm, IWebBrowser browser) : this()
 		{
 			DataContext = vm;
+			_browser = browser;
 		}
 
 		public Window Window

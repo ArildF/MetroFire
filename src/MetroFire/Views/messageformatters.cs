@@ -30,10 +30,10 @@ namespace Rogue.MetroFire.UI.Views
 
 		private static string GetSingleUrl(Message message)
 		{
-			string[] results = ChatDocument.UrlDetector.Split(message.Body.Trim()).Where(r => !String.IsNullOrEmpty(r)).ToArray();
+			string[] results = UrlDetector.Split(message.Body.Trim()).Where(r => !String.IsNullOrEmpty(r)).ToArray();
 			if (results.Length == 1)
 			{
-				if (ChatDocument.UrlDetector.IsMatch(results.First()))
+				if (UrlDetector.IsMatch(results.First()))
 				{
 					return results.First();
 				}
@@ -425,17 +425,17 @@ namespace Rogue.MetroFire.UI.Views
 
 		private void Linkify(Run run, InlineCollection inlines)
 		{
-			if (!ChatDocument.UrlDetector.IsMatch(run.Text))
+			if (!UrlDetector.IsMatch(run.Text))
 			{
 				return;
 			}
 
-			var results = ChatDocument.UrlDetector.Split(run.Text);
+			var results = UrlDetector.Split(run.Text);
 
 			var span = inlines.ReplaceInlineWithSpan(run);
 			foreach (var result in results)
 			{
-				if (ChatDocument.UrlDetector.IsMatch(result))
+				if (UrlDetector.IsMatch(result))
 				{
 					span.Inlines.Add(ChatDocument.CreateHyperLink(result));
 				}

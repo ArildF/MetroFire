@@ -125,6 +125,16 @@ namespace MetroFire.Specs.Steps
 			inline.Parent.Should().BeOfType<Hyperlink>();
 		}
 
+		[Then(@"""(.*)"" should not be a hyperlink")]
+		public void ThenShouldNotBeAHyperlink(string url)
+		{
+			var block = (Paragraph) _chatDocument.Blocks.FirstBlock;
+			var inline = block.Inlines.Flatten().OfType<Run>().First(r => r.Text.Contains(url));
+			inline.Parent.GetType().Should().NotBe(typeof (Hyperlink));
+
+		}
+
+
 		[Then(@"there should be (\d+) PasteViewModels in the system")]
 		public void ThenThereShouldBe0PasteViewModelsInTheSystem(int num)
 		{

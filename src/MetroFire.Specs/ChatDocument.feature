@@ -49,6 +49,16 @@ Scenario Outline: Hyperlinks
 	| http://no.wikipedia.org/wiki/Portal:Forside                 |
 	| http://en.wikipedia.org/wiki/Decembrist_revolt#cite_note-11 |
 
+Scenario Outline: Not hyperlinks
+	When I add the message "This is not a hyperlink: <hyperlink> This is text not following a hyperlink" from user 'Testuser'
+	Then the message should be displayed like "<Testuser> This is not a hyperlink: <hyperlink> This is text not following a hyperlink"
+	And "<hyperlink>" should not be a hyperlink
+	Examples:
+	| hyperlink                      |
+	| http://+:80/FPSecureWebService |
+
+
+
 
 
 Scenario: Image pastes without memory leaks

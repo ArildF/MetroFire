@@ -349,6 +349,7 @@
     <Compile Include="Views\GitHubCommitsView.xaml.cs">
       <DependentUpon>GitHubCommitsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UrlDetector.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

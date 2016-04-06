@@ -23,7 +23,7 @@ namespace Rogue.MetroFire.UI.Views
 		private readonly IEnumerable<IMessagePostProcessor> _postProcessors;
 		private readonly Dictionary<MessageType, Action<Message, User, Paragraph>> _handlers;
 
-		public static readonly Regex UrlDetector = new Regex(@"(https?://\S+)");
+		
 
 		private const string SyntaxHighlightSpecifierPrefix = 
 			"\u200B\u200D\u200B\u200C\u200B\u200B\u200D\u200B\u200C\u200B\u200C\u200C\u200D\u200D\u200B\u200C\u200D\u200B\u200D\u200B";

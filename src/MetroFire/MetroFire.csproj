@@ -60,7 +60,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>

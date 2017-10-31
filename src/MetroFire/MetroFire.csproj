@@ -34,7 +34,7 @@
     <ApplicationVersion>0.48.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(AssemblyNameOverride)' != ''">
     <AssemblyName>$(AssemblyNameOverride)</AssemblyName>

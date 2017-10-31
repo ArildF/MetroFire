@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rogue.MetroFire.UI</RootNamespace>
     <AssemblyName>MetroFire</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -33,7 +33,7 @@
     <InstallUrl>https://s3.amazonaws.com/metrofire-nightly/MetroFire-nightly.application/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>49</ApplicationRevision>
+    <ApplicationRevision>51</ApplicationRevision>
     <ApplicationVersion>0.48.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -654,16 +654,6 @@
       <PublishState>Include</PublishState>
       <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="System.Windows.Interactivity">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
     </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -31,3 +31,5 @@ ProxiesBin
 *.swp
 *_NCrunch*/
 *tmp_proj
+src/.vs/MetroFire/v15/Server/sqlite3/db.lock
+*.ide

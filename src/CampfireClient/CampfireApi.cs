@@ -135,11 +135,26 @@ namespace Rogue.MetroFire.CampfireClient
 			return Get<Upload>(relativeUri);
 		}
 
-		public Unit DownloadFile(string uri, string destination)
+		public Unit DownloadFile(string uriString, string destination)
 		{
-			var client = CreateClient(new Uri(uri));
-			client.DownloadFile(uri, destination);
-
+			var uri= new Uri(uriString);
+			try
+			{
+				var client = CreateClient(uri);
+				client.DownloadFile(uri, destination);
+			}
+			catch (WebException) 
+			{
+				if (UriIsCampfire(uri) && uri.Scheme == "https")
+				{
+					var newUri = new UriBuilder(uri) {Scheme = "http", Port = 80};
+					DownloadFile(newUri.ToString(), destination);
+				}
+				else
+				{
+					throw;
+				}
+			}
 			return Unit.Default;
 		}
 
